@@ -9,7 +9,8 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
-
+using static RegistTest;
+using UnityEngine.SceneManagement;
 
 public class LoginTest : MonoBehaviour
 {
@@ -50,10 +51,10 @@ public class LoginTest : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         
-    }
+    }*/
     public void LocalRegistJson()
     {
         print("회원가입 버튼 클릭");
@@ -74,6 +75,7 @@ public class LoginTest : MonoBehaviour
             //pah의 모든 택스트를 가져오자.
             loadUserInfo = System.IO.File.ReadAllText(path);
             print("JSON 파일 읽기 완료" + loadUserInfo);
+            
             // 유저 정보가 있는지 확인하는 변수
             bool isUserFound = false;
 
@@ -156,8 +158,13 @@ public class LoginTest : MonoBehaviour
             print("JSON 파일 읽기 완료" + loadUserInfo);
 
             // JSON 파일을 Dictionary 리스트로 변환
-            List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
+            //List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
             //print("유저정보량" + userInfoList.Count);
+
+            List<UserInfo> userInfoList = JsonConvert.DeserializeObject<List<UserInfo>>(LoginTest.instance.loadUserInfo);
+            Debug.Log("JSON 파싱 성공");
+
+
 
             if (userInfoList == null)
             {
@@ -172,7 +179,8 @@ public class LoginTest : MonoBehaviour
             {
 
                 //아이디와 패스워드가 일치하는지 확인
-                if (userInfo["userId"] == idText && userInfo["userPassword"] == passText)
+                //if (userInfo["userId"] == idText && userInfo["userPassword"] == passText)
+                if (userInfo.userId == idText && userInfo.userPassword == passText)
                 {
                     //정보표시해주기
                     print("id, pass 일치");
@@ -184,8 +192,8 @@ public class LoginTest : MonoBehaviour
                     //userNameText = userInfo["userNickName"];
                     
                     //print("내이름" + userNameText);
-                    idText = userInfo["userId"];
-                    print("내id" + idText);
+                    //idText = userInfo["userId"];
+                    //print("내id" + idText);
                     //MyInfo UserName을 갱신
                     
                     //mainUiObject.nameTextComp.text = userNameText;
@@ -194,7 +202,7 @@ public class LoginTest : MonoBehaviour
                     isUserFound = true;
                     //로그인처리하기
                     Login();
-                    print("로그인 완료");
+                    print("로그인 시작");
                     //루틴 나가기
                     break;
 
@@ -230,6 +238,7 @@ public class LoginTest : MonoBehaviour
     void Login()
     {
         print("로그인완료");
+        SceneManager.LoadScene("");
     }
 
 }
