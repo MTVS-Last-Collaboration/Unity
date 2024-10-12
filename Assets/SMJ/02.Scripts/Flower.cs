@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Flower : MonoBehaviour
 {
-    public string partnerId;
+    public string managerId;
     public string nickName;
     public AudioClip voiceClip;
     public bool isFirst = false;
