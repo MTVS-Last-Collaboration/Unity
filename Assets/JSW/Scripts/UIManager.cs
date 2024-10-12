@@ -45,4 +45,76 @@ public class UIManager : MonoBehaviour
         Mong_1.SetActive(false);
         Mong_Chat_2.SetActive(false);
     }
+
+    // Album苞 包访等 内靛
+
+    public void OnClickAlbum()
+    {
+        album_UI.SetActive(true);
+    }
+    public void OnClickAlbum_Back()
+    {
+        album_UI.SetActive(false);
+    }
+
+
+    public void OnClickAlbum_Making()
+    {
+        album_UI.SetActive(false);
+        Album2.SetActive(true);
+    }
+    public void OnClickAlbum_Making_Back()
+    {
+        Album2.SetActive(false);
+        album_UI.SetActive(true);
+    }
+
+
+    public void OnClickAlbum_Loading()
+    {
+        Album2.SetActive(false);
+        Album_Loading.SetActive(true);
+    }
+    public void OnClickAlbum_Loading_Back()
+    {
+        Album_Loading.SetActive(false);
+        Album2.SetActive(true);
+    }
+
+
+    // Calender客 包访等 内靛
+    public void OnClickCalender()
+    {
+        Calender1.SetActive(true);
+        Calender2.SetActive(true);
+    }
+
+
+    public void OnClickCalender_Back()
+    {
+        Calender1.SetActive(false);
+        Calender2.SetActive(false);
+    }
+
+    // Mong苞 包访等 内靛
+    public void OnClickMong()
+    {
+        Mong_1.SetActive(true);
+    }
+    public void OnClickMong_Back()
+    {
+        Mong_1.SetActive(false);
+    }
+
+
+    public void OnClickMongChat()
+    {
+        Mong_1.SetActive(false);
+        Mong_Chat_2.SetActive(true);
+    }
+    public void OnClickMongChat_Back()
+    {
+        Mong_Chat_2.SetActive(false);
+        Mong_1.SetActive(true);
+    }
 }
