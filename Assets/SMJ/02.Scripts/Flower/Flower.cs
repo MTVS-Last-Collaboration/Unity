@@ -8,6 +8,13 @@ public class Flower : MonoBehaviour
     public string nickName;
     public AudioClip voiceClip;
     public bool isFirst = false;
+    public FlowerUIManager uiManager;
+
+    private void Awake()
+    {
+        uiManager = GetComponent<FlowerUIManager>();
+    }
+
     public enum Evolution
     {
         SEED,
