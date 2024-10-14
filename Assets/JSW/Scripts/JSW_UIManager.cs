@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class JSW_UIManager : MonoBehaviour
 {
     // 캐싱 값 가지고 있는 객체 (저장 매체)
     // 코드 몰아 넣는 객체 인스턴스 하나 (코드 실행 매체)
