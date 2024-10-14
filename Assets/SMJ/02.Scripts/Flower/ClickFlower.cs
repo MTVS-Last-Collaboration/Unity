@@ -27,26 +27,25 @@ public class ClickFlower : MonoBehaviour
             {
                 if (checkID.IsMine(targetFlower) == true)
                 {
-                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
+                    //talkText
                     //연인에게 따뜻한 한마디 말하기
+                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
                     //녹음 완료시 + "(완료)" 추가 및 버튼액션 비활성화
-                    targetFlower.uiManager.UpdateButtonText(talkText);
-                    targetFlower.uiManager.UpdateButtonInteractable(true);
+                    //targetFlower.uiManager.UpdateButtonInteractable(true, 0);
                 }
                 else
                 {
-                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
-                    //아직 따뜻하지 않아요...
-                    //연인의 말한마디 듣기
                     if (targetFlower.voiceClip == null) 
                     {
-                        targetFlower.uiManager.UpdateButtonText(voiceNullText);
-                        targetFlower.uiManager.UpdateButtonInteractable(false);
+                        //voiceNullText
+                        //아직 따뜻하지 않아요...
+                        targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
                     }
                     else
                     {
-                        targetFlower.uiManager.UpdateButtonText(resultText);
-                        targetFlower.uiManager.UpdateButtonInteractable(true);
+                        //resultText
+                        //연인의 말한마디 듣기
+                        targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
                     }
                 }
             }

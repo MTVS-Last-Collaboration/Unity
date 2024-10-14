@@ -6,10 +6,9 @@ using UnityEngine.UI;
 
 public class FlowerUIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] uiPanel;
+    [SerializeField] private GameObject uiPanel;
     [SerializeField] private TMP_Text nameText;
-    [SerializeField] private TMP_Text buttonText;
-    [SerializeField] private Button btn;
+    [SerializeField] private GameObject[] buttons;
     [SerializeField] private Image flowerImg;
 
     public void ShowFlowerInfo(Flower flower, int idx)
@@ -19,12 +18,18 @@ public class FlowerUIManager : MonoBehaviour
             return;
         }
         //UpdateUI(flower);
-        uiPanel[idx].SetActive(true);
+        uiPanel.SetActive(true);
+        buttons[idx].SetActive(true);
     }
 
-    public void HideFlowerInfo(int idx)
+    public void HideFlowerInfo()
     {
-        uiPanel[idx].SetActive(false);
+        uiPanel.SetActive(false);
+        //UpdateButtonInteractable(true, idx);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].SetActive(false);
+        }
     }
 
     public void UpdateUI(Flower flower)
@@ -33,17 +38,13 @@ public class FlowerUIManager : MonoBehaviour
         // 추가적인 UI 업데이트 로직
     }
 
-    public void UpdateButtonText(string text)
+    public void UpdateButtonInteractable(bool isInteractable, int idx)
     {
-        buttonText.text = text;
-    }
-    public void UpdateButtonInteractable(bool isInteractable)
-    {
-        btn.interactable = isInteractable;
+        buttons[idx].GetComponent<Button>().interactable = isInteractable;
     }
 
-    public void OnCloseButtonClick(int idx)
+    public void OnCloseButtonClick()
     {
-        HideFlowerInfo(idx);
+        HideFlowerInfo();
     }
 }

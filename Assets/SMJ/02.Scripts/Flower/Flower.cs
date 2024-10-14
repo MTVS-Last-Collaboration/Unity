@@ -7,7 +7,7 @@ public class Flower : MonoBehaviour
     public string managerId;
     public string nickName;
     public AudioClip voiceClip;
-    public bool isFirst = false;
+    //public bool isFirst = false;
     public FlowerUIManager uiManager;
 
     private void Awake()
