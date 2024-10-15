@@ -9,10 +9,6 @@ public class ClickFlower : MonoBehaviour
     private bool isPlayerInRange = false;
     private CheckID checkID;
 
-    [SerializeField] private string talkText;
-    [SerializeField] private string resultText;
-    [SerializeField] private string voiceNullText;
-
     private void Start()
     {
         targetFlower = GetComponent<Flower>();

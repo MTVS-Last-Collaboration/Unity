@@ -10,15 +10,17 @@ public class Flower : MonoBehaviour
     //public bool isFirst = false;
     public FlowerUIManager uiManager;
 
+    public States curState;
+
     private void Awake()
     {
         uiManager = GetComponent<FlowerUIManager>();
     }
 
-    public enum Evolution
+    public enum States
     {
-        SEED,
-        GRASS,
-        FLOWER
+        SPROUT,
+        BUD,
+        BLOSSOM
     }
 }
