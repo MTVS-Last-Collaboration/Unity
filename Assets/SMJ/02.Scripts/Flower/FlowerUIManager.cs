@@ -132,4 +132,12 @@ public class FlowerUIManager : MonoBehaviour
         }
         OnTalkButtonClick();
     }
+
+    public void OnListenVoiceButtonClick()
+    {
+        buttons[4].SetActive(true);
+        //소리 재생 후 false
+        buttons[4].SetActive(false);
+        //추후 자정 지났을때 초기화 기능 추가
+    }
 }
