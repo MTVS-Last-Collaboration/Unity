@@ -21,17 +21,21 @@ public class CameraControllTest : MonoBehaviour
 
     void Start()
     {
-        
+        //메인카메라 캐싱
+        mainCam_Object = GameObject.Find("MainCamera");
     }
 
     void Update()
     {
-
-        Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
-        float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
-        float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
-        mainCam_Object.transform.position = new Vector3(mainCamPosX, mainCamY, mainCamPosZ); //플레이어의 움직임 따라가기
-        mainCam_Object.transform.forward = playerDir; //카메라가 플레이어 방향을 계속 보게함
+        if(transform != null)
+        {
+            Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
+            float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
+            float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
+            mainCam_Object.transform.position = new Vector3(mainCamPosX, mainCamY, mainCamPosZ); //플레이어의 움직임 따라가기
+            mainCam_Object.transform.forward = playerDir; //카메라가 플레이어 방향을 계속 보게함
+        }
+       
 
         if (Input.GetMouseButton(1))//우클릭하는동안
         {
@@ -78,7 +82,7 @@ public class CameraControllTest : MonoBehaviour
 
     public void LeftRotationMainCamera()
     {
-        //print("왼쪽으로 카메라회전");      
+        print("왼쪽으로 카메라회전");      
         // 매 프레임마다 각도를 증가시킴
         angle += speed * Time.deltaTime;
         // x, z 좌표에서 원운동 경로를 계산
@@ -92,7 +96,7 @@ public class CameraControllTest : MonoBehaviour
 
     public void RightRotationMainCamera()
     {
-       // print("오른쪽으로 카메라회전");
+        print("오른쪽으로 카메라회전");
         // 매 프레임마다 각도를 증가시킴
         angle += speed * Time.deltaTime;
         // x, z 좌표에서 원운동 경로를 계산
