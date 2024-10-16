@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 //TMP_InputField 사용에 필요 
 using TMPro;
-using TMPro.EditorUtilities;
+
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -15,6 +15,7 @@ using UnityEngine.SceneManagement;
 public class LoginTest : MonoBehaviour
 {
     public static LoginTest instance;
+    public ConnectionManager connectionManager;
 
     private void Awake()
     {
@@ -235,10 +236,11 @@ public class LoginTest : MonoBehaviour
 
     }//TestLocalLoginJson end
 
-    void Login()
+    public void Login()
     {
         print("로그인완료");
-        SceneManager.LoadScene("");
+        //SceneManager.LoadScene("");
+        connectionManager.StartLobby();
     }
 
 }
