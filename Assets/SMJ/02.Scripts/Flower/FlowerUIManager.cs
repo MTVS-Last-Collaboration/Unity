@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class FlowerUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject uiPanel;
-    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TMP_Text statusText;
     [SerializeField] private GameObject[] buttons;
     [SerializeField] private Image flowerImg;
@@ -17,10 +17,31 @@ public class FlowerUIManager : MonoBehaviour
     [SerializeField] private GameObject recordPanel;
     [SerializeField] private GameObject[] recordButtons;
 
+    [SerializeField] private AudioSource audioSource;
+
+    private VoiceRecorder recorder;
+
+    private int recordCount = 0;
+
     public bool isRecordComplete = false;
 
     Coroutine recordingCor;
 
+    private void Start()
+    {
+        recorder = GetComponent<VoiceRecorder>();
+    }
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Alpha4))
+        {
+            testRecord = true;
+        }
+        else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            testRecord = false;
+        }
+    }
     public void ShowFlowerInfo(Flower flower, int idx)
     {
         if (flower == null)
@@ -47,7 +68,7 @@ public class FlowerUIManager : MonoBehaviour
         {
             buttons[i].SetActive(false);
         }
-        for (int i = 0; i < recordButtons.Length; i++)
+        for (int i = 1; i < recordButtons.Length; i++)
         {
             recordButtons[i].SetActive(false);
         }
@@ -65,18 +86,18 @@ public class FlowerUIManager : MonoBehaviour
     public void UpdateUI(Flower flower)
     {
         // 추가적인 UI 업데이트 로직
-        nameText.text = flower.nickName;
+
         //상태 문구 테이블 받을 때 수정
         switch (flower.curState)
         {
             case Flower.States.SPROUT:
-                statusText.text = "1";
+                statusText.text = "자라나는 중...";
                 break;
             case Flower.States.BUD:
-                statusText.text = "2";
+                statusText.text = "피기 직전.";
                 break;
             case Flower.States.BLOSSOM:
-                statusText.text = "3";
+                statusText.text = "활짝 피었어요!";
                 break;
         }
         //이미지도 받고 수정
@@ -103,16 +124,48 @@ public class FlowerUIManager : MonoBehaviour
         recordButtons[1].SetActive(true);
         recordingCor = StartCoroutine(RecordingVoice(second));
     }
-
+    bool testRecord = false;
     IEnumerator RecordingVoice(float second)
     {
+        recorder.StartRecording();
         yield return new WaitForSeconds(second);
         recordButtons[2].SetActive(true);
-        yield return new WaitForSeconds(2f);
+    }
+
+    public void SubmitRecord()
+    {
         //추후에 성공 실패 여부 get 후에 변경
-        recordButtons[4].SetActive(true);
-        isRecordComplete = true;
-        yield return new WaitForSeconds(2f);
+        //4 : 성공 //3 : 실패
+        if (testRecord == true)
+        {
+            recordButtons[2].SetActive(false);
+            recordButtons[4].SetActive(true);
+            isRecordComplete = true;
+            //recorder.SaveRecording();
+        }
+        else
+        {
+            recordCount++;
+            if (recordCount < 3)
+            {
+                recordButtons[2].SetActive(false);
+                recordButtons[3].SetActive(true);
+                //다시말하기 해야됨
+                isRecordComplete = false;
+            }
+            else
+            {
+                //찐 실패
+                recordButtons[2].SetActive(false);
+                recordButtons[5].SetActive(true);
+
+                isRecordComplete = true;
+            }
+        }
+    }
+
+    public void OnRecordCompleteToday()
+    {
         recordPanel.SetActive(false);
         exitButton.SetActive(true);
         buttons[3].SetActive(true);
@@ -122,22 +175,48 @@ public class FlowerUIManager : MonoBehaviour
         }
     }
 
-    public void OnStopRecordingButtonClick()
+    public void OnReRecordingClick()
     {
-        StopCoroutine(recordingCor);
-        exitButton.SetActive(true);
         for (int i = 1; i < recordButtons.Length; i++)
         {
             recordButtons[i].SetActive(false);
         }
-        OnTalkButtonClick();
+    }
+
+    public void OnStopRecordingButtonClick()
+    {
+        StopCoroutine(recordingCor);
+        recorder.StopRecording();
+        exitButton.SetActive(true);
+        //for (int i = 1; i < recordButtons.Length; i++)
+        //{
+        //    recordButtons[i].SetActive(false);
+        //}
+        recordButtons[2].SetActive(true);
+        //OnTalkButtonClick();
     }
 
     public void OnListenVoiceButtonClick()
     {
         buttons[4].SetActive(true);
+        recorder.PlayRecording();
+        StartCoroutine(CheckAudioCompletion());
+    }
+
+    private IEnumerator CheckAudioCompletion()
+    {
+        while (audioSource.isPlaying)
+        {
+            yield return null;
+        }
         //소리 재생 후 false
         buttons[4].SetActive(false);
         //추후 자정 지났을때 초기화 기능 추가
+    }
+
+    public void UpdateName(Flower flower)
+    {
+        flower.nickName = nameInput.text;
+        //추후 네트워크 포스트
     }
 }
