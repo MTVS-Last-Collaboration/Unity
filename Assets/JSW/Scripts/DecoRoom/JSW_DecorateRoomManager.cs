@@ -1,30 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class JSW_DecorateRoomManager : MonoBehaviour
 {
     public bool [,] roomPosition = new bool [10, 10];
+    public List<JSW_DecoObject> FunitureList = new List<JSW_DecoObject>();
 
     public enum funiture
     {
-        Chair,
+        TV,
         Table,
         Bed
     }
 
 
+    public void AddNewFuniture(int posX, int posZ, int lenX,int lenZ, int rot)
+    {
+        // 12시방향
+        if (rot == 0) { 
+            for (int i = posX;i < posX + lenX;i++)
+            {
+                for (int j = posZ;j < posZ+lenZ;j++)
+                {
+                    roomPosition[j,i] = false;
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1) {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2) {
+            for (int i = posX; i< posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 9시방향
+        if (rot ==3)
+        {
+            
+        }
+
+        if (rot == 3) { }
+    }
     
-
-
-
-
-
-
-
-
-
-
 
     // 여기서 필요한 것
     // 플레이어 위치 받기
