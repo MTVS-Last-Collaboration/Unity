@@ -36,13 +36,18 @@ public class CameraRotation : MonoBehaviour
         if(player == null)
         {
             player = GameObject.Find("PlayerMale(Clone)");
+
+            if(player == null)
+            {
+                player = GameObject.Find("PlayerWoman(Clone)");
+            }
             //print("player오브젝트 이름");
-            print("player오브젝트 이름" + player.name);
+            //print("player오브젝트 이름" + player.name);
         }
         if(mainCamPos_Object == null)
         {
             mainCamPos_Object = GameObject.Find("MainCamPos");
-            print("mainCamPos_Object 찾는중 ");
+            //print("mainCamPos_Object 찾는중 ");
 
         }
 
