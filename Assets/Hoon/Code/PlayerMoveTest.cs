@@ -124,7 +124,7 @@ public class PlayerMoveTest : MonoBehaviour
         {
 
             //print("회전값x" + x);
-            print("회전값z" + z);
+            //print("회전값z" + z);
             //상하좌우 방향으로 모델을 회전
             if (x == 0 && z == 0) //위
             {
@@ -146,11 +146,6 @@ public class PlayerMoveTest : MonoBehaviour
             {
                 model.transform.localEulerAngles = new Vector3(0, 180, 0); //print("회전값x" + x);
             }
-
-
-
-
-
             else if (x > 0 && z > 0) // 오른쪽위
             {
                 model.transform.localEulerAngles = new Vector3(0, 45, 0);
