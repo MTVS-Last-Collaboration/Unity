@@ -46,21 +46,41 @@ public class VoiceRecorder : MonoBehaviour
             isRecording = true;
             Debug.Log("Recording started.");
             // UI 업데이트 로직 (예: 녹음 중 표시)
+
+            if (recordingCoroutine != null)
+            {
+                StopCoroutine(recordingCoroutine);
+            }
+            recordingCoroutine = StartCoroutine(StopRecordingAfterMaxDuration());
         }
         else
         {
             Debug.Log("Already recording.");
         }
     }
+    private IEnumerator StopRecordingAfterMaxDuration()
+    {
+        yield return new WaitForSeconds(10);
+        if (isRecording)
+        {
+            StopRecording();
+        }
+    }
+    private Coroutine recordingCoroutine;
 
     public void StopRecording()
     {
+        if (recordingCoroutine != null)
+        {
+            StopCoroutine(recordingCoroutine);
+            recordingCoroutine = null;
+        }
         if (isRecording)
         {
-            Microphone.End(microphoneName);
-
             // 실제 녹음된 길이 계산
             int lastSample = Microphone.GetPosition(microphoneName);
+            print(lastSample);
+            Microphone.End(microphoneName);
 
             if (lastSample <= 0)
             {
@@ -70,19 +90,17 @@ public class VoiceRecorder : MonoBehaviour
 
             if (lastSample > 0)
             {
-                float[] samples = new float[recordedClip.samples];
-                recordedClip.GetData(samples, 0);
-
-                // 새 AudioClip 생성 (실제 녹음 길이만큼)
+                // 실제 녹음된 길이만큼의 새 AudioClip 생성
                 AudioClip newClip = AudioClip.Create("Recorded", lastSample, recordedClip.channels, recordingFrequency, false);
-                float[] newSamples = new float[lastSample];
-                System.Array.Copy(samples, newSamples, lastSample);
-                newClip.SetData(newSamples, 0);
+                float[] samples = new float[lastSample];
+                recordedClip.GetData(samples, 0);
+                newClip.SetData(samples, 0);
 
-                flower.voiceClip = newClip;
-
+                // 새로 만든 클립으로 교체
+                Destroy(recordedClip);
                 recordedClip = newClip;
                 audioSource.clip = recordedClip;
+                flower.voiceClip = recordedClip;
 
                 Debug.Log($"Recording stopped. Duration: {recordedClip.length} seconds");
 
@@ -107,7 +125,8 @@ public class VoiceRecorder : MonoBehaviour
         if (recordedClip != null)
         {
             string fileName = $"Recording_{System.DateTime.Now:yyyyMMdd_HHmmss}.wav";
-            string filePath = Path.Combine(Application.dataPath + "/StreamingAssets/VoiceClips", fileName);
+            string directoryPath = Path.Combine(Application.streamingAssetsPath, "VoiceClips", gameObject.name);
+            string filePath = Path.Combine(directoryPath, fileName);
 
             SavWav.Save(filePath, recordedClip);
             Debug.Log($"Recording saved to: {filePath}");
@@ -116,14 +135,17 @@ public class VoiceRecorder : MonoBehaviour
 
     public void PlayRecording()
     {
-        if (recordedClip != null)
+        if (audioSource != null && audioSource.clip != null)
         {
-            audioSource.clip = recordedClip;
             audioSource.Play();
         }
         else
         {
-            Debug.Log("No recorded sound to play.");
+            Debug.Log("No recorded sound to play. AudioSource or clip is null.");
+            if (audioSource == null)
+                Debug.Log("AudioSource is null");
+            else if (audioSource.clip == null)
+                Debug.Log("AudioSource.clip is null");
         }
     }
 }

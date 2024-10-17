@@ -6,9 +6,13 @@ using UnityEngine.UI;
 
 public class FlowerUIManager : MonoBehaviour
 {
+    public MidnightChecker dateChanger;
+
     [SerializeField] private GameObject uiPanel;
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TMP_Text statusText;
+    [SerializeField] private TMP_Text completeText;
+    [SerializeField] private TMP_Text listenCompleteText;
     [SerializeField] private GameObject[] buttons;
     [SerializeField] private Image flowerImg;
 
@@ -24,24 +28,55 @@ public class FlowerUIManager : MonoBehaviour
     private int recordCount = 0;
 
     public bool isRecordComplete = false;
+    public bool isListenComplete = false;
 
+    private string restTime = string.Empty;
     Coroutine recordingCor;
 
     private void Start()
     {
         recorder = GetComponent<VoiceRecorder>();
     }
+
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha4))
+        restTime = $"{dateChanger.timeUntilAvailable.Hours} : {dateChanger.timeUntilAvailable.Minutes}";
+        if (dateChanger.UseFeature() == false && isRecordComplete == true)
         {
-            testRecord = true;
+            completeText.text = "연인에게 따뜻한 한마디 말하기(완료)\n" + restTime;
         }
-        else if (Input.GetKey(KeyCode.Alpha3))
+        else if (dateChanger.UseFeature() == true && isRecordComplete == false)
         {
-            testRecord = false;
+            completeText.text = "연인에게 따뜻한 한마디 말하기";
+        }
+
+        if (dateChanger.UseFeature() == false && isListenComplete == true)
+        {
+            listenCompleteText.text = "연인의 말한마디 듣기\n" + restTime;
+            buttons[2].GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            buttons[2].GetComponent<Button>().interactable = true;
+            listenCompleteText.text = "연인의 말한마디 듣기";
+            isListenComplete = false;
         }
     }
+
+    public void OnClickTest()
+    {
+        if (testRecord == true)
+        {
+            testRecord = false;
+            print("실패!");
+        }
+        else
+        {
+            testRecord= true;
+            print("성공!");
+        }
+    }
+
     public void ShowFlowerInfo(Flower flower, int idx)
     {
         if (flower == null)
@@ -50,7 +85,8 @@ public class FlowerUIManager : MonoBehaviour
         }
         UpdateUI(flower);
         uiPanel.SetActive(true);
-        if (isRecordComplete == false)
+        
+        if (isRecordComplete == false || isListenComplete == true)
         {
             buttons[idx].SetActive(true);
         }
@@ -200,6 +236,7 @@ public class FlowerUIManager : MonoBehaviour
     {
         buttons[4].SetActive(true);
         recorder.PlayRecording();
+        isListenComplete = true;
         StartCoroutine(CheckAudioCompletion());
     }
 

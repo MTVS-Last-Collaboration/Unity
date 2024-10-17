@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ClickFlower : MonoBehaviour
 {
@@ -14,7 +15,35 @@ public class ClickFlower : MonoBehaviour
         targetFlower = GetComponent<Flower>();
     }
 
-    private void OnMouseDown()
+    private void Update()
+    {
+        // 터치 입력 처리
+        if (Input.touchCount > 0)
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                CheckInteraction(Input.GetTouch(0).position);
+            }
+        }
+        // 마우스 클릭 처리 (에디터 및 데스크톱용)
+        else if (Input.GetMouseButtonDown(0))
+        {
+            CheckInteraction(Input.mousePosition);
+        }
+    }
+
+    private void CheckInteraction(Vector2 position)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(position);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
+        {
+            HandleInteraction();
+        }
+    }
+
+    private void HandleInteraction()
     {
         //추후 클릭 성공 시 플레이어 움직임 막기
         if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null)
@@ -62,12 +91,6 @@ public class ClickFlower : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            //if (targetFlower != null && targetFlower.uiManager != null)
-            //{
-            //    targetFlower.uiManager.HideFlowerInfo();
-            //    checkID = null;
-            //}
-            //추후 끄는 버튼 생성
         }
     }
 }
