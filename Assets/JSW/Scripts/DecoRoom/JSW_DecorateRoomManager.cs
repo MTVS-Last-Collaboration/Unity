@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class JSW_DecorateRoomManager : MonoBehaviour
 {
-    public bool [,] roomPosition = new bool [10, 10];
+    public bool [,] roomPosition = new bool [20, 20];
     public List<JSW_DecoObject> FunitureList = new List<JSW_DecoObject>();
 
     public enum funiture
@@ -19,12 +19,13 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     public void AddNewFuniture(int posX, int posZ, int lenX,int lenZ, int rot)
     {
         // 12시방향
-        if (rot == 0) { 
+        if (rot == 0) {
             for (int i = posX;i < posX + lenX;i++)
             {
                 for (int j = posZ;j < posZ+lenZ;j++)
                 {
-                    roomPosition[j,i] = false;
+                   
+                    roomPosition[j,i] = true;
                 }
             }
         }
@@ -34,7 +35,9 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    roomPosition[j, i] = false;
+
+
+                    roomPosition[j, i] = true;
                 }
             }
         }
@@ -44,24 +47,103 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    roomPosition[j, i] = false;
+                    roomPosition[j, i] = true;
                 }
             }
         }
         // 9시방향
         if (rot ==3)
         {
-            
-        }
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
 
-        if (rot == 3) { }
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        printRoomSpace();
+    }
+
+    public bool IsCanAddNewFuniture(int posX, int posZ, int lenX, int lenZ, int rot)
+    {
+        // 12시방향
+        if (rot == 0)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
+                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1)
+        {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        // 9시방향
+        if (rot == 3)
+        {
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+
+                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    void printRoomSpace()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 20;j++)
+            {
+                if (roomPosition[i,j])
+                print(i + " " + j);
+            }
+        }
     }
     
 
     // 여기서 필요한 것
     // 플레이어 위치 받기
     // 가구들 배치 받기
-
 
     // 플레이어가 필요한것
     // 물건 잡을 때 상호작용키 f
