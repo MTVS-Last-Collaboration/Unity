@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 //TMP_InputField 사용에 필요 
 using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 using System;

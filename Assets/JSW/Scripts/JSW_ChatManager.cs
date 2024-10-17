@@ -18,8 +18,7 @@ public class JSW_ChatManager : MonoBehaviour
     // ChatItem의 부모 Transform
     public RectTransform trContent;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         inputChat = GameObject.Find("AIChatInput").GetComponent<TMP_InputField>();
         trContent = GameObject.Find("AIChatContent").GetComponent<RectTransform>();
@@ -28,12 +27,18 @@ public class JSW_ChatManager : MonoBehaviour
         inputChat.onSubmit.AddListener(OnSubmit);
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
+
     public Color color;
     public string nickName;
 
     void OnSubmit(string s)
     {
-
+        inputChat.text = "";
+        inputChat.ActivateInputField();
         // 닉네임의 색을 변경 color로
         // <color=#ffffff> 닉네임 </color>
         string nick = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">" + nickName + "</color>";

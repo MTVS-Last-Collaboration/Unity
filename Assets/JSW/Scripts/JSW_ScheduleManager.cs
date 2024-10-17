@@ -12,11 +12,16 @@ public class JSW_ScheduleManager : MonoBehaviour
     public RectTransform trcontent;
     public GameObject scheduleFactory;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         input_Field = GameObject.Find("Schedule_Input").GetComponent<TMP_InputField>();
         trcontent = GameObject.Find("ScheduleContentBody").GetComponent<RectTransform>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
     }
 
 
