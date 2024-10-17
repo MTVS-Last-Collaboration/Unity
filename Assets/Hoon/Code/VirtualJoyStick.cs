@@ -80,7 +80,10 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     // Start is called before the first frame update
     void Start()
     {
-       
+       if(playerMoveControl == null)
+        {
+            StartCoroutine("PlayerMoveControll");
+        }
     }
 
     // Update is called once per frame
@@ -90,5 +93,11 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             IntputControllVector();
         }
+    }
+
+    IEnumerator PlayerMoveControll()
+    {
+        yield return new WaitForSeconds(0.5f);
+        playerMoveControl = GameObject.Find("PlayerWoman(Clone)").GetComponent<PlayerMoveTest>();
     }
 }
