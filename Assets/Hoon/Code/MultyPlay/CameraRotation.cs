@@ -36,22 +36,26 @@ public class CameraRotation : MonoBehaviour
         if(player == null)
         {
             player = GameObject.Find("PlayerMale(Clone)");
+
+            if(player == null)
+            {
+                player = GameObject.Find("PlayerWoman(Clone)");
+            }
             //print("player오브젝트 이름");
-            print("player오브젝트 이름" + player.name);
+            //print("player오브젝트 이름" + player.name);
         }
         if(mainCamPos_Object == null)
         {
             mainCamPos_Object = GameObject.Find("MainCamPos");
-            print("mainCamPos_Object 찾는중 ");
+            //print("mainCamPos_Object 찾는중 ");
 
         }
-
         else
         {
-            playerPos = player.transform.position; //print("플레이어 현재위치" + playerPos);
-            playerPosX = player.transform.position.x; //플레이어의 위치값 X
-            playerPosZ = player.transform.position.z; //플에이어의 위치값 Y
-            mainCamObjectPos = mainCamPos_Object.transform.position; //카메라 위치
+            //playerPos = player.transform.position; //print("플레이어 현재위치" + playerPos);
+            //playerPosX = player.transform.position.x; //플레이어의 위치값 X
+            //playerPosZ = player.transform.position.z; //플에이어의 위치값 Y
+            //mainCamObjectPos = mainCamPos_Object.transform.position; //카메라 위치
         }
        
         if (isLeftRotaion)
