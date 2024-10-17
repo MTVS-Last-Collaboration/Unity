@@ -16,6 +16,8 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     }
 
 
+    // 새로운 배치
+    // 이거 네모난 직사각형만 가능함
     public void AddNewFuniture(int posX, int posZ, int lenX,int lenZ, int rot)
     {
         // 12시방향
@@ -66,6 +68,8 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         printRoomSpace();
     }
 
+
+    // 이거 네모난 직사각형만 가능함
     public bool IsCanAddNewFuniture(int posX, int posZ, int lenX, int lenZ, int rot)
     {
         // 12시방향
@@ -75,7 +79,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -89,7 +93,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -103,7 +107,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -118,7 +122,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
 
-                    if (roomPosition[j, i] == true || j >= 20 || j < 0 || i >= 20 || i < 0)
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -128,18 +132,149 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         return true;
     }
 
+
+    // 밀기
+    public bool isPushFuniture(int posX, int posZ, int lenX, int lenZ, int pushDir)
+    {
+        // 12시방향
+        if (pushDir == 0)
+        {
+            posZ += 1;
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        // 3시방향
+        if (pushDir == 1)
+        {
+            posX += 1;
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        // 6시방향
+        if (pushDir == 2)
+        {
+            posZ -= 1;
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        // 9시방향
+        if (pushDir == 3)
+        {
+            posX -= 1;
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public void PushFuniture(int posX, int posZ, int lenX, int lenZ, int rot)
+    {
+        for (int i = posX; i < posX + lenX; i++)
+        {
+            for (int j = posZ; j < posZ + lenZ; j++)
+            {
+                roomPosition[j, i] = false;
+            }
+        }
+        // 12시방향
+        if (rot == 0)
+        {
+            posZ += 1;
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
+
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1)
+        {
+            posX += 1;
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+
+
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2)
+        {
+            posZ -= 1;
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        // 9시방향
+        if (rot == 3)
+        {
+            posX -= 1;
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        printRoomSpace();
+    }
+
     void printRoomSpace()
     {
         for (int i = 0; i < 20; i++)
         {
-            for (int j = 0; j < 20;j++)
+            for (int j = 0; j < 20; j++)
             {
-                if (roomPosition[i,j])
-                print(i + " " + j);
+                if (roomPosition[i, j]) print(i + " " + j);
             }
         }
     }
-    
+
 
     // 여기서 필요한 것
     // 플레이어 위치 받기
@@ -154,6 +289,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     // 당길 때도 플레이어 위치 받아오기
     // 물건 꺼내기 꺼낼 때 주변 놓을 수 있을지 확인하기
 
-    
+
 
 }
