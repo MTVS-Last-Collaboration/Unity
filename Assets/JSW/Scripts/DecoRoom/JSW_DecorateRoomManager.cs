@@ -1,0 +1,77 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class JSW_DecorateRoomManager : MonoBehaviour
+{
+    public bool [,] roomPosition = new bool [10, 10];
+    public List<JSW_DecoObject> FunitureList = new List<JSW_DecoObject>();
+
+    public enum funiture
+    {
+        TV,
+        Table,
+        Bed
+    }
+
+
+    public void AddNewFuniture(int posX, int posZ, int lenX,int lenZ, int rot)
+    {
+        // 12시방향
+        if (rot == 0) { 
+            for (int i = posX;i < posX + lenX;i++)
+            {
+                for (int j = posZ;j < posZ+lenZ;j++)
+                {
+                    roomPosition[j,i] = false;
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1) {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2) {
+            for (int i = posX; i< posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 9시방향
+        if (rot ==3)
+        {
+            
+        }
+
+        if (rot == 3) { }
+    }
+    
+
+    // 여기서 필요한 것
+    // 플레이어 위치 받기
+    // 가구들 배치 받기
+
+
+    // 플레이어가 필요한것
+    // 물건 잡을 때 상호작용키 f
+    // 물건 밀거나 당길 때 움직일 수 있는 장소인지를 매니저 배열에서 조사
+    // 밀때 같이 이동하기
+    // 잡을 때 1,1 정수 위치로 이동하기
+    // 밀려고 할 때 다른 플레이어 위치 받아오기
+    // 당길 때도 플레이어 위치 받아오기
+    // 물건 꺼내기 꺼낼 때 주변 놓을 수 있을지 확인하기
+
+    
+
+}
