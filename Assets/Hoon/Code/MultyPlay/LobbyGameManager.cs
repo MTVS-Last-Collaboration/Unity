@@ -7,6 +7,8 @@ using UnityEngine;
 //동기화 용도 클래스를 부모로 MonoBehaviourPun
 public class LobbyGameManager : MonoBehaviourPun
 {
+    GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +42,11 @@ public class LobbyGameManager : MonoBehaviourPun
         Vector2 radomPos = Random.insideUnitCircle * 5.0f;
         Vector3 initPosition = new Vector3(radomPos.x, 0.0f, radomPos.y);
         //플레이어 생성하자, 이름,위치.회전 , 프리팹 경로는 Resources 
-        PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
+        //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
+        player = PhotonNetwork.Instantiate("PlayerWoman", initPosition, Quaternion.identity);
+
+        // player 오브젝트 캐싱 완료
+        Debug.Log("Player instantiated and cached: " + player.gameObject);
 
         // 생성후 소유권을 Owner인 플레이어게만 권한을주자. Owner가 접속을 종료하면 같이 사라짐.
     }
