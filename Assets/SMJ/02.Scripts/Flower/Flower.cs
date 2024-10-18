@@ -9,6 +9,7 @@ public class Flower : MonoBehaviour
     public AudioClip voiceClip;
     //public bool isFirst = false;
     public FlowerUIManager uiManager;
+    public int evolutionCount = 0;
 
     public States curState;
 
