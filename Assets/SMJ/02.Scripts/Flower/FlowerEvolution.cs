@@ -31,11 +31,21 @@ public class FlowerEvolution : MonoBehaviour
 
     IEnumerator Evolution(Flower.States state)
     {
+        for (int i = 0; i < flowers.Length; i++)
+        {
+            if (flowers[i].activeSelf)
+            {
+                flowers[i].SetActive(false);
+                break;
+            }
+        }
         yield return new WaitForSeconds(1f);
         //추후 연출 추가
         //꽃 모델 교체
         switch (state)
         {
+            case Flower.States.SPROUT:
+                break;
             case Flower.States.BUD:
                 //여기서 바꾸기
                 break;
