@@ -24,6 +24,8 @@ public class FlowerUIManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     private VoiceRecorder recorder;
+    private FlowerEvolution flowerEvol;
+    private Flower flower;
 
     private int recordCount = 0;
 
@@ -35,7 +37,9 @@ public class FlowerUIManager : MonoBehaviour
 
     private void Start()
     {
+        flower = GetComponent<Flower>();
         recorder = GetComponent<VoiceRecorder>();
+        flowerEvol = GetComponent<FlowerEvolution>();
     }
 
     private void Update()
@@ -127,13 +131,13 @@ public class FlowerUIManager : MonoBehaviour
         switch (flower.curState)
         {
             case Flower.States.SPROUT:
-                statusText.text = "자라나는 중...";
+                statusText.text = "상태: 자라나는 중...";
                 break;
             case Flower.States.BUD:
-                statusText.text = "피기 직전.";
+                statusText.text = "상태: 피기 직전.";
                 break;
             case Flower.States.BLOSSOM:
-                statusText.text = "활짝 피었어요!";
+                statusText.text = "상태: 활짝 피었어요!";
                 break;
         }
         //이미지도 받고 수정
@@ -177,6 +181,9 @@ public class FlowerUIManager : MonoBehaviour
             recordButtons[2].SetActive(false);
             recordButtons[4].SetActive(true);
             isRecordComplete = true;
+            flower.evolutionCount++;
+            flowerEvol.CheckEvolutionCount();
+            UpdateUI(flower);
             //recorder.SaveRecording();
         }
         else
@@ -194,7 +201,7 @@ public class FlowerUIManager : MonoBehaviour
                 //찐 실패
                 recordButtons[2].SetActive(false);
                 recordButtons[5].SetActive(true);
-
+                recordCount = 0;
                 isRecordComplete = true;
             }
         }
