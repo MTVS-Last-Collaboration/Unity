@@ -5207,6 +5207,7 @@ GameObject:
   - component: {fileID: 945638578}
   - component: {fileID: 945638577}
   - component: {fileID: 945638581}
+  - component: {fileID: 945638587}
   - component: {fileID: 945638582}
   - component: {fileID: 945638583}
   - component: {fileID: 945638585}
@@ -5322,6 +5323,7 @@ MonoBehaviour:
   nickName: "\uAF431"
   voiceClip: {fileID: 0}
   uiManager: {fileID: 945638583}
+  evolutionCount: 0
   curState: 0
 --- !u!114 &945638582
 MonoBehaviour:
@@ -5494,6 +5496,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 945638584}
   latestAudioClip: {fileID: 0}
+--- !u!114 &945638587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945638576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a454d6f6c757a143a3811219b7bf086, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flowers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  budEvolCount: 10
+  blossomEvolCount: 20
 --- !u!1 &949761668
 GameObject:
   m_ObjectHideFlags: 0
@@ -8314,6 +8334,7 @@ GameObject:
   - component: {fileID: 1274131096}
   - component: {fileID: 1274131095}
   - component: {fileID: 1274131099}
+  - component: {fileID: 1274131105}
   - component: {fileID: 1274131100}
   - component: {fileID: 1274131101}
   - component: {fileID: 1274131103}
@@ -8429,6 +8450,7 @@ MonoBehaviour:
   nickName: "\uAF432"
   voiceClip: {fileID: 8300000, guid: 865d412ea035b4abfb0afa569acaf2af, type: 3}
   uiManager: {fileID: 1274131101}
+  evolutionCount: 0
   curState: 0
 --- !u!114 &1274131100
 MonoBehaviour:
@@ -8601,6 +8623,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1274131102}
   latestAudioClip: {fileID: 0}
+--- !u!114 &1274131105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274131094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a454d6f6c757a143a3811219b7bf086, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flowers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  budEvolCount: 10
+  blossomEvolCount: 20
 --- !u!1 &1283033162
 GameObject:
   m_ObjectHideFlags: 0
