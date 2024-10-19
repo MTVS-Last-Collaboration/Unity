@@ -1,4 +1,6 @@
 using ExitGames.Client.Photon;
+// PhotonView를 사용하기 위해 추가
+using Photon.Pun;
 using Photon.Pun.Demo.SlotRacer;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,8 +8,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems; //키보드, 마우스 , 터치를 이벤트로 오브젝트에 보낼 수 있는 기능 지원
 
-public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPunObservable
 {
+    public static VirtualJoyStick instance;
+
     [SerializeField] //private 라도 에디터의 인스펙터 뷰에서 레버를 넣어줄수 있게 직열화
     private RectTransform lever;
     private RectTransform rectTransform;
@@ -22,9 +26,14 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     [SerializeField]
     private PlayerMoveTest playerMoveControl;
 
+    public PhotonView playerPhotonView;
+
+    
+
 
     private void Awake()
     {
+        instance = this;
         //조이스틱 몸체를 캐싱
         rectTransform = GetComponent<RectTransform>();
 
@@ -36,6 +45,7 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         ControllJoyStickLever(eventData);
         //Debug.Log("Begin");
         isInput = true;
+    
     }
     //마우스 드래그되면 호출되는 함수
     //오브젝트를 클릭해서 드래그 하는 도중에 들어오는 이벤트
@@ -45,6 +55,7 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         ControllJoyStickLever(eventData);
         //Debug.Log("Drag");
+    
     }
     //마우스 입력이 끝나면 호출되는 함수
     public void OnEndDrag(PointerEventData eventData)
@@ -53,9 +64,12 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         //Debug.Log("End");
         isInput = false;
         //컨트롤러 입력값 삭제하기
-        playerMoveControl.PlayerMoveJoyStick(Vector3.zero);
+        if(playerMoveControl != null)
+        {
+            playerMoveControl.PlayerMoveJoyStick(Vector3.zero);
+        }
+       
     }
-
     //중복되는 인풋 코드를 함수화하기.
     private void ControllJoyStickLever(PointerEventData eventData)
     {
@@ -67,37 +81,116 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         //캐릭터 정규화된 이동 벡터에 이동속도, 시간을 곱해서 이동하게 하자.
         inputDirection = inputVector / leverRange; 
     }
-
+    
     private void IntputControllVector()
     {
         //캐릭터에게 입력 백터를 전달
         //Debug.Log(inputDirection.x + "/" + inputDirection.y);
         //무브쪽으로 보내자.
-        playerMoveControl.PlayerMoveJoyStick(inputDirection);
+        if(playerMoveControl != null)
+        {
+            playerMoveControl.PlayerMoveJoyStick(inputDirection);
+        }
+
+       
     }
-
-
     // Start is called before the first frame update
     void Start()
     {
-       if(playerMoveControl == null)
+
+        if (playerMoveControl == null)
         {
-            StartCoroutine("PlayerMoveControll");
+            print("플레이어 무브 없음");
+            StartCoroutine(PlayerMoveControll());
         }
+       
+        if(playerPhotonView == null)
+        {
+            print("플레이어 포톤뷰 없음");
+            StartCoroutine(PlayerPhotionView());
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isInput)
+        
+        if(playerPhotonView != null && playerPhotonView.IsMine && isInput)
         {
+            //print("플레이어 움직이게 하자.");
             IntputControllVector();
+            
         }
+       
+        
     }
 
     IEnumerator PlayerMoveControll()
     {
-        yield return new WaitForSeconds(0.5f);
-        playerMoveControl = GameObject.Find("PlayerWoman(Clone)").GetComponent<PlayerMoveTest>();
+        yield return new WaitForSeconds(1.0f);
+
+        // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject obj in allObjects)
+        {
+            // PhotonView 컴포넌트가 있는지 확인
+            PhotonView photonView = obj.GetComponent<PhotonView>();
+
+            // PhotonView가 있고, isMine이 true인 경우
+            if (photonView != null && photonView.IsMine)
+            {
+                // PlayerMove 컴포넌트를 가져옴
+                playerMoveControl = obj.GetComponent<PlayerMoveTest>();
+                //print("내 playerMoveControl 찾았다" + obj.name);
+                break;
+            }
+           
+        }
+
+        //playerMoveControl = GameObject.Find("PlayerWoman(Clone)").GetComponent<PlayerMoveTest>();
+        //playerMoveControl = LobbyGameManager.instance.player.gameObject.GetComponent<PlayerMoveTest>();
     }
-}
+
+    IEnumerator PlayerPhotionView()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
+         GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+         foreach (GameObject obj in allObjects)
+         {
+             // PhotonView 컴포넌트가 있는지 확인
+             PhotonView photonView = obj.GetComponent<PhotonView>();
+
+             // PhotonView가 있고, isMine이 true인 경우
+             if (photonView != null && photonView.IsMine)
+             {
+                 playerPhotonView = obj.GetComponent<PhotonView>();
+                 //print("내 포톤뷰 찾았다.");
+                 break;
+             }
+         }
+
+        //playerPhotonView = GameObject.Find("PlayerWoman(Clone)").GetComponent<PhotonView>();
+        //playerPhotonView = LobbyGameManager.instance.player.gameObject.GetComponent<PhotonView>();
+    }
+    //IPunObservable
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 만일, 데이터를 서버에 전송(PhotonView.IsMine)하는 상태라면...
+        if (stream.IsWriting)
+        {
+
+        }
+        // 그렇지 않고, 만일 데이터를 서버로부터 읽어어는 상태라면...
+        else if (stream.IsReading)
+        {
+
+        }
+
+
+    }
+}//클래스 끝
