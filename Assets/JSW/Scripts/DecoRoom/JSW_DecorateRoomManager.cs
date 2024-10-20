@@ -257,7 +257,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
-                        print(j+ " kk" +i);
                     }
                 }
             }

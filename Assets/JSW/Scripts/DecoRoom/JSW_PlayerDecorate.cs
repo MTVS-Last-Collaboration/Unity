@@ -11,7 +11,8 @@ public class JSW_PlayerDecorate : MonoBehaviour
 {
     public Vector3 playerDir;
     public Vector3 playerPos;
-    public GameObject funitureObject;
+    public GameObject funitureObject1;
+    public GameObject funitureObject2;
     public JSW_DecorateRoomManager DRM;
 
     // Start is called before the first frame update
@@ -29,11 +30,11 @@ public class JSW_PlayerDecorate : MonoBehaviour
 
     }
 
-    public void SetFuniture()
+    public void SetFuniture1()
     {
         int dir = 0;
 
-        GameObject funitureOb = Instantiate(funitureObject);
+        GameObject funitureOb = Instantiate(funitureObject1);
 
         if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
         {
@@ -72,11 +73,69 @@ public class JSW_PlayerDecorate : MonoBehaviour
             dir = 3;
         }
 
+        JSW_DecoObject jd = funitureOb.GetComponent<JSW_DecoObject>();
 
-        if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, 1, 2, dir))
+        if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir))
         {
-            DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, 1, 2, dir);
-            funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, 1, 2, dir);
+            DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
+            funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
+            DRM.FunitureList.Add(funitureOb);
+        }
+        else
+        {
+            Destroy(funitureOb);
+            print("no");
+        }
+    }
+    public void SetFuniture2()
+    {
+        int dir = 0;
+
+        GameObject funitureOb = Instantiate(funitureObject2);
+
+        if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
+        {
+            if (Mathf.Abs(transform.forward.x) >= Mathf.Abs(transform.forward.z))
+            {
+                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 1);
+                playerDir.z = 0;
+            }
+            else
+            {
+                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 1, playerPos.z + playerDir.z * 2);
+                playerDir.x = 0;
+            }
+        }
+        else
+        {
+            funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 2);
+        }
+
+        funitureOb.transform.forward = playerDir;
+
+        if (playerDir.z == 1)
+        {
+            dir = 0;
+        }
+        else if (playerDir.x == 1)
+        {
+            dir = 1;
+        }
+        else if (playerDir.z == -1)
+        {
+            dir = 2;
+        }
+        else if (playerDir.x == -1)
+        {
+            dir = 3;
+        }
+
+        JSW_DecoObject jd = funitureOb.GetComponent<JSW_DecoObject>();
+
+        if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir))
+        {
+            DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
+            funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
             DRM.FunitureList.Add(funitureOb);
         }
         else
@@ -306,9 +365,14 @@ public class JSW_PlayerDecorate : MonoBehaviour
             if (realnumDir.z == 1)
             {
 
-                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
+                if ( !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
-                    print("NOAndReturn0");
+                    
+                    return;
+                }
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 2))
+                {
+                    print("NOAndReturn02222");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2);
@@ -319,7 +383,11 @@ public class JSW_PlayerDecorate : MonoBehaviour
             {
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
-                    print("NOAndReturn1");
+                    return;
+                }
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 3))
+                {
+                    print("NOAndReturn12222");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3);
@@ -331,7 +399,11 @@ public class JSW_PlayerDecorate : MonoBehaviour
             {
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
-                    print("NOAndReturn2");
+                    return;
+                }
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 0))
+                {
+                    print("NOAndReturn22222");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0);
@@ -343,7 +415,11 @@ public class JSW_PlayerDecorate : MonoBehaviour
             {
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
-                    print("NOAndReturn3");
+                    return;
+                }
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 1))
+                {
+                    print("NOAndReturn32222");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1);
@@ -357,7 +433,7 @@ public class JSW_PlayerDecorate : MonoBehaviour
     private IEnumerator moveBlockTranslate(Vector3 dir, GameObject funiture)
     {
 
-        Vector3 targetPosition = funiture.transform.position + dir;
+        Vector3 targetPosition = new Vector3((float)Math.Round((funiture.transform.position + dir).x), (float)Math.Round((funiture.transform.position + dir).y), (float)Math.Round((funiture.transform.position + dir).z));
 
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = true;
         while (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 0.01f)
@@ -367,6 +443,7 @@ public class JSW_PlayerDecorate : MonoBehaviour
             yield return null;
         }
         funiture.transform.position = targetPosition;
+       transform.position = new Vector3((float)Math.Round(transform.position.x),1.49f, (float)Math.Round(transform.position.z));
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = false;
     }
 
