@@ -7,7 +7,10 @@ using UnityEngine;
 //동기화 용도 클래스를 부모로 MonoBehaviourPun
 public class LobbyGameManager : MonoBehaviourPun
 {
-    GameObject player;
+    public static LobbyGameManager instance;
+
+
+    public GameObject player;
 
     // Start is called before the first frame update
     void Start()
