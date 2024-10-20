@@ -1,10 +1,10 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEditor;
+//using System.Collections;
+//using System.Collections.Generic;
+//using System.Runtime.InteropServices;
+//using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
 
 public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
 {
@@ -13,11 +13,20 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
     public Animator animator;
     public GameObject model;
 
+    public Vector3 myPos;
+    Quaternion myRot;
+    
     VirtualJoyStick joyStick;
+    PhotonView photonview;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        photonview = transform.GetComponent<PhotonView>();
+        if (photonview != null) print("내 포톤뷰 있음" + photonView.ViewID);
+        PhotonNetwork.SerializationRate = 30;
+        photonView.ObservedComponents.Add(this);  // OnPhotonSerializeView 호출할 스크립트 추가
+        photonView.Synchronization = ViewSynchronization.UnreliableOnChange;  // 데이터 동기화 설정
     }
 
     // Update is called once per frame
@@ -26,7 +35,13 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
 
         //PlayerMoveKey();
         //PlayerMoveJoyStick(joyStick.inputDirection);
-
+        if(photonView.IsMine == false)
+        {
+            print("내것이 아님");
+            // 서버에서 받은 위치 및 회전을 부드럽게 동기화
+            transform.position = myPos;
+            
+        }
 
 
     }
@@ -100,17 +115,18 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
 
     public void PlayerMoveJoyStick(Vector3 inputDirection)
     {
-        float x = inputDirection.x;     //print("Horizontal=" + x);
-        float z = inputDirection.y;     //print("Vertical=" + y);
-
-        Vector3 playerMoveDir = new Vector3(x, 0, z);
-        playerMoveDir.Normalize();
-        Vector3 playerMove = playerMoveDir * playerMoveSpeed * Time.deltaTime;
-        playerController.Move(playerMove);  //플레이어 컨트롤러
-
-        if (VirtualJoyStick.instance.playerPhotonView.IsMine)
+       
+        if (photonview.IsMine)
         {
-            
+            //print("내꺼 움직이자");
+            float x = inputDirection.x;     //print("Horizontal=" + x);
+            float z = inputDirection.y;     //print("Vertical=" + y);
+
+            Vector3 playerMoveDir = new Vector3(x, 0, z);
+            playerMoveDir.Normalize();
+            Vector3 playerMove = playerMoveDir * playerMoveSpeed * Time.deltaTime;
+            playerController.Move(playerMove);  //플레이어 컨트롤러
+
 
             if (animator != null)    //animator null 아닐때
             {
@@ -169,57 +185,52 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
                 }
 
             }
-                
+
         }
-        else
+        /*if(photonView.IsMine == false)
         {
+            print("내것이 아님");
             // 서버에서 받은 위치 및 회전을 부드럽게 동기화
             transform.position = myPos;
-            //transform.rotation = Quaternion.Lerp(transform.rotation, myRot, Time.deltaTime);
-            //transform.rotation = Quaternion.Lerp(transform.rotation, myRot, Time.deltaTime * trackingSpeed);
-        }
-
-
-
-
+            
+        }*/
 
     }
    
-    public void PlayerMove()
-    {
-    
-
-
-
-    }
-   public void RPCPlayerMoveJoyStick(Vector3 inputDirection)
-    {
-
-    }
-
-    Vector3 myPos;
-    Quaternion myRot;
-
+   
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        //throw new System.NotImplementedException();
         if (stream.IsWriting)
         {
+            //print("내 위치를 보내자");
             stream.SendNext(transform.position);    //나의 위치를 하자.
             stream.SendNext(transform.rotation);    //나의 방향을 보내자.
-            
 
         }
-        else if(stream.IsReading)
+        else if (stream.IsReading)
         {
+            print("내 위치를 받자");
             myPos = (Vector3)stream.ReceiveNext();
             myRot = (Quaternion)stream.ReceiveNext();
+
+
         }
+
     }
+
 
     public void OtherClientPlayerMove()
     {
         // 서버에서 받은 위치 및 회전을 부드럽게 동기화
         transform.position = myPos;
     }
+    public void PlayerMove()
+    {
 
+    }
+    public void RPCPlayerMoveJoyStick(Vector3 inputDirection)
+    {
+
+    }
 }//클래스 끝

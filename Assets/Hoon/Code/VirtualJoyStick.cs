@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems; //키보드, 마우스 , 터치를 이벤트로 오브젝트에 보낼 수 있는 기능 지원
 
-public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPunObservable
+public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public static VirtualJoyStick instance;
 
@@ -177,20 +177,6 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         //playerPhotonView = GameObject.Find("PlayerWoman(Clone)").GetComponent<PhotonView>();
         //playerPhotonView = LobbyGameManager.instance.player.gameObject.GetComponent<PhotonView>();
     }
-    //IPunObservable
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        // 만일, 데이터를 서버에 전송(PhotonView.IsMine)하는 상태라면...
-        if (stream.IsWriting)
-        {
+    
 
-        }
-        // 그렇지 않고, 만일 데이터를 서버로부터 읽어어는 상태라면...
-        else if (stream.IsReading)
-        {
-
-        }
-
-
-    }
 }//클래스 끝
