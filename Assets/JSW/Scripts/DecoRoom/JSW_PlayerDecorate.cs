@@ -370,7 +370,7 @@ public class JSW_PlayerDecorate : MonoBehaviour
                     
                     return;
                 }
-                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 2))
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 2))
                 {
                     print("NOAndReturn02222");
                     return;
@@ -385,7 +385,7 @@ public class JSW_PlayerDecorate : MonoBehaviour
                 {
                     return;
                 }
-                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 3))
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 3))
                 {
                     print("NOAndReturn12222");
                     return;
@@ -401,7 +401,7 @@ public class JSW_PlayerDecorate : MonoBehaviour
                 {
                     return;
                 }
-                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 0))
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 0))
                 {
                     print("NOAndReturn22222");
                     return;
@@ -417,7 +417,7 @@ public class JSW_PlayerDecorate : MonoBehaviour
                 {
                     return;
                 }
-                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 1))
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 1))
                 {
                     print("NOAndReturn32222");
                     return;
@@ -440,6 +440,10 @@ public class JSW_PlayerDecorate : MonoBehaviour
         {
             funiture.transform.Translate(funiture.transform.InverseTransformDirection(dir) * Time.deltaTime * 1);
             transform.Translate(transform.InverseTransformDirection(dir) * Time.deltaTime * 1);
+            if (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 2f)
+            {
+                break;
+            }
             yield return null;
         }
         funiture.transform.position = targetPosition;
