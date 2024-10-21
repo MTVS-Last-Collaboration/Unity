@@ -9,9 +9,11 @@ public class ClickFlower : MonoBehaviour
 {
     private Flower targetFlower;
     private bool isPlayerInRange = false;
-    private CheckID checkID;
+    public CheckID checkID;
 
-    public float detectionRadius = 5f;
+    public float detectionDistance = 1f;
+    public float idHandlingRadius = 100f;
+
     public float checkInterval = 0.5f;
 
     private bool isClose = false;
@@ -51,20 +53,26 @@ public class ClickFlower : MonoBehaviour
             CheckForPlayer();
             yield return delay;
         }
-        
     }
 
     private void CheckForPlayer()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, idHandlingRadius);
         bool foundPlayer = false;
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("Player"))
+            if (hitCollider.CompareTag("Player") && Vector3.Distance(gameObject.transform.position, hitCollider.transform.position) < detectionDistance)
             {
                 isClose = true;
                 isPlayerInRange = true;
+                checkID = hitCollider.GetComponent<CheckID>();
+                foundPlayer = true;
+                break;
+            }
+            else if (hitCollider.CompareTag("Player") && Vector3.Distance(gameObject.transform.position, hitCollider.transform.position) > detectionDistance)
+            {
+                isPlayerInRange = false;
                 checkID = hitCollider.GetComponent<CheckID>();
                 foundPlayer = true;
                 break;
