@@ -7,10 +7,10 @@ public class Flower : MonoBehaviour
     public string managerId;
     public string nickName;
     public AudioClip voiceClip;
-    //public bool isFirst = false;
+    public bool isTouchAble = true;
     public FlowerUIManager uiManager;
     public int evolutionCount = 0;
-
+    public int harvestCoins = 300;
     public States curState;
 
     private void Awake()
@@ -23,5 +23,14 @@ public class Flower : MonoBehaviour
         SPROUT,
         BUD,
         BLOSSOM
+    }
+
+    public void ResetFlower()
+    {
+        managerId = string.Empty;
+        nickName = string.Empty;
+        voiceClip = null;
+        evolutionCount = 0;
+        curState = States.SPROUT;
     }
 }

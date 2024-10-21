@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class JSW_DecorateRoomManager : MonoBehaviour
 {
@@ -134,90 +135,271 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
 
     // 밀기
-    public bool isPushFuniture(int posX, int posZ, int lenX, int lenZ, int pushDir)
+    public bool isPushFuniture(int posX, int posZ, int lenX, int lenZ, int rot, int pushDir)
     {
+        bool isResult = true;
         // 12시방향
+        if (rot == 0)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1)
+        {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+
+
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 9시방향
+        if (rot == 3)
+        {
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+
         if (pushDir == 0)
         {
             posZ += 1;
+        }
+        else if (pushDir == 1)
+        {
+            posX += 1;
+        }
+        else if (pushDir == 2)
+        {
+            posZ -= 1;
+        }
+        else if (pushDir == 3)
+        {
+            posX -= 1;
+        }
+
+
+        // 12시방향
+        if (rot == 0)
+        {
             for (int i = posX; i < posX + lenX; i++)
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
                     if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
-                        return false;
+                        isResult =  false;
                     }
                 }
             }
         }
         // 3시방향
-        if (pushDir == 1)
+        if (rot == 1)
         {
-            posX += 1;
             for (int i = posX; i < posX + lenZ; i++)
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
                     if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
-                        return false;
+                        isResult = false;
                     }
                 }
             }
         }
         // 6시방향
-        if (pushDir == 2)
+        if (rot == 2)
         {
-            posZ -= 1;
             for (int i = posX; i < posX + lenX; i++)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
                     if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
-                        return false;
+                        isResult = false;
                     }
                 }
             }
         }
         // 9시방향
-        if (pushDir == 3)
+        if (rot == 3)
         {
-            posX -= 1;
             for (int i = posX; i > posX - lenZ; i--)
             {
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
-
                     if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
-                        return false;
+                        isResult = false;
                     }
                 }
             }
         }
-        return true;
-    }
 
-    public void PushFuniture(int posX, int posZ, int lenX, int lenZ, int rot)
-    {
-        for (int i = posX; i < posX + lenX; i++)
+        if (pushDir == 0)
         {
-            for (int j = posZ; j < posZ + lenZ; j++)
-            {
-                roomPosition[j, i] = false;
-            }
+            posZ -= 1;
         }
-        // 12시방향
-        if (rot == 0)
+        else if (pushDir == 1)
+        {
+            posX -= 1;
+        }
+        else if (pushDir == 2)
         {
             posZ += 1;
+        }
+        else if (pushDir == 3)
+        {
+            posX += 1;
+        }
+
+        if (rot == 0)
+        {
             for (int i = posX; i < posX + lenX; i++)
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1)
+        {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
 
+
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+        // 9시방향
+        if (rot == 3)
+        {
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+                    roomPosition[j, i] = true;
+                }
+            }
+        }
+
+        return isResult;
+    }
+
+    public void PushFuniture(int posX, int posZ, int lenX, int lenZ, int rot, int pushDir)
+    {
+        // 12시방향
+        if (rot == 0)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1)
+        {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+
+
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 9시방향
+        if (rot == 3)
+        {
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+
+        if (pushDir == 0)
+        {
+            posZ += 1;
+        }
+        else if (pushDir == 1)
+        {
+            posX += 1;
+        }
+        else if (pushDir == 2)
+        {
+            posZ -= 1;
+        }
+        else if (pushDir == 3)
+        {
+            posX -= 1;
+        }
+
+        // 12시방향
+        if (rot == 0)
+        {
+            
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
                     roomPosition[j, i] = true;
                 }
             }
@@ -256,7 +438,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
-
                     roomPosition[j, i] = true;
                 }
             }
@@ -275,6 +456,55 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         }
     }
 
+    public void DestroyFuniturePos(int posX, int posZ, int lenX, int lenZ, int rot)
+    {
+        if (rot == 0)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1)
+        {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+
+
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+        // 9시방향
+        if (rot == 3)
+        {
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+                    roomPosition[j, i] = false;
+                }
+            }
+        }
+    }
+
 
     // 여기서 필요한 것
     // 플레이어 위치 받기
@@ -288,7 +518,4 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     // 밀려고 할 때 다른 플레이어 위치 받아오기
     // 당길 때도 플레이어 위치 받아오기
     // 물건 꺼내기 꺼낼 때 주변 놓을 수 있을지 확인하기
-
-
-
 }

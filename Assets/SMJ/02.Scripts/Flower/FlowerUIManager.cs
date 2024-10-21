@@ -23,9 +23,12 @@ public class FlowerUIManager : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
 
+    [SerializeField] private bool testRecord = false;
+
     private VoiceRecorder recorder;
     private FlowerEvolution flowerEvol;
     private Flower flower;
+    private ClickFlower click;
 
     private int recordCount = 0;
 
@@ -40,6 +43,7 @@ public class FlowerUIManager : MonoBehaviour
         flower = GetComponent<Flower>();
         recorder = GetComponent<VoiceRecorder>();
         flowerEvol = GetComponent<FlowerEvolution>();
+        click = GetComponent<ClickFlower>();
     }
 
     private void Update()
@@ -92,11 +96,13 @@ public class FlowerUIManager : MonoBehaviour
         
         if (isRecordComplete == false || isListenComplete == true)
         {
-            buttons[idx].SetActive(true);
+            //buttons[idx].SetActive(true);
+            SwapButtonUI(idx);
         }
         else
         {
-            buttons[3].SetActive(true);
+            //buttons[3].SetActive(true);
+            SwapButtonUI(3);
         }
     }
 
@@ -138,6 +144,12 @@ public class FlowerUIManager : MonoBehaviour
                 break;
             case Flower.States.BLOSSOM:
                 statusText.text = "상태: 활짝 피었어요!";
+                //녹음 카운트 체크
+                if (flower.curState == Flower.States.BLOSSOM)
+                {
+                    //새로운꽃 키우기 ui로 바꾸기
+                    SwapButtonUI(5);
+                }
                 break;
         }
         //이미지도 받고 수정
@@ -164,7 +176,7 @@ public class FlowerUIManager : MonoBehaviour
         recordButtons[1].SetActive(true);
         recordingCor = StartCoroutine(RecordingVoice(second));
     }
-    bool testRecord = false;
+    
     IEnumerator RecordingVoice(float second)
     {
         recorder.StartRecording();
@@ -211,7 +223,9 @@ public class FlowerUIManager : MonoBehaviour
     {
         recordPanel.SetActive(false);
         exitButton.SetActive(true);
-        buttons[3].SetActive(true);
+        //buttons[3].SetActive(true);
+        SwapButtonUI(3);
+        UpdateUI(flower);
         for (int i = 1; i < recordButtons.Length; i++)
         {
             recordButtons[i].SetActive(false);
@@ -241,7 +255,8 @@ public class FlowerUIManager : MonoBehaviour
 
     public void OnListenVoiceButtonClick()
     {
-        buttons[4].SetActive(true);
+        //buttons[4].SetActive(true);
+        SwapButtonUI(4);
         recorder.PlayRecording();
         isListenComplete = true;
         StartCoroutine(CheckAudioCompletion());
@@ -262,5 +277,16 @@ public class FlowerUIManager : MonoBehaviour
     {
         flower.nickName = nameInput.text;
         //추후 네트워크 포스트
+    }
+
+    public void OnClickNewFlower()
+    {
+        testRecord = false;
+        isRecordComplete = false;
+        isListenComplete = false;
+        click.checkID.ResetFirst();
+        flowerEvol.NewFlower();
+        flower.ResetFlower();
+        OnCloseButtonClick();
     }
 }
