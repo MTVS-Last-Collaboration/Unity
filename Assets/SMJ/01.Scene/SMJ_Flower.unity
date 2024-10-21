@@ -6037,7 +6037,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2}
+  m_Size: {x: 1, y: 1.6, z: 2}
   m_Center: {x: -0.12, y: 0, z: 0}
 --- !u!4 &945638580
 Transform:
@@ -6089,6 +6089,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86a4185e6bb58d4bbe2a01e6a27a6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 1
+  checkInterval: 0.5
 --- !u!114 &945638583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9372,7 +9374,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2}
+  m_Size: {x: 1, y: 1.6, z: 2}
   m_Center: {x: 0.12, y: 0, z: 0}
 --- !u!4 &1274131098
 Transform:
@@ -9424,6 +9426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86a4185e6bb58d4bbe2a01e6a27a6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 1
+  checkInterval: 0.5
 --- !u!114 &1274131101
 MonoBehaviour:
   m_ObjectHideFlags: 0

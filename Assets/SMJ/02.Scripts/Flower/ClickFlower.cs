@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,25 +11,71 @@ public class ClickFlower : MonoBehaviour
     private bool isPlayerInRange = false;
     private CheckID checkID;
 
+    public float detectionRadius = 5f;
+    public float checkInterval = 0.5f;
+
+    private bool isClose = false;
+
+    private WaitForSeconds delay;
+
     private void Start()
     {
         targetFlower = GetComponent<Flower>();
+        delay = new WaitForSeconds(checkInterval);
+        StartCoroutine(CheckForPlayerRoutine());
     }
 
     private void Update()
     {
-        // 터치 입력 처리
-        if (Input.touchCount > 0)
+        if (isClose == true)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            // 터치 입력 처리
+            if (Input.touchCount > 0)
             {
-                CheckInteraction(Input.GetTouch(0).position);
+                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    CheckInteraction(Input.GetTouch(0).position);
+                }
+            }
+            // 마우스 클릭 처리 (에디터 및 데스크톱용)
+            else if (Input.GetMouseButtonDown(0))
+            {
+                CheckInteraction(Input.mousePosition);
             }
         }
-        // 마우스 클릭 처리 (에디터 및 데스크톱용)
-        else if (Input.GetMouseButtonDown(0))
+    }
+    private IEnumerator CheckForPlayerRoutine()
+    {
+        while (true)
         {
-            CheckInteraction(Input.mousePosition);
+            CheckForPlayer();
+            yield return delay;
+        }
+        
+    }
+
+    private void CheckForPlayer()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        bool foundPlayer = false;
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Player"))
+            {
+                isClose = true;
+                isPlayerInRange = true;
+                checkID = hitCollider.GetComponent<CheckID>();
+                foundPlayer = true;
+                break;
+            }
+        }
+
+        if (!foundPlayer)
+        {
+            isClose = false;
+            isPlayerInRange = false;
+            checkID = null;
         }
     }
 
@@ -77,20 +124,20 @@ public class ClickFlower : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerInRange = true;
-            checkID = other.GetComponent<CheckID>();
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        isPlayerInRange = true;
+    //        checkID = other.GetComponent<CheckID>();
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerInRange = false;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        isPlayerInRange = false;
+    //    }
+    //}
 }
