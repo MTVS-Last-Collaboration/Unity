@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LoginUI : MonoBehaviour
 {
     public GameObject startImg;
-    
 
     void Start()
     {
@@ -27,5 +28,6 @@ public class LoginUI : MonoBehaviour
         objecName.SetActive(false);
     }
 
-
+  
+        
 }
