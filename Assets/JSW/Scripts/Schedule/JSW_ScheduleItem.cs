@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class JSW_ScheduleItem : MonoBehaviour
 {
+
+
     public TMP_Text scheduleText;
+
 
     void Start()
     {

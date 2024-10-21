@@ -22,6 +22,8 @@ public class JSW_CalenderManager : MonoBehaviour
     public GameObject[] days2 = new GameObject[7];
     public TMP_Text rightCalenderTitle;
 
+    public JSW_ScheduleManager scheduleManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,7 @@ public class JSW_CalenderManager : MonoBehaviour
         calenderBody = GameObject.Find("CalenderBody");
         rightCalenderBody = GameObject.Find("RightCalenderBody");
         rightCalenderTitle = GameObject.Find("RightCalenderTitle").GetComponent<TMP_Text>();
+        scheduleManager = GameObject.Find("ScheduleManager").GetComponent<JSW_ScheduleManager>();
 
         print(System.DateTime.Today.Year.ToString());
         for (int i =0; i < 42;i++)
@@ -103,6 +106,9 @@ public class JSW_CalenderManager : MonoBehaviour
             days[(int)GetDayFirstWeek(nowYear, nowMonth)].transform.GetChild(0).gameObject.SetActive(true);
         }
 
+        string dayString = "" + nowYear.ToString() + nowMonth.ToString("D2") + nowDay.ToString("D2");
+        scheduleManager.ResetSchedule(dayString);
+
         changeNowRightCalender();
     }
 
@@ -171,6 +177,7 @@ public class JSW_CalenderManager : MonoBehaviour
         month.GetComponent<TMP_Text>().text = firstDate.ToString("MMMM", CultureInfo.InvariantCulture);
 
         nowDay = 1;
+
         InitCalender();
     }
 
@@ -197,6 +204,7 @@ public class JSW_CalenderManager : MonoBehaviour
         month.GetComponent<TMP_Text>().text = firstDate.ToString("MMMM", CultureInfo.InvariantCulture);
 
         nowDay = 1;
+
         InitCalender();
     }
 
@@ -212,9 +220,10 @@ public class JSW_CalenderManager : MonoBehaviour
         newToday.fontSize = 23;
         days[nowDay + (int)GetDayFirstWeek(nowYear, nowMonth) - 1].transform.GetChild(0).gameObject.SetActive(true);
 
+        string dayString = "" + nowYear.ToString() + nowMonth.ToString("D2") + nowDay.ToString("D2");
+        scheduleManager.ResetSchedule(dayString);
         changeNowRightCalender();
     }
-
 
     public void OnLastTailCalender()
     {
