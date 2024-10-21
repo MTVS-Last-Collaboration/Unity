@@ -8,7 +8,7 @@ public class ClickFlower : MonoBehaviour
 {
     private Flower targetFlower;
     private bool isPlayerInRange = false;
-    private CheckID checkID;
+    public CheckID checkID;
 
     private void Start()
     {
@@ -17,18 +17,21 @@ public class ClickFlower : MonoBehaviour
 
     private void Update()
     {
-        // 터치 입력 처리
-        if (Input.touchCount > 0)
+        if (targetFlower.isTouchAble == true)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            // 터치 입력 처리
+            if (Input.touchCount > 0)
             {
-                CheckInteraction(Input.GetTouch(0).position);
+                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    CheckInteraction(Input.GetTouch(0).position);
+                }
             }
-        }
-        // 마우스 클릭 처리 (에디터 및 데스크톱용)
-        else if (Input.GetMouseButtonDown(0))
-        {
-            CheckInteraction(Input.mousePosition);
+            // 마우스 클릭 처리 (에디터 및 데스크톱용)
+            else if (Input.GetMouseButtonDown(0))
+            {
+                CheckInteraction(Input.mousePosition);
+            }
         }
     }
 

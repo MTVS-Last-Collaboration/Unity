@@ -27,4 +27,9 @@ public class CheckID : MonoBehaviour
             return false;
         }
     }
+
+    public void ResetFirst()
+    {
+        isFirst = false;
+    }
 }
