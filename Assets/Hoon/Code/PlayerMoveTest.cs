@@ -19,6 +19,11 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
     VirtualJoyStick joyStick;
     PhotonView photonview;
 
+    float x;
+    float z;
+    float myDirectionX;
+    float myDirectionZ;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,12 +40,24 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
 
         //PlayerMoveKey();
         //PlayerMoveJoyStick(joyStick.inputDirection);
-        if(photonView.IsMine == false)
+        if(photonView.IsMine == false)  //print("내것이 아님 캐릭터 동기화");
         {
-            print("내것이 아님");
-            // 서버에서 받은 위치 및 회전을 부드럽게 동기화
-            transform.position = myPos;
-            
+            transform.position = myPos; // 서버에서 받은 위치 및 회전을 부드럽게 동기화
+            model.transform.rotation = myRot; //모델을 회전시키자
+
+    
+           if (animator != null)  //animator null 아닐때
+            {
+                if (x != 0 || z != 0)    //값이 0이 아닐때
+                {
+                    animator.SetBool("Walk", true); //걷기 켜기
+                }
+                else //0일때
+                {
+                    animator.SetBool("Walk", false); //걷기 끄기
+                }
+            }
+
         }
 
 
@@ -50,9 +67,9 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
     {
         //CC로 움직이게 하자
         float x = Input.GetAxisRaw("Horizontal");   //print("Horizontal=" + x);
-        float y = Input.GetAxisRaw("Vertical");     //print("Vertical=" + y);
+        float z = Input.GetAxisRaw("Vertical");     //print("Vertical=" + y);
 
-        Vector3 playerMoveDir = new Vector3(x, 0, y);
+        Vector3 playerMoveDir = new Vector3(x, 0, z);
         playerMoveDir.Normalize();
         Vector3 playerMove = playerMoveDir * playerMoveSpeed * Time.deltaTime;
 
@@ -60,7 +77,7 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
         playerController.Move(playerMove);  //플레이어 컨트롤러
         if (animator != null)    //animator null 아닐때
         {
-            if (x != 0 || y != 0)    //값이 0이 아닐때
+            if (x != 0 || z != 0)    //값이 0이 아닐때
             {
                 animator.SetBool("Walk", true); //걷기 켜기
             }
@@ -82,28 +99,28 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
             {
                 model.transform.localEulerAngles = new Vector3(0, -90, 0); //print("회전값x" + x);
             }
-            else if (y == 1)
+            else if (z == 1)
             {
                 model.transform.localEulerAngles = new Vector3(0, 0, 0);
             }
-            else if (y == -1)
+            else if (z == -1)
             {
                 model.transform.localEulerAngles = new Vector3(0, 180, 0);
             }
             //대간선 방향으로 모델을 회전
-            if (y == 1 && x == 1)
+            if (z == 1 && x == 1)
             {
                 model.transform.localEulerAngles = new Vector3(0, 45, 0);//print("회전값y" + y + "회전값x" + x);
             }
-            else if (y == 1 && x == -1)
+            else if (z == 1 && x == -1)
             {
                 model.transform.localEulerAngles = new Vector3(0, -45, 0);//print("회전값y" + y + "회전값x" + x);
             }
-            else if (y == -1 && x == -1)
+            else if (z == -1 && x == -1)
             {
                 model.transform.localEulerAngles = new Vector3(0, -135, 0);//print("회전값y" + y + "회전값x" + x);
             }
-            else if (y == -1 && x == 1)
+            else if (z == -1 && x == 1)
             {
                 model.transform.localEulerAngles = new Vector3(0, 135, 0);//print("회전값y" + y + "회전값x" + x);
             }
@@ -119,8 +136,8 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
         if (photonview.IsMine)
         {
             //print("내꺼 움직이자");
-            float x = inputDirection.x;     //print("Horizontal=" + x);
-            float z = inputDirection.y;     //print("Vertical=" + y);
+            x = inputDirection.x;     //print("Horizontal=" + x);
+            z = inputDirection.y;     //print("Vertical=" + y);
 
             Vector3 playerMoveDir = new Vector3(x, 0, z);
             playerMoveDir.Normalize();
@@ -205,14 +222,17 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
         {
             //print("내 위치를 보내자");
             stream.SendNext(transform.position);    //나의 위치를 하자.
-            stream.SendNext(transform.rotation);    //나의 방향을 보내자.
-
+            stream.SendNext(model.transform.rotation);    //나의 모델의 방향을 보내자.
+            stream.SendNext(x);
+            stream.SendNext(z);
         }
         else if (stream.IsReading)
         {
-            print("내 위치를 받자");
+            //print("내 위치를 받자");
             myPos = (Vector3)stream.ReceiveNext();
             myRot = (Quaternion)stream.ReceiveNext();
+            x = (float)stream.ReceiveNext();
+            z = (float)stream.ReceiveNext();
 
 
         }
