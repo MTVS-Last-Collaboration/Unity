@@ -47,6 +47,8 @@ GameObject:
   - component: {fileID: 8090702480946202253}
   - component: {fileID: 4135582792872272948}
   - component: {fileID: 7412210534642413108}
+  - component: {fileID: 8865051034555783476}
+  - component: {fileID: 3534797836630573126}
   m_Layer: 0
   m_Name: PlayerMale
   m_TagString: Untagged
@@ -158,6 +160,7 @@ MonoBehaviour:
   playerMoveSpeed: 5
   animator: {fileID: 4905368503375050562}
   model: {fileID: 657385366796438769}
+  myPos: {x: 0, y: 0, z: 0}
 --- !u!114 &8090702480946202253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,10 +221,37 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 7665824317312818829}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8865051034555783476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649318054638783015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b1d183b15fa3d47b100677c4a13368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFirst: 0
+--- !u!114 &3534797836630573126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649318054638783015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b93d91573a80af43b5844870239d3c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: test001
 --- !u!1001 &240178698406034729
 PrefabInstance:
   m_ObjectHideFlags: 0

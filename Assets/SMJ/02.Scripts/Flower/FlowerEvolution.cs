@@ -14,6 +14,18 @@ public class FlowerEvolution : MonoBehaviour
     {
         flower = GetComponent<Flower>();
         goodsManager = GoodsManager.Instance;
+        switch (flower.curState)
+        {
+            case Flower.States.SPROUT:
+                flowers[0].SetActive(true);
+                break;
+            case Flower.States.BUD:
+                flowers[1].SetActive(true);
+                break;
+            case Flower.States.BLOSSOM:
+                flowers[2].SetActive(true);
+                break;
+        }
     }
 
     public void CheckEvolutionCount()
@@ -28,7 +40,6 @@ public class FlowerEvolution : MonoBehaviour
         {
             flower.curState = Flower.States.BUD;
             StartCoroutine(Evolution(flower.curState));
-
         }
     }
 

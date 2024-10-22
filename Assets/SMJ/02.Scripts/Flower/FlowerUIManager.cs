@@ -15,6 +15,7 @@ public class FlowerUIManager : MonoBehaviour
     [SerializeField] private TMP_Text listenCompleteText;
     [SerializeField] private GameObject[] buttons;
     [SerializeField] private Image flowerImg;
+    [SerializeField] private GameObject alertEmoji;
 
     [SerializeField] private GameObject exitButton;
 
@@ -60,11 +61,21 @@ public class FlowerUIManager : MonoBehaviour
 
         if (dateChanger.UseFeature() == false && isListenComplete == true)
         {
+            //한번 들었냐? >> setactive(false)
+            alertEmoji.SetActive(false);
             listenCompleteText.text = "연인의 말한마디 듣기\n" + restTime;
             buttons[2].GetComponent<Button>().interactable = false;
         }
         else
         {
+            //! 이모지 띄우기
+            if (flower.voiceClip != null)
+            {
+                if (click.checkID.IsMine(flower) == false)
+                {
+                    alertEmoji.SetActive(true);
+                }
+            }
             buttons[2].GetComponent<Button>().interactable = true;
             listenCompleteText.text = "연인의 말한마디 듣기";
             isListenComplete = false;
@@ -276,7 +287,7 @@ public class FlowerUIManager : MonoBehaviour
     public void UpdateName(Flower flower)
     {
         flower.nickName = nameInput.text;
-        //추후 네트워크 포스트
+        //추후 네트워크
     }
 
     public void OnClickNewFlower()
