@@ -28,9 +28,6 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public PhotonView playerPhotonView;
 
-    
-
-
     private void Awake()
     {
         instance = this;
