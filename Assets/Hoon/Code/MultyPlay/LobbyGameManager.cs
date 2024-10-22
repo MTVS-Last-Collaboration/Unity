@@ -16,8 +16,13 @@ public class LobbyGameManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        playerAvataType = LoginInfoManager.instance.avataChoice;
-        playerNickName = LoginInfoManager.instance.nickName;
+        if(playerAvataType != null)
+        {
+            playerAvataType = LoginInfoManager.instance.avataChoice;
+            playerNickName = LoginInfoManager.instance.nickName;
+        }
+       
+       
 
         StartCoroutine(SpawnPlayer());
 
