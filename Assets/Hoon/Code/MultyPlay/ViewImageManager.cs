@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ViewImageManager : MonoBehaviour
 {
     public Image image;
+    public Button button;
     // Start is called before the first frame update
     void Start()
     {
