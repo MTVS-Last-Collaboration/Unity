@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class FlowerUIManager : MonoBehaviour
+public class FlowerUIManager : MonoBehaviourPun
 {
     public MidnightChecker dateChanger;
 
@@ -50,6 +51,12 @@ public class FlowerUIManager : MonoBehaviour
     private void Update()
     {
         restTime = $"{dateChanger.timeUntilAvailable.Hours} : {dateChanger.timeUntilAvailable.Minutes}";
+        UpdateUIText();
+        UpdateAlertEmoji();
+    }
+
+    private void UpdateUIText()
+    {
         if (dateChanger.UseFeature() == false && isRecordComplete == true)
         {
             completeText.text = "연인에게 따뜻한 한마디 말하기(완료)\n" + restTime;
@@ -61,29 +68,38 @@ public class FlowerUIManager : MonoBehaviour
 
         if (dateChanger.UseFeature() == false && isListenComplete == true)
         {
-            //한번 들었냐? >> setactive(false)
-            alertEmoji.SetActive(false);
             listenCompleteText.text = "연인의 말한마디 듣기\n" + restTime;
             buttons[2].GetComponent<Button>().interactable = false;
         }
         else
         {
-            //! 이모지 띄우기
-            if (flower.voiceClip != null)
-            {
-                if (click.checkID.IsMine(flower) == false)
-                {
-                    alertEmoji.SetActive(true);
-                }
-            }
             buttons[2].GetComponent<Button>().interactable = true;
             listenCompleteText.text = "연인의 말한마디 듣기";
             isListenComplete = false;
         }
     }
 
+    private void UpdateAlertEmoji()
+    {
+        if (dateChanger.UseFeature() == false && isListenComplete == true)
+        {
+            alertEmoji.SetActive(false);
+        }
+        else if (flower.voiceClip != null && !click.checkID.IsMine(flower))
+        {
+            // 자신의 꽃이 아닐 때만(상대방의 꽃일 때만) 이모지 표시
+            alertEmoji.SetActive(true);
+        }
+        else
+        {
+            alertEmoji.SetActive(false);
+        }
+    }
+
     public void OnClickTest()
     {
+        if (!photonView.IsMine) return;
+
         if (testRecord == true)
         {
             testRecord = false;
@@ -91,8 +107,38 @@ public class FlowerUIManager : MonoBehaviour
         }
         else
         {
-            testRecord= true;
+            testRecord = true;
             print("성공!");
+        }
+    }
+
+    [PunRPC]
+    private void RPC_UpdateFlowerName(string newName)
+    {
+        flower.nickName = newName;
+        nameInput.text = newName;
+    }
+
+    [PunRPC]
+    private void RPC_UpdateRecordStatus(bool recordComplete, bool listenComplete)
+    {
+        isRecordComplete = recordComplete;
+        isListenComplete = listenComplete;
+    }
+
+    [PunRPC]
+    private void RPC_ShowAlertEmoji(bool show)
+    {
+        alertEmoji.SetActive(show);
+    }
+
+    [PunRPC]
+    private void RPC_UpdateUI(Flower.States state, string statusMsg)
+    {
+        statusText.text = statusMsg;
+        if (state == Flower.States.BLOSSOM)
+        {
+            SwapButtonUI(5);
         }
     }
 
@@ -104,15 +150,13 @@ public class FlowerUIManager : MonoBehaviour
         }
         UpdateUI(flower);
         uiPanel.SetActive(true);
-        
+
         if (isRecordComplete == false || isListenComplete == true)
         {
-            //buttons[idx].SetActive(true);
             SwapButtonUI(idx);
         }
         else
         {
-            //buttons[3].SetActive(true);
             SwapButtonUI(3);
         }
     }
@@ -142,32 +186,29 @@ public class FlowerUIManager : MonoBehaviour
 
     public void UpdateUI(Flower flower)
     {
-        // 추가적인 UI 업데이트 로직
-
-        //상태 문구 테이블 받을 때 수정
+        string statusMsg = "";
         switch (flower.curState)
         {
             case Flower.States.SPROUT:
-                statusText.text = "상태: 자라나는 중...";
+                statusMsg = "상태: 자라나는 중...";
                 break;
             case Flower.States.BUD:
-                statusText.text = "상태: 피기 직전.";
+                statusMsg = "상태: 피기 직전.";
                 break;
             case Flower.States.BLOSSOM:
-                statusText.text = "상태: 활짝 피었어요!";
-                //녹음 카운트 체크
-                if (flower.curState == Flower.States.BLOSSOM)
-                {
-                    //새로운꽃 키우기 ui로 바꾸기
-                    SwapButtonUI(5);
-                }
+                statusMsg = "상태: 활짝 피었어요!";
                 break;
         }
-        //이미지도 받고 수정
+
+        if (photonView.IsMine)
+        {
+            photonView.RPC("RPC_UpdateUI", RpcTarget.All, flower.curState, statusMsg);
+        }
     }
 
     public void UpdateButtonInteractable(bool isInteractable, int idx)
     {
+        if (!photonView.IsMine) return;
         buttons[idx].GetComponent<Button>().interactable = isInteractable;
     }
 
@@ -178,16 +219,19 @@ public class FlowerUIManager : MonoBehaviour
 
     public void OnTalkButtonClick()
     {
+        if (!photonView.IsMine) return;
         recordPanel.SetActive(true);
     }
 
     public void OnRecordingButtonClick(float second)
     {
+        if (!photonView.IsMine) return;
+
         exitButton.SetActive(false);
         recordButtons[1].SetActive(true);
         recordingCor = StartCoroutine(RecordingVoice(second));
     }
-    
+
     IEnumerator RecordingVoice(float second)
     {
         recorder.StartRecording();
@@ -197,17 +241,18 @@ public class FlowerUIManager : MonoBehaviour
 
     public void SubmitRecord()
     {
-        //추후에 성공 실패 여부 get 후에 변경
-        //4 : 성공 //3 : 실패
+        if (!photonView.IsMine) return;
+
         if (testRecord == true)
         {
             recordButtons[2].SetActive(false);
             recordButtons[4].SetActive(true);
-            isRecordComplete = true;
+
+            photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, true, isListenComplete);
+
             flower.evolutionCount++;
             flowerEvol.CheckEvolutionCount();
             UpdateUI(flower);
-            //recorder.SaveRecording();
         }
         else
         {
@@ -216,25 +261,24 @@ public class FlowerUIManager : MonoBehaviour
             {
                 recordButtons[2].SetActive(false);
                 recordButtons[3].SetActive(true);
-                //다시말하기 해야됨
-                isRecordComplete = false;
+                photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, isListenComplete);
             }
             else
             {
-                //찐 실패
                 recordButtons[2].SetActive(false);
                 recordButtons[5].SetActive(true);
                 recordCount = 0;
-                isRecordComplete = true;
+                photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, true, isListenComplete);
             }
         }
     }
 
     public void OnRecordCompleteToday()
     {
+        if (!photonView.IsMine) return;
+
         recordPanel.SetActive(false);
         exitButton.SetActive(true);
-        //buttons[3].SetActive(true);
         SwapButtonUI(3);
         UpdateUI(flower);
         for (int i = 1; i < recordButtons.Length; i++)
@@ -245,6 +289,8 @@ public class FlowerUIManager : MonoBehaviour
 
     public void OnReRecordingClick()
     {
+        if (!photonView.IsMine) return;
+
         for (int i = 1; i < recordButtons.Length; i++)
         {
             recordButtons[i].SetActive(false);
@@ -253,23 +299,21 @@ public class FlowerUIManager : MonoBehaviour
 
     public void OnStopRecordingButtonClick()
     {
+        if (!photonView.IsMine) return;
+
         StopCoroutine(recordingCor);
         recorder.StopRecording();
         exitButton.SetActive(true);
-        //for (int i = 1; i < recordButtons.Length; i++)
-        //{
-        //    recordButtons[i].SetActive(false);
-        //}
         recordButtons[2].SetActive(true);
-        //OnTalkButtonClick();
     }
 
     public void OnListenVoiceButtonClick()
     {
-        //buttons[4].SetActive(true);
+        if (!photonView.IsMine) return;
+
         SwapButtonUI(4);
         recorder.PlayRecording();
-        isListenComplete = true;
+        photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, isRecordComplete, true);
         StartCoroutine(CheckAudioCompletion());
     }
 
@@ -279,22 +323,22 @@ public class FlowerUIManager : MonoBehaviour
         {
             yield return null;
         }
-        //소리 재생 후 false
         buttons[4].SetActive(false);
-        //추후 자정 지났을때 초기화 기능 추가
     }
 
     public void UpdateName(Flower flower)
     {
-        flower.nickName = nameInput.text;
-        //추후 네트워크
+        if (!photonView.IsMine) return;
+
+        photonView.RPC("RPC_UpdateFlowerName", RpcTarget.All, nameInput.text);
     }
 
     public void OnClickNewFlower()
     {
+        if (!photonView.IsMine) return;
+
         testRecord = false;
-        isRecordComplete = false;
-        isListenComplete = false;
+        photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, false);
         click.checkID.ResetFirst();
         flowerEvol.NewFlower();
         flower.ResetFlower();
