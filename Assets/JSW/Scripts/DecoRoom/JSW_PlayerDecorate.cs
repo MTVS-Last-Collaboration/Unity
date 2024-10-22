@@ -2,6 +2,7 @@ using Photon.Pun.Demo.PunBasics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using static JSW_DecorateRoomManager;
@@ -14,20 +15,46 @@ public class JSW_PlayerDecorate : MonoBehaviour
     public GameObject funitureObject1;
     public GameObject funitureObject2;
     public JSW_DecorateRoomManager DRM;
+    public bool IsCharacterMoving; 
+    int dir = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        DRM = GameObject.Find("DecorateRoomManager").GetComponent<JSW_DecorateRoomManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
         playerDir = new Vector3(Mathf.Round(transform.forward.x), Mathf.Round(transform.forward.y), Mathf.Round(transform.forward.z));
         playerPos = new Vector3(Mathf.Round(transform.position.x), 0, Mathf.Round(transform.position.z));
-
+        
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            print(1);
+            SetFuniture1();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SetFuniture2();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            PushFunitureSetting();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            PushFuniture();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            DrawFuniture();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            DestroyFuniture();
+        }
     }
 
     public void SetFuniture1()
@@ -145,11 +172,58 @@ public class JSW_PlayerDecorate : MonoBehaviour
         }
     }
 
+    public void isPushorPull(int num)
+    {
+        if (dir == 0)
+        {
+            if(num == 0)
+            {
+                PushFuniture();
+            }
+            else if (num == 2)
+            {
+                DrawFuniture();
+            }
+        }
+        else if (dir == 1)
+        {
+            if (num == 1)
+            {
+                PushFuniture();
+            }
+            else if (num == 3)
+            {
+                DrawFuniture();
+            }
+        }
+        else if (dir == 2)
+        {
+            if (num == 2)
+            {
+                PushFuniture();
+            }
+            else if (num == 0)
+            {
+                DrawFuniture();
+            }
+        }
+        else if (dir == 3)
+        {
+            if (num == 3)
+            {
+                PushFuniture();
+            }
+            else if (num == 1)
+            {
+                DrawFuniture();
+            }
+        }
+    }
+
 
     public void PushFunitureSetting()
     {
 
-        int dir = 0;
         GameObject funitureOb = null;
 
         // 플레이어의 위치와 방향 설정 (정면 방향)
@@ -165,11 +239,9 @@ public class JSW_PlayerDecorate : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1.5f))
         {
-            // 충돌한 물체가 있다면 물체의 이름 출력
-            Debug.Log("Ray hit: " + hit.collider.gameObject.name);
+
             funitureOb = hit.collider.gameObject;
 
-            print((int)playerPos.x + " now " + (int)playerPos.z);
             Vector3 num = funitureOb.GetComponent<JSW_DecoObject>().PlayerPushPosition((int)playerPos.x, (int)playerPos.z);
 
             Vector3 numDir = (num - transform.position).normalized;
@@ -198,22 +270,22 @@ public class JSW_PlayerDecorate : MonoBehaviour
             if (realnumDir.z == 1)
             {
                 dir = 0;
-                transform.position = new Vector3(num.x, 1.49f, num.z - 1);
+                transform.position = new Vector3(num.x, transform.position.y, num.z - 1);
             }
             else if (realnumDir.x == 1)
             {
                 dir = 1;
-                transform.position = new Vector3(num.x - 1, 1.49f, num.z);
+                transform.position = new Vector3(num.x - 1, transform.position.y, num.z);
             }
             else if (realnumDir.z == -1)
             {
                 dir = 2;
-                transform.position = new Vector3(num.x, 1.49f, num.z + 1);
+                transform.position = new Vector3(num.x, transform.position.y, num.z + 1);
             }
             else if (realnumDir.x == -1)
             {
                 dir = 3;
-                transform.position = new Vector3(num.x + 1, 1.49f, num.z);
+                transform.position = new Vector3(num.x + 1, transform.position.y, num.z);
             }
         }
     }
@@ -434,21 +506,23 @@ public class JSW_PlayerDecorate : MonoBehaviour
     {
 
         Vector3 targetPosition = new Vector3((float)Math.Round((funiture.transform.position + dir).x), (float)Math.Round((funiture.transform.position + dir).y), (float)Math.Round((funiture.transform.position + dir).z));
-
+        IsCharacterMoving = true;
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = true;
         while (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 0.01f)
         {
+            //funiture.transform.position = Vector3.Lerp(funiture.transform.position, targetPosition, speed * Time.deltaTime);
             funiture.transform.Translate(funiture.transform.InverseTransformDirection(dir) * Time.deltaTime * 1);
-            transform.Translate(transform.InverseTransformDirection(dir) * Time.deltaTime * 1);
+            transform.Translate(transform.InverseTransformDirection(dir) * Time.deltaTime);
             if (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 2f)
             {
                 break;
             }
-            yield return null;
+            yield return new WaitForFixedUpdate(); ;
         }
         funiture.transform.position = targetPosition;
-       transform.position = new Vector3((float)Math.Round(transform.position.x),1.49f, (float)Math.Round(transform.position.z));
+       transform.position = new Vector3((float)Math.Round(transform.position.x),transform.position.y, (float)Math.Round(transform.position.z));
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = false;
+        IsCharacterMoving = false;
     }
 
 
