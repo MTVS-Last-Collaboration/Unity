@@ -11,7 +11,6 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
     string nickName;
     string otherNickName;
    
-
     // Start is called before the first frame update
     void Start()
     {

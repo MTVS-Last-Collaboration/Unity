@@ -25,7 +25,6 @@ public class MailManager : MonoBehaviour
     public GameObject Coment1;
     public GameObject Coment2;
     
-    
 
     Image mail_IconImage;
     bool isMailImage = false;

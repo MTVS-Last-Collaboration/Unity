@@ -16,14 +16,26 @@ public class LobbyGameManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+      
         if(playerAvataType != null)
-        {
-            playerAvataType = LoginInfoManager.instance.avataChoice;
-            playerNickName = LoginInfoManager.instance.nickName;
+        { 
+            return;
+        
         }
-       
-       
-
+        else
+        {     
+            if(LoginInfoManager.instance.avataChoice == null)
+            { 
+                return; 
+            }
+            else
+            {
+                playerAvataType = LoginInfoManager.instance.avataChoice;
+                playerNickName = LoginInfoManager.instance.nickName;
+            }
+          
+        }
+        
         StartCoroutine(SpawnPlayer());
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도수 설정하기 (perSeconds) 

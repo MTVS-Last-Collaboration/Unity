@@ -86,7 +86,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        string roomName = "LoobyTest0";
+        string roomName = "LoobyTest1";
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -114,7 +114,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방참가
     public void JoinRoom()
     {
-        string roomName = "LoobyTest0";
+        string roomName = "LoobyTest1";
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
@@ -195,13 +195,20 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         else
         {
             print("방개수" + roomList.Count);
+            //방을 모두 검색해서 방이 있는지 찾자.
             foreach (RoomInfo roomInfo in roomList)
             {
-                if (roomInfo.Name.Contains("LoobyTest"))
+                //방이름을 포함하고 있으면 참가.
+                if (roomInfo.Name.Contains("LoobyTest1"))
                 {
                     print("방이있으니까 참가해야지~");
                     JoinRoom();
                     return;
+                }
+                else 
+                {
+                    //없으면 방 만들기
+                    CreateRoom();
                 }
 
             }

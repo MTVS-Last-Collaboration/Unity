@@ -72,6 +72,7 @@ public class CameraRotation : MonoBehaviour
     {
         isLeftRotaion = !isLeftRotaion; //버튼을 누를때마다 변수를 반대값으로
         print("isLeftRotaion" + isLeftRotaion);
+        if (player == null) print("플레이어 없다");
     }
     public void OnclickRightRotation()
     {
