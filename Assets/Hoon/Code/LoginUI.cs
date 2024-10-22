@@ -14,10 +14,10 @@ public class LoginUI : MonoBehaviour
         
     }
 
-    void Update()
+    /*void Update()
     {
         
-    }
+    }*/
 
     public void OffStartImage()
     {

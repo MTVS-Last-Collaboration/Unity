@@ -86,7 +86,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        string roomName = "LoobyTest";
+        string roomName = "LoobyTest0";
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -114,7 +114,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방참가
     public void JoinRoom()
     {
-        string roomName = "LoobyTest";
+        string roomName = "LoobyTest0";
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)

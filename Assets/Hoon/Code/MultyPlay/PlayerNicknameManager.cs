@@ -16,7 +16,6 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
     void Start()
     {
         photonView = transform.GetComponent<PhotonView>();
-
         nickName = nickNameComp.text;
 
         if ( photonView.IsMine )
@@ -31,8 +30,6 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
             print("다른아바타 닉네임" + nickNameComp.text);
 
         }
-
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -44,12 +41,12 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
         }
         else if (stream.IsReading)
         {
-            otherNickName = (string)stream.ReceiveNext(); //print("닉네임을 받자");
+            otherNickName = (string)stream.ReceiveNext(); // print("닉네임을 받자");
 
         }
     }
     // Update is called once per frame
-    /*  void Update()
+    /*void Update()
       {
 
       }*/
