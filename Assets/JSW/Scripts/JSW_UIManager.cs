@@ -10,10 +10,13 @@ public class JSW_UIManager : MonoBehaviour
     public GameObject album_UI;
     public GameObject Album2;
     public GameObject Album_Loading;
+    public GameObject PicUploadingUI;
     public GameObject Calender1;
     public GameObject Calender2;
     public GameObject Mong_1;
     public GameObject Mong_Chat_2;
+    public GameObject DecorateShopUI;
+    public GameObject DecorateMineUI;
 
 
     // Start is called before the first frame update
@@ -22,17 +25,18 @@ public class JSW_UIManager : MonoBehaviour
         album_UI = GameObject.Find("UI_Album");
         Album2 = GameObject.Find("Album2");
         Album_Loading = GameObject.Find("Album_Loading");
+        PicUploadingUI = GameObject.Find("PicUploadingUI");
+
         Calender1 = GameObject.Find("Calender1");
         Calender2 = GameObject.Find("Calender2");
+
         Mong_1 = GameObject.Find("Mong_1");
         Mong_Chat_2 = GameObject.Find("Mong_Chat_2");
-        AllActiveFasle();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        DecorateShopUI = GameObject.Find("DecorateShopUI_All");
+        DecorateMineUI = GameObject.Find("DecorateMineUI_All");
+
+        AllActiveFasle();
     }
 
     void AllActiveFasle()
@@ -40,10 +44,13 @@ public class JSW_UIManager : MonoBehaviour
         album_UI.SetActive(false);
         Album2.SetActive(false);
         Album_Loading.SetActive(false);
+        PicUploadingUI.SetActive(false);
         Calender1.SetActive(false);
         Calender2.SetActive(false);
         Mong_1.SetActive(false);
         Mong_Chat_2.SetActive(false);
+        DecorateShopUI.SetActive(false);
+        DecorateMineUI.SetActive(false);
     }
 
     // Album苞 包访等 内靛
@@ -81,6 +88,16 @@ public class JSW_UIManager : MonoBehaviour
         Album2.SetActive(true);
     }
 
+    public void OnClickPicUploadingUI()
+    {
+        //Album2.SetActive(false);
+        PicUploadingUI.SetActive(true);
+    }
+    public void OnClickPicUploadingUI_Back()
+    {
+        PicUploadingUI.SetActive(false);
+        //Album2.SetActive(true);
+    }
 
     // Calender客 包访等 内靛
     public void OnClickCalender()
@@ -116,5 +133,27 @@ public class JSW_UIManager : MonoBehaviour
     {
         Mong_Chat_2.SetActive(false);
         Mong_1.SetActive(true);
+    }
+
+    public void OnClickDecorateShopUI()
+    {
+        DecorateShopUI.SetActive(true);
+        DecorateMineUI.SetActive(false);
+    }
+
+    public void OnClickDecorateShopUI_Back()
+    {
+        DecorateShopUI.SetActive(false);
+    }
+
+    public void OnClickDecorateMineUI()
+    {
+        DecorateMineUI.SetActive(true);
+        DecorateShopUI.SetActive(false);
+    }
+
+    public void OnClickDecorateMineUI_Back()
+    {
+        DecorateMineUI.SetActive(false);
     }
 }

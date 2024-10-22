@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 7154275629186380742}
   - component: {fileID: 7536929273574911957}
   - component: {fileID: 6588811508204440771}
+  - component: {fileID: 9177127835385021055}
   m_Layer: 0
   m_Name: chair
-  m_TagString: Untagged
+  m_TagString: Funiture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,3 +106,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &9177127835385021055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8882538089112504151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c13cf9efd6cca34d8a39958290fa380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decoObjectPositionX: 0
+  decoObjectPositionZ: 0
+  decoObjectLengthX: 1
+  decoObjectLengthZ: 1
+  decoObjectRotation: 0
+  funitureNum: 0
+  isMovingFuniture: 0

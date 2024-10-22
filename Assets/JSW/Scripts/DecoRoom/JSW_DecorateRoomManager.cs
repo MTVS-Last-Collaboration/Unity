@@ -7,7 +7,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 public class JSW_DecorateRoomManager : MonoBehaviour
 {
     public bool [,] roomPosition = new bool [20, 20];
-    public List<JSW_DecoObject> FunitureList = new List<JSW_DecoObject>();
+    public List<GameObject> FunitureList = new List<GameObject>();
 
     public enum funiture
     {
@@ -176,6 +176,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 9시방향
         if (rot == 3)
         {
+           
             for (int i = posX; i > posX - lenZ; i--)
             {
                 for (int j = posZ; j < posZ + lenX; j++)
@@ -241,6 +242,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
+
                     }
                 }
             }
@@ -326,6 +328,92 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         return isResult;
     }
 
+    public bool isDrawFuniture(int posX, int posZ, int lenX, int lenZ, int rot, int pushDir)
+    {
+        bool isResult = true;
+
+
+        if (pushDir == 0)
+        {
+            posZ += 1;
+        }
+        else if (pushDir == 1)
+        {
+            posX += 1;
+        }
+        else if (pushDir == 2)
+        {
+            posZ -= 1;
+        }
+        else if (pushDir == 3)
+        {
+            posX -= 1;
+        }
+
+
+        // 12시방향
+        if (rot == 0)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j < posZ + lenZ; j++)
+                {
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        isResult = false;
+                    }
+                }
+            }
+        }
+        // 3시방향
+        if (rot == 1)
+        {
+            for (int i = posX; i < posX + lenZ; i++)
+            {
+                for (int j = posZ; j > posZ - lenX; j--)
+                {
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        isResult = false;
+                    }
+                }
+            }
+        }
+        // 6시방향
+        if (rot == 2)
+        {
+            for (int i = posX; i < posX + lenX; i++)
+            {
+                for (int j = posZ; j > posZ - lenZ; j--)
+                {
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        isResult = false;
+
+                    }
+                }
+            }
+        }
+        // 9시방향
+        if (rot == 3)
+        {
+            for (int i = posX; i > posX - lenZ; i--)
+            {
+                for (int j = posZ; j < posZ + lenX; j++)
+                {
+                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    {
+                        isResult = false;
+                    }
+                }
+            }
+        }
+
+       
+
+        return isResult;
+    }
+
     public void PushFuniture(int posX, int posZ, int lenX, int lenZ, int rot, int pushDir)
     {
         // 12시방향
@@ -407,7 +495,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 3시방향
         if (rot == 1)
         {
-            posX += 1;
             for (int i = posX; i < posX + lenZ; i++)
             {
                 for (int j = posZ; j > posZ - lenX; j--)
@@ -421,7 +508,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            posZ -= 1;
             for (int i = posX; i < posX + lenX; i++)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
@@ -433,7 +519,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 9시방향
         if (rot == 3)
         {
-            posX -= 1;
             for (int i = posX; i > posX - lenZ; i--)
             {
                 for (int j = posZ; j < posZ + lenX; j++)
