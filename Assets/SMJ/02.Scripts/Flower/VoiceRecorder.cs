@@ -2,22 +2,109 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 using System;
+using System.Net;
+using Photon.Pun;
 
-public class VoiceRecorder : MonoBehaviour
+public class VoiceRecorder : MonoBehaviourPun
 {
+    private string directoryPath;
+
     private AudioClip recordedClip;
     private AudioSource audioSource;
     private bool isRecording = false;
     private int recordingFrequency = 44100;
     private string microphoneName;
-
     private Flower flower;
+
+    private void Awake()
+    {
+        InitializeDirectory();
+    }
 
     void Start()
     {
         flower = GetComponent<Flower>();
         audioSource = GetComponent<AudioSource>();
         microphoneName = Microphone.devices[0]; // 첫 번째 사용 가능한 마이크 사용
+    }
+
+    public bool HasRecording()
+    {
+        return recordedClip != null;
+    }
+
+    public byte[] GetRecordedData()
+    {
+        if (recordedClip == null) return null;
+
+        // AudioClip 데이터를 WAV 형식의 byte[]로 변환
+        using (MemoryStream stream = new MemoryStream())
+        {
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                var samples = new float[recordedClip.samples * recordedClip.channels];
+                recordedClip.GetData(samples, 0);
+
+                // WAV 헤더 작성
+                writer.Write(System.Text.Encoding.UTF8.GetBytes("RIFF"));
+                writer.Write(36 + samples.Length * 2);
+                writer.Write(System.Text.Encoding.UTF8.GetBytes("WAVE"));
+                writer.Write(System.Text.Encoding.UTF8.GetBytes("fmt "));
+                writer.Write(16);
+                writer.Write((short)1);
+                writer.Write((short)recordedClip.channels);
+                writer.Write(recordedClip.frequency);
+                writer.Write(recordedClip.frequency * 2);
+                writer.Write((short)2);
+                writer.Write((short)16);
+                writer.Write(System.Text.Encoding.UTF8.GetBytes("data"));
+                writer.Write(samples.Length * 2);
+
+                // 샘플 데이터 작성
+                foreach (float sample in samples)
+                {
+                    writer.Write((short)(sample * 32767));
+                }
+            }
+            return stream.ToArray();
+        }
+    }
+
+    public void SetRecordedData(byte[] data)
+    {
+        if (data == null || data.Length == 0) return;
+
+        try
+        {
+            // WAV 헤더 건너뛰기 (44 bytes)
+            int headerSize = 44;
+            int samplesCount = (data.Length - headerSize) / 2; // 16-bit samples
+            float[] samples = new float[samplesCount];
+
+            // WAV 데이터를 float 배열로 변환
+            for (int i = 0; i < samplesCount; i++)
+            {
+                short sample = BitConverter.ToInt16(data, headerSize + i * 2);
+                samples[i] = sample / 32768f;
+            }
+
+            // 새로운 AudioClip 생성
+            recordedClip = AudioClip.Create("ReceivedAudio", samplesCount, 1, recordingFrequency, false);
+            recordedClip.SetData(samples, 0);
+
+            // AudioSource와 Flower에 설정
+            audioSource.clip = recordedClip;
+            flower.voiceClip = recordedClip;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error setting recorded data: {e.Message}");
+        }
+    }
+
+    public AudioClip GetAudioClip()
+    {
+        return recordedClip;
     }
 
     public void StartRecording()
@@ -58,6 +145,7 @@ public class VoiceRecorder : MonoBehaviour
             Debug.Log("Already recording.");
         }
     }
+
     private IEnumerator StopRecordingAfterMaxDuration()
     {
         yield return new WaitForSeconds(10);
@@ -120,16 +208,49 @@ public class VoiceRecorder : MonoBehaviour
         }
     }
 
+    private void InitializeDirectory()
+    {
+        // VoiceClips 디렉토리 경로 설정
+        directoryPath = Path.Combine(Application.persistentDataPath, "VoiceClips", gameObject.name);
+
+        try
+        {
+            // 디렉토리가 존재하지 않으면 생성
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+                Debug.Log($"Created directory: {directoryPath}");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error creating directory: {e.Message}");
+        }
+    }
+
     public void SaveRecording()
     {
         if (recordedClip != null)
         {
-            string fileName = $"Recording_{System.DateTime.Now:yyyyMMdd_HHmmss}.wav";
-            string directoryPath = Path.Combine(Application.streamingAssetsPath, "VoiceClips", gameObject.name);
-            string filePath = Path.Combine(directoryPath, fileName);
+            try
+            {
+                // 파일 이름 생성
+                string fileName = $"Recording_{System.DateTime.Now:yyyyMMdd_HHmmss}.wav";
+                string filePath = Path.Combine(directoryPath, fileName);
 
-            SavWav.Save(filePath, recordedClip);
-            Debug.Log($"Recording saved to: {filePath}");
+                // 디렉토리 재확인 및 생성
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                SavWav.Save(filePath, recordedClip);
+                Debug.Log($"Recording saved to: {filePath}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error saving recording: {e.Message}");
+            }
         }
     }
 

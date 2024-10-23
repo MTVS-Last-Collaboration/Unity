@@ -86,7 +86,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        string roomName = "LoobyTest0";
+        string roomName = "SMJ_LoobyTest";
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -114,7 +114,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방참가
     public void JoinRoom()
     {
-        string roomName = "LoobyTest0";
+        string roomName = "SMJ_LoobyTest";
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
@@ -197,7 +197,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             print("방개수" + roomList.Count);
             foreach (RoomInfo roomInfo in roomList)
             {
-                if (roomInfo.Name.Contains("LoobyTest"))
+                if (roomInfo.Name.Contains("SMJ_LoobyTest"))
                 {
                     print("방이있으니까 참가해야지~");
                     JoinRoom();
@@ -205,7 +205,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
                 }
 
             }
-
+            CreateRoom();
         }
 
     }

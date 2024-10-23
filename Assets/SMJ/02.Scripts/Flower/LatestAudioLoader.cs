@@ -21,7 +21,7 @@ public class LatestAudioLoader : MonoBehaviour
     //Get방식으로 가져오기 전에 쓰는 로컬 임시 방편
     void LoadLatestAudioClip()
     {
-        string directoryPath = Path.Combine(Application.streamingAssetsPath, "VoiceClips", gameObject.name);
+        string directoryPath = Path.Combine(Application.persistentDataPath, "VoiceClips", gameObject.name);
 
         if (!Directory.Exists(directoryPath))
         {
@@ -46,7 +46,7 @@ public class LatestAudioLoader : MonoBehaviour
 
     IEnumerator LoadAudioClip(string relativePath)
     {
-        string fullPath = Path.Combine(Application.streamingAssetsPath, relativePath);
+        string fullPath = Path.Combine(Application.persistentDataPath, relativePath);
         string url = $"file://{fullPath}";
 
         using var www = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.WAV);

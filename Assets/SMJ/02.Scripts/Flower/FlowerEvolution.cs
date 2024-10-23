@@ -50,9 +50,9 @@ public class FlowerEvolution : MonoBehaviourPun
 
     public void CheckEvolutionCount()
     {
-        if (!photonView.IsMine) return; // 소유자만 진화 체크 가능
-
+        // IsMine 체크 제거 - 모든 클라이언트에서 진화 체크 가능하도록
         Flower.States newState = flower.curState;
+
         if (flower.evolutionCount >= blossomEvolCount)
         {
             newState = Flower.States.BLOSSOM;
@@ -67,14 +67,13 @@ public class FlowerEvolution : MonoBehaviourPun
 
     private void StartEvolution(Flower.States newState)
     {
+        // 모든 클라이언트에서 진화 상태 동기화
         photonView.RPC("RPC_SyncFlowerState", RpcTarget.All, newState);
         StartCoroutine(EvolutionAnimation(newState));
     }
 
     public void NewFlower()
     {
-        if (!photonView.IsMine) return;
-
         StartEvolution(Flower.States.SPROUT);
         goodsManager.IncreaseCoin(flower.harvestCoins);
     }
@@ -83,8 +82,24 @@ public class FlowerEvolution : MonoBehaviourPun
     {
         flower.isTouchAble = false;
         yield return new WaitForSeconds(1f);
-
-        // 애니메이션이 끝난 후 상태 동기화
         flower.isTouchAble = true;
+
+        // 진화 완료 후 UI 업데이트
+        FlowerUIManager uiManager = GetComponent<FlowerUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.UpdateUI(flower);
+        }
+    }
+
+    [PunRPC]
+    private void RPC_OnEvolutionComplete(Flower.States state)
+    {
+        // UI 매니저에 진화 완료 알림
+        FlowerUIManager uiManager = GetComponent<FlowerUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.OnEvolutionComplete(state);
+        }
     }
 }
