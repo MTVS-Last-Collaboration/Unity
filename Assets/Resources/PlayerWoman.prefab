@@ -285,6 +285,8 @@ GameObject:
   - component: {fileID: 8090702480946202253}
   - component: {fileID: 4061983533756813129}
   - component: {fileID: 7412210534642413108}
+  - component: {fileID: 1712947306551968801}
+  - component: {fileID: 6847314505739627917}
   m_Layer: 0
   m_Name: PlayerWoman
   m_TagString: Player
@@ -477,6 +479,32 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1712947306551968801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649318054638783015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b93d91573a80af43b5844870239d3c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: test002
+--- !u!114 &6847314505739627917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649318054638783015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b1d183b15fa3d47b100677c4a13368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFirst: 0
 --- !u!1001 &640941195503361237
 PrefabInstance:
   m_ObjectHideFlags: 0
