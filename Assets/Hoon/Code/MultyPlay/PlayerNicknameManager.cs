@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.LookDev;
 
 public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
 {
@@ -10,12 +11,25 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
     PhotonView photonView;
     string nickName;
     string otherNickName;
+    public string userNumber;
    
     // Start is called before the first frame update
     void Start()
     {
         photonView = transform.GetComponent<PhotonView>();
         nickName = nickNameComp.text;
+
+        print("내오브젝트 이름" + gameObject.name);
+        if (gameObject.name.Contains("PlayerMale"))
+        {
+            userNumber = "user1";
+            print("내유저 번호" + userNumber);
+        }
+        else
+        {
+            userNumber = "user2";
+            print("내유저 번호" + userNumber);
+        }
 
         if ( photonView.IsMine )
         {

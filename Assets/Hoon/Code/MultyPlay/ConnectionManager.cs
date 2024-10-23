@@ -189,7 +189,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //print("방이 있으니 참가해야지");
         // 로비에 들어갔으면 방을 생성
         //JoinRoom();
-
+        bool isCreataeRoom = false;
         if (roomList.Count > 0) //방개수가 0보다 크면                                
         {
             print("방개수" + roomList.Count);
@@ -198,21 +198,27 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             {
                 //방이름을 포함하고 있으면 참가.
                 //if (roomInfo.Name.Contains("LoobyTestHoon"))
-                if (roomInfo.Name.Contains(createRoomName))
+                if (roomInfo.Name.Contains(joinRoomName))
                 {
                     print("방이있으니까 참가해야지~");
+                    isCreataeRoom = false;
                     JoinRoom();
-                    return;
+                    break;
                 }
                 else
                 {
-                    print("원하는 방이 없으니 만들자");
-                    //없으면 방 만들기
-                    CreateRoom();
+                    isCreataeRoom = true;
                 }
+            }
+            
+            if(isCreataeRoom)
+            {
+                print("원하는 방이 없으니 만들자");
+                //없으면 방 만들기
+                CreateRoom();
 
             }
-           
+
         }
         else if(roomList.Count == 0) //방개수가 0개면
         {

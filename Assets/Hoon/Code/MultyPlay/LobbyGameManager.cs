@@ -12,7 +12,22 @@ public class LobbyGameManager : MonoBehaviourPun
 
     string playerAvataType;
     public string playerNickName;
-    
+
+    void Awake()
+    {
+        // 싱글턴 패턴: 인스턴스가 존재하지 않으면 현재 인스턴스로 설정
+        if (instance == null)
+        {
+            instance = this;
+            //DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않게 설정
+        }
+        else if (instance != this)
+        {
+            // 인스턴스가 이미 있으면 현재 오브젝트를 파괴
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +40,10 @@ public class LobbyGameManager : MonoBehaviourPun
         else
         {
             if(LoginInfoManager.instance == null)
-            { 
-                return; 
+            {
+                playerNickName = "닉네임없음";
+                print("LobbyGameManager.instance.playerNickName" + playerNickName);
+                return;
             }
             else
             {
