@@ -14,6 +14,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //public MethodInfo methodInfo;
     public static ConnectionManager Instance;
     public GameObject avataName;
+    public string createRoomName;
+    public string joinRoomName;
 
     // Start is called before the first frame update
     void Start()
@@ -86,7 +88,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        string roomName = "LoobyTest1";
+        //string roomName = "LoobyTestHoon";
+        string roomName = createRoomName;
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -114,7 +117,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방참가
     public void JoinRoom()
     {
-        string roomName = "LoobyTest1";
+        //tring roomName = "LoobyTestHoon";
+        string roomName = joinRoomName;
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
@@ -186,33 +190,34 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 로비에 들어갔으면 방을 생성
         //JoinRoom();
 
-        if (roomList.Count == 0)
-        {
-
-            print("방개수" + roomList.Count + "방이없으니 만들어야지...");
-            CreateRoom();
-        }
-        else
+        if (roomList.Count > 0) //방개수가 0보다 크면                                
         {
             print("방개수" + roomList.Count);
             //방을 모두 검색해서 방이 있는지 찾자.
             foreach (RoomInfo roomInfo in roomList)
             {
                 //방이름을 포함하고 있으면 참가.
-                if (roomInfo.Name.Contains("LoobyTest1"))
+                //if (roomInfo.Name.Contains("LoobyTestHoon"))
+                if (roomInfo.Name.Contains(createRoomName))
                 {
                     print("방이있으니까 참가해야지~");
                     JoinRoom();
                     return;
                 }
-                else 
+                else
                 {
+                    print("원하는 방이 없으니 만들자");
                     //없으면 방 만들기
                     CreateRoom();
                 }
 
             }
-
+           
+        }
+        else if(roomList.Count == 0) //방개수가 0개면
+        {
+            print("방개수" + roomList.Count + "방이없으니 만들어야지...");
+            CreateRoom();
         }
 
     }

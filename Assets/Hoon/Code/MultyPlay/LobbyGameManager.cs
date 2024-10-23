@@ -23,8 +23,8 @@ public class LobbyGameManager : MonoBehaviourPun
         
         }
         else
-        {     
-            if(LoginInfoManager.instance.avataChoice == null)
+        {
+            if(LoginInfoManager.instance == null)
             { 
                 return; 
             }
