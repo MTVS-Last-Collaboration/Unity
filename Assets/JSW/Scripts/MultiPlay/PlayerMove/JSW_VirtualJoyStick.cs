@@ -105,7 +105,6 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
         // 테스트 용
         if (Input.GetKeyDown(KeyCode.H)) 
         {
-
             locking = true;
         }
         if (Input.GetKeyDown(KeyCode.L)) 
@@ -138,7 +137,6 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                     {
                         pressY -= Time.deltaTime;
                     }
-                    print(pressX + "dddd" + pressY);
                     if (pressX >= 2f)
                     {
                         pressX = 0;

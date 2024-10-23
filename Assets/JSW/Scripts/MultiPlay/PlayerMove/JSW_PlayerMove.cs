@@ -17,6 +17,11 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
     JSW_VirtualJoyStick joyStick;
     PhotonView photonview;
 
+    float x;
+    float z;
+    float myDirectionX;
+    float myDirectionZ;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,13 +40,22 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
         //PlayerMoveJoyStick(joyStick.inputDirection);
         if (photonView.IsMine == false)
         {
-            print("내것이 아님");
             // 서버에서 받은 위치 및 회전을 부드럽게 동기화
             transform.position = myPos;
+            transform.rotation = myRot;
 
+            if (animator != null)  //animator null 아닐때
+            {
+                if (x != 0 || z != 0)    //값이 0이 아닐때
+                {
+                    animator.SetBool("Walk", true); //걷기 켜기
+                }
+                else //0일때
+                {
+                    animator.SetBool("Walk", false); //걷기 끄기
+                }
+            }
         }
-
-
     }
 
     public void PlayerMoveKey()
@@ -124,8 +138,8 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
         if (photonview.IsMine)
         {
             //print("내꺼 움직이자");
-            float x = inputDirection.x;     //print("Horizontal=" + x);
-            float z = inputDirection.y;     //print("Vertical=" + y);
+            x = inputDirection.x;     //print("Horizontal=" + x);
+            z = inputDirection.y;     //print("Vertical=" + y);
 
             Vector3 playerMoveDir = new Vector3(x, 0, z);
             playerMoveDir.Normalize();
@@ -219,15 +233,15 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
             //print("내 위치를 보내자");
             stream.SendNext(transform.position);    //나의 위치를 하자.
             stream.SendNext(transform.rotation);    //나의 방향을 보내자.
-
+            stream.SendNext(x);
+            stream.SendNext(z);
         }
         else if (stream.IsReading)
         {
-            print("내 위치를 받자");
             myPos = (Vector3)stream.ReceiveNext();
             myRot = (Quaternion)stream.ReceiveNext();
-
-
+            x = (float)stream.ReceiveNext();
+            z = (float)stream.ReceiveNext();
         }
 
     }

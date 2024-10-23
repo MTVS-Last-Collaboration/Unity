@@ -8,13 +8,25 @@ public class JSW_LobbyGameManager : MonoBehaviour
 {
     public static LobbyGameManager instance;
 
-
+    string playerAvataType;
     public GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
+
+        playerAvataType = LoginInfoManager.instance.avataChoice;
+        if (playerAvataType == "PlayerWoman")
+        {
+            playerAvataType = "JSW_PlayerWoman";
+        }
+        else if (playerAvataType == "PlayerMale")
+        {
+            playerAvataType = "JSW_PlayerMale";
+        }
+
         StartCoroutine(SpawnPlayer());
+       
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도수 설정하기 (perSeconds) 
         PhotonNetwork.SerializationRate = 30;
@@ -45,7 +57,7 @@ public class JSW_LobbyGameManager : MonoBehaviour
         Vector3 initPosition = new Vector3(10, 0.5f, 10);
         //플레이어 생성하자, 이름,위치.회전 , 프리팹 경로는 Resources 
         //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
-        player = PhotonNetwork.Instantiate("JSW_PlayerWoman", initPosition, Quaternion.identity);
+        player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);
 
         // player 오브젝트 캐싱 완료
         Debug.Log("Player instantiated and cached: " + player.gameObject);
