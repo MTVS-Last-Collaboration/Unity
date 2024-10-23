@@ -17,7 +17,7 @@ public class CameraControllTest : MonoBehaviour
     void Start()
     {
         //메인카메라 캐싱
-        mainCam_Object = GameObject.Find("MainCamera");
+        mainCam_Object = GameObject.Find("MainCameraSoo");
         playerPhotonview = transform.GetComponent<PhotonView>();
     }
 
