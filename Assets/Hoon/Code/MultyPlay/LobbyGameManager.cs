@@ -8,13 +8,17 @@ using UnityEngine;
 public class LobbyGameManager : MonoBehaviourPun
 {
     public static LobbyGameManager instance;
-
-
     public GameObject player;
 
+    string playerAvataType;
+    public string playerNickName;
+    
     // Start is called before the first frame update
     void Start()
     {
+        playerAvataType = LoginInfoManager.instance.avataChoice;
+        playerNickName = LoginInfoManager.instance.nickName;
+
         StartCoroutine(SpawnPlayer());
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도수 설정하기 (perSeconds) 
@@ -46,7 +50,8 @@ public class LobbyGameManager : MonoBehaviourPun
         Vector3 initPosition = new Vector3(radomPos.x, 0.0f, radomPos.y);
         //플레이어 생성하자, 이름,위치.회전 , 프리팹 경로는 Resources 
         //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
-        player = PhotonNetwork.Instantiate("PlayerWoman", initPosition, Quaternion.identity);
+        //player = PhotonNetwork.Instantiate("PlayerWoman", initPosition, Quaternion.identity);
+        player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);
 
         // player 오브젝트 캐싱 완료
         Debug.Log("Player instantiated and cached: " + player.gameObject);
