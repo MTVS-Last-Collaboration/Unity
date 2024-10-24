@@ -14,6 +14,8 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     public GameObject PicFactory;
     public RectTransform trContent;
 
+    public GameObject testOb;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -72,5 +74,10 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     {
         //PhotonNetwork.NetworkingClient.RemoveCallbackTarget(this); // 델리게이트 방식
         PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
+
+    public void testObject()
+    {
+        testOb.SetActive(true);
     }
 }

@@ -20,10 +20,18 @@ public class JSW_ChatItem : MonoBehaviour
 
     }
 
-    public void SetText(string msg, Color chatColor)
+    public void SetText(string msg, string chatColor)
     {
-        chatText.text = msg;
-
-        chatText.color = chatColor;
+        if(chatColor != "Black")
+        {
+            chatText.text = "µø±€¿Ã : " + msg;
+            chatText.color = new Color(20, 20, 20);
+        }
+        else
+        {
+            chatText.text = msg;
+            chatText.color = Color.black;
+        }
+       
     }
 }

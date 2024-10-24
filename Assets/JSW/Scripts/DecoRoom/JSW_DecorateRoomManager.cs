@@ -7,7 +7,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class JSW_DecorateRoomManager : MonoBehaviour
 {
-    public bool [,] roomPosition = new bool [20, 20];
+    public bool [,] roomPosition = new bool [8, 8];
     public List<GameObject> FunitureList = new List<GameObject>();
     public JSW_PlayerDecorate playerDecorate;
 
@@ -84,7 +84,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -98,7 +98,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -112,7 +112,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -127,7 +127,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
 
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -215,7 +215,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult =  false;
                     }
@@ -229,7 +229,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -243,7 +243,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
 
@@ -258,7 +258,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -362,7 +362,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -376,7 +376,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -390,7 +390,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
 
@@ -405,7 +405,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
-                    if (j >= 20 || j <= 0 || i >= 20 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -503,8 +503,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-
-
                     roomPosition[j, i] = true;
                 }
             }
@@ -536,9 +534,9 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
     void printRoomSpace()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 20; j++)
+            for (int j = 0; j < 8; j++)
             {
                 if (roomPosition[i, j]) print(i + " " + j);
             }
@@ -596,7 +594,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
     public void PlayerSetFuniture1()
     {
-        playerDecorate.SetFuniture1();
+        playerDecorate.SetFuniture1("DeskPlant");
     }
 
     public void PlayerSetFuniture2()

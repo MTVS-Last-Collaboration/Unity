@@ -16,7 +16,7 @@ public class JSW_CameraRotation : MonoBehaviour
     public float mianCamZ = -8; // 카메라 거리
     public float radius = 10.0f;  // 기준점으로부터 거리 (반지름)
     public float speed = 1.0f;   // 원운동 속도
-    private float angle = 0f;    //각도
+    private float angle = 180f;    //각도
     Vector3 playerPos;
     public float playerPosX;
     public float playerPosZ;

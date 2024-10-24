@@ -5,6 +5,7 @@ using UnityEngine;
 public class JSW_ClickMong : MonoBehaviour
 {
     public GameObject uiManager;
+    public JSW_CameraControllTest cameraControll;
     private bool isPlayerInRange = false;
 
     private void Start()
@@ -18,6 +19,7 @@ public class JSW_ClickMong : MonoBehaviour
         if (isPlayerInRange)
         {
             uiManager.GetComponent<JSW_UIManager>().OnClickMong();
+            cameraControll.CameraToMong();
         }
     }
 
