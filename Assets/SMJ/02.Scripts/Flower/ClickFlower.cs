@@ -156,7 +156,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
         }
     }
 
-    private void HandleInteraction()
+    public void HandleInteraction()
     {
         print(isPlayerInRange);
         if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null)
