@@ -116,7 +116,11 @@ public class FlowerUIManager : MonoBehaviourPun
             return;
         }
 
-        bool isMyFlower = click.checkID.IsMine(flower);
+        bool isMyFlower = false;
+        if (click.checkID != null)
+        {
+            isMyFlower = click.checkID.IsMine(flower);
+        }
         bool hasRecording = flower.voiceClip != null || (recorder != null && recorder.HasRecording());
 
         if (dateChanger.UseFeature() == false && isListenComplete == true)
@@ -314,7 +318,10 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         statusText.text = statusMsg;
 
-        bool isMyFlower = click.checkID.IsMine(flower);
+        bool isMyFlower = false;
+        if (click.checkID != null) {
+            isMyFlower = click.checkID.IsMine(flower);
+        }
 
         if (state == Flower.States.BLOSSOM)
         {
@@ -345,8 +352,11 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             return;
         }
-
-        bool isMyFlower = click.checkID.IsMine(targetFlower);
+        bool isMyFlower = false;
+        if (click.checkID != null)
+        {
+            isMyFlower = click.checkID.IsMine(targetFlower);
+        }
         UpdateUI(targetFlower);
         uiPanel.SetActive(true);
 
@@ -356,7 +366,7 @@ public class FlowerUIManager : MonoBehaviourPun
             SwapButtonUI(5);  // 새 꽃 심기 버튼
             return;  // 여기서 종료
         }
-
+        print(isMyFlower);
         // 다른 상태들 처리
         if (isMyFlower)
         {
@@ -440,7 +450,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void OnRecordingButtonClick(float second)
     {
-        if (!click.checkID.IsMine(flower)) return;
+        //if (!click.checkID.IsMine(flower)) return;
 
         exitButton.SetActive(false);
         recordButtons[1].SetActive(true);
@@ -507,7 +517,9 @@ public class FlowerUIManager : MonoBehaviourPun
 
         recordPanel.SetActive(false);
         exitButton.SetActive(true);
-        SwapButtonUI(3);
+        isRecordComplete = true;
+        ShowFlowerInfo(flower, 3);
+        //SwapButtonUI(3);
         UpdateUI(flower);
         for (int i = 1; i < recordButtons.Length; i++)
         {
@@ -538,7 +550,7 @@ public class FlowerUIManager : MonoBehaviourPun
     public void OnListenVoiceButtonClick()
     {
         if (click == null || click.checkID == null || flower == null) return;
-        if (click.checkID.IsMine(flower)) return;
+        //if (click.checkID.IsMine(flower)) return;
 
         SwapButtonUI(4);  // 재생 중 UI
         recorder.PlayRecording();
@@ -552,7 +564,11 @@ public class FlowerUIManager : MonoBehaviourPun
             yield return null;
         }
 
-        bool isMyFlower = click.checkID.IsMine(flower);
+        bool isMyFlower = false;
+        if (click.checkID != null)
+        {
+            isMyFlower = click.checkID.IsMine(flower);
+        }
         if (!isMyFlower)
         {
             isListenComplete = true;
