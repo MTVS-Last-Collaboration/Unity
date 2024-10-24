@@ -76,6 +76,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     }
     //중복되는 인풋 코드를 함수화하기.
+    Vector3 worldInputDirection;
     private void ControllJoyStickLever(PointerEventData eventData)
     {
         var inputPos = eventData.position - rectTransform.anchoredPosition; //레버의 위치를 구하는 코드
@@ -85,6 +86,21 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
         //inputVector는 해상도로 만들어진값으로 캐릭터 이동속도에 적합하지않음. leverRange로 나누어 0~1 값으로 정규화 하여 이용하자.
         //캐릭터 정규화된 이동 벡터에 이동속도, 시간을 곱해서 이동하게 하자.
         inputDirection = inputVector / leverRange;
+        // 카메라의 방향 벡터 계산
+        Vector3 camForward = Camera.main.transform.forward;
+        Vector3 camRight = Camera.main.transform.right;
+
+        camForward.y = 0;
+        camRight.y = 0;
+        // 카메라의 forward와 right 벡터의 y축 값은 그대로 사용 (수직 방향 포함)
+        camForward.Normalize();
+        camRight.Normalize();
+
+        
+        // 정규화된 입력값을 카메라의 방향으로 변환
+        worldInputDirection = (camForward * inputDirection.y + camRight * inputDirection.x).normalized;
+        inputDirection.y = worldInputDirection.z;
+        inputDirection.x = worldInputDirection.x;
     }
 
     bool locking;

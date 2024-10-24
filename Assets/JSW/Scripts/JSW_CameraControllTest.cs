@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,42 +9,54 @@ public class JSW_CameraControllTest : MonoBehaviour
     //기본카메라 Vector3(0,8,-4)
     public GameObject mainCam_Object;//메인카메라 오브젝트
     public GameObject mainCamPos_Object;  //메인카메라의 위치
-    public Transform player;   // 플레이어 또는 기준 오브젝트
+    public GameObject lobbyGameManager;
+
+    public Transform playerTransform;   // 플레이어 또는 기준 오브젝트
+    public Transform mong;
+
+    string cameraPos = "Original";
+
     public float mainCamY = 8; //카메라의 높이
     PhotonView playerPhotonview;
-
 
     void Start()
     {
         //메인카메라 캐싱
         mainCam_Object = GameObject.Find("MainCamera");
-        
+        lobbyGameManager = GameObject.Find("LobbyGameManager");
     }
 
     void Update()
     {
 
-
-        if (transform != null)
+        if (cameraPos == "Original")    
         {
             Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
+            float mainCamPosY = mainCamPos_Object.transform.position.y; //x방향
             float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
-            mainCam_Object.transform.position = new Vector3(mainCamPosX, mainCamY, mainCamPosZ); //플레이어의 움직임 따라가기
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position,new Vector3(mainCamPosX, mainCamPosY, mainCamPosZ), Time.deltaTime * 10); //플레이어의 움직임 따라가기
             mainCam_Object.transform.forward = playerDir; //카메라가 플레이어 방향을 계속 보게함
         }
-
-
-        if (Input.GetMouseButton(1))//우클릭하는동안
+        else if (cameraPos == "Mong")
         {
-
-            print("우클릭 하는중");
-
+            playerTransform = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform;
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, playerTransform.position + Vector3.up + ((mong.position - Vector3.up * 0.5f) - playerTransform.position).normalized * 0.3f, Time.deltaTime * 10);
+            mainCam_Object.transform.forward = ((mong.position - Vector3.up) - playerTransform.position).normalized;
+            mong.forward = ((mong.position - Vector3.up) - playerTransform.position).normalized * -1;
         }
+        // 여기에 선반도 추가하면 될 듯
 
+    }
 
-
-
+    public void CameraToMong()
+    {
+        cameraPos = "Mong";
+    }
+    public void ResetCamera()
+    {
+        cameraPos = "Original";
+        mong.forward = playerTransform.forward * -1;
     }
 
 }

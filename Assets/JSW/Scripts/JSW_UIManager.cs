@@ -48,7 +48,8 @@ public class JSW_UIManager : MonoBehaviour
         Calender1.SetActive(false);
         Calender2.SetActive(false);
         Mong_1.SetActive(false);
-        Mong_Chat_2.SetActive(false);
+        Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 0;
+        //Mong_Chat_2.SetActive(false);
         DecorateShopUI.SetActive(false);
         DecorateMineUI.SetActive(false);
     }
@@ -127,11 +128,13 @@ public class JSW_UIManager : MonoBehaviour
     public void OnClickMongChat()
     {
         Mong_1.SetActive(false);
-        Mong_Chat_2.SetActive(true);
+        //Mong_Chat_2.SetActive(true);
+        Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 1;
     }
     public void OnClickMongChat_Back()
     {
-        Mong_Chat_2.SetActive(false);
+        Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 0;
+        //Mong_Chat_2.SetActive(false);
         Mong_1.SetActive(true);
     }
 

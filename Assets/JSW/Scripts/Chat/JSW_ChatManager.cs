@@ -7,12 +7,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-//using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class JSW_ChatManager : MonoBehaviour
+public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
 {
     // Input ChatInputField
     public TMP_InputField inputChat;
@@ -21,6 +21,7 @@ public class JSW_ChatManager : MonoBehaviour
     public GameObject chatItemFactory;
     // ChatItem의 부모 Transform
     public RectTransform trContent;
+
 
     private void Awake()
     {
@@ -43,42 +44,78 @@ public class JSW_ChatManager : MonoBehaviour
     {
         inputChat.text = "";
         inputChat.ActivateInputField();
-        // 닉네임의 색을 변경 color로
-        // <color=#ffffff> 닉네임 </color>
+        nickName = LoginInfoManager.instance.nickName;
         string nick = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">" + nickName + "</color>";
 
+        string chat = nick + " : " + s;
 
-        // 귓속말인지 판단
-        // /w 아이디 메시지
- 
-        //if (text[0] == "/w")
-        //{
-        //    // 전체 채팅 구성을 만들자.
-        //    string chat = nick + " : " + text[2];
-        //    // 귓속말을 보내자
-        //    chatClient.SendPrivateMessage(text[1], chat);
-        //}
-        //else
-        //{
-            // 전체 채팅 구성을 만들자.
-            string chat = nick + " : " + s;
-        // 일반 채팅을 보내자.
-        //chatClient.PublishMessage(currChannel, chat);
         SendMessageToChat(chat);
+
         CreateChatItem(chat, Color.black);
-        //}
     }
 
     void CreateChatItem(string chat, Color chatColor)
     {
-        // s의 내용으로 ChatItem을 만들자.
-        GameObject go = Instantiate(chatItemFactory, trContent);
-        // 만들어진 go에서 ChatItem 컴포넌트 가져오자.
-        JSW_ChatItem chatItem = go.GetComponent<JSW_ChatItem>();
+        string chatColorCode;
+        if (chatColor == Color.black)
+        {
+            chatColorCode = "Black";
+        }
+        else if (chatColor == Color.blue)
+        {
+            chatColorCode = "Blue";
+        }
+        else
+        {
+            chatColorCode = "Red";
+        }
+        object[] sendContent = new object[] { chat, chatColorCode };
+
+        // 송신 옵션
+        RaiseEventOptions eventOptions = new RaiseEventOptions();
+        eventOptions.Receivers = ReceiverGroup.All;
+        //eventOptions.CachingOption = EventCaching.DoNotCache;
+
+        // 이벤트 송신 시작
+        PhotonNetwork.RaiseEvent(4, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+        print("Send!");
+        EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    private void OnEnable()
+    {
+        //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+
+    }
 
 
-        // 가져온 컴포넌트의 SetText 함수 실행
-        chatItem.SetText(chat, chatColor);
+    public void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == 4)
+        {
+            // 받은 내용을 "닉네임: 채팅 내용" 형식으로 스크롤뷰의 텍스트에 전달한다.
+            object[] receiveObjects = (object[])photonEvent.CustomData;
+            string chat = receiveObjects[0].ToString();
+            string chatColorCode = receiveObjects[1].ToString();
+
+
+            // s의 내용으로 ChatItem을 만들자.
+            GameObject go = Instantiate(chatItemFactory, trContent);
+            // 만들어진 go에서 ChatItem 컴포넌트 가져오자.
+            JSW_ChatItem chatItem = go.GetComponent<JSW_ChatItem>();
+
+
+            // 가져온 컴포넌트의 SetText 함수 실행
+            chatItem.SetText(chat, chatColorCode);
+        }
+    }
+
+    private void OnDisable()
+    {
+        //PhotonNetwork.NetworkingClient.RemoveCallbackTarget(this); // 델리게이트 방식
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }
 
 
@@ -123,5 +160,10 @@ public class JSW_ChatManager : MonoBehaviour
             Debug.LogError("Message sending failed: " + request.error);
         }
     }
+
+
+
+
+
 
 }

@@ -54,7 +54,7 @@ public class JSW_LobbyGameManager : MonoBehaviour
         yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
 
         Vector2 radomPos = Random.insideUnitCircle * 5.0f;
-        Vector3 initPosition = new Vector3(10, 0.5f, 10);
+        Vector3 initPosition = new Vector3(4, 0.5f, 4);
         //플레이어 생성하자, 이름,위치.회전 , 프리팹 경로는 Resources 
         //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
         player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);

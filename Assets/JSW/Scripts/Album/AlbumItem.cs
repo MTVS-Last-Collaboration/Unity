@@ -14,7 +14,6 @@ public class AlbumItem : MonoBehaviour
 
     public void SetContents(Texture2D image1, string title1, string content1, string day1)
     {
-        print("dd");
         Sprite sprite = Sprite.Create(image1, new Rect(0, 0, image1.width, image1.height), new Vector2(0.5f, 0.5f));
 
         image.sprite = sprite;
