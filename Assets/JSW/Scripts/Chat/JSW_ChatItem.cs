@@ -22,8 +22,15 @@ public class JSW_ChatItem : MonoBehaviour
 
     public void SetText(string msg, Color chatColor)
     {
-        chatText.text = msg;
-
+        if(chatColor != Color.black)
+        {
+            chatText.text = "µø±€¿Ã : " + msg;
+        }
+        else
+        {
+            chatText.text = msg;
+        }
+       
         chatText.color = chatColor;
     }
 }

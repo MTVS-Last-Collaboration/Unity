@@ -16,13 +16,13 @@ public class JSW_LobbyGameManager : MonoBehaviour
     {
 
         playerAvataType = LoginInfoManager.instance.avataChoice;
-        if (playerAvataType == "PlayerWoman")
-        {
-            playerAvataType = "JSW_PlayerWoman";
-        }
-        else if (playerAvataType == "PlayerMale")
+        if (playerAvataType == "PlayerMale")
         {
             playerAvataType = "JSW_PlayerMale";
+        }
+        else
+        {
+            playerAvataType = "JSW_PlayerWoman";
         }
 
         StartCoroutine(SpawnPlayer());

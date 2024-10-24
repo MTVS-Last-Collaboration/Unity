@@ -1,11 +1,15 @@
 using ExitGames.Client.Photon;
+using Newtonsoft.Json.Linq;
 using Photon.Chat;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+//using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class JSW_ChatManager : MonoBehaviour
@@ -60,6 +64,7 @@ public class JSW_ChatManager : MonoBehaviour
             string chat = nick + " : " + s;
         // 일반 채팅을 보내자.
         //chatClient.PublishMessage(currChannel, chat);
+        SendMessageToChat(chat);
         CreateChatItem(chat, Color.black);
         //}
     }
@@ -76,5 +81,47 @@ public class JSW_ChatManager : MonoBehaviour
         chatItem.SetText(chat, chatColor);
     }
 
+
+    public string chatUrl = "http://125.132.216.190:12223/api/chat/send";
+
+    //public string message = "병진님 데이트코스 추천해줘";  // 사용자로부터 입력받은 메시지
+
+    public void SendMessageToChat(string message)
+    {
+        StartCoroutine(SendChatCoroutine(message));
+    }
+
+    IEnumerator SendChatCoroutine(string message)
+    {
+        // 메시지 정보 JSON 포맷으로 변환
+        string jsonData = "{\"messages\": \"" + message + "\"}";
+
+        // HTTP 요청 생성
+        UnityWebRequest request = new UnityWebRequest(chatUrl, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("accept", "application/json");
+
+        yield return request.SendWebRequest();
+
+        // 요청 결과 처리
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Message sent successfully: " + request.downloadHandler.text);
+
+            JObject responseObject = JObject.Parse(request.downloadHandler.text);
+            string aiResponse = responseObject["aiResponse"].ToString();
+            string extractedText = aiResponse;
+            Debug.Log("Extracted AI Response: " + extractedText);
+
+            CreateChatItem(extractedText, Color.gray);
+        }
+        else
+        {
+            Debug.LogError("Message sending failed: " + request.error);
+        }
+    }
 
 }
