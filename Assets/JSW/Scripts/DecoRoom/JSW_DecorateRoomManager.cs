@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,6 +9,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 {
     public bool [,] roomPosition = new bool [20, 20];
     public List<GameObject> FunitureList = new List<GameObject>();
+    public JSW_PlayerDecorate playerDecorate;
 
     public enum funiture
     {
@@ -16,6 +18,10 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         Bed
     }
 
+    private void Start()
+    {
+        StartCoroutine(PlayerDecorate());
+    }
 
     // 새로운 배치
     // 이거 네모난 직사각형만 가능함
@@ -38,8 +44,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-
-
                     roomPosition[j, i] = true;
                 }
             }
@@ -590,6 +594,19 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         }
     }
 
+    public void PlayerSetFuniture1()
+    {
+        playerDecorate.SetFuniture1();
+    }
+
+    public void PlayerSetFuniture2()
+    {
+        playerDecorate.SetFuniture2();
+    }
+    public void PlayerDestroyFuni()
+    {
+        playerDecorate.DestroyFuniture();
+    }
 
     // 여기서 필요한 것
     // 플레이어 위치 받기
@@ -603,4 +620,30 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     // 밀려고 할 때 다른 플레이어 위치 받아오기
     // 당길 때도 플레이어 위치 받아오기
     // 물건 꺼내기 꺼낼 때 주변 놓을 수 있을지 확인하기
+    IEnumerator PlayerDecorate()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject obj in allObjects)
+        {
+            // PhotonView 컴포넌트가 있는지 확인
+            PhotonView photonView = obj.GetComponent<PhotonView>();
+
+            // PhotonView가 있고, isMine이 true인 경우
+            if (photonView != null && photonView.IsMine)
+            {
+                playerDecorate = obj.GetComponent<JSW_PlayerDecorate>();
+                //print("내 포톤뷰 찾았다.");
+                break;
+            }
+        }
+
+        //playerPhotonView = GameObject.Find("PlayerWoman(Clone)").GetComponent<PhotonView>();
+        //playerPhotonView = LobbyGameManager.instance.player.gameObject.GetComponent<PhotonView>();
+    }
+
 }
+

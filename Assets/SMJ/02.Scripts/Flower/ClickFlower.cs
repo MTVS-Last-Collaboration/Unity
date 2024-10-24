@@ -44,20 +44,22 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
+        print("새 플레이어 진입!");
         if (isInitialized)
         {
+            print("새 플레이어 진입 동기화!");
             CheckForPlayer();
         }
     }
 
     private IEnumerator CheckForPlayerRoutine()
     {
+        yield return new WaitForSeconds(1f); // 초기화를 위한 딜레이
+
         while (true)
         {
-            if (isInitialized)
-            {
-                CheckForPlayer();
-            }
+            print($"현재 체크중인 플레이어: {gameObject.name}, managerId: {targetFlower.managerId}");
+            CheckForPlayer();
             yield return delay;
         }
     }
@@ -84,6 +86,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, idHandlingRadius);
         bool foundPlayer = false;
+        bool isNearby = false;  // 거리 체크를 위한 변수 추가
 
         foreach (var hitCollider in hitColliders)
         {
@@ -92,25 +95,24 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
             CheckID playerCheckID = hitCollider.GetComponent<CheckID>();
             if (playerCheckID == null) continue;
 
+            IDHandler playerIDHandler = hitCollider.GetComponent<IDHandler>();
+            if (playerIDHandler == null) continue;
+
+            print($"검사중인 플레이어: {hitCollider.gameObject.name}, ID: {playerIDHandler.ID}, 꽃의 managerId: {targetFlower.managerId}");
+
             float distance = Vector3.Distance(gameObject.transform.position, hitCollider.transform.position);
 
+            // 어떤 플레이어라도 가까이 있으면 true
+            if (distance < detectionDistance)
+            {
+                isNearby = true;
+            }
+
             // 이미 이 꽃의 소유자인 경우
-            if (targetFlower.managerId == playerCheckID.GetComponent<IDHandler>().ID)
+            if (targetFlower.managerId == playerIDHandler.ID)
             {
                 checkID = playerCheckID;
                 foundPlayer = true;
-
-                if (distance < detectionDistance)
-                {
-                    isClose = true;
-                    isPlayerInRange = true;
-                }
-                else
-                {
-                    isClose = false;
-                    isPlayerInRange = false;
-                }
-                break;
             }
             // 아직 아무도 할당되지 않은 꽃이고, 다른 꽃의 소유자가 아닌 플레이어를 발견한 경우
             else if (string.IsNullOrEmpty(targetFlower.managerId))
@@ -132,43 +134,21 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
                 {
                     checkID = playerCheckID;
                     foundPlayer = true;
-
-                    if (distance < detectionDistance)
-                    {
-                        isClose = true;
-                        isPlayerInRange = true;
-                    }
-                    else
-                    {
-                        isClose = false;
-                        isPlayerInRange = false;
-                    }
-                    break;
                 }
             }
             // 상대방의 꽃인 경우
             else if (!string.IsNullOrEmpty(targetFlower.managerId))
             {
-                // checkID는 할당하지 않음
-                if (distance < detectionDistance)
-                {
-                    isClose = true;
-                    isPlayerInRange = true;
-                }
-                else
-                {
-                    isClose = false;
-                    isPlayerInRange = false;
-                }
                 foundPlayer = true;
-                break;
             }
         }
 
+        // 모든 플레이어 체크가 끝난 후에 거리에 따른 상태 설정
+        isClose = isNearby;
+        isPlayerInRange = isNearby;
+
         if (!foundPlayer)
         {
-            isClose = false;
-            isPlayerInRange = false;
             if (!IsSomeoneOwner())
             {
                 checkID = null;
@@ -176,14 +156,14 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
         }
     }
 
-    private void HandleInteraction()
+    public void HandleInteraction()
     {
         print(isPlayerInRange);
         if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null)
         {
             if (checkID != null)
             {
-                print(checkID.IsMine(targetFlower));
+                //print(checkID.IsMine(targetFlower));
                 if (checkID.IsMine(targetFlower) == true)
                 {
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);

@@ -1,31 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CheckID : MonoBehaviour
+public class CheckID : MonoBehaviourPun
 {
     IDHandler idHandler;
     [SerializeField] private bool isFirst = false;
-    private void Start()
-    {
-        idHandler = GetComponent<IDHandler>();
-    }
+
     public bool IsMine(Flower flower)
     {
-        if (flower.managerId == "" && isFirst == false)
+        if (idHandler == null)
         {
-            //수확 완료 후 false
-            isFirst = true;
-            flower.managerId = idHandler.ID;
+            idHandler = GetComponent<IDHandler>();
         }
-        if (flower.managerId == idHandler.ID)
+        if (photonView.IsMine == true)
         {
-            return true;
+            if (flower.managerId == "" && isFirst == false)
+            {
+                isFirst = true;
+                flower.managerId = idHandler.ID;
+            }
+            if (flower.managerId == idHandler.ID)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public void ResetFirst()

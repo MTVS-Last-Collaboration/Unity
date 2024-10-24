@@ -1,11 +1,15 @@
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class JSW_ScheduleManager : MonoBehaviour
+public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
 {
     // 추후 아이콘도 추가할 예정
 
@@ -50,6 +54,7 @@ public class JSW_ScheduleManager : MonoBehaviour
         }
     }
 
+
     public void AddSchedule(string date, JSW_Schedule schedule)
     {
         if (!scheduleDictionary.ContainsKey(date))
@@ -68,15 +73,30 @@ public class JSW_ScheduleManager : MonoBehaviour
         return new List<JSW_Schedule>();
     }
 
-    public void ScheduleSubmit()
-    {
+    //public void ScheduleSubmit()
+    //{
+    //    string chat = input_Field.text;
+    //    string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
 
-        string chat = input_Field.text;
-        string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
-        JSW_Schedule newSchedule = new JSW_Schedule(1, chat);
-        AddSchedule(dayString, newSchedule);
-        CreateScheduleItem(chat, Color.black);
-    }
+    //    object[] sendContent = new object[] { dayString, PhotonNetwork.NickName, chat };
+
+    //    // 송신 옵션
+    //    RaiseEventOptions eventOptions = new RaiseEventOptions();
+    //    eventOptions.Receivers = ReceiverGroup.All;
+    //    //eventOptions.CachingOption = EventCaching.DoNotCache;
+
+    //    // 이벤트 송신 시작
+    //    PhotonNetwork.RaiseEvent(1, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+    //    print("Send!");
+    //    EventSystem.current.SetSelectedGameObject(null);
+
+    //    //string chat = input_Field.text;
+    //    //string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
+    //    //JSW_Schedule newSchedule = new JSW_Schedule(1, chat);
+    //    //AddSchedule(dayString, newSchedule);
+    //    //CreateScheduleItem(chat, Color.black);
+    //}
 
     void CreateScheduleItem(string chat, Color chatColor)
     {
@@ -87,5 +107,60 @@ public class JSW_ScheduleManager : MonoBehaviour
 
         // 가져온 컴포넌트의 SetText 함수 실행
         scheduleItem.SetText(chat);
+    }
+
+    private void OnEnable()
+    {
+
+        //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+
+    }
+
+    public void ScheduleSubmit()
+    {
+        string chat = input_Field.text;
+        string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
+
+        object[] sendContent = new object[] { dayString, PhotonNetwork.NickName, chat };
+
+        // 송신 옵션
+        RaiseEventOptions eventOptions = new RaiseEventOptions();
+        eventOptions.Receivers = ReceiverGroup.All;
+        //eventOptions.CachingOption = EventCaching.DoNotCache;
+
+        // 이벤트 송신 시작
+        PhotonNetwork.RaiseEvent(1, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+        print("Send!");
+        EventSystem.current.SetSelectedGameObject(null);
+
+        //string chat = input_Field.text;
+        //string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
+        //JSW_Schedule newSchedule = new JSW_Schedule(1, chat);
+        //AddSchedule(dayString, newSchedule);
+        //CreateScheduleItem(chat, Color.black);
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == 1)
+        {
+            // 받은 내용을 "닉네임: 채팅 내용" 형식으로 스크롤뷰의 텍스트에 전달한다.
+            object[] receiveObjects = (object[])photonEvent.CustomData;
+            string dayString = receiveObjects[0].ToString();
+            string chat = receiveObjects[2].ToString();
+            
+
+            JSW_Schedule newSchedule = new JSW_Schedule(1, chat);
+            AddSchedule(dayString, newSchedule);
+            CreateScheduleItem(chat, Color.black);
+        }
+    }
+
+    private void OnDisable()
+    {
+        //PhotonNetwork.NetworkingClient.RemoveCallbackTarget(this); // 델리게이트 방식
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }
 }

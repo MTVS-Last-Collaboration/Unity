@@ -1,10 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
-
-public class JSW_DecoObject : MonoBehaviour
+public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
 {
 
     public int decoObjectPositionX;
@@ -20,7 +20,27 @@ public class JSW_DecoObject : MonoBehaviour
     public bool isMovingFuniture;
 
 
+    public Vector3 myPos;
+    public Quaternion myRot;
+
+    void Update()
+    {
+        //PlayerMoveKey();
+        //PlayerMoveJoyStick(joyStick.inputDirection);
+        if (photonView.IsMine == false)
+        {
+            transform.position = myPos;
+            transform.rotation = myRot;
+        }
+    }
+
     public void SetpositionInfo(int posX, int posZ, int lenX, int lenZ, int rot)
+    {
+        photonView.RPC("SetpositionInfo_RPC", RpcTarget.AllBuffered, posX, posZ, lenX, lenZ, rot);
+    }
+
+    [PunRPC]
+    public void SetpositionInfo_RPC(int posX, int posZ, int lenX, int lenZ, int rot)
     {
         decoObjectPositionX = posX;
         decoObjectPositionZ = posZ;
@@ -113,5 +133,22 @@ public class JSW_DecoObject : MonoBehaviour
 
         }
         return minVector3;
-    }  
+    }
+
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            //print("내 위치를 보내자");
+            stream.SendNext(transform.position);    //나의 위치를 하자.
+            stream.SendNext(transform.rotation);    //나의 방향을 보내자
+
+        }
+        else if (stream.IsReading)
+        {
+            myPos = (Vector3)stream.ReceiveNext();
+            myRot = (Quaternion)stream.ReceiveNext();
+        }
+    }
 }

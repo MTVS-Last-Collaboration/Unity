@@ -36,14 +36,22 @@ public class CameraRotation : MonoBehaviour
         if(player == null)
         {
             player = GameObject.Find("PlayerMale(Clone)");
+           // print("남자 플레이어 찾는중");
 
             if(player == null)
             {
                 player = GameObject.Find("PlayerWoman(Clone)");
+                //print("여자플레이어 찾는중");
+                
+            }
+            else
+            {
+                print("남자 플레이어 찾음");
             }
             //print("player오브젝트 이름");
             //print("player오브젝트 이름" + player.name);
         }
+
         if(mainCamPos_Object == null)
         {
             mainCamPos_Object = GameObject.Find("MainCamPos");
@@ -72,6 +80,7 @@ public class CameraRotation : MonoBehaviour
     {
         isLeftRotaion = !isLeftRotaion; //버튼을 누를때마다 변수를 반대값으로
         print("isLeftRotaion" + isLeftRotaion);
+        if (player == null) print("플레이어 없다");
     }
     public void OnclickRightRotation()
     {

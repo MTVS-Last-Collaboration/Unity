@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using System.Globalization;
 using TMPro;
 using UnityEngine;
 
-public class JSW_CalenderManager : MonoBehaviour
+public class JSW_CalenderManager : MonoBehaviourPun
 {
     public GameObject year;
     public GameObject month;
