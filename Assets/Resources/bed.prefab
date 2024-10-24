@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5803152856482171784}
   - component: {fileID: 2524114683162207699}
   - component: {fileID: 5497632480580285747}
+  - component: {fileID: 6329784961990899082}
   m_Layer: 0
   m_Name: bed
   m_TagString: Funiture
@@ -75,6 +76,31 @@ MonoBehaviour:
   decoObjectRotation: 0
   funitureNum: 0
   isMovingFuniture: 0
+  myPos: {x: 0, y: 0, z: 0}
+  myRot: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6329784961990899082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7064614143775868150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 2
+  OwnershipTransfer: 1
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 5497632480580285747}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8763150529471367564
 GameObject:
   m_ObjectHideFlags: 0

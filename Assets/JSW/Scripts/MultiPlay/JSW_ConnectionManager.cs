@@ -8,21 +8,15 @@ using UnityEngine;
 using Photon.Realtime;
 using UnityEditor;
 
-//부모를 MonoBehaviourPunCallbacks로 변경
-public class ConnectionManager : MonoBehaviourPunCallbacks
+public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
 {
     //public MethodInfo methodInfo;
     public static ConnectionManager Instance;
     public GameObject avataName;
-    public string createRoomName;
-    public string joinRoomName;
 
     // Start is called before the first frame update
     void Start()
     {
-        
-        
-
     }
 
     // Update is called once per frame
@@ -43,7 +37,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         // 접속을 서버에 요청하기
         PhotonNetwork.ConnectUsingSettings();
-        
+
 
     }
     //서버연결콜백
@@ -62,7 +56,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 실패 원인을 출력한다.
 
         print(MethodInfo.GetCurrentMethod().Name + " is call");
-        
+
     }
     //마스터연결 콜백
     public override void OnConnectedToMaster()
@@ -88,8 +82,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        //string roomName = "LoobyTestHoon";
-        string roomName = createRoomName;
+        string roomName = "JSW_LoobyTest";
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -107,8 +100,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
             //방을생성하자.
             PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
-
-
         }
 
         //방생성이 완료되면
@@ -117,8 +108,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     //방참가
     public void JoinRoom()
     {
-        //tring roomName = "LoobyTestHoon";
-        string roomName = joinRoomName;
+        string roomName = "JSW_LoobyTest";
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
@@ -135,7 +125,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 성공적으로 방이 개설되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         print("방 만들어짐!");
-   
+
 
     }
     //방참가 콜백
@@ -146,9 +136,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 성공적으로 방에 입장되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         print("방에 입장 성공");
-       
+
         // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(2);
 
     }
     //방참가 실패 콜백
@@ -159,7 +149,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 룸에 입장이 실패한 이유를 출력한다.
         Debug.LogError(message);
         print("입장 실패..." + message);
-      
+
     }
     // 룸에 다른 플레이어가 입장했을 때의 콜백 함수
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -190,36 +180,27 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 로비에 들어갔으면 방을 생성
         //JoinRoom();
 
-        if (roomList.Count > 0) //방개수가 0보다 크면                                
+        if (roomList.Count == 0)
+        {
+
+            print("방개수" + roomList.Count + "방이없으니 만들어야지...");
+            CreateRoom();
+        }
+        else
         {
             print("방개수" + roomList.Count);
-            //방을 모두 검색해서 방이 있는지 찾자.
             foreach (RoomInfo roomInfo in roomList)
             {
-                //방이름을 포함하고 있으면 참가.
-                //if (roomInfo.Name.Contains("LoobyTestHoon"))
-                if (roomInfo.Name.Contains(createRoomName))
+                if (roomInfo.Name.Contains("JSW_LoobyTest"))
                 {
                     print("방이있으니까 참가해야지~");
                     JoinRoom();
                     return;
                 }
-                else
-                {
-                    print("원하는 방이 없으니 만들자");
-                    //없으면 방 만들기
-                    CreateRoom();
-                }
 
             }
-           
-        }
-        else if(roomList.Count == 0) //방개수가 0개면
-        {
-            print("방개수" + roomList.Count + "방이없으니 만들어야지...");
             CreateRoom();
         }
 
     }
-
-} //클래스 끝
+}

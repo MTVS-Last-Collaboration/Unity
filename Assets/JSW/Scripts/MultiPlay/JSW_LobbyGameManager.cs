@@ -4,39 +4,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//동기화 용도 클래스를 부모로 MonoBehaviourPun
-public class LobbyGameManager : MonoBehaviourPun
+public class JSW_LobbyGameManager : MonoBehaviour
 {
     public static LobbyGameManager instance;
-    public GameObject player;
 
     string playerAvataType;
-    public string playerNickName;
-    
+    public GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
-      
-        if(playerAvataType != null)
-        { 
-            return;
-        
-        }
-        else
+
+        playerAvataType = LoginInfoManager.instance.avataChoice;
+        if (playerAvataType == "PlayerWoman")
         {
-            if(LoginInfoManager.instance == null)
-            { 
-                return; 
-            }
-            else
-            {
-                playerAvataType = LoginInfoManager.instance.avataChoice;
-                playerNickName = LoginInfoManager.instance.nickName;
-            }
-          
+            playerAvataType = "JSW_PlayerWoman";
         }
-        
+        else if (playerAvataType == "PlayerMale")
+        {
+            playerAvataType = "JSW_PlayerMale";
+        }
+
         StartCoroutine(SpawnPlayer());
+       
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도수 설정하기 (perSeconds) 
         PhotonNetwork.SerializationRate = 30;
@@ -49,7 +39,7 @@ public class LobbyGameManager : MonoBehaviourPun
         {
             Debug.Log("Player Name: " + player.NickName + ", Player ID: " + player.UserId);
         }
-    
+
     }
 
     // Update is called once per frame
@@ -64,10 +54,9 @@ public class LobbyGameManager : MonoBehaviourPun
         yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
 
         Vector2 radomPos = Random.insideUnitCircle * 5.0f;
-        Vector3 initPosition = new Vector3(radomPos.x, 0.0f, radomPos.y);
+        Vector3 initPosition = new Vector3(10, 0.5f, 10);
         //플레이어 생성하자, 이름,위치.회전 , 프리팹 경로는 Resources 
         //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
-        //player = PhotonNetwork.Instantiate("PlayerWoman", initPosition, Quaternion.identity);
         player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);
 
         // player 오브젝트 캐싱 완료
@@ -76,4 +65,4 @@ public class LobbyGameManager : MonoBehaviourPun
         // 생성후 소유권을 Owner인 플레이어게만 권한을주자. Owner가 접속을 종료하면 같이 사라짐.
     }
 
-}//클래스 끝
+}

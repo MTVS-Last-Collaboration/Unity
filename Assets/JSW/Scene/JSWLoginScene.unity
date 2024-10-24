@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 29468828}
   - component: {fileID: 29468827}
   m_Layer: 5
-  m_Name: Btn_NickNameCheck
+  m_Name: Btn_MoveLobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204,19 +204,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 29468828}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 832547582}
-        m_TargetAssemblyTypeName: LoginInfoManager, Assembly-CSharp
-        m_MethodName: ChangeAvataNickName
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &29468828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,7 +654,7 @@ GameObject:
   - component: {fileID: 268012253}
   - component: {fileID: 268012252}
   m_Layer: 5
-  m_Name: Input_NickName
+  m_Name: InputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -686,7 +674,6 @@ RectTransform:
   m_Children:
   - {fileID: 66092894}
   - {fileID: 29468826}
-  - {fileID: 1509265157}
   m_Father: {fileID: 981420987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -751,7 +738,7 @@ MonoBehaviour:
   m_HideSoftKeyboard: 0
   m_CharacterValidation: 0
   m_RegexValue: 
-  m_GlobalPointSize: 70
+  m_GlobalPointSize: 14
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -780,12 +767,12 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: "\uC544\uBC14\uD0C0"
+  m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: b0af5d34d47d55b4b96c8244321037d8, type: 2}
+  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
@@ -1407,12 +1394,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 575061303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aba8bc9b98671bc4ab910fdfe2caa1ab, type: 3}
+  m_Script: {fileID: 11500000, guid: a69d8ea78775d394087ab9c6f29eb4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   avataName: {fileID: 0}
-  createRoomName: LobbyTestHoon
-  joinRoomName: LobbyTestHoon
 --- !u!1 &664734199
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,6 +2661,7 @@ RectTransform:
   - {fileID: 2003377539}
   - {fileID: 1147948116}
   - {fileID: 268012251}
+  - {fileID: 1509265157}
   m_Father: {fileID: 1297325617}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2786,7 +2772,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1145477797}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -2934,11 +2920,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC544\uBC14\uD0C0\u200B"
+  m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b0af5d34d47d55b4b96c8244321037d8, type: 2}
-  m_sharedMaterial: {fileID: -7903076556103479083, guid: b0af5d34d47d55b4b96c8244321037d8,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2962,8 +2947,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3342,11 +3327,11 @@ GameObject:
   - component: {fileID: 1297325616}
   - component: {fileID: 1297325615}
   - component: {fileID: 1297325614}
-  - component: {fileID: 1297325618}
   - component: {fileID: 1297325619}
   - component: {fileID: 1297325620}
+  - component: {fileID: 1297325621}
   m_Layer: 5
-  m_Name: HoonCanvas
+  m_Name: JSWCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3437,30 +3422,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1297325618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1297325613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08a2deb72c688924e9018b688958b8d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  connectionManager: {fileID: 575061305}
-  input_Id_Object: {fileID: 1636844694}
-  input_Pass_Object: {fileID: 1470582405}
-  placeHold_Id_Object: {fileID: 1805209696}
-  placeHold_Psss_Object: {fileID: 1793715665}
-  input_Id: {fileID: 0}
-  input_Pass: {fileID: 0}
-  placeHole_Id_Text: {fileID: 0}
-  placeHole_Pass_Text: {fileID: 0}
-  idText: 
-  passText: 
-  loadUserInfo: 
 --- !u!114 &1297325619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3487,6 +3448,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startImg: {fileID: 917947428}
+--- !u!114 &1297325621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297325613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e179fdc57afb4d144bda277bc2940750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectionManager: {fileID: 575061305}
+  input_Id_Object: {fileID: 1636844694}
+  input_Pass_Object: {fileID: 1470582405}
+  placeHold_Id_Object: {fileID: 1805209696}
+  placeHold_Psss_Object: {fileID: 1793715665}
+  input_Id: {fileID: 0}
+  input_Pass: {fileID: 0}
+  placeHole_Id_Text: {fileID: 0}
+  placeHole_Pass_Text: {fileID: 0}
+  idText: 
+  passText: 
+  loadUserInfo: 
 --- !u!1 &1334893805
 GameObject:
   m_ObjectHideFlags: 0
@@ -3634,7 +3619,7 @@ GameObject:
   - component: {fileID: 1351806079}
   - component: {fileID: 1351806078}
   m_Layer: 5
-  m_Name: Text_NickNameCheck
+  m_Name: Text_MoveLobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3679,7 +3664,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB2C9\uB124\uC784\uD655\uC778"
+  m_text: "\uB85C\uBE44\uC811\uC18D"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0af5d34d47d55b4b96c8244321037d8, type: 2}
   m_sharedMaterial: {fileID: -7903076556103479083, guid: b0af5d34d47d55b4b96c8244321037d8,
@@ -3975,7 +3960,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1297325618}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LoginTest, Assembly-CSharp
         m_MethodName: LocalLoginJson
         m_Mode: 1
@@ -4232,11 +4217,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1334893806}
-  m_Father: {fileID: 268012251}
+  m_Father: {fileID: 981420987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 881, y: 46}
+  m_AnchoredPosition: {x: 681, y: -354}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1509265158
@@ -4283,8 +4268,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1297325618}
-        m_TargetAssemblyTypeName: LoginTest, Assembly-CSharp
+      - m_Target: {fileID: 1297325621}
+        m_TargetAssemblyTypeName: JSW_LoginTest, Assembly-CSharp
         m_MethodName: Login
         m_Mode: 1
         m_Arguments:
