@@ -3954,6 +3954,7 @@ GameObject:
   - component: {fileID: 384814895}
   - component: {fileID: 384814894}
   - component: {fileID: 384814901}
+  - component: {fileID: 384814902}
   m_Layer: 0
   m_Name: Flower_1
   m_TagString: Flower
@@ -4158,7 +4159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkID: {fileID: 0}
-  detectionDistance: 5
+  detectionDistance: 3
   idHandlingRadius: 100
   checkInterval: 0.5
 --- !u!114 &384814898
@@ -4189,9 +4190,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf6d5761425dc54686edc7495d616bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  managerId: 
+  managerId: test002
   nickName: "\uAF432"
-  voiceClip: {fileID: 8300000, guid: 865d412ea035b4abfb0afa569acaf2af, type: 3}
+  voiceClip: {fileID: 0}
   isTouchAble: 1
   uiManager: {fileID: 384814893}
   evolutionCount: 0
@@ -4239,6 +4240,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.56, y: 1.6, z: 0.8}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &384814902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384814891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &386501673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16629,6 +16652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 1180832008}
+  button: {fileID: 0}
 --- !u!1 &1641284369
 GameObject:
   m_ObjectHideFlags: 0
@@ -17815,6 +17839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerNickName: 
 --- !u!4 &1801501397
 Transform:
   m_ObjectHideFlags: 0
@@ -19949,6 +19974,7 @@ GameObject:
   - component: {fileID: 1999174876}
   - component: {fileID: 1999174875}
   - component: {fileID: 1999174883}
+  - component: {fileID: 1999174884}
   m_Layer: 0
   m_Name: Flower_0
   m_TagString: Flower
@@ -19968,7 +19994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf6d5761425dc54686edc7495d616bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  managerId: 
+  managerId: test001
   nickName: "\uAF431"
   voiceClip: {fileID: 0}
   isTouchAble: 1
@@ -20111,7 +20137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkID: {fileID: 0}
-  detectionDistance: 5
+  detectionDistance: 3
   idHandlingRadius: 100
   checkInterval: 0.5
 --- !u!114 &1999174879
@@ -20234,6 +20260,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.56, y: 1.6, z: 0.8}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1999174884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999174873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2001353627
 GameObject:
   m_ObjectHideFlags: 0

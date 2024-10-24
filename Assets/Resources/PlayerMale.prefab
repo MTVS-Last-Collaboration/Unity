@@ -150,6 +150,8 @@ GameObject:
   - component: {fileID: 8090702480946202253}
   - component: {fileID: 7050917260096405401}
   - component: {fileID: 7412210534642413108}
+  - component: {fileID: 4223746362027977849}
+  - component: {fileID: 2995910615801213437}
   m_Layer: 0
   m_Name: PlayerMale
   m_TagString: Player
@@ -167,8 +169,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4783272247821855672}
   - {fileID: 8050524765548819643}
@@ -342,6 +344,32 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &4223746362027977849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649318054638783015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b93d91573a80af43b5844870239d3c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: test001
+--- !u!114 &2995910615801213437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649318054638783015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b1d183b15fa3d47b100677c4a13368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFirst: 0
 --- !u!1 &7506960525373749800
 GameObject:
   m_ObjectHideFlags: 0
