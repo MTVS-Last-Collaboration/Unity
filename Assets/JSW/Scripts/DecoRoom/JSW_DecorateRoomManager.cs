@@ -594,7 +594,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
     public void PlayerSetFuniture1()
     {
-        playerDecorate.SetFuniture1();
+        playerDecorate.SetFuniture1("DeskPlant");
     }
 
     public void PlayerSetFuniture2()

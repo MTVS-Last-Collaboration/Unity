@@ -33,7 +33,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             print(1);
-            SetFuniture1();
+            //SetFuniture1();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -58,13 +58,14 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     }
 
 
-    public void SetFuniture1()
+    public void SetFuniture1(string name)
     {
-        photonView.RPC("SetFuniture1_RPC", RpcTarget.AllBuffered);
+        string finalFuni = "(Prb)" + name;
+        photonView.RPC("SetFuniture1_RPC", RpcTarget.AllBuffered, finalFuni);
     }
 
     [PunRPC]
-    public void SetFuniture1_RPC()
+    public void SetFuniture1_RPC(string finalFuni)
     {
             GameObject funitureOb;
             int dir = 0;
@@ -72,7 +73,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             //GameObject funitureOb = Instantiate(funitureObject1);
             if (photonView.IsMine)
             {
-                 funitureOb = PhotonNetwork.Instantiate("bed", transform.position + transform.forward, transform.rotation);
+
+                 funitureOb = PhotonNetwork.Instantiate(finalFuni, transform.position + transform.forward, transform.rotation);
             }
             else
             {
@@ -262,11 +264,10 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
         Debug.DrawRay(transform.position, forward * 1.5f, Color.red);
-
         // Ray가 물체와 충돌하는지 검사
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1.5f))
@@ -276,7 +277,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
 
             if(funitureOb.GetComponent<PhotonView>() != null && !funitureOb.GetComponent<PhotonView>().IsMine)
             {
-                print("dddddd");
                 funitureOb.GetComponent<PhotonView>().RequestOwnership();
             }
 
@@ -343,7 +343,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
         Debug.DrawRay(transform.position, forward * 1.5f, Color.red);
@@ -449,7 +449,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
         Debug.DrawRay(transform.position, forward * 1.5f, Color.red);
@@ -584,7 +584,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
         Debug.DrawRay(transform.position, forward * 1.5f, Color.red);
