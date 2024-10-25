@@ -12,7 +12,22 @@ public class LobbyGameManager : MonoBehaviourPun
 
     string playerAvataType;
     public string playerNickName;
-    
+
+    void Awake()
+    {
+        // 싱글턴 패턴: 인스턴스가 존재하지 않으면 현재 인스턴스로 설정
+        if (instance == null)
+        {
+            instance = this;
+            //DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않게 설정
+        }
+        else if (instance != this)
+        {
+            // 인스턴스가 이미 있으면 현재 오브젝트를 파괴
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +40,10 @@ public class LobbyGameManager : MonoBehaviourPun
         else
         {
             if(LoginInfoManager.instance == null)
-            { 
-                return; 
+            {
+                playerNickName = "닉네임없음";
+                print("LobbyGameManager.instance.playerNickName" + playerNickName);
+                return;
             }
             else
             {
@@ -53,10 +70,15 @@ public class LobbyGameManager : MonoBehaviourPun
     }
 
     // Update is called once per frame
-    /*void Update()
+    void Update()
     {
-        
-    }*/
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            print("안녕하세여");
+            print("로컬플레이어 닉네임" + PhotonNetwork.LocalPlayer.NickName);
+            print("이새끼 마스터임?" + PhotonNetwork.LocalPlayer.IsMasterClient);
+        }
+    }
 
     IEnumerator SpawnPlayer()
     {
@@ -71,7 +93,7 @@ public class LobbyGameManager : MonoBehaviourPun
         player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);
 
         // player 오브젝트 캐싱 완료
-        Debug.Log("Player instantiated and cached: " + player.gameObject);
+        //Debug.Log("Player instantiated and cached: " + player.gameObject);
 
         // 생성후 소유권을 Owner인 플레이어게만 권한을주자. Owner가 접속을 종료하면 같이 사라짐.
     }

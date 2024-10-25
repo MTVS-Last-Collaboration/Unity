@@ -28,20 +28,27 @@ public class BoardController : MonoBehaviour
     }
 
     // 글쓰기 버튼 클릭
-    private void OnWriteButtonClick()
+    public void OnWriteButtonClick()
     {
         writePanel.Show();
     }
 
     // 최신순 정렬 버튼 클릭
-    private void OnSortByDateClick()
+    public void OnSortByDateClick()
     {
         board.SortByDate();
     }
 
     // 인기순 정렬 버튼 클릭
-    private void OnSortByPopularClick()
+    public void OnSortByPopularClick()
     {
         board.SortByPopular();
+    }
+
+    private void OnDestroy()
+    {
+        writeButton.onClick.RemoveListener(OnWriteButtonClick);
+        sortDateButton.onClick.RemoveListener(OnSortByDateClick);
+        sortLikeButton.onClick.RemoveListener(OnSortByPopularClick);
     }
 }

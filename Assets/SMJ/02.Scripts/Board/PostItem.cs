@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,7 @@ public class PostItem : MonoBehaviour
     [SerializeField] private TMP_Text contentText;
     [SerializeField] private TMP_Text dateText;
     [SerializeField] private TMP_Text likeCountText;
+    [SerializeField] private GameObject commentPanel;
 
     private PostData data;
 
@@ -23,7 +25,7 @@ public class PostItem : MonoBehaviour
         titleText.text = data.title;
         contentText.text = data.content;
         dateText.text = data.createDate.ToString("yyyy-MM-dd HH:mm");
-        likeCountText.text = $"¡¡æ∆ø‰ {data.likeCount}";
+        likeCountText.text = $"¢æ {data.likeCount}";
     }
 
     public void OnLikeButton()
