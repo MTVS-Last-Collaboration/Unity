@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.LookDev;
 
 public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
 {
@@ -10,6 +11,7 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
     PhotonView photonView;
     string nickName;
     string otherNickName;
+    public string userNumber;
    
     // Start is called before the first frame update
     void Start()
@@ -17,16 +19,29 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
         photonView = transform.GetComponent<PhotonView>();
         nickName = nickNameComp.text;
 
+        //유저번호 할당하기
+        //print("내오브젝트 이름" + gameObject.name);
+        if (gameObject.name.Contains("PlayerMale"))
+        {
+            userNumber = "user1";
+            //print("내유저 번호" + userNumber);
+        }
+        else
+        {
+            userNumber = "user2";
+            //print("내유저 번호" + userNumber);
+        }
+
         if ( photonView.IsMine )
         {
             nickNameComp.text = LoginInfoManager.instance.nickName;
-            print("아바타 닉네임" + nickNameComp.text);
+            //print("PlayerNicknameManager" + nickNameComp.text);
           
         }
         else
         {
             nickNameComp.text = otherNickName;
-            print("다른아바타 닉네임" + nickNameComp.text);
+            //print("다른아바타 닉네임" + nickNameComp.text);
 
         }
     }
