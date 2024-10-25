@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3908457657900125227}
   - component: {fileID: 6831286228664819388}
   - component: {fileID: 5179267030021289461}
+  - component: {fileID: 1906079370563660528}
   m_Layer: 0
   m_Name: (Prb)CornerLight
   m_TagString: Funiture
@@ -73,10 +74,32 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 6831286228664819388}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &1906079370563660528
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2151273555791693567}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 3, z: 1}
+  m_Center: {x: 0, y: 1.4, z: 0}
 --- !u!1 &7315015674961692046
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +205,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.7764511, y: 2.9170635, z: 0.77645123}
   m_Center: {x: -0.00000043213367, y: 1.4585317, z: 0}

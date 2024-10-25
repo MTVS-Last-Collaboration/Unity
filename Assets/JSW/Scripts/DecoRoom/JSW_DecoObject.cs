@@ -75,10 +75,10 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (Vector3.Distance(new Vector3(i, 1, j), playerVector3) < minDistance)
+                    if (Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3) < minDistance)
                     {
-                        minDistance = Vector3.Distance(new Vector3(i, 1, j), playerVector3);
-                        minVector3 = new Vector3(i, 1, j);
+                        minDistance = Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3);
+                        minVector3 = new Vector3(i, 0.1f, j);
                     }
                 }
             }
@@ -91,10 +91,10 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (Vector3.Distance(new Vector3(i, 1, j), playerVector3) < minDistance)
+                    if (Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3) < minDistance)
                     {
-                        minDistance = Vector3.Distance(new Vector3(i, 1, j), playerVector3);
-                        minVector3 = new Vector3(i, 1, j);
+                        minDistance = Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3);
+                        minVector3 = new Vector3(i, 0.1f, j);
                     }
                 }
             }
@@ -107,10 +107,10 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (Vector3.Distance(new Vector3(i, 1, j), playerVector3) < minDistance)
+                    if (Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3) < minDistance)
                     {
-                        minDistance = Vector3.Distance(new Vector3(i, 1, j), playerVector3);
-                        minVector3 = new Vector3(i, 1, j);
+                        minDistance = Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3);
+                        minVector3 = new Vector3(i, 0.1f, j);
                     }
                 }
             }
@@ -123,10 +123,10 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             {
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
-                    if (Vector3.Distance(new Vector3(i, 1, j), playerVector3) < minDistance)
+                    if (Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3) < minDistance)
                     {
-                        minDistance = Vector3.Distance(new Vector3(i, 1, j), playerVector3);
-                        minVector3 = new Vector3(i, 1, j);
+                        minDistance = Vector3.Distance(new Vector3(i, 0.1f, j), playerVector3);
+                        minVector3 = new Vector3(i, 0.1f, j);
                     }
                 }
             }

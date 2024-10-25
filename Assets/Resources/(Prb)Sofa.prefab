@@ -101,7 +101,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.27996448, y: 0.40268484, z: 0.41545823}
   m_Center: {x: -0.00050493324, y: 0.001914203, z: -0.0035462675}
@@ -206,7 +206,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.31619075, y: 0.55447155, z: 0.9085184}
   m_Center: {x: 0.03189634, y: -0.0019149332, z: -0.013714178}
@@ -312,7 +312,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.8593202, y: 1.17669, z: 3.0843349}
   m_Center: {x: -0.0017800032, y: 0.5883449, z: 0.000023722647}
@@ -327,6 +327,7 @@ GameObject:
   - component: {fileID: 3644883684714008753}
   - component: {fileID: 4849599191829730424}
   - component: {fileID: -7843860051178303443}
+  - component: {fileID: 4750682966382665420}
   m_Layer: 0
   m_Name: (Prb)Sofa
   m_TagString: Funiture
@@ -394,6 +395,27 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &4750682966382665420
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2355579544446401519}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2, y: 2, z: 4}
+  m_Center: {x: 0, y: 1, z: -1.5}
 --- !u!1 &2597927433636434003
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +517,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.43973985, y: 0.56920975, z: 0.8879307}
   m_Center: {x: 0.01040025, y: -0.0066611017, z: -0.03643189}
@@ -600,7 +622,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.2518805, y: 0.40720585, z: 0.42957732}
   m_Center: {x: 0.0006698146, y: 0.0020013747, z: -0.0028688607}
@@ -705,7 +727,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.30198428, y: 0.43391207, z: 0.38364702}
   m_Center: {x: 0.0010147615, y: 0.0017019286, z: -0.0024027673}
@@ -810,7 +832,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.46455395, y: 0.56046355, z: 0.8953714}
   m_Center: {x: 0.005936041, y: -0.007650524, z: -0.014022975}

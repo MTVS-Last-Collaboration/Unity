@@ -85,18 +85,18 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             {
                 if (Mathf.Abs(transform.forward.x) >= Mathf.Abs(transform.forward.z))
                 {
-                    funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 1);
+                    funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 0.1f, playerPos.z + playerDir.z * 1);
                     playerDir.z = 0;
                 }
                 else
                 {
-                    funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 1, playerPos.z + playerDir.z * 2);
+                    funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 0.1f, playerPos.z + playerDir.z * 2);
                     playerDir.x = 0;
                 }
             }
             else
             {
-                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 2);
+                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 0.1f, playerPos.z + playerDir.z * 2);
             }
 
             funitureOb.transform.forward = playerDir;
@@ -127,7 +127,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
                 funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
                 DRM.FunitureList.Add(funitureOb);
-
             }
             else
             {
@@ -264,10 +263,10 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.75f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
-        Debug.DrawRay(transform.position, forward * 1.5f, Color.red);
+        Debug.DrawRay(transform.position + Vector3.up * 1f , forward * 1.5f, Color.red);
         // Ray가 물체와 충돌하는지 검사
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1.5f))
@@ -343,7 +342,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.75f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
         Debug.DrawRay(transform.position, forward * 1.5f, Color.red);
@@ -386,49 +385,45 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             if (realnumDir.z == 1)
             {
 
-                if (DRM.GetComponent<JSW_DecorateRoomManager>().roomPosition[(int)transform.position.x, (int)transform.position.z - 1] || !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn0");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0);
-                //transform.position = new Vector3(num.x, 1.49f, num.z - 1);
                 StartCoroutine(moveBlockTranslate(new Vector3(0, 0, 1), funitureOb));
                 funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionZ += 1;
             }
             else if (realnumDir.x == 1)
             {
-                if (DRM.GetComponent<JSW_DecorateRoomManager>().roomPosition[(int)transform.position.x - 1, (int)transform.position.z ] || !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
+                if ( !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn1");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1);
-                //transform.position = new Vector3(num.x - 1, 1.49f, num.z);
                 StartCoroutine(moveBlockTranslate(new Vector3(1, 0, 0), funitureOb));
                 funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionX += 1;
             }
             else if (realnumDir.z == -1)
             {
-                if (DRM.GetComponent<JSW_DecorateRoomManager>().roomPosition[(int)transform.position.x , (int)transform.position.z+1] || !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn2");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2);
-                //transform.position = new Vector3(num.x, 1.49f, num.z + 1);
                 StartCoroutine(moveBlockTranslate(new Vector3(0, 0, -1), funitureOb));
                 funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionZ -= 1;
             }
             else if (realnumDir.x == -1)
             {
-                if (DRM.GetComponent<JSW_DecorateRoomManager>().roomPosition[(int)transform.position.x + 1, (int)transform.position.z] || !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
+                if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn3");
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3);
-                //transform.position = new Vector3(num.x + 1, 1.49f, num.z);
                 StartCoroutine(moveBlockTranslate(new Vector3(-1, 0, 0), funitureOb));
                 funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionX -= 1;
             }
@@ -449,7 +444,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.75f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
         Debug.DrawRay(transform.position, forward * 1.5f, Color.red);
@@ -487,7 +482,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
 
                 if ( !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
-                    
                     return;
                 }
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 2))
@@ -556,7 +550,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Vector3 targetPosition = new Vector3((float)Math.Round((funiture.transform.position + dir).x), (float)Math.Round((funiture.transform.position + dir).y), (float)Math.Round((funiture.transform.position + dir).z));
         IsCharacterMoving = true;
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = true;
-        while (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 0.1f)
+        while (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 0.15f)
         {
             //funiture.transform.position = Vector3.Lerp(funiture.transform.position, targetPosition, speed * Time.deltaTime);
             funiture.transform.Translate(funiture.transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
@@ -568,7 +562,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             yield return new WaitForFixedUpdate(); ;
         }
         funiture.transform.position = targetPosition;
-       transform.position = new Vector3((float)Math.Round(transform.position.x),transform.position.y, (float)Math.Round(transform.position.z));
+        transform.position = new Vector3((float)Math.Round(transform.position.x),transform.position.y, (float)Math.Round(transform.position.z));
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = false;
         IsCharacterMoving = false;
     }
@@ -577,6 +571,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     {
         photonView.RPC("DestroyFuniture_RPC", RpcTarget.AllBuffered);
     }
+
     [PunRPC]
     public void DestroyFuniture_RPC()
     {

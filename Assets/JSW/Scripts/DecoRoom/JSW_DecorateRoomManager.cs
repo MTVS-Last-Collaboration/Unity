@@ -84,7 +84,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -98,7 +98,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -112,7 +112,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -127,7 +127,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
 
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         return false;
                     }
@@ -215,7 +215,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult =  false;
                     }
@@ -229,7 +229,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -243,7 +243,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
 
@@ -258,7 +258,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -362,7 +362,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenZ; j++)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -376,7 +376,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenX; j--)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
@@ -390,7 +390,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
 
@@ -405,16 +405,13 @@ public class JSW_DecorateRoomManager : MonoBehaviour
             {
                 for (int j = posZ; j < posZ + lenX; j++)
                 {
-                    if (j >= 8 || j <= 0 || i >= 8 || i <= 0 || roomPosition[j, i] == true)
+                    if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         isResult = false;
                     }
                 }
             }
         }
-
-       
-
         return isResult;
     }
 
@@ -592,9 +589,9 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         }
     }
 
-    public void PlayerSetFuniture1()
+    public void PlayerSetFuniture1(string name)
     {
-        playerDecorate.SetFuniture1("DeskPlant");
+        playerDecorate.SetFuniture1(name);
     }
 
     public void PlayerSetFuniture2()

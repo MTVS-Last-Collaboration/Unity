@@ -145,7 +145,7 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
             playerMoveDir.Normalize();
             Vector3 playerMove = playerMoveDir * playerMoveSpeed * Time.deltaTime;
             playerController.Move(playerMove);  //플레이어 컨트롤러
-
+            transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
 
             if (animator != null)    //animator null 아닐때
             {

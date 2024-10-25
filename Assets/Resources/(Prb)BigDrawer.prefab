@@ -102,7 +102,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.62519395, y: 0.4694286, z: 1.2059059}
   m_Center: {x: 0.31259686, y: -0.000000029802322, z: 0}
@@ -208,7 +208,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.6262566, y: 0.21744257, z: 1.205905}
   m_Center: {x: 0.31312817, y: -0.00000014901161, z: -0.00000035762787}
@@ -314,7 +314,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.62519395, y: 0.4694286, z: 1.2059059}
   m_Center: {x: 0.31259686, y: -0.000000029802322, z: 0}
@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 2435078790667850974}
   - component: {fileID: 1839355844585048781}
   - component: {fileID: 1783595172264086475}
+  - component: {fileID: 4675890303177639044}
   m_Layer: 0
   m_Name: (Prb)BigDrawer
   m_TagString: Funiture
@@ -386,7 +387,7 @@ Transform:
   m_GameObject: {fileID: 5450568238330925581}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.5, y: 0.1, z: 0.8}
+  m_LocalPosition: {x: 0.5, y: 0.1, z: 0.4}
   m_LocalScale: {x: 1.1702425, y: 0.93958676, z: 0.6917691}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -432,10 +433,32 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1839355844585048781}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &4675890303177639044
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5450568238330925581}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6, y: 1.2, z: 3.7}
+  m_Center: {x: 0, y: 0.6, z: -1}
 --- !u!1 &5479799427228899294
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,7 +561,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.6262566, y: 0.21744257, z: 1.205905}
   m_Center: {x: 0.31312817, y: -0.00000014901161, z: -0.00000035762787}
@@ -644,7 +667,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.5796099, y: 1.1758504, z: 3.6941738}
   m_Center: {x: -0.004987523, y: 0.58702016, z: -0.00000047683716}
@@ -750,7 +773,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.6262566, y: 0.21744257, z: 1.205905}
   m_Center: {x: 0.31312817, y: -0.00000014901161, z: -0.00000035762787}
@@ -856,7 +879,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.62519395, y: 0.4694286, z: 1.2059059}
   m_Center: {x: 0.31259686, y: -0.000000029802322, z: 0}
@@ -962,7 +985,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.6262566, y: 0.21744257, z: 1.205905}
   m_Center: {x: 0.31312817, y: -0.00000014901161, z: -0.00000035762787}
@@ -1068,7 +1091,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.6262566, y: 0.21744257, z: 1.205905}
   m_Center: {x: 0.31312817, y: -0.00000014901161, z: -0.00000035762787}
@@ -1174,7 +1197,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.6262566, y: 0.21744257, z: 1.205905}
   m_Center: {x: 0.31312817, y: -0.00000014901161, z: -0.00000035762787}
