@@ -95,7 +95,7 @@ public class Board : MonoBehaviour
 
     private void InitializeCanvas()
     {
-        boardCanvas.renderMode = RenderMode.WorldSpace;
+        boardCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
         boardCanvas.transform.localScale = Vector3.one * 0.01f;
         boardCanvas.transform.localPosition = new Vector3(0, 2, 0);
         boardCanvas.transform.forward = transform.forward;

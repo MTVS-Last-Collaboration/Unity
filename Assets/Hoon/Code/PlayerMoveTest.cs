@@ -28,7 +28,8 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
     void Start()
     {
         photonview = transform.GetComponent<PhotonView>();
-        if (photonview != null) print("내 포톤뷰 있음" + photonView.ViewID);
+        if (photonview != null) 
+        //print("내 포톤뷰 있음" + photonView.ViewID);
         PhotonNetwork.SerializationRate = 30;
         photonView.ObservedComponents.Add(this);  // OnPhotonSerializeView 호출할 스크립트 추가
         photonView.Synchronization = ViewSynchronization.UnreliableOnChange;  // 데이터 동기화 설정

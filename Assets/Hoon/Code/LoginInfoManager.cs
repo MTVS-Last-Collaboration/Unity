@@ -25,7 +25,7 @@ public class LoginInfoManager : MonoBehaviour
     void Start()
     {
         nickName = inputField_NickName.text;
-        print("플레이어 넥네임" + nickName);
+        //print("플레이어 넥네임" + nickName);
     }
 
     // Update is called once per frame
@@ -50,7 +50,8 @@ public class LoginInfoManager : MonoBehaviour
 
     public void ChangeAvataNickName()
     {
-        nickName = inputField_NickName.text; print("플레이어 넥네임" + nickName);
+        nickName = inputField_NickName.text; 
+        //print("플레이어 넥네임" + nickName);
     }
 
 
