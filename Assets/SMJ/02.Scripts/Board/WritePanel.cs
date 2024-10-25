@@ -9,7 +9,6 @@ public class WritePanel : MonoBehaviour
     [SerializeField] private TMP_InputField contentInput;  // 내용 입력 필드
     [SerializeField] private Button submitButton;          // 글쓰기 완료 버튼
     [SerializeField] private Button exitButton;            // 나가기 버튼
-    [SerializeField] private TMP_Text panelTitleText;      // "글쓰기" 텍스트
 
     [SerializeField] private Board board;                  // 게시판 참조
 
@@ -39,6 +38,7 @@ public class WritePanel : MonoBehaviour
     // 글쓰기 완료
     private void OnSubmit()
     {
+        Debug.Log($"제목: {titleInput.text}, 내용: {contentInput.text}");
         // 입력값 검증
         if (string.IsNullOrEmpty(titleInput.text) || string.IsNullOrEmpty(contentInput.text))
         {
@@ -56,5 +56,11 @@ public class WritePanel : MonoBehaviour
     {
         titleInput.text = "";
         contentInput.text = "";
+    }
+
+    private void OnDestroy()
+    {
+        submitButton.onClick.RemoveListener(OnSubmit);
+        exitButton.onClick.RemoveListener(Hide);
     }
 }
