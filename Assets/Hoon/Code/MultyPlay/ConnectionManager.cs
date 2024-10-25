@@ -20,8 +20,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        
-        
+
+       
 
     }
 
@@ -34,7 +34,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public void StartLobby()
     {
         //만약 사용자 이름이 있다면, 이름의 길이가 0이 아니어야한ㅁ
-        print("로그인하는중...");
+        print("로비생성하는중...");
         //gameVersion projectSetting -> player -> version 과 일치하게 설정
         PhotonNetwork.GameVersion = "1.0.0";
         //닉네임
@@ -52,15 +52,14 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnConnected();
 
         // 네임 서버에 접속이 완료되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        print("네임서비 연결성공");
     }
     //서버끊김콜백
     public override void OnDisconnected(DisconnectCause cause)
     {
         base.OnDisconnected(cause);
         // 실패 원인을 출력한다.
-
         print(MethodInfo.GetCurrentMethod().Name + " is call");
         
     }
@@ -70,7 +69,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnConnectedToMaster();
 
         // 마스터 서버에 접속이 완료되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        print("마스터서비 연결성공");
 
         // 서버의 로비로 들어간다.
         PhotonNetwork.JoinLobby();
@@ -82,8 +82,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
         // 서버 로비에 들어갔음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        print("서버로비 연결성공");
     }
     //방생성
     public void CreateRoom()
@@ -133,8 +133,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnCreatedRoom();
 
         // 성공적으로 방이 개설되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        print("방 만들어짐!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        print("방 생성완료");
    
 
     }
@@ -144,7 +144,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
 
         // 성공적으로 방에 입장되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         print("방에 입장 성공");
        
         // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수

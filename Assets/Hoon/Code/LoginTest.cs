@@ -238,7 +238,7 @@ public class LoginTest : MonoBehaviour
 
     public void Login()
     {
-        print("로그인완료");
+        print("로그인완료, 로비생성하기");
         //SceneManager.LoadScene("");
         connectionManager.StartLobby();
     }

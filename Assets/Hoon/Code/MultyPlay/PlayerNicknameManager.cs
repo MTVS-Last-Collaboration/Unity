@@ -19,28 +19,29 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
         photonView = transform.GetComponent<PhotonView>();
         nickName = nickNameComp.text;
 
-        print("내오브젝트 이름" + gameObject.name);
+        //유저번호 할당하기
+        //print("내오브젝트 이름" + gameObject.name);
         if (gameObject.name.Contains("PlayerMale"))
         {
             userNumber = "user1";
-            print("내유저 번호" + userNumber);
+            //print("내유저 번호" + userNumber);
         }
         else
         {
             userNumber = "user2";
-            print("내유저 번호" + userNumber);
+            //print("내유저 번호" + userNumber);
         }
 
         if ( photonView.IsMine )
         {
             nickNameComp.text = LoginInfoManager.instance.nickName;
-            print("아바타 닉네임" + nickNameComp.text);
+            //print("PlayerNicknameManager" + nickNameComp.text);
           
         }
         else
         {
             nickNameComp.text = otherNickName;
-            print("다른아바타 닉네임" + nickNameComp.text);
+            //print("다른아바타 닉네임" + nickNameComp.text);
 
         }
     }
