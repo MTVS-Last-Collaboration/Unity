@@ -97,13 +97,13 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         if (playerMoveControl == null)
         {
-            print("플레이어 무브 없음, 코루틴 찾는중");
+            //print("플레이어 무브 없음, 코루틴 찾는중");
             StartCoroutine(PlayerMoveControll());
         }
        
         if(playerPhotonView == null)
         {
-            print("플레이어 포톤뷰 없음, 코루틴 찾는중");
+            //print("플레이어 포톤뷰 없음, 코루틴 찾는중");
             StartCoroutine(PlayerPhotionView());
         }
         
