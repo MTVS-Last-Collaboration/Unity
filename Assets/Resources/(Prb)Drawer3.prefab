@@ -102,7 +102,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.7196781, y: 0.23687212, z: 0.46106663}
   m_Center: {x: 0.0011043847, y: -0.009081461, z: 0.23053353}
@@ -208,7 +208,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.7196781, y: 0.2368721, z: 0.46016324}
   m_Center: {x: 0.0011043847, y: 0.005135756, z: 0.23008183}
@@ -314,7 +314,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.7196781, y: 0.23687212, z: 0.46106663}
   m_Center: {x: 0.0011043847, y: -0.009081461, z: 0.23053353}
@@ -420,7 +420,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.7196781, y: 0.2368721, z: 0.46016324}
   m_Center: {x: 0.0011043847, y: 0.005135756, z: 0.23008183}
@@ -591,7 +591,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.71967816, y: 0.4734233, z: 0.44039375}
   m_Center: {x: 0.0000021904707, y: 0.23671165, z: 0.0011015013}
@@ -640,6 +640,7 @@ GameObject:
   - component: {fileID: 5915647741943228868}
   - component: {fileID: 5943689281639718992}
   - component: {fileID: 1999403599629708056}
+  - component: {fileID: 1314731633859863524}
   m_Layer: 0
   m_Name: (Prb)Drawer3
   m_TagString: Funiture
@@ -708,6 +709,27 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &1314731633859863524
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7901737222987585944}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.7, y: 2.8, z: 1}
+  m_Center: {x: 0.5, y: 1.4, z: 0}
 --- !u!1 &8809681821866902435
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +863,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.71967816, y: 0.4734233, z: 0.44039375}
   m_Center: {x: 0.0000021904707, y: 0.23671165, z: 0.0011015013}

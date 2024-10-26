@@ -102,7 +102,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.55049217, y: 0.23687214, z: 0.4660165}
   m_Center: {x: 0.0011021793, y: -0.009081457, z: 0.23300846}
@@ -207,7 +207,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.55049217, y: 0.4734233, z: 0.44039375}
   m_Center: {x: 0.0000021606684, y: 0.23671165, z: 0.0011009648}
@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 5589463611939760443}
   - component: {fileID: 8316192763697112350}
   - component: {fileID: -7823638929117147657}
+  - component: {fileID: 8802509560823513939}
   m_Layer: 0
   m_Name: (Prb)Drawer1
   m_TagString: Funiture
@@ -284,10 +285,32 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8316192763697112350}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &8802509560823513939
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586142535914178990}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.53, y: 0.5, z: 0.6}
+  m_Center: {x: 0, y: 0.25, z: -0.2}
 --- !u!1 &4987228688318444118
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,7 +413,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.55049217, y: 0.2368721, z: 0.4651136}
   m_Center: {x: 0.0011021793, y: 0.0051357187, z: 0.23255701}

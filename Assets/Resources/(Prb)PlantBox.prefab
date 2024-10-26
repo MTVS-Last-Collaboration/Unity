@@ -103,7 +103,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.38326794, y: 0.48619735, z: 1.0191629}
   m_Center: {x: -0.005143404, y: 0.24309868, z: 0.013108939}
@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 3854900698595064405}
   - component: {fileID: 4140235579368913150}
   - component: {fileID: -4347516989760578593}
+  - component: {fileID: 8212689091559725983}
   m_Layer: 0
   m_Name: (Prb)PlantBox
   m_TagString: Funiture
@@ -180,7 +181,29 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4140235579368913150}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &8212689091559725983
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3929717527093745475}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.45, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: -0.3}

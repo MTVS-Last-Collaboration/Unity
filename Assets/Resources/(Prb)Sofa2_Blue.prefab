@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5783284576292483089}
   - component: {fileID: 7657344037623562280}
   - component: {fileID: -6074269472013141578}
+  - component: {fileID: 1049190551418401554}
   m_Layer: 0
   m_Name: (Prb)Sofa2_Blue
   m_TagString: Funiture
@@ -78,6 +79,27 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &1049190551418401554
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551965792398941817}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1, y: 1, z: 2.1}
+  m_Center: {x: 0.33, y: 0.5, z: 0.9}
 --- !u!1 &7252031813107330745
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +202,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.0104328, y: 0.967883, z: 2.0388913}
   m_Center: {x: 0.00000035762787, y: 0.48394132, z: 0.00473547}

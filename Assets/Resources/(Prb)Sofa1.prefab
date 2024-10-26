@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3164412328959636442}
   - component: {fileID: 2138694603473445334}
   - component: {fileID: 3474657449768401625}
+  - component: {fileID: 6480300395563290669}
   m_Layer: 0
   m_Name: (Prb)Sofa1
   m_TagString: Funiture
@@ -73,10 +74,32 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 2138694603473445334}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &6480300395563290669
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7334359717029590309}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.25, y: 1, z: 1}
+  m_Center: {x: 0.5, y: 0.5, z: 0.4}
 --- !u!1 &8386039841986081786
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +202,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.010433, y: 0.95115435, z: 1.216188}
   m_Center: {x: 0.00000017881393, y: 0.47557712, z: 0.0028669536}

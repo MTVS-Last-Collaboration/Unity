@@ -2,7 +2,9 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JSW_LobbyGameManager : MonoBehaviour
 {
@@ -10,19 +12,27 @@ public class JSW_LobbyGameManager : MonoBehaviour
 
     string playerAvataType;
     public GameObject player;
+    public Sprite man;
+    public Sprite girl;
+    public TMP_Text nickName;
+    public Image profile;
 
     // Start is called before the first frame update
     void Start()
     {
 
         playerAvataType = LoginInfoManager.instance.avataChoice;
+        nickName.text = LoginInfoManager.instance.nickName;
         if (playerAvataType == "PlayerMale")
         {
             playerAvataType = "JSW_PlayerMale";
+            profile.sprite = man;
         }
         else
         {
             playerAvataType = "JSW_PlayerWoman";
+            profile.sprite = girl;
+
         }
 
         StartCoroutine(SpawnPlayer());
@@ -39,7 +49,6 @@ public class JSW_LobbyGameManager : MonoBehaviour
         {
             Debug.Log("Player Name: " + player.NickName + ", Player ID: " + player.UserId);
         }
-
     }
 
     // Update is called once per frame
