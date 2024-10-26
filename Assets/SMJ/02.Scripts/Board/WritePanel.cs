@@ -38,7 +38,7 @@ public class WritePanel : MonoBehaviour
     // 글쓰기 완료
     private void OnSubmit()
     {
-        Debug.Log($"제목: {titleInput.text}, 내용: {contentInput.text}");
+        Debug.Log($"닉네임: {LoginInfoManager.instance.nickName}, 제목: {titleInput.text}, 내용: {contentInput.text}");
         // 입력값 검증
         if (string.IsNullOrEmpty(titleInput.text) || string.IsNullOrEmpty(contentInput.text))
         {
@@ -46,8 +46,10 @@ public class WritePanel : MonoBehaviour
             return;
         }
 
+        string nickName = LoginInfoManager.instance.nickName;
+
         // 게시판에 글 추가
-        board.CreatePost(titleInput.text, contentInput.text);
+        board.CreatePost(nickName, titleInput.text, contentInput.text);
         Hide();
     }
 

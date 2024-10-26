@@ -30,6 +30,7 @@ public class PlayerInteraction : MonoBehaviourPun
             if (Physics.Raycast(transform.position, transform.forward, out hit, detectionDistance, detectLayer))
             {
                 hit.collider.gameObject.GetComponent<ClickFlower>()?.HandleInteraction();
+                hit.collider.gameObject.GetComponent<ClickBoard>()?.HandleInteraction();
             }
             else
             {
