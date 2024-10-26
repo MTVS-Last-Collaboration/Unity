@@ -16,11 +16,13 @@ using UnityEngine.Rendering.LookDev;
 using System.Net.NetworkInformation;
 using Newtonsoft.Json.Converters;
 using Photon.Pun.Demo.Cockpit;
+using System.Reflection;
 
 [System.Serializable]
 public class DayComentData
 {
     public string date;
+    public string dateMission;
     public string user1name;
     public string user1mood;
     public string user1coment;
@@ -34,7 +36,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public GameObject mail_IconObject; //메일아이콘오브젝트
     public GameObject mail_ImageObject; //메일미션이미지
     public Button touchButton; //터치버튼
-    public TextMeshProUGUI currentDay;
+    public TextMeshProUGUI currentDay; //날짜표시
     public GameObject moodChoiceObject; //오늘의기분 변경 오브젝트
     //public Button moodSwitch; //버튼기분변경
     public Button moodSwitch1;
@@ -47,7 +49,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public Sprite[] moodSprites; //기분이미지 배열
     public GameObject tmp_InputFieldObject; //코멘트 인풋
     public Button mailComentButton; //코멘트 인풋 열기
-    public GameObject mailComentTestObject; //메일코면트
+    public GameObject mailComentTestObject; //메일코멘트
+    public GameObject dayMisiionObject;
     public GameObject Coment1;
     public GameObject Coment2;
     public string startDate; //시작일 지정변수
@@ -84,12 +87,27 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public string jsonSyncPath;
     //public string jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
     public string jsonSyncString;
-
+    public string todayMission;
+    public TextMeshProUGUI DataPath;
 
     void Start()
     {
         jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
+        if (File.Exists(jsonSyncPath))
+        {
+            print("json파일있음");
+        }
+        else
+        {
+            print("json파일없음");
+            CreateNewDayComentJsonArray();
+
+        }
         //PhotonNetwork.AddCallbackTarget(this);  // 이벤트 콜백 등록
+        //Debug.Log(Application.persistentDataPath);
+        //DataPath.text = Application.persistentDataPath;
+        DataPath.text = "참가한 플레이어 " + PhotonNetwork.PlayerList.Length + "\n" + "방이름 " + PhotonNetwork.CurrentRoom.Name + "\n"+ "닉네임" + PhotonNetwork.LocalPlayer.NickName;
+
 
         moodChoiceObject.SetActive(false);
 
@@ -111,10 +129,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         StartCoroutine(FindPlayer());
 
         CheckDate(); //날짜를 계산해줍니다.
+        CheckMission(); //날짜에 맞는 미션을 생성합니다.
         CheckComent(); //코맨드가 있는지 계산합니다.
         CheckMood(); //무드를 바꾸자. FindPlayer 를 줌.
 
-      
     }
 
 
@@ -126,7 +144,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-            //mail_ImageObject.SetActive(false); //메일 이미지 오브젝트 끄기
+            mail_ImageObject.SetActive(false); //메일 이미지 오브젝트 끄기
         }
 
         if (isMoodSwihtch1)//감정표현버튼1
@@ -190,6 +208,81 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     mailComentText2.text = "상대방이 답변을 입력하지 않았어요";
                 }
             }
+        }
+    }
+  
+    public void CheckMission()
+    {
+        // 날짜 문자열을 DateTime으로 변환
+        DateTime dateTime = DateTime.Parse(currentDate);
+        
+        // 연도, 월, 일을 각각 int로 변환
+        int year = dateTime.Year;
+        int month = dateTime.Month;
+        int day = dateTime.Day;
+
+       /*  // 결과 출력
+         Console.WriteLine("Year: " + year);
+         Console.WriteLine("Month: " + month);*/
+         Console.WriteLine("Day: " + day);
+
+        // 일(Day) 부분을 문자열로 변환
+        string dayString = dateTime.Day.ToString("D2"); // "25" (두 자리 숫자 형식으로 변환)
+        // 첫 번째 자리와 두 번째 자리를 각각 int로 변환하여 저장
+        int firstDigit = int.Parse(dayString[0].ToString()); // 첫 번째 자리 문자열로 저장
+        int secondDigit = int.Parse(dayString[1].ToString()); // 두 번째 자리 문자열로 저장
+        int dayCheck = firstDigit + secondDigit;
+        int value = UnityEngine.Random.Range(0, 10); //랜덤뽑기
+        
+        //미션설정하기
+        if (day == 25)
+        {
+            todayMission = "내 첫인상을 알려주세요";
+        }
+        else if(day == 26)
+        {
+            todayMission = "오늘 점심에 무엇을 먹었나요?";
+        }
+
+        //미션저장하기
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //동기화경로
+       
+        if (File.Exists(path))  // 파일이 존재하면
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path);
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //문자열을 Json 배열로 변경
+            for (int i = 0; i < loadDayComenList.Count; i++) //for문으로 데이트 idx로 설정하기.
+            {
+                var ComentData = loadDayComenList[i];
+
+                if (ComentData.date == currentDate) // 날짜가 일치하면
+                {
+                    // 일치하는 데이터 로그를 변수에 저장.
+                    matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
+                    //Debug.Log("날짜가 일치하는 데이터: " + matchDayComentinfo);
+                    //기존데이터 수정
+                    ComentData.dateMission = todayMission;
+                    // 수정된 데이터를 리스트에 반영
+                    loadDayComenList[i] = ComentData;
+                    // 리스트를 JSON 문자열로 변환
+                    string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
+                    //Json 형태로 파일을 보내자.
+                    jsonSyncString = jsonString;
+
+                    PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
+                    Debug.Log("Photon 이벤트가 발생했습니다.");
+
+                    TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
+                    dayMissionText.text = todayMission;
+                    break;
+            
+                }
+           
+            }        
+        }
+        else
+        {
+            DataPath.text = "파일이 없습니다";
         }
     }
 
@@ -276,14 +369,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-
     public void CheckMail()
     {
         CheckMood();
         CheckComent();
     }
-
-
 
     public void SaveDayComentJsonTest()
     {
@@ -503,7 +593,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void CreateNewDayComentJsonArray() //제이슨 배열로 저장하기
     {
-        string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//로컬경로
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //동기화경로
 
         // DayComentData 객체 생성
         DayComentData dayComentData = new DayComentData

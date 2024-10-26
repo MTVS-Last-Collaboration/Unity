@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
 using UnityEditor;
+using TMPro;
 
 //부모를 MonoBehaviourPunCallbacks로 변경
 public class ConnectionManager : MonoBehaviourPunCallbacks
@@ -16,6 +17,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public GameObject avataName;
     public string createRoomName;
     public string joinRoomName;
+    public TextMeshProUGUI avataText;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +37,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public void StartLobby()
     {
         //만약 사용자 이름이 있다면, 이름의 길이가 0이 아니어야한ㅁ
-        print("로비생성하는중...");
+        //print("로비생성하는중...");
+        avataText.text = "로비생성하는중";
         //gameVersion projectSetting -> player -> version 과 일치하게 설정
         PhotonNetwork.GameVersion = "1.0.0";
         //닉네임
@@ -97,6 +101,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         {
             // 나의 룸 옵션 만든다.
             RoomOptions roomOpt = new RoomOptions();
+            
             //최대인원
             roomOpt.MaxPlayers = playerCount;
             //룸에 사람이 들어오게 하자.
@@ -190,7 +195,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 로비에 들어갔으면 방을 생성
         //JoinRoom();
         bool isCreataeRoom = false;
-        if (roomList.Count > 0) //방개수가 0보다 크면                                
+        if (roomList.Count > 0) //방개수가 0보다 크면                         
         {
             print("방개수" + roomList.Count);
             //방을 모두 검색해서 방이 있는지 찾자.
@@ -202,6 +207,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
                 {
                     print("방이있으니까 참가해야지~");
                     isCreataeRoom = false;
+                    avataText.text = "방참여중...";
                     JoinRoom();
                     break;
                 }
@@ -214,6 +220,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             if(isCreataeRoom)
             {
                 print("원하는 방이 없으니 만들자");
+                avataText.text = "방생성중...";
                 //없으면 방 만들기
                 CreateRoom();
 
@@ -223,6 +230,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         else if(roomList.Count == 0) //방개수가 0개면
         {
             print("방개수" + roomList.Count + "방이없으니 만들어야지...");
+            avataText.text = "방생성중...";
             CreateRoom();
         }
 
