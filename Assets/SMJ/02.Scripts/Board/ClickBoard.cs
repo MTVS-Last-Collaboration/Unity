@@ -9,6 +9,7 @@ public class ClickBoard : MonoBehaviour
 
     private void Start()
     {
+        playerUIObject = GameObject.Find("HoonLoobyCanvas");
         boardUIObject.SetActive(false);
     }
 
