@@ -10,17 +10,15 @@ public class PlayerInteraction : MonoBehaviourPun
     [SerializeField] private LayerMask detectLayer; // 감지할 레이어
     [SerializeField] private Button detectionButton; // UI 버튼
 
-    private void Start()
+    private void Awake()
     {
-        StartCoroutine(StartDelay());
         detectionButton = GameObject.Find("Btn_TouchEnter").GetComponent<Button>();
-        // 버튼에 클릭 이벤트 추가
-        detectionButton.onClick.AddListener(DetectForwardObject);
     }
 
-    IEnumerator StartDelay()
+    private void Start()
     {
-        yield return new WaitForSeconds(0.05f);
+        // 버튼에 클릭 이벤트 추가
+        detectionButton.onClick.AddListener(DetectForwardObject);
     }
 
     private void DetectForwardObject()
