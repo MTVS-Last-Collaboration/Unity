@@ -64,6 +64,7 @@ public class JSW_CameraControllTest : MonoBehaviour
     public void ResetCamera()
     {
         cameraPos = "Original";
+        playerTransform = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform;
         mong.forward = playerTransform.forward * -1;
     }
     public void CameraTo3D()
