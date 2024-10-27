@@ -85,11 +85,13 @@ public class LobbyGameManager : MonoBehaviourPun
         //룸에 입장이 될때까지 기다린다.
         yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
 
-        Vector2 radomPos = Random.insideUnitCircle * 5.0f;
-        Vector3 initPosition = new Vector3(radomPos.x, 0.0f, radomPos.y);
+        //Vector2 radomPos = Random.insideUnitCircle * 5.0f;
+        //Vector3 initPosition = new Vector3(radomPos.x, 0.0f, radomPos.y);
         //플레이어 생성하자, 이름,위치.회전 , 프리팹 경로는 Resources 
         //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
         //player = PhotonNetwork.Instantiate("PlayerWoman", initPosition, Quaternion.identity);
+
+        Vector3 initPosition = new Vector3(-23, 0, -13);
         player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);
 
         // player 오브젝트 캐싱 완료
