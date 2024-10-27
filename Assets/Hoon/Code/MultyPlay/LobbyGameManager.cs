@@ -91,7 +91,7 @@ public class LobbyGameManager : MonoBehaviourPun
         //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
         //player = PhotonNetwork.Instantiate("PlayerWoman", initPosition, Quaternion.identity);
 
-        Vector3 initPosition = new Vector3(-23, 0, -13);
+        Vector3 initPosition = new Vector3(-23, 1, -13);
         player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);
 
         // player 오브젝트 캐싱 완료
