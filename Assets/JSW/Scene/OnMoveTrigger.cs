@@ -20,6 +20,7 @@ public class OnMoveTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            GetComponent<JSW_ConnectionManager>().enabled = true;
             GetComponent<JSW_ConnectionManager>().OnJoinedRoom();
         }
     }
