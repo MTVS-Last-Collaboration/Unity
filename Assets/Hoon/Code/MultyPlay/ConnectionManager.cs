@@ -197,7 +197,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         bool isCreataeRoom = false;
         if (roomList.Count > 0) //방개수가 0보다 크면                         
         {
-            print("방개수" + roomList.Count);
+             print("방개수" + roomList.Count);
+            avataText.text = "방개수" + roomList.Count;
             //방을 모두 검색해서 방이 있는지 찾자.
             foreach (RoomInfo roomInfo in roomList)
             {

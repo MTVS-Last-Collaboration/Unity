@@ -255,13 +255,33 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         int value = UnityEngine.Random.Range(0, 10); //랜덤뽑기
         
         //미션설정하기
-        if (day == 25)
+        if (day == 27)
         {
-            todayMission = "내 첫인상을 알려주세요";
+            todayMission = "서로의 첫인상을 알려주세요";
         }
-        else if(day == 26)
+        else if(day == 28)
         {
-            todayMission = "오늘 점심에 무엇을 먹었나요?";
+            todayMission = "오늘 점심에 무엇을 먹었는지 알려주세요.";
+        }
+        else if (day == 29)
+        {
+            todayMission = "가장 소중한 사람은 누구인지 알려주세요.";
+        }
+        else if (day == 30)
+        {
+            todayMission = "오늘 날씨에 대한 느낌을 알려주세요.";
+        }
+        else if (day == 31)
+        {
+            todayMission = "둘이 함께 가보고 싶은곳을 알려주세요.";
+        }
+        else if (day == 01)
+        {
+            todayMission = "짜장 vs 짬뽕 더 선호하는 음식을 알려주세요.";
+        }
+        else if (day == 02)
+        {
+            todayMission = "요즘 즐겨듣는 노래를 알려주세요";
         }
 
         //미션저장하기
@@ -391,6 +411,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void CheckMail()
     {
+        CheckMission();
         CheckMood();
         CheckComent();
     }
