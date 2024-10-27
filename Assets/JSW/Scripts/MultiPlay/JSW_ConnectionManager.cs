@@ -13,6 +13,9 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     //public MethodInfo methodInfo;
     public static ConnectionManager Instance;
     public GameObject avataName;
+    public string createRoomName;
+    public string joinRoomName;
+    public int levelNumber;
 
     // Start is called before the first frame update
     void Start()
@@ -82,7 +85,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        string roomName = "JSW_LoobyTest";
+        string roomName = createRoomName;
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -108,7 +111,8 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     //방참가
     public void JoinRoom()
     {
-        string roomName = "JSW_LoobyTest";
+        //string roomName = "JSW_LoobyTest";
+        string roomName = joinRoomName;
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
@@ -126,7 +130,6 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         print("방 만들어짐!");
 
-
     }
     //방참가 콜백
     public override void OnJoinedRoom()
@@ -137,9 +140,9 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         print("방에 입장 성공");
 
+        print(levelNumber);
         // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
-        PhotonNetwork.LoadLevel(2);
-
+        PhotonNetwork.LoadLevel(levelNumber);
     }
     //방참가 실패 콜백
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -191,7 +194,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
             print("방개수" + roomList.Count);
             foreach (RoomInfo roomInfo in roomList)
             {
-                if (roomInfo.Name.Contains("JSW_LoobyTest"))
+                if (roomInfo.Name.Contains(joinRoomName))
                 {
                     print("방이있으니까 참가해야지~");
                     JoinRoom();
@@ -203,4 +206,16 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
         }
 
     }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+
+    //public void MoveScene()
+    //{
+    //    PhotonNetwork.LoadLevel(levelNumber);
+    //}
+
 }

@@ -6,6 +6,13 @@ public class ClickBoard : MonoBehaviour
 {
     [SerializeField] private GameObject boardUIObject;
     [SerializeField] private GameObject playerUIObject;
+
+    private void Start()
+    {
+        playerUIObject = GameObject.Find("HoonLoobyCanvas");
+        boardUIObject.SetActive(false);
+    }
+
     public void HandleInteraction()
     {
         playerUIObject.SetActive(false);

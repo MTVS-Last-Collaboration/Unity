@@ -9,16 +9,19 @@ public class PlayerInteraction : MonoBehaviourPun
     [SerializeField] private float detectionDistance = 2f; // 감지 거리
     [SerializeField] private LayerMask detectLayer; // 감지할 레이어
     [SerializeField] private Button detectionButton; // UI 버튼
-
-    private void Awake()
-    {
-        detectionButton = GameObject.Find("Btn_Enter").GetComponent<Button>();
-    }
+    [SerializeField] private GameObject playerModel; // 플레이어 모델
 
     private void Start()
     {
+        StartCoroutine(StartDelay());
+        detectionButton = GameObject.Find("Btn_TouchEnter").GetComponent<Button>();
         // 버튼에 클릭 이벤트 추가
         detectionButton.onClick.AddListener(DetectForwardObject);
+    }
+
+    IEnumerator StartDelay()
+    {
+        yield return new WaitForSeconds(0.05f);
     }
 
     private void DetectForwardObject()
@@ -27,7 +30,7 @@ public class PlayerInteraction : MonoBehaviourPun
         {
             // 플레이어의 정면 방향으로 레이캐스트 발사
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, detectionDistance, detectLayer))
+            if (Physics.Raycast(playerModel.transform.position, playerModel.transform.forward, out hit, detectionDistance, detectLayer))
             {
                 hit.collider.gameObject.GetComponent<ClickFlower>()?.HandleInteraction();
                 hit.collider.gameObject.GetComponent<ClickBoard>()?.HandleInteraction();
