@@ -106,8 +106,28 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //PhotonNetwork.AddCallbackTarget(this);  // 이벤트 콜백 등록
         //Debug.Log(Application.persistentDataPath);
         //DataPath.text = Application.persistentDataPath;
-        DataPath.text = "참가한 플레이어 " + PhotonNetwork.PlayerList.Length + "\n" + "방이름 " + PhotonNetwork.CurrentRoom.Name + "\n"+ "닉네임" + PhotonNetwork.LocalPlayer.NickName;
+        
+       //반환값이 int
+        
+        string playerList = "참가한 플레이어 " + PhotonNetwork.PlayerList.Length; //+ "\n" + // + "\n" +
+        string roomName= "";
+        string nickName = "";
 
+        if (PhotonNetwork.CurrentRoom != null)
+        {
+             roomName = "방이름 " + PhotonNetwork.CurrentRoom.Name;
+        }
+        else
+        {
+            roomName = "방이름없음" ;
+        }
+        
+        if (PhotonNetwork.LocalPlayer.NickName != null)
+        {
+            nickName = "닉네임" + PhotonNetwork.LocalPlayer.NickName;
+        }
+
+        DataPath.text = playerList + "\n" + roomName + "\n" + nickName;
 
         moodChoiceObject.SetActive(false);
 
