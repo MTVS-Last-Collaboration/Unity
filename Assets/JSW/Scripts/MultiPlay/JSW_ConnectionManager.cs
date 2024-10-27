@@ -207,6 +207,12 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
 
     }
 
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+
     //public void MoveScene()
     //{
     //    PhotonNetwork.LoadLevel(levelNumber);
