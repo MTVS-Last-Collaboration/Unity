@@ -7,6 +7,7 @@ public class JSW_ClickMong : MonoBehaviour
     public GameObject uiManager;
     public JSW_CameraControllTest cameraControll;
     private bool isPlayerInRange = false;
+    public int MongLevel = 0;
 
     private void Start()
     {
@@ -44,5 +45,15 @@ public class JSW_ClickMong : MonoBehaviour
             //}
             //추후 끄는 버튼 생성
         }
+    }
+
+    public void MongLevelUp()
+    {
+        if (MongLevel < 3)
+        {
+            transform.GetChild(MongLevel++).gameObject.SetActive(false);
+            transform.GetChild(MongLevel).gameObject.SetActive(true);
+        } 
+
     }
 }
