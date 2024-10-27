@@ -153,6 +153,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         CheckComent(); //코맨드가 있는지 계산합니다.
         CheckMood(); //무드를 바꾸자. FindPlayer 를 줌.
 
+        DataPath.gameObject.SetActive(false);//데이타 텍스트 끄기
     }
 
 
@@ -216,8 +217,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 //f(ComentData.date == fakeDate) //가짜날짜로 일치확인
                 {
                     print("날짜일치");
-                    mailComentText1.text = "닉네임" + ":" + ComentData.user1name + "," + "기분" + ":" + ComentData.user1mood + "," + "답변" + ":" + ComentData.user1coment;
-                    mailComentText2.text = "닉네임" + ":" + ComentData.user2name + "," + "기분" + ":" + ComentData.user2mood + "," + "답변" + ":" + ComentData.user2coment;
+                    //mailComentText1.text = "닉네임" + ":" + ComentData.user1name + "," + "기분" + ":" + ComentData.user1mood + "," + "답변" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = "닉네임" + ":" + ComentData.user2name + "," + "기분" + ":" + ComentData.user2mood + "," + "답변" + ":" + ComentData.user2coment;
+                    mailComentText1.text = ComentData.user1name + "답변" + ":" + ComentData.user1coment;
+                    mailComentText2.text = ComentData.user2name + "답변" + ":" + ComentData.user2coment;
                     break;
 
                 }
