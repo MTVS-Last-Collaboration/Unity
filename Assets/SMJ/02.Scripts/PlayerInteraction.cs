@@ -12,7 +12,7 @@ public class PlayerInteraction : MonoBehaviourPun
 
     private void Awake()
     {
-        detectionButton = GameObject.Find("Btn_Enter").GetComponent<Button>();
+        detectionButton = GameObject.Find("Btn_TouchEnter").GetComponent<Button>();
     }
 
     private void Start()
