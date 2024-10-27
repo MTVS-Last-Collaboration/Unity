@@ -6,6 +6,12 @@ public class ClickBoard : MonoBehaviour
 {
     [SerializeField] private GameObject boardUIObject;
     [SerializeField] private GameObject playerUIObject;
+
+    private void Start()
+    {
+        boardUIObject.SetActive(false);
+    }
+
     public void HandleInteraction()
     {
         playerUIObject.SetActive(false);
