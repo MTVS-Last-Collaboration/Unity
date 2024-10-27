@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class PostData
 {
+    public string nickName;
     public string title;
     public string content;
     public DateTime createDate;
@@ -13,8 +14,9 @@ public class PostData
     private int weeklyLikeCount; // 내부 정렬용 주간 좋아요
     private DateTime weekStartDate;
 
-    public PostData(string title, string content)
+    public PostData(string nickName, string title, string content)
     {
+        this.nickName = nickName;
         this.title = title;
         this.content = content;
         this.createDate = DateTime.Now;

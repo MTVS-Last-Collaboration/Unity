@@ -28,6 +28,7 @@ Material:
   m_ValidKeywords:
   - _ALPHATEST_ON
   - _COLOR_OVERLAY_UV
+  - _RECEIVE_SHADOWS_OFF
   - _SPECULAR_SETUP
   m_InvalidKeywords:
   - _BEND_WIND_OVERLAY_UV
@@ -43,7 +44,8 @@ Material:
   m_CustomRenderQueue: 2450
   stringTagMap:
     RenderType: TransparentCutout
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -113,7 +115,7 @@ Material:
     - _AlphaClip: 1
     - _AlphaCutoff: 0.5
     - _AlphaToMask: 1
-    - _Alpha_Cutoff: 0.5
+    - _Alpha_Cutoff: 0.727
     - _BEND_WIND_OVERLAY: 1
     - _BOOLEAN_1: 0
     - _Bend: 0
@@ -122,12 +124,12 @@ Material:
     - _Blend: 0
     - _BlendHeight: 0.8
     - _BlendModePreserveSpecular: 0
-    - _Blend_Height: 0.144
+    - _Blend_Height: 0.66
     - _BumpScale: 1
     - _CAST_SHADOWS: 1
     - _CAST_SHADOWS_OFF: 1
     - _COLOR_OVERLAY: 1
-    - _CastShadows: 1
+    - _CastShadows: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 0
@@ -155,7 +157,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Range: 1
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -182,13 +184,13 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 0.9259865, b: 0.18396229, a: 1}
     - _BottomColor: {r: 0.58431375, g: 0.5051607, b: 0, a: 0}
-    - _Bottom_Color: {r: 0.83921576, g: 1, b: 0, a: 0}
+    - _Bottom_Color: {r: 0.627451, g: 0.8117648, b: 0.13725491, a: 1}
     - _Color: {r: 1, g: 0.9259865, b: 0.18396229, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Player_Position: {r: 169.991, g: 19.89849, b: 166.09459, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _TopColor: {r: 0.7651269, g: 0.7924528, b: 0, a: 0}
-    - _Top_Color: {r: 0.7479795, g: 1, b: 0, a: 0}
+    - _Top_Color: {r: 0.7687708, g: 0.94509804, b: 0.035294116, a: 1}
     - _WindDirection: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _Wind_Direction: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []
