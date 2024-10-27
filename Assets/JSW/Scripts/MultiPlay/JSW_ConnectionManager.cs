@@ -140,9 +140,9 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         print("방에 입장 성공");
 
+        print(levelNumber);
         // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
         PhotonNetwork.LoadLevel(levelNumber);
-
     }
     //방참가 실패 콜백
     public override void OnJoinRoomFailed(short returnCode, string message)
