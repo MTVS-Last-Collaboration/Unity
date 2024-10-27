@@ -22,7 +22,6 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-        InitializeCanvas();
         StartCoroutine(DailyWeeklyLikesCheck());
     }
 
@@ -58,9 +57,9 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void CreatePost(string title, string content)
+    public void CreatePost(string nickName, string title, string content)
     {
-        var post = new PostData(title, content);
+        var post = new PostData(nickName, title, content);
         posts.Add(post);
         RefreshPostList();
     }
@@ -91,13 +90,5 @@ public class Board : MonoBehaviour
             GameObject postObj = Instantiate(postPrefab, postListContent);
             postObj.GetComponent<PostItem>().Initialize(post);
         }
-    }
-
-    private void InitializeCanvas()
-    {
-        boardCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        boardCanvas.transform.localScale = Vector3.one * 0.01f;
-        boardCanvas.transform.localPosition = new Vector3(0, 2, 0);
-        boardCanvas.transform.forward = transform.forward;
     }
 }
