@@ -253,8 +253,12 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         }
     }
 
-
     public void PushFunitureSetting()
+    {
+        photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    public void PushFunitureSetting_RPC()
     {
 
         GameObject funitureOb = null;

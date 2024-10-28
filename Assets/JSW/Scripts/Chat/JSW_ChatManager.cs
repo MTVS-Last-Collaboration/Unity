@@ -160,10 +160,4 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
             Debug.LogError("Message sending failed: " + request.error);
         }
     }
-
-
-
-
-
-
 }

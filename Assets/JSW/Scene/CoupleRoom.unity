@@ -1181,6 +1181,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: (Prb)DoubleBed_pink (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2500376134675351357, guid: c41079b8baf31454db88b7cca2fc9e0e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5074970974721249091, guid: c41079b8baf31454db88b7cca2fc9e0e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4117,12 +4122,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam_Object: {fileID: 0}
   mainCamPos_Object: {fileID: 1926706939}
-  lobbyGameManager: {fileID: 0}
+  lobbyGameManager: {fileID: 1801501395}
   playerTransform: {fileID: 0}
   mong: {fileID: 1088137559}
   CamPos_3D: {fileID: 1384789843}
+  aa: 1.5
+  bb: -2
   cameraPos: Original
   mainCamY: 8
+  rotateSpeed: 0
 --- !u!1001 &116806140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26798,18 +26806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e179fdc57afb4d144bda277bc2940750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionManager: {fileID: 575061305}
-  input_Id_Object: {fileID: 0}
-  input_Pass_Object: {fileID: 0}
-  placeHold_Id_Object: {fileID: 0}
-  placeHold_Psss_Object: {fileID: 0}
-  input_Id: {fileID: 0}
-  input_Pass: {fileID: 0}
-  placeHole_Id_Text: {fileID: 0}
-  placeHole_Pass_Text: {fileID: 0}
-  idText: 
-  passText: 
-  loadUserInfo: 
 --- !u!1001 &822542741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49442,7 +49438,7 @@ MonoBehaviour:
   trContent: {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
   nickName: gurro
-  chatUrl: http://211.193.28.200:12223/api/chat/send
+  chatUrl: http://125.132.216.190:12223/api/chat/send
 --- !u!1 &1590319883
 GameObject:
   m_ObjectHideFlags: 0
