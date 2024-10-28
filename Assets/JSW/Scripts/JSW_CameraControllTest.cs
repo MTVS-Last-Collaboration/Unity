@@ -52,7 +52,7 @@ public class JSW_CameraControllTest : MonoBehaviour
             playerTransform = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform;
             mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, playerTransform.position + ((mong.position - Vector3.up * 0.5f) - playerTransform.position).normalized * 0.3f + Vector3.up * 0.4f, Time.deltaTime * 10);
             mainCam_Object.transform.forward = ((mong.position - Vector3.up) - playerTransform.position).normalized;
-            mong.forward = ((mong.position) - playerTransform.position).normalized * -1;
+            mong.forward = ((mong.position) - mainCam_Object.transform.position).normalized * -1;
         }
         else if (cameraPos == "3D")
         {

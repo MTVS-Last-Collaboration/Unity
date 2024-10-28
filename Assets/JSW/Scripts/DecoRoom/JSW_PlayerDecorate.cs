@@ -67,21 +67,24 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     [PunRPC]
     public void SetFuniture1_RPC(string finalFuni)
     {
-            GameObject funitureOb;
-            int dir = 0;
-            print(gameObject.name + " " + photonView);
-            //GameObject funitureOb = Instantiate(funitureObject1);
-            if (photonView.IsMine)
-            {
+        GameObject funitureOb;
+        int dir = 0;
+        print(gameObject.name + " " + photonView);
 
-                 funitureOb = PhotonNetwork.Instantiate(finalFuni, transform.position + transform.forward, transform.rotation);
-            }
-            else
-            {
-                 funitureOb = Instantiate(funitureObject1, transform.position + transform.forward, transform.rotation);
-            }
-             
-            if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
+        //GameObject funitureOb = Instantiate(funitureObject1);
+        if (photonView.IsMine)
+        {
+
+            funitureOb = PhotonNetwork.Instantiate(finalFuni, transform.position + transform.forward, transform.rotation);
+        }
+        else
+        {
+            GameObject prefab = Resources.Load<GameObject>(finalFuni);
+            funitureOb = Instantiate(prefab, transform.position + transform.forward, transform.rotation);
+        }
+
+
+        if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
             {
                 if (Mathf.Abs(transform.forward.x) >= Mathf.Abs(transform.forward.z))
                 {
@@ -253,12 +256,12 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         }
     }
 
+    //public void PushFunitureSetting()
+    //{
+    //    photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
+    //}
+    //[PunRPC]
     public void PushFunitureSetting()
-    {
-        photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
-    }
-    [PunRPC]
-    public void PushFunitureSetting_RPC()
     {
 
         GameObject funitureOb = null;

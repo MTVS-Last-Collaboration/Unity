@@ -31,7 +31,7 @@ public class JSW_CameraRotation : MonoBehaviour
         mainCamPos_Object = GameObject.Find("MainCamPos");
     }
 
-    void Update()
+    void LateUpdate()
     {
         if(player == null)
         {
