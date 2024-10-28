@@ -25,13 +25,13 @@ public class JSW_ChatItem : MonoBehaviour
         if(chatColor != "Black")
         {
             chatText.text = "µø±€¿Ã : " + msg;
-            chatText.color = new Color(20, 20, 20);
+            chatText.color = new Color(50, 50, 50);
+            print("fdafdaf");
         }
         else
         {
             chatText.text = msg;
             chatText.color = Color.black;
         }
-       
     }
 }

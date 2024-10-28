@@ -153,17 +153,11 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
             string extractedText = aiResponse;
             Debug.Log("Extracted AI Response: " + extractedText);
 
-            CreateChatItem(extractedText, Color.gray);
+            CreateChatItem(extractedText, Color.black);
         }
         else
         {
             Debug.LogError("Message sending failed: " + request.error);
         }
     }
-
-
-
-
-
-
 }
