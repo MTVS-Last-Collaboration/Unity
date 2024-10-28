@@ -21,8 +21,28 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(PlayerDecorate());
+        nowFuniture();
     }
 
+    public void nowFuniture()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j= 4; j < 8;j++)
+            {
+                roomPosition[i, j] = true;
+            }
+        }
+        for(int i=0;i < FunitureList.Count; i++)
+        {
+            int x = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectPositionX;
+            int z = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectPositionZ;
+            int lenx = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectLengthX;
+            int lenz = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectLengthZ;
+            int rot = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectRotation;
+            AddNewFuniture(x, z, lenx, lenz, rot);
+        }
+    }
     // 새로운 배치
     // 이거 네모난 직사각형만 가능함
     public void AddNewFuniture(int posX, int posZ, int lenX,int lenZ, int rot)
