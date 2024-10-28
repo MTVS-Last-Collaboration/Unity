@@ -191,8 +191,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     }
 
-  
-
     public void CheckComent() //저정된 내용이 있으면 로드해주기.
     {
         tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // 코멘트 인풋필드 컴포넌트
@@ -219,8 +217,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     print("날짜일치");
                     //mailComentText1.text = "닉네임" + ":" + ComentData.user1name + "," + "기분" + ":" + ComentData.user1mood + "," + "답변" + ":" + ComentData.user1coment;
                     //mailComentText2.text = "닉네임" + ":" + ComentData.user2name + "," + "기분" + ":" + ComentData.user2mood + "," + "답변" + ":" + ComentData.user2coment;
-                    mailComentText1.text = ComentData.user1name + "답변" + ":" + ComentData.user1coment;
-                    mailComentText2.text = ComentData.user2name + "답변" + ":" + ComentData.user2coment;
+                    //mailComentText1.text = ComentData.user1name + "답변" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = ComentData.user2name + "답변" + ":" + ComentData.user2coment;
+                    mailComentText1.text =  ComentData.user1coment;
+                    mailComentText2.text =  ComentData.user2coment;
+
                     break;
 
                 }
@@ -332,7 +333,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void CheckDate()
     {
         // 현재 날짜를 yyyy-MM-dd 형식의 문자열로 변환
-        startDate = "2024-10-23";
+        startDate = "2024-10-28";
         Debug.Log("시작 날짜: " + startDate);
 
         currentDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -350,7 +351,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         string sumDay = totalDays.ToString();
 
         string today = "Day" + sumDay + ":" + currentDate;
-        currentDay.text = today;
+        currentDay.text = today; //오늘날짜를 표시해주자.
     }
 
     public void CheckMood() //변경한 무드 불러오기
@@ -431,12 +432,13 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
             if (userNumber == "user1")
             {
-                mailComentText1.text = nickName + ":" + tmp_InputField.text; //쓰여진 코멘트를 첫번째로 변경
+                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //쓰여진 코멘트를 첫번째로 변경
                 //print("1번유저 위치에 답변저장");
+                 mailComentText1.text = nickName + "답변" + ":"  + tmp_InputField.text;
             }
             else
             {
-                mailComentText2.text = nickName + ":" + tmp_InputField.text; //쓰여진 코멘트를 첫번째로 변경
+                mailComentText2.text = nickName + "답변" + ":" + tmp_InputField.text; //쓰여진 코멘트를 첫번째로 변경
                 //print("2번유저 위치에 답변저장");
             }
 
