@@ -17,9 +17,6 @@ public class WritePanel : MonoBehaviour
         // 버튼 이벤트 등록
         submitButton.onClick.AddListener(OnSubmit);
         exitButton.onClick.AddListener(Hide);
-
-        // 초기에는 패널 숨김
-        gameObject.SetActive(false);
     }
 
     // 패널 표시
@@ -49,7 +46,7 @@ public class WritePanel : MonoBehaviour
         string nickName = LoginInfoManager.instance.nickName;
 
         // 게시판에 글 추가
-        board.CreatePost(nickName, titleInput.text, contentInput.text);
+        board.CreatePost(nickName, titleInput.text, contentInput.text, 0);
         Hide();
     }
 

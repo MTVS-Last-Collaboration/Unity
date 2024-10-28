@@ -11,12 +11,12 @@ public class CommentData
     public DateTime createDate;
     public int likeCount;        // UI에 표시될 전체 좋아요
 
-    public CommentData(string nickName, string content)
+    public CommentData(string nickName, string content, int likeCount)
     {
         this.nickName = nickName;
         this.content = content;
         this.createDate = DateTime.Now;
-        this.likeCount = 0;
+        this.likeCount = likeCount;
     }
 
     public void AddLike()

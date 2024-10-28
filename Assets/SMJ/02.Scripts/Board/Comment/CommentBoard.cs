@@ -14,9 +14,9 @@ public class CommentBoard : MonoBehaviour
 
     private List<CommentData> comments = new List<CommentData>();
 
-    public void CreateComment(string nickName, string content)
+    public void CreateComment(string nickName, string content, int likeCount)
     {
-        var comment = new CommentData(nickName, content);
+        var comment = new CommentData(nickName, content , likeCount);
         comments.Add(comment);
         RefreshCommentList();
     }

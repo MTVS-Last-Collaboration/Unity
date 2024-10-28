@@ -22,6 +22,8 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        // 추후 더미데이터는 백엔드에 저장 후, 여기에서 로드하자.
+        CreatePost(LoginInfoManager.instance.nickName, "프로토타입", "힘내자!", 10);
         StartCoroutine(DailyWeeklyLikesCheck());
     }
 
@@ -57,9 +59,9 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void CreatePost(string nickName, string title, string content)
+    public void CreatePost(string nickName, string title, string content, int likeCount)
     {
-        var post = new PostData(nickName, title, content);
+        var post = new PostData(nickName, title, content, likeCount);
         posts.Add(post);
         RefreshPostList();
     }
