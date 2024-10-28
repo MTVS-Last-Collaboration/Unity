@@ -175,7 +175,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-            //mail_ImageObject.SetActive(false); //메일 이미지 오브젝트 끄기
+            mail_ImageObject.SetActive(false); //메일 이미지 오브젝트 끄기
         }
 
         if (isMoodSwihtch1)//감정표현버튼1
