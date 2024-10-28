@@ -17,6 +17,7 @@ using System.Net.NetworkInformation;
 using Newtonsoft.Json.Converters;
 using Photon.Pun.Demo.Cockpit;
 using System.Reflection;
+using System.Security.Cryptography;
 
 [System.Serializable]
 public class DayComentData
@@ -92,6 +93,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public GameObject moodButton1;
     public GameObject moodButton2;
+    public GameObject historyScrollview;
+    bool isHistoryScrollview = false;
+
+    string moodText1;
+    string moodText2;
 
     void Start()
     {
@@ -111,22 +117,22 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //PhotonNetwork.AddCallbackTarget(this);  // 이벤트 콜백 등록
         //Debug.Log(Application.persistentDataPath);
         //DataPath.text = Application.persistentDataPath;
-        
-       //반환값이 int
-        
+
+        //반환값이 int
+
         string playerList = "참가한 플레이어 " + PhotonNetwork.PlayerList.Length; //+ "\n" + // + "\n" +
-        string roomName= "";
+        string roomName = "";
         string nickName = "";
 
         if (PhotonNetwork.CurrentRoom != null)
         {
-             roomName = "방이름 " + PhotonNetwork.CurrentRoom.Name;
+            roomName = "방이름 " + PhotonNetwork.CurrentRoom.Name;
         }
         else
         {
-            roomName = "방이름없음" ;
+            roomName = "방이름없음";
         }
-        
+
         if (PhotonNetwork.LocalPlayer.NickName != null)
         {
             nickName = "닉네임" + PhotonNetwork.LocalPlayer.NickName;
@@ -151,17 +157,13 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         tmp_InputFieldObject.SetActive(false); //인풋필드 오브젝트 끄기.
         mailComentButtonText = mailComentTestObject.GetComponent<TextMeshProUGUI>(); //메일코멘트버튼텍스트
 
-       
-
-        CheckDate(); //날짜를 계산해줍니다.
-        CheckMission(); //날짜에 맞는 미션을 생성합니다.
-        CheckComent(); //코맨드가 있는지 계산합니다.
-        CheckMood(); //무드를 바꾸자. FindPlayer 를 줌.
 
         DataPath.gameObject.SetActive(false);//데이타 텍스트 끄기
+        //히스토리 스크롤뷰 끄기
+        historyScrollview.gameObject.SetActive(false);
 
-       
-    
+
+
     }
 
 
@@ -194,9 +196,24 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             moodChice2.gameObject.SetActive(false);
         }
 
-       
 
 
+
+    }
+
+    public void ViewHistoryScrollview()
+    {
+
+        if(!isHistoryScrollview)
+        {
+            historyScrollview.gameObject.SetActive(true);
+            isHistoryScrollview = true;
+        }
+        else
+        {
+            historyScrollview.gameObject.SetActive(false);
+            isHistoryScrollview = false;
+        }
     }
 
     public void CheckComent() //저정된 내용이 있으면 로드해주기.
@@ -217,30 +234,104 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             string loadDayComentInfo = System.IO.File.ReadAllText(path); //문자열로 가져오기
             loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List로 파싱하기
 
+            bool isCurrentDate = false;
             foreach (var ComentData in loadDayComenList)
             {
                 if (ComentData.date == currentDate) //날짜가 일치하면
                 //f(ComentData.date == fakeDate) //가짜날짜로 일치확인
                 {
-                    print("날짜일치");
+                    print("CheckComent, 날짜일치");
                     //mailComentText1.text = "닉네임" + ":" + ComentData.user1name + "," + "기분" + ":" + ComentData.user1mood + "," + "답변" + ":" + ComentData.user1coment;
                     //mailComentText2.text = "닉네임" + ":" + ComentData.user2name + "," + "기분" + ":" + ComentData.user2mood + "," + "답변" + ":" + ComentData.user2coment;
                     //mailComentText1.text = ComentData.user1name + "답변" + ":" + ComentData.user1coment;
                     //mailComentText2.text = ComentData.user2name + "답변" + ":" + ComentData.user2coment;
-                    mailComentText1.text =  ComentData.user1coment;
-                    mailComentText2.text =  ComentData.user2coment;
+                    
+                    
+                    if(userNumber == "user1" && mailComentText1.text == null) //유저1, 텍스트1데이터없음.
+                    {
+                        mailComentText1.text = "나의 답변을 입력해주세요";
+                        //print("111");
+                    } 
+                    else if (userNumber == "user1" && ComentData.user1coment == "null") //유저1, 텍스트1null
+                    {
+                        mailComentText1.text = "나의 답변을 입력해주세요";
+                        //print("112");
+                    }
+                    else if(userNumber == "user1" && ComentData.user1coment != "null") //유저1, 텍스트1!null
+                    {
+                        mailComentText1.text = ComentData.user1coment;
+                        //print("113" + ComentData.user1coment);
+                    }
 
+                    if(userNumber == "user1" && mailComentText2.text == null)
+                    {
+                        mailComentText2.text = "아직 상대방이 답변하지 않았어요"; //유저1, 텍스트2데이터없음.
+                        //print("121");
+                    }
+                    else if (userNumber =="user1"&& ComentData.user2coment == "null")//유저1, 텍스트2null
+                    {
+                        mailComentText2.text = "아직 상대방이 답변하지 않았어요";
+                        //print("122");
+                    }
+                    else if(userNumber == "user1" && ComentData.user2coment != "null") //유저1, 텍스트2!null
+                    {
+                        mailComentText2.text = ComentData.user2coment;
+                        //print("123" + ComentData.user2coment);
+                    }
+
+                    //유저2일때
+                    if (userNumber == "user2" && mailComentText1.text == null) //유저1, 텍스트1데이터없음
+                    {
+                        mailComentText1.text = "아직 상대방이 답변하지 않았어요."; 
+                    }
+                    else if (userNumber == "user2" && ComentData.user1coment == "null") //텍스트가 없으면
+                    {
+                        mailComentText1.text = "아직 상대방이 답변하지 않았어요.";
+                    }
+                    else if(userNumber == "user2" && ComentData.user1coment != "null")
+                    {
+                        mailComentText1.text = ComentData.user1coment;
+                    }
+
+                    if(userNumber == "user2" && mailComentText2.text == null)
+                    {
+                        mailComentText2.text = "나의 답변을 입력해주세요";
+                    }
+                    else if(userNumber == "user2" && ComentData.user2coment == "null")
+                    {
+                        mailComentText2.text = "나의 답변을 입력해주세요";
+                    }
+                    else if (userNumber == "user2" && ComentData.user2coment != "null") //유저1, 텍스트2!null
+                    {
+                        mailComentText2.text = ComentData.user2coment;
+                        //print("123" + ComentData.user2coment);
+                    }
+
+                    isCurrentDate = true;
                     break;
 
                 }
-                else
+                
+            }
+            if(!isCurrentDate) //일치하는거 없으면
+            {
+                print("날짜불일치, 저장기록없음");
+
+                if(userNumber =="user1")
                 {
-                    print("날짜일치 없음, 이전저장 없음");
+                    print("user1 날짜없음");
                     mailComentText1.text = "나의 답변을 입력해주세요";
                     mailComentText2.text = "상대방이 답변을 입력하지 않았어요";
                 }
+                else if(userNumber == "user2")
+                {
+                    print("user2 날짜없음");
+                    mailComentText2.text = "나의 답변을 입력해주세요";
+                    mailComentText1.text = "상대방이 답변을 입력하지 않았어요";
+                }
+         
             }
-        }
+        }   
     }
   
     public void CheckMission()
@@ -371,7 +462,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             if (ComentData.date == currentDate) //날짜가 일치하면
             //if(ComentData.date == fakeDate) //가짜날짜로 일치확인
             {
-                print("날짜일치, 이전에 저장한 기록이 있음");
+                print("날짜일치, 저장기록있음");
                 Image img1 = moodSwitch1.GetComponent<Image>();
                 Image img2 = moodSwitch2.GetComponent<Image>();
 
@@ -391,7 +482,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     img1.sprite = moodSprites[3];
                 }
-                print("1번 이미지 변경사항 확인하기");
+                
+                print("1번 이미지 변경사항 확인하기" + ComentData.user1mood);
 
 
                 if (ComentData.user2mood == "null")
@@ -410,134 +502,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     img2.sprite = moodSprites[3];
                 }
-                print("user2 이미지 변경사항 확인하기");
-                break;
-
-            }
-            else
-            {
-                print("CheckMood, 일치하는 날짜 없음, 일치하는 이미지가 없음.");
-            }
-        }
-    }
-
-    public void CheckMoodMale() //변경한 무드 불러오기
-    {
-
-        if(userNumber != "user1") //유저넘버 확인
-        {
-            print("user2 사용불가");
-            return;
-        }
-
-        //이미지를 골랐는지 확인하기
-        foreach (var ComentData in loadDayComenList)
-        {
-            if (ComentData.date == currentDate) //날짜가 일치하면
-            //if(ComentData.date == fakeDate) //가짜날짜로 일치확인
-            {
-                print("날짜일치, 이전에 저장한 기록이 있음");
-                Image img1 = moodSwitch1.GetComponent<Image>();
-                Image img2 = moodSwitch2.GetComponent<Image>();
-
-                if (ComentData.user1mood == "null")
-                {
-                    img1.sprite = moodSprites[0];
-                }
-                else if (ComentData.user1mood == "Good")
-                {
-                    img1.sprite = moodSprites[1];
-                }
-                else if (ComentData.user1mood == "Normal")
-                {
-                    img1.sprite = moodSprites[2];
-                }
-                else if (ComentData.user1mood == "Bad")
-                {
-                    img1.sprite = moodSprites[3];
-                }
-                print("1번 이미지 변경사항 확인하기");
-
-
-                if (ComentData.user2mood == "null")
-                {
-                    img2.sprite = moodSprites[0];
-                }
-                else if (ComentData.user2mood == "Good")
-                {
-                    img2.sprite = moodSprites[1];
-                }
-                else if (ComentData.user2mood == "Normal")
-                {
-                    img2.sprite = moodSprites[2];
-                }
-                else if (ComentData.user2mood == "Bad")
-                {
-                    img2.sprite = moodSprites[3];
-                }
-                print("user2 이미지 변경사항 확인하기");
-                break;
-
-            }
-            else
-            {
-                print("CheckMood, 일치하는 날짜 없음, 일치하는 이미지가 없음.");
-            }
-        }
-    }
-
-    public void CheckMoodWoman() //변경한 무드 불러오기
-    {
-        if (userNumber != "user2") //유저넘버 확인
-        {
-            print("user1 사용불가");
-            return;
-        }
-        //이미지를 골랐는지 확인하기
-        foreach (var ComentData in loadDayComenList)
-        {
-            if (ComentData.date == currentDate) //날짜가 일치하면
-            //if(ComentData.date == fakeDate) //가짜날짜로 일치확인
-            {
-                print("날짜일치, 이전에 저장한 기록이 있음");
-                Image img1 = moodSwitch1.GetComponent<Image>();
-                Image img2 = moodSwitch2.GetComponent<Image>();
-
-                if (ComentData.user1mood == "null")
-                {
-                    img1.sprite = moodSprites[0];
-                }
-                else if (ComentData.user1mood == "Good")
-                {
-                    img1.sprite = moodSprites[1];
-                }
-                else if (ComentData.user1mood == "Normal")
-                {
-                    img1.sprite = moodSprites[2];
-                }
-                else if (ComentData.user1mood == "Bad")
-                {
-                    img1.sprite = moodSprites[3];
-                }
-                print("1번 이미지 변경사항 확인하기");
-
-
-                if (ComentData.user2mood == "null")
-                {
-                    img2.sprite = moodSprites[0];
-                }
-                else if (ComentData.user2mood == "Good")
-                {
-                    img2.sprite = moodSprites[1];
-                }
-                else if (ComentData.user2mood == "Normal")
-                {
-                    img2.sprite = moodSprites[2];
-                }
-                else if (ComentData.user2mood == "Bad")
-                {
-                    img2.sprite = moodSprites[3];
-                }
+             
                 print("user2 이미지 변경사항 확인하기");
                 break;
 
@@ -607,14 +572,14 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         {
                             //Debug.Log("일치하는 데이터 있음, user1 정보 업데이트");
                             ComentData.user1name = playerNicknameMgr1.nickNameComp.text;
-                            ComentData.user1mood = "Good";
+                            ComentData.user1mood = moodText1;
                             ComentData.user1coment = mailComentText1.text;
                         }
                         else
                         {
                             //Debug.Log("일치하는 데이터 있음, user2 정보 업데이트");
                             ComentData.user2name = playerNicknameMgr2.nickNameComp.text;
-                            ComentData.user2mood = "Normal";
+                            ComentData.user2mood = moodText2;
                             ComentData.user2coment = mailComentText2.text;
                         }
 
@@ -821,6 +786,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             DayComentData dayComentData;
             if (userNumber == "user1")
             {
+                print("ChangeMoodImage 유저넘버1" + userNumber);
                 // DayComentData 객체 생성
                 dayComentData = new DayComentData
                 {
@@ -836,13 +802,14 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
             else
             {
+                print("ChangeMoodImage 유저넘버2" + userNumber);
                 // DayComentData 객체 생성
                 dayComentData = new DayComentData
                 {
                     date = currentDate, // 현재 날짜
                     dateMission = "null",
                     user1name = "null",
-                    user1mood = mood,
+                    user1mood = "null",
                     user1coment = "null",
                     user2name = "null",
                     user2mood = "null",
@@ -1056,7 +1023,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
         }
        
-
         //경로 파일을 불러오자.
         //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //로컬경로
         string path = Application.persistentDataPath + "/DayComentTest.json"; //싱크경로
@@ -1074,6 +1040,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                 if(userNumber == "user1")
                 {
+                    print("ChangeMoodImage 유저넘버1" + userNumber);
                     //1번이미지변경
                     if (mood == "Good")
                     {
@@ -1087,9 +1054,12 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     {
                         ComentData.user1mood = "Bad";
                     }
+                    moodText1 = mood;
+
                 }
                 else
                 {
+                    print("ChangeMoodImage 유저넘버2" + userNumber);
                     //2번이미지 변경
                     if (mood == "Good")
                     {
@@ -1103,6 +1073,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     {
                         ComentData.user2mood = "Bad";
                     }
+                    moodText2 = mood;
                 }
               
                 // 수정된 데이터를 리스트에 반영
@@ -1189,16 +1160,21 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
 
         //무드버튼끄기
-       /* if (userNumber == "user1")
-        {
-            moodButton2.SetActive(false);
-            print("유저넘버1 2번무드버튼끄자");
-        }
-        else
-        {
-            moodButton1.SetActive(false);
-            print("유저넘버2 1번무드버튼끄자");
-        }*/
+        /* if (userNumber == "user1")
+         {
+             moodButton2.SetActive(false);
+             print("유저넘버1 2번무드버튼끄자");
+         }
+         else
+         {
+             moodButton1.SetActive(false);
+             print("유저넘버2 1번무드버튼끄자");
+         }*/
+
+        CheckDate(); //날짜를 계산해줍니다.
+        CheckMission(); //날짜에 맞는 미션을 생성합니다.
+        CheckComent(); //코맨드가 있는지 계산합니다.
+        CheckMood(); //무드를 바꾸자. FindPlayer 를 줌.
 
     }
 
