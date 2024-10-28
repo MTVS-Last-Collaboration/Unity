@@ -15,6 +15,7 @@ public class PostItem : MonoBehaviour
     [SerializeField] private GameObject commentPanel;
     [SerializeField] private LayoutElement layout;
     [SerializeField] private VerticalLayoutGroup verticalLayoutGroup;
+    [SerializeField] private CommentBoard comment;
 
     [SerializeField] private float minHeight = 265f;
     [SerializeField] private float maxHeight = 1030f;
@@ -34,6 +35,12 @@ public class PostItem : MonoBehaviour
 
     private void Start()
     {
+        // 추후 더미데이터는 백엔드에 저장 후, 여기에서 로드하자.
+        comment.CreateComment("페이커", "쵸비화이팅!", 10);
+        comment.CreateComment("페이커", "쵸비화이팅!", 2);
+        comment.CreateComment("페이커", "쵸비화이팅!", 8);
+        comment.CreateComment("페이커", "쵸비화이팅!", 11);
+
         layout = GetComponent<LayoutElement>();
         verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         InitializeButtons();

@@ -25,6 +25,6 @@ public class WriteCommentPanel : MonoBehaviour
         string nickName = LoginInfoManager.instance.nickName;
 
         // 게시판에 글 추가
-        commentBoard.CreateComment(nickName, contentInput.text);
+        commentBoard.CreateComment(nickName, contentInput.text, 0);
     }
 }
