@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using ExitGames.Client.Photon;
+using System;
+using System.Linq;
 
 public class FlowerUIManager : MonoBehaviourPun
 {
@@ -39,9 +42,13 @@ public class FlowerUIManager : MonoBehaviourPun
 
     private string restTime = string.Empty;
     Coroutine recordingCor;
-
+    private const int CHUNK_SIZE = 10000;
+    private List<byte[]> voiceDataChunks = new List<byte[]>();
     private void Start()
     {
+        SendOptions sendOptions = new SendOptions();
+        sendOptions.Reliability = true; // 신뢰성 있는 전송
+        sendOptions.Channel = 0; // 채널 설정
         flower = GetComponent<Flower>();
         recorder = GetComponent<VoiceRecorder>();
         flowerEvol = GetComponent<FlowerEvolution>();
@@ -213,10 +220,13 @@ public class FlowerUIManager : MonoBehaviourPun
         isListenComplete = listenComplete;
         flower.evolutionCount = evolutionCount;
 
-        // 상태 동기화 후 UI 업데이트
-        if (flower.curState == Flower.States.BLOSSOM && isRecordComplete && click.checkID.IsMine(flower))
+        if (click.checkID != null)
         {
-            SwapButtonUI(5);
+            // 상태 동기화 후 UI 업데이트
+            if (flower.curState == Flower.States.BLOSSOM && isRecordComplete && click.checkID.IsMine(flower))
+            {
+                SwapButtonUI(5);
+            }
         }
 
         flowerEvol.CheckEvolutionCount();
@@ -472,14 +482,12 @@ public class FlowerUIManager : MonoBehaviourPun
             recordButtons[2].SetActive(false);
             recordButtons[4].SetActive(true);
 
-            // 진화 카운트 증가
             flower.evolutionCount++;
-            // 모든 클라이언트에 진화 상태 동기화
             photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
 
+            // 음성 데이터를 청크로 나눠서 전송
             byte[] voiceData = recorder.GetRecordedData();
-            photonView.RPC("RPC_SyncVoiceClip", RpcTarget.All, voiceData);
-            photonView.RPC("RPC_NotifyRecordComplete", RpcTarget.Others, voiceData);
+            StartCoroutine(SendVoiceDataInChunks(voiceData));
         }
         else
         {
@@ -498,13 +506,83 @@ public class FlowerUIManager : MonoBehaviourPun
 
                 // 진화 카운트 증가
                 flower.evolutionCount++;
-                // 모든 클라이언트에 진화 상태 동기화
                 photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
 
+                // 음성 데이터를 청크로 나눠서 전송
                 byte[] voiceData = recorder.GetRecordedData();
-                photonView.RPC("RPC_SyncVoiceClip", RpcTarget.All, voiceData);
-                photonView.RPC("RPC_NotifyRecordComplete", RpcTarget.Others, voiceData);
+                StartCoroutine(SendVoiceDataInChunks(voiceData));
             }
+        }
+    }
+
+    private IEnumerator SendVoiceDataInChunks(byte[] voiceData)
+    {
+        int chunks = Mathf.CeilToInt(voiceData.Length / (float)CHUNK_SIZE);
+
+        // 먼저 총 청크 수를 알림
+        photonView.RPC("RPC_InitializeVoiceTransfer", RpcTarget.All, chunks);
+
+        for (int i = 0; i < chunks; i++)
+        {
+            int size = Mathf.Min(CHUNK_SIZE, voiceData.Length - i * CHUNK_SIZE);
+            byte[] chunk = new byte[size];
+            Array.Copy(voiceData, i * CHUNK_SIZE, chunk, 0, size);
+
+            photonView.RPC("RPC_ReceiveVoiceChunk", RpcTarget.All, chunk, i);
+
+            // 각 청크 전송 사이에 약간의 딜레이
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // 전송 완료 후 처리
+        photonView.RPC("RPC_FinalizeVoiceTransfer", RpcTarget.All);
+    }
+    
+    [PunRPC]
+    private void RPC_InitializeVoiceTransfer(int totalChunks)
+    {
+        // 새로운 보이스 데이터를 받기 위한 초기화
+        voiceDataChunks = new List<byte[]>(totalChunks);
+    }
+
+    [PunRPC]
+    private void RPC_ReceiveVoiceChunk(byte[] chunk, int index)
+    {
+        // 청크를 순서대로 저장
+        while (voiceDataChunks.Count <= index)
+        {
+            voiceDataChunks.Add(null);
+        }
+        voiceDataChunks[index] = chunk;
+    }
+
+    [PunRPC]
+    private void RPC_FinalizeVoiceTransfer()
+    {
+        // 모든 청크를 하나의 배열로 합치기
+        int totalSize = voiceDataChunks.Sum(chunk => chunk.Length);
+        byte[] completeVoiceData = new byte[totalSize];
+
+        int currentPosition = 0;
+        foreach (byte[] chunk in voiceDataChunks)
+        {
+            Array.Copy(chunk, 0, completeVoiceData, currentPosition, chunk.Length);
+            currentPosition += chunk.Length;
+        }
+
+        // 완성된 음성 데이터 처리
+        recorder.SetRecordedData(completeVoiceData);
+        flower.voiceClip = recorder.GetAudioClip();
+
+        if (!click.checkID.IsMine(flower))
+        {
+            if (flower.curState == Flower.States.BLOSSOM)
+            {
+                SwapButtonUI(2);
+            }
+            isRecordComplete = true;
+            UpdateUIText();
+            UpdateAlertEmoji();
         }
     }
 
