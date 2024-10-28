@@ -23,7 +23,7 @@ public class Board : MonoBehaviour
     private void Start()
     {
         // 추후 더미데이터는 백엔드에 저장 후, 여기에서 로드하자.
-        CreatePost(LoginInfoManager.instance.nickName, "프로토타입", "힘내자!", 10);
+        CreatePost("", "<이번주의 썸톡 이슈>", "TOPIC : 식사 자리에서 연인의 친구가 깻잎을 못 떼고 있다면, 내 연인이 깻잎을 대신 떼어주는 게 괜찮을까?", 10);
         StartCoroutine(DailyWeeklyLikesCheck());
     }
 
