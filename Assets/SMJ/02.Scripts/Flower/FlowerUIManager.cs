@@ -44,6 +44,17 @@ public class FlowerUIManager : MonoBehaviourPun
     Coroutine recordingCor;
     private const int CHUNK_SIZE = 10000;
     private List<byte[]> voiceDataChunks = new List<byte[]>();
+
+    void Awake()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.SendRate = 30; // 초당 전송 횟수
+        PhotonNetwork.SerializationRate = 15; // 직렬화 빈도
+
+        // 연결 타임아웃 설정
+        PhotonNetwork.NetworkingClient.LoadBalancingPeer.DisconnectTimeout = 10000;
+        PhotonNetwork.NetworkingClient.LoadBalancingPeer.TimePingInterval = 1000;
+    }
     private void Start()
     {
         SendOptions sendOptions = new SendOptions();
