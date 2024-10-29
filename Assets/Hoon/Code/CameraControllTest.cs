@@ -21,7 +21,7 @@ public class CameraControllTest : MonoBehaviour
         playerPhotonview = transform.GetComponent<PhotonView>();
     }
 
-    void Update()
+    void LateUpdate()
     {
 
 
