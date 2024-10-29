@@ -79,8 +79,7 @@ public class JSW_CameraRotation : MonoBehaviour
         //플레이어가 있다면?
         if(player != null)
         {
-            print("왼쪽으로 카메라회전");
-            print("오른쪽으로 카메라회전");
+
             // 매 프레임마다 각도를 증가시킴
             angle += speed * Time.deltaTime;
             // x, z 좌표에서 원운동 경로를 계산
@@ -95,14 +94,13 @@ public class JSW_CameraRotation : MonoBehaviour
         }
         else
         {
-            print("플레이어가 없음");
+
         }
        
     }
 
     public void RightRotationMainCamera()
     {
-        print("오른쪽으로 카메라회전");
         // 매 프레임마다 각도를 증가시킴
         angle += speed * Time.deltaTime;
         // x, z 좌표에서 원운동 경로를 계산
