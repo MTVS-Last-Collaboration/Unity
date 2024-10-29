@@ -273,7 +273,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Ray ray = new Ray(transform.position + Vector3.up * 0.75f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
-        Debug.DrawRay(transform.position + Vector3.up * 1f , forward * 1.5f, Color.red);
+        //Debug.DrawRay(transform.position + Vector3.up * 1f , forward * 1.5f, Color.red);
         // Ray가 물체와 충돌하는지 검사
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1.5f))
