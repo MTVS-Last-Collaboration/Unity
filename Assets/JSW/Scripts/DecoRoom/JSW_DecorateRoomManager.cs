@@ -26,13 +26,13 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
     public void nowFuniture()
     {
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j= 4; j < 8;j++)
-            {
-                roomPosition[i, j] = true;
-            }
-        }
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    for (int j= 4; j < 8;j++)
+        //    {
+        //        roomPosition[i, j] = true;
+        //    }
+        //}
         for(int i=0;i < FunitureList.Count; i++)
         {
             int x = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectPositionX;
@@ -70,7 +70,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         }
         // 6시방향
         if (rot == 2) {
-            for (int i = posX; i< posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -128,7 +128,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -189,7 +189,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -259,7 +259,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -329,7 +329,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -406,7 +406,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -464,7 +464,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -527,7 +527,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
@@ -588,7 +588,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         // 6시방향
         if (rot == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {

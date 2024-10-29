@@ -15,6 +15,11 @@ public class JSW_CameraControllTest : MonoBehaviour
     public Transform mong;
     public Transform CamPos_3D;
 
+    //public GameObject LobbyGameManager;
+
+    public float aa = 1.5f;
+    public float bb = -2;
+
     public string cameraPos = "Original";
 
     public float mainCamY = 8; //카메라의 높이
@@ -24,12 +29,13 @@ public class JSW_CameraControllTest : MonoBehaviour
     {
         //메인카메라 캐싱
         mainCam_Object = GameObject.Find("MainCamera");
-        lobbyGameManager = GameObject.Find("LobbyGameManager");
+        //lobbyGameManager = GameObject.Find("LobbyGameManager");
     }
 
-    void Update()
+    public float rotateSpeed;
+    Vector3 lastMousePosition;
+    void LateUpdate()
     {
-
         if (cameraPos == "Original")    
         {
             Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
@@ -46,7 +52,7 @@ public class JSW_CameraControllTest : MonoBehaviour
             playerTransform = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform;
             mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, playerTransform.position + ((mong.position - Vector3.up * 0.5f) - playerTransform.position).normalized * 0.3f + Vector3.up * 0.4f, Time.deltaTime * 10);
             mainCam_Object.transform.forward = ((mong.position - Vector3.up) - playerTransform.position).normalized;
-            mong.forward = ((mong.position) - playerTransform.position).normalized * -1;
+            mong.forward = ((mong.position) - mainCam_Object.transform.position).normalized * -1;
         }
         else if (cameraPos == "3D")
         {

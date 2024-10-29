@@ -22,6 +22,8 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        // 추후 더미데이터는 백엔드에 저장 후, 여기에서 로드하자.
+        CreatePost("", "<이번주의 썸톡 이슈>", "TOPIC : 식사 자리에서 연인의 친구가 깻잎을 못 떼고 있다면, 내 연인이 깻잎을 대신 떼어주는 게 괜찮을까?", 10);
         StartCoroutine(DailyWeeklyLikesCheck());
     }
 
@@ -57,9 +59,9 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void CreatePost(string nickName, string title, string content)
+    public void CreatePost(string nickName, string title, string content, int likeCount)
     {
-        var post = new PostData(nickName, title, content);
+        var post = new PostData(nickName, title, content, likeCount);
         posts.Add(post);
         RefreshPostList();
     }

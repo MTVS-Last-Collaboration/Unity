@@ -43,7 +43,8 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
             // 서버에서 받은 위치 및 회전을 부드럽게 동기화
             transform.position = myPos;
             transform.rotation = myRot;
-
+            transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * 100f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, myRot, Time.deltaTime * 100f);
             if (animator != null)  //animator null 아닐때
             {
                 if (x != 0 || z != 0)    //값이 0이 아닐때

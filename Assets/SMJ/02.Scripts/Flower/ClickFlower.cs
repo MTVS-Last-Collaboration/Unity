@@ -58,14 +58,14 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
 
         while (true)
         {
-            print($"현재 체크중인 플레이어: {gameObject.name}, managerId: {targetFlower.managerId}");
+            //print($"현재 체크중인 플레이어: {gameObject.name}, managerId: {targetFlower.managerId}");
             CheckForPlayer();
             yield return delay;
         }
     }
     private void Update()
     {
-        print(gameObject.name + " : " + isClose);
+        //print(gameObject.name + " : " + isClose);
         if (isClose == true)
         {
             if (Input.touchCount > 0)
@@ -98,7 +98,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
             IDHandler playerIDHandler = hitCollider.GetComponent<IDHandler>();
             if (playerIDHandler == null) continue;
 
-            print($"검사중인 플레이어: {hitCollider.gameObject.name}, ID: {playerIDHandler.ID}, 꽃의 managerId: {targetFlower.managerId}");
+            //print($"검사중인 플레이어: {hitCollider.gameObject.name}, ID: {playerIDHandler.ID}, 꽃의 managerId: {targetFlower.managerId}");
 
             float distance = Vector3.Distance(gameObject.transform.position, hitCollider.transform.position);
 

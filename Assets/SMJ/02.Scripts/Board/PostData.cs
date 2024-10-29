@@ -13,15 +13,16 @@ public class PostData
     public int likeCount;        // UI에 표시될 전체 좋아요
     private int weeklyLikeCount; // 내부 정렬용 주간 좋아요
     private DateTime weekStartDate;
+    private CommentBoard comment;
 
-    public PostData(string nickName, string title, string content)
+    public PostData(string nickName, string title, string content, int likeCount)
     {
         this.nickName = nickName;
         this.title = title;
         this.content = content;
         this.createDate = DateTime.Now;
         this.weekStartDate = DateTime.Now.Date;
-        this.likeCount = 0;
+        this.likeCount = likeCount;
         this.weeklyLikeCount = 0;
     }
 

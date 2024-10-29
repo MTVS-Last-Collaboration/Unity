@@ -103,7 +103,7 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
         // 6Ω√πÊ«‚
         if (decoObjectRotation == 2)
         {
-            for (int i = posX; i < posX + lenX; i++)
+            for (int i = posX; i > posX - lenX; i--)
             {
                 for (int j = posZ; j > posZ - lenZ; j--)
                 {
