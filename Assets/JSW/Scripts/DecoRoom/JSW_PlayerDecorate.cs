@@ -30,31 +30,31 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         playerDir = new Vector3(Mathf.Round(transform.forward.x), Mathf.Round(transform.forward.y), Mathf.Round(transform.forward.z));
         playerPos = new Vector3(Mathf.Round(transform.position.x), 0, Mathf.Round(transform.position.z));
         
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            print(1);
-            //SetFuniture1();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetFuniture2();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            PushFunitureSetting();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            PushFuniture();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            DrawFuniture();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            DestroyFuniture();
-        }
+        //if(Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    print(1);
+        //    //SetFuniture1();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    SetFuniture2();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    PushFunitureSetting();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
+        //    PushFuniture();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+        //    DrawFuniture();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha6))
+        //{
+        //    DestroyFuniture();
+        //}
     }
 
 
