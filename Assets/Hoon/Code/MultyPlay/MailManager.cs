@@ -393,11 +393,14 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         if (File.Exists(path))  // 파일이 존재하면
         {
             string loadDayComentInfo = System.IO.File.ReadAllText(path);
+            bool isMatchDate = false;
             loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //문자열을 Json 배열로 변경
+
             for (int i = 0; i < loadDayComenList.Count; i++) //for문으로 데이트 idx로 설정하기.
             {
-                var ComentData = loadDayComenList[i];
 
+
+                var ComentData = loadDayComenList[i];
                 if (ComentData.date == currentDate) // 날짜가 일치하면
                 {
                     // 일치하는 데이터 로그를 변수에 저장.
@@ -417,15 +420,49 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
                     dayMissionText.text = todayMission;
+                    isMatchDate = true;
                     break;
             
                 }
-           
+                
             }        
+            if(!isMatchDate) //일치하는 날짜 없으면 미션생성하기
+            {
+                DayComentData  dayComentData = new DayComentData //클래스 정보 재정의
+                {
+                    date = currentDate, // 현재 날짜
+                    dateMission = todayMission,
+                    user1name = "null",
+                    user1mood = "null",
+                    user1coment = "null",
+                    user2name = "null",
+                    user2mood = "null",
+                    user2coment = "null"
+                };
+
+                loadDayComenList.Add(dayComentData); //기존에 불러온 List에 dayComentData 에 usertype 에 맞는 정보를 저장하기
+
+                // 리스트를 JSON 문자열로 변환
+                string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
+                // JSON 파일로 저장
+                File.WriteAllText(path, jsonString);
+                //Debug.Log("파일 생성 완료: " + path);
+                //Debug.Log("저장된 JSON 데이터: " + jsonString);
+
+                //UI의 미션텍스트 갱신
+                TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
+                dayMissionText.text = todayMission; 
+
+
+            }
+
         }
         else
         {
             DataPath.text = "파일이 없습니다";
+            //날짜가 없으니까 새로 만들어주고 갱신하자.
+
+
         }
     }
 
@@ -614,6 +651,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         dayComentData = new DayComentData //클래스 정보 재정의
                         {
                             date = currentDate, // 현재 날짜
+                            dateMission = todayMission,
                             user1name = playerNicknameMgr1.nickNameComp.text,
                             user1mood = "Good",
                             user1coment = mailComentText1.text,
@@ -628,6 +666,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         dayComentData = new DayComentData //클래스 정보 재정의
                         {
                             date = currentDate, // 현재 날짜
+                            dateMission = todayMission,
                             user1name = "null",
                             user1mood = "null",
                             user1coment = "null",
