@@ -21,6 +21,12 @@ public class JSW_ButtonInter : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     public PhotonView playerPhotonView;
 
+    public JSW_VirtualJoyStick virtualJoyStick;
+
+    public float doubleClickTime = 0.3f; // 더블 클릭으로 인식할 시간 간격
+
+    private float lastClickTime = 0f; // 마지막 클릭 시간을 기록할 변수
+
     // 버튼이 눌렸을 때 호출되는 메서드
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -44,6 +50,20 @@ public class JSW_ButtonInter : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         }
 
         pressTime = 0f; // 누른 시간 초기화
+
+
+        // 더블 클릭 관련 
+        float timeSinceLastClick = Time.time - lastClickTime;
+
+        if (timeSinceLastClick <= doubleClickTime && virtualJoyStick.locking == false)
+        {
+            virtualJoyStick.locking = true;
+        }
+        else if (timeSinceLastClick <= doubleClickTime && virtualJoyStick.locking == true)
+        {
+            virtualJoyStick.locking = false;
+        }
+        lastClickTime = Time.time;
     }
 
     // 매 프레임마다 호출되는 메서드

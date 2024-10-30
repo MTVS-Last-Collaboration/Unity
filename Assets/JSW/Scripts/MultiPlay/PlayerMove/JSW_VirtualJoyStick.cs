@@ -103,7 +103,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
         inputDirection.x = worldInputDirection.x;
     }
 
-    bool locking;
+    public bool locking;
     public void lockingTest()
     {
         locking = true;
@@ -119,14 +119,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
         //무브쪽으로 보내자.
 
         // 테스트 용
-        if (Input.GetKeyDown(KeyCode.H)) 
-        {
-            locking = true;
-        }
-        if (Input.GetKeyDown(KeyCode.L)) 
-        {
-            locking = false;
-        }
+
 
         if (playerMoveControl != null)
         {
@@ -228,11 +221,19 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
     void Update()
     {
 
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            locking = true;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            locking = false;
+        }
+        //print("플레이어 움직이게 하자.");
         if (playerPhotonView != null && playerPhotonView.IsMine && isInput)
         {
-            //print("플레이어 움직이게 하자.");
             IntputControllVector();
-
+           
         }
 
 

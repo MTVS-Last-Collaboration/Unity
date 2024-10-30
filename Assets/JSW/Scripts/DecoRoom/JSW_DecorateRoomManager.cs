@@ -8,7 +8,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 public class JSW_DecorateRoomManager : MonoBehaviour
 {
     public bool [,] roomPosition = new bool [8, 8];
-    public List<GameObject> FunitureList = new List<GameObject>();
+    public List<JSW_InfoDecoObject> FunitureList = new List<JSW_InfoDecoObject>();
     public JSW_PlayerDecorate playerDecorate;
 
     public enum funiture
@@ -614,10 +614,10 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         playerDecorate.SetFuniture1(name);
     }
 
-    public void PlayerSetFuniture2()
-    {
-        playerDecorate.SetFuniture2();
-    }
+    //public void PlayerSetFuniture2()
+    //{
+    //    playerDecorate.SetFuniture2();
+    //}
     public void PlayerDestroyFuni()
     {
         playerDecorate.DestroyFuniture();
