@@ -80,9 +80,8 @@ public class FlowerEvolution : MonoBehaviourPun
 
     IEnumerator EvolutionAnimation(Flower.States state)
     {
-        flower.isTouchAble = false;
+        //이펙트
         yield return new WaitForSeconds(1f);
-        flower.isTouchAble = true;
 
         // 진화 완료 후 UI 업데이트
         FlowerUIManager uiManager = GetComponent<FlowerUIManager>();
