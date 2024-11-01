@@ -79,8 +79,7 @@ public class JSW_CameraRotation : MonoBehaviour
         //플레이어가 있다면?
         if(player != null)
         {
-            print("왼쪽으로 카메라회전");
-            print("오른쪽으로 카메라회전");
+
             // 매 프레임마다 각도를 증가시킴
             angle += speed * Time.deltaTime;
             // x, z 좌표에서 원운동 경로를 계산
@@ -90,19 +89,18 @@ public class JSW_CameraRotation : MonoBehaviour
             // 새로운 위치로 오브젝트 이동 (y는 고정되거나 원하는 값으로 설정)
             mainCamPos_Object.transform.position = new Vector3(x, mainCamY, z);
 
-            Debug.DrawLine(beforePos, mainCamPos_Object.transform.position, Color.red, 6.0f);
+            //Debug.DrawLine(beforePos, mainCamPos_Object.transform.position, Color.red, 6.0f);
             beforePos = mainCamPos_Object.transform.position;
         }
         else
         {
-            print("플레이어가 없음");
+
         }
        
     }
 
     public void RightRotationMainCamera()
     {
-        print("오른쪽으로 카메라회전");
         // 매 프레임마다 각도를 증가시킴
         angle += speed * Time.deltaTime;
         // x, z 좌표에서 원운동 경로를 계산
@@ -113,7 +111,7 @@ public class JSW_CameraRotation : MonoBehaviour
         mainCamPos_Object.transform.position = new Vector3(x, mainCamY, z);
 
 
-        Debug.DrawLine(beforePos, mainCamPos_Object.transform.position, Color.red, 6.0f);
+        //Debug.DrawLine(beforePos, mainCamPos_Object.transform.position, Color.red, 6.0f);
         beforePos = mainCamPos_Object.transform.position;
     }
 

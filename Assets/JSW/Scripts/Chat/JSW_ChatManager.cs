@@ -158,6 +158,8 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
         else
         {
             Debug.LogError("Message sending failed: " + request.error);
+            string extractedText = "생각이 많아서 답변이 어려워...ㅠ";
+            CreateChatItem(extractedText, Color.black);
         }
     }
 }

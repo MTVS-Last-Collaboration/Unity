@@ -27,7 +27,7 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
     {
         //PlayerMoveKey();
         //PlayerMoveJoyStick(joyStick.inputDirection);
-        if (photonView.IsMine == false)
+        if (photonView.IsMine != null && photonView.IsMine == false )
         {
             transform.position = myPos;
             transform.rotation = myRot;
