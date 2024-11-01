@@ -41,7 +41,7 @@ public class RegistTest : MonoBehaviour
 
     public TMP_InputField inputEmail;
     public TMP_InputField inputPassword;
-    public TMP_InputField intputUsername;
+    public TMP_InputField inputUsername;
     public TMP_InputField inputNickname;
     public TMP_Dropdown dropgender;
     public TMP_InputField inputCoupleDay;
@@ -52,33 +52,14 @@ public class RegistTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        if(inputEmail != null)
-        {
-            //print("있음");
-            print(inputEmail.text);
-        }
-        else
-        {
-            print("없음");
-        }
 
-        if(dropgender != null)
-        {
-            //print("gdender있음");
-            TMP_Text dg = dropgender.captionText;
-            
+        //inputEmail.text = "";
+        //inputPassword.text = "";
+        //inputUsername.text = "";
+        // inputNickname.text = "";
+        //inputCoupleDay.text = "";
+        dropgenderTextComp = dropgender.captionText;
 
-            if (dg != null)
-            {
-                print("dg있음" + dg.text);
-            }
-
-        }
-        else
-        {
-            print("gdender있음없음");
-        }
 
     }
 
@@ -113,16 +94,16 @@ public class RegistTest : MonoBehaviour
                 System.IO.File.Create(path).Dispose();   // 파일이 없으면 새로 생성 (빈 파일)
                 print("JSON 파일 생성됨");
 
-                userInfoList = new List<UserInfo>(); //유저인포 리스트 만들기
-
+                //값을 초기화 하지 않으면 null발생함.
                 UserInfo newUserInfo = new UserInfo
                 {
                     email = inputEmail.text,
-                    username = intputUsername.text,
+                    username = inputUsername.text,  // 수정된 변수명
                     password = inputPassword.text,
                     nickname = inputNickname.text,
                     gender = dropgenderTextComp.text,
                     coupleDay = inputCoupleDay.text
+                     
 
                 };
 
@@ -213,17 +194,18 @@ public class RegistTest : MonoBehaviour
                 print("문자열이 비었습니다.");
 
                 // 새로운 사용자 정보를 생성
-                UserInfo newUserInfos = new UserInfo
+                UserInfo newUserInfo = new UserInfo
                 {
                     email = LoginTest.instance.idText,
                     username = "null",
                     password = LoginTest.instance.passText,
                     nickname = "null",
-                    gender = "MALE"
+                    gender = "MALE",
+                   
 
                 };
 
-                userInfoList.Add(newUserInfos);
+                userInfoList.Add(newUserInfo);
                 print("userInfoList" + userInfoList);
 
                 //신규유저 정보를 Json으로 변경
