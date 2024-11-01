@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http;
 using UnityEngine;
 
 [Serializable]
@@ -10,7 +11,6 @@ public class FlowerData
     public string nickName;
     public byte[] voiceData;
     public int evolutionCount;
-    public int harvestCoins;
     public string state;
 }
 
@@ -25,6 +25,8 @@ public class Flower : MonoBehaviour
     public int harvestCoins = 300;
     public States curState;
 
+    private const string ENDPOINT = "/scores";
+
     private void Awake()
     {
         uiManager = GetComponent<FlowerUIManager>();
@@ -32,9 +34,19 @@ public class Flower : MonoBehaviour
 
     public enum States
     {
-        SPROUT,
-        BUD,
-        BLOSSOM
+        SPROUT = 0,
+        BUD = 1,
+        BLOSSOM = 2
+    }
+
+    public static IEnumerator PostFlowerData(FlowerData flowerData, Action<bool, string> callback = null)
+    {
+        return NetworkManager.Instance.Post(ENDPOINT, flowerData, callback);
+    }
+
+    public static IEnumerator GetFlowerData(FlowerData flowerData, Action<bool, FlowerData> callback = null)
+    {
+        return NetworkManager.Instance.Get<FlowerData>(ENDPOINT, callback);
     }
 
     public void ResetFlower()
