@@ -30,31 +30,31 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         playerDir = new Vector3(Mathf.Round(transform.forward.x), Mathf.Round(transform.forward.y), Mathf.Round(transform.forward.z));
         playerPos = new Vector3(Mathf.Round(transform.position.x), 0, Mathf.Round(transform.position.z));
         
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            print(1);
-            //SetFuniture1();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetFuniture2();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            PushFunitureSetting();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            PushFuniture();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            DrawFuniture();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            DestroyFuniture();
-        }
+        //if(Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    print(1);
+        //    //SetFuniture1();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    SetFuniture2();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    PushFunitureSetting();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
+        //    PushFuniture();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+        //    DrawFuniture();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha6))
+        //{
+        //    DestroyFuniture();
+        //}
     }
 
 
@@ -273,7 +273,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         Ray ray = new Ray(transform.position + Vector3.up * 0.75f, forward);
 
         // Ray를 시각적으로 확인하기 위해 그립니다
-        Debug.DrawRay(transform.position + Vector3.up * 1f , forward * 1.5f, Color.red);
+        //Debug.DrawRay(transform.position + Vector3.up * 1f , forward * 1.5f, Color.red);
         // Ray가 물체와 충돌하는지 검사
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1.5f))

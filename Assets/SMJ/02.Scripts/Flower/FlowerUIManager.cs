@@ -4,9 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 using ExitGames.Client.Photon;
 using System;
 using System.Linq;
+using static UnityEngine.CullingGroup;
 
 public class FlowerUIManager : MonoBehaviourPun
 {
@@ -42,18 +44,18 @@ public class FlowerUIManager : MonoBehaviourPun
 
     private string restTime = string.Empty;
     Coroutine recordingCor;
-    private const int CHUNK_SIZE = 10000;
+    private const int CHUNK_SIZE = 5000;
     private List<byte[]> voiceDataChunks = new List<byte[]>();
 
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.SendRate = 30; // 초당 전송 횟수
-        PhotonNetwork.SerializationRate = 15; // 직렬화 빈도
+        PhotonNetwork.SendRate = 30;
+        PhotonNetwork.SerializationRate = 15;
 
-        // 연결 타임아웃 설정
-        PhotonNetwork.NetworkingClient.LoadBalancingPeer.DisconnectTimeout = 10000;
-        PhotonNetwork.NetworkingClient.LoadBalancingPeer.TimePingInterval = 1000;
+        // 타임아웃 값을 더 길게 설정
+        PhotonNetwork.NetworkingClient.LoadBalancingPeer.DisconnectTimeout = 120000; // 120초
+        PhotonNetwork.NetworkingClient.LoadBalancingPeer.TimePingInterval = 2000;
     }
     private void Start()
     {
@@ -67,9 +69,20 @@ public class FlowerUIManager : MonoBehaviourPun
 
         // 초기 상태 텍스트 설정
         UpdateStateText(flower.curState);
-
         StartCoroutine(InitialStateSync());
+
+        PhotonNetwork.NetworkingClient.StateChanged += OnStateChanged;
     }
+
+    private void OnStateChanged(ClientState state, ClientState previousState)
+    {
+        if (state == ClientState.Disconnected)
+        {
+            Debug.Log("Disconnected from server. Attempting to reconnect...");
+            PhotonNetwork.ConnectUsingSettings();
+        }
+    }
+
     private void UpdateStateText(Flower.States state)
     {
         string statusMsg = "";
@@ -498,7 +511,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
             // 음성 데이터를 청크로 나눠서 전송
             byte[] voiceData = recorder.GetRecordedData();
-            StartCoroutine(SendVoiceDataInChunks(voiceData));
+            StartCoroutine(WaitForConnectionAndSendVoice(voiceData));
         }
         else
         {
@@ -507,7 +520,7 @@ public class FlowerUIManager : MonoBehaviourPun
             {
                 recordButtons[2].SetActive(false);
                 recordButtons[3].SetActive(true);
-                photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, isListenComplete);
+                //photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, isListenComplete);
             }
             else
             {
@@ -515,40 +528,125 @@ public class FlowerUIManager : MonoBehaviourPun
                 recordButtons[5].SetActive(true);
                 recordCount = 0;
 
-                // 진화 카운트 증가
-                flower.evolutionCount++;
-                photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
+                //// 진화 카운트 증가
+                //flower.evolutionCount++;
+                //photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
 
-                // 음성 데이터를 청크로 나눠서 전송
-                byte[] voiceData = recorder.GetRecordedData();
-                StartCoroutine(SendVoiceDataInChunks(voiceData));
+                //// 음성 데이터를 청크로 나눠서 전송
+                //byte[] voiceData = recorder.GetRecordedData();
+                //StartCoroutine(SendVoiceDataInChunks(voiceData));
             }
         }
     }
+    private IEnumerator WaitForConnectionAndSendVoice(byte[] voiceData)
+    {
+        // 연결될 때까지 대기
+        while (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
 
+        StartCoroutine(SendVoiceDataInChunks(voiceData));
+    }
     private IEnumerator SendVoiceDataInChunks(byte[] voiceData)
     {
+        // 최대 재시도 횟수 설정
+        int maxRetries = 3;
+        int currentRetry = 0;
+
+        // 초기 연결 대기
+        float connectionTimeout = 5f;  // 5초 타임아웃
+        float timer = 0f;
+
+        while (!PhotonNetwork.IsConnectedAndReady && timer < connectionTimeout)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.InRoom)
+        {
+            Debug.LogError("Failed to connect to network!");
+            yield break;
+        }
+
         int chunks = Mathf.CeilToInt(voiceData.Length / (float)CHUNK_SIZE);
 
-        // 먼저 총 청크 수를 알림
-        photonView.RPC("RPC_InitializeVoiceTransfer", RpcTarget.All, chunks);
+        // 초기화 RPC
+        bool initSuccess = false;
+        try
+        {
+            photonView.RPC("RPC_InitializeVoiceTransfer", RpcTarget.All, chunks);
+            initSuccess = true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to initialize transfer: {e.Message}");
+        }
 
+        if (!initSuccess)
+        {
+            yield break;
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        // 청크 전송
         for (int i = 0; i < chunks; i++)
         {
+            if (!PhotonNetwork.IsConnectedAndReady)
+            {
+                Debug.LogError("Lost connection during transfer!");
+                yield break;
+            }
+
             int size = Mathf.Min(CHUNK_SIZE, voiceData.Length - i * CHUNK_SIZE);
             byte[] chunk = new byte[size];
             Array.Copy(voiceData, i * CHUNK_SIZE, chunk, 0, size);
 
-            photonView.RPC("RPC_ReceiveVoiceChunk", RpcTarget.All, chunk, i);
+            bool chunkSent = false;
+            while (!chunkSent && currentRetry < maxRetries)
+            {
+                try
+                {
+                    photonView.RPC("RPC_ReceiveVoiceChunk", RpcTarget.All, chunk, i);
+                    chunkSent = true;
+                }
+                catch (Exception e)
+                {
+                    currentRetry++;
+                    Debug.LogWarning($"Retry {currentRetry}/{maxRetries} for chunk {i}: {e.Message}");
+                }
 
-            // 각 청크 전송 사이에 약간의 딜레이
-            yield return new WaitForSeconds(0.1f);
+                if (!chunkSent)
+                {
+                    yield return new WaitForSeconds(0.5f);
+                }
+            }
+
+            if (!chunkSent)
+            {
+                Debug.LogError($"Failed to send chunk {i} after {maxRetries} retries");
+                yield break;
+            }
+
+            yield return new WaitForSeconds(0.2f);
         }
 
-        // 전송 완료 후 처리
-        photonView.RPC("RPC_FinalizeVoiceTransfer", RpcTarget.All);
+        // 전송 완료 처리
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            try
+            {
+                photonView.RPC("RPC_FinalizeVoiceTransfer", RpcTarget.All);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to finalize transfer: {e.Message}");
+            }
+        }
     }
-    
+
     [PunRPC]
     private void RPC_InitializeVoiceTransfer(int totalChunks)
     {
@@ -709,5 +807,9 @@ public class FlowerUIManager : MonoBehaviourPun
 
         UpdateUI(flower);
         UpdateUIText();
+    }
+    private void OnDestroy()
+    {
+        PhotonNetwork.NetworkingClient.StateChanged -= OnStateChanged;
     }
 }

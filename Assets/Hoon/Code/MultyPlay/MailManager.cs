@@ -18,6 +18,9 @@ using Newtonsoft.Json.Converters;
 using Photon.Pun.Demo.Cockpit;
 using System.Reflection;
 using System.Security.Cryptography;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 [System.Serializable]
 public class DayComentData
@@ -93,11 +96,17 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public GameObject moodButton1;
     public GameObject moodButton2;
-    public GameObject historyScrollview;
-    bool isHistoryScrollview = false;
-
+    public GameObject historyScrollview; //추억하기버튼으로 스크롤뷰를 켰다 껐다하자.
+    bool isHistoryScrollview = false; // 추억스크롤뷰가 보이는지 확인하는 변수
+    public Transform historyContent; // 추억버튼이 컨텐츠의 위치
+    public GameObject historyButton; // 추억버튼
+    
     string moodText1;
     string moodText2;
+
+    List<DayComentData> histrotyList = new List<DayComentData>(); //히스토리 담을 리스트
+    List<Button>histroyButtonList = new List<Button>(); //버튼을 담을 리스트
+
 
     void Start()
     {
@@ -196,8 +205,60 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             moodChice2.gameObject.SetActive(false);
         }
 
+    }
 
+    public void HistroyView()
+    {
 
+    }
+    //int histroyButtonIndex = 0;
+    public void CheckHistoty()
+    {
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //동기화경로
+        if (File.Exists(path))//파일있니?
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //문자열로 가져오기
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List로 파싱하기
+
+            bool isCurrentDate = false;
+            foreach (var ComentData in loadDayComenList) 
+            {
+                
+                //날짜가 일치
+                if (ComentData.date != null && ComentData.dateMission != null)
+                {
+                    histrotyList.Add(ComentData); //불러온정보 historyList 담기
+
+                    string historyDate = ComentData.date; //날짜
+                    string historyDateMission = ComentData.dateMission; //미션
+
+                    // 버튼 생성 및 설정
+                    GameObject newButtonObj = Instantiate(historyButton, historyContent); // 프리팹을 Content의 자식으로 생성
+                    Button newButton = newButtonObj.GetComponent<Button>(); //생성된 버튼의 컴포넌트 가져오기  
+                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>(); // Button 자식컴포넌트 TextMeshProUGUI 가져오기
+
+                    histroyButtonList.Add(newButton); //히스토리 버튼 리스트에 신규 생성한 버튼을 담기
+
+                    int buttonIndex = histroyButtonList.Count - 1; // 고유 인덱스 설정 (현재 리스트의 마지막 인덱스)
+
+                    // 버튼 클릭 이벤트 설정
+                    newButton.onClick.AddListener(() =>
+                    {
+                        newButton.GetComponent<MailHistoryManager>().buttonNumber = buttonIndex;
+                        Instantiate(histroyButtonList[buttonIndex], historyContent);
+
+                    });
+
+                    if (buttonText != null)
+                    {
+                        buttonText.text = "Day" + (histroyButtonList.Count) + ":" + historyDateMission + "\n" + historyDate; // 버튼 텍스트 설정
+                        
+                    }
+                }
+               
+            }
+
+        }
 
     }
 
@@ -214,6 +275,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             historyScrollview.gameObject.SetActive(false);
             isHistoryScrollview = false;
         }
+        
     }
 
     public void CheckComent() //저정된 내용이 있으면 로드해주기.
@@ -393,11 +455,14 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         if (File.Exists(path))  // 파일이 존재하면
         {
             string loadDayComentInfo = System.IO.File.ReadAllText(path);
+            bool isMatchDate = false;
             loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //문자열을 Json 배열로 변경
+
             for (int i = 0; i < loadDayComenList.Count; i++) //for문으로 데이트 idx로 설정하기.
             {
-                var ComentData = loadDayComenList[i];
 
+
+                var ComentData = loadDayComenList[i];
                 if (ComentData.date == currentDate) // 날짜가 일치하면
                 {
                     // 일치하는 데이터 로그를 변수에 저장.
@@ -417,15 +482,49 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
                     dayMissionText.text = todayMission;
+                    isMatchDate = true;
                     break;
             
                 }
-           
+                
             }        
+            if(!isMatchDate) //일치하는 날짜 없으면 미션생성하기
+            {
+                DayComentData  dayComentData = new DayComentData //클래스 정보 재정의
+                {
+                    date = currentDate, // 현재 날짜
+                    dateMission = todayMission,
+                    user1name = "null",
+                    user1mood = "null",
+                    user1coment = "null",
+                    user2name = "null",
+                    user2mood = "null",
+                    user2coment = "null"
+                };
+
+                loadDayComenList.Add(dayComentData); //기존에 불러온 List에 dayComentData 에 usertype 에 맞는 정보를 저장하기
+
+                // 리스트를 JSON 문자열로 변환
+                string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
+                // JSON 파일로 저장
+                File.WriteAllText(path, jsonString);
+                //Debug.Log("파일 생성 완료: " + path);
+                //Debug.Log("저장된 JSON 데이터: " + jsonString);
+
+                //UI의 미션텍스트 갱신
+                TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
+                dayMissionText.text = todayMission; 
+
+
+            }
+
         }
         else
         {
             DataPath.text = "파일이 없습니다";
+            //날짜가 없으니까 새로 만들어주고 갱신하자.
+
+
         }
     }
 
@@ -614,6 +713,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         dayComentData = new DayComentData //클래스 정보 재정의
                         {
                             date = currentDate, // 현재 날짜
+                            dateMission = todayMission,
                             user1name = playerNicknameMgr1.nickNameComp.text,
                             user1mood = "Good",
                             user1coment = mailComentText1.text,
@@ -628,6 +728,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         dayComentData = new DayComentData //클래스 정보 재정의
                         {
                             date = currentDate, // 현재 날짜
+                            dateMission = todayMission,
                             user1name = "null",
                             user1mood = "null",
                             user1coment = "null",
@@ -1175,10 +1276,9 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         CheckMission(); //날짜에 맞는 미션을 생성합니다.
         CheckComent(); //코맨드가 있는지 계산합니다.
         CheckMood(); //무드를 바꾸자. FindPlayer 를 줌.
-
+        CheckHistoty();
     }
 
-   
     // 문자열을 JSON 형식으로 로컬 경로에 저장하는 메서드
     private void SaveStringAsJson(string data)
     {
