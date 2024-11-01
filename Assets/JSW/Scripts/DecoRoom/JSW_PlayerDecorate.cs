@@ -131,18 +131,26 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
             //JSW_InfoDecoObject infoDecoObejct = new JSW_InfoDecoObject((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
             //DRM.FunitureList.Add(infoDecoObejct);
+            // 백엔드 연결되면 고치자
+            if (!photonView.IsMine)
+            {
+                Destroy(funitureOb);
+            }
+            else
+            {
+                Vector3 size = funitureOb.transform.localScale;
+                funitureOb.transform.localScale = Vector3.one * 0.2f;
+                iTween.ScaleTo(funitureOb, iTween.Hash(
+                "scale", size, // 최종 크기
+                "time", 1.0f,         // 애니메이션 시간
+                "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
+            ));
+            }
         }
         else
         {
             PhotonNetwork.Destroy(funitureOb);
-            print("no");
         }
-        // 백엔드 연결되면 고치자
-        if (!photonView.IsMine)
-        {
-            Destroy(funitureOb);
-        }
-
     }
 
     //public void SetFuniture2()
@@ -598,11 +606,25 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         {
             if (hit.collider.tag == "Funiture")
             {
-                int[] funitureInfo = hit.collider.GetComponent<JSW_DecoObject>().GetPositionInfo();
+                GameObject funitureOb = hit.collider.gameObject;
+
+       
+                iTween.ScaleTo(funitureOb, iTween.Hash(
+                "scale", Vector3.zero, // 최종 크기
+                "time", 1.0f,         // 애니메이션 시간
+                "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
+                ));
+
+                int[] funitureInfo = funitureOb.GetComponent<JSW_DecoObject>().GetPositionInfo();
                 DRM.DestroyFuniturePos(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4]);
-                Destroy(hit.collider.gameObject);
+                StartCoroutine(DestroyFuni(hit.collider.gameObject));
             }
         }
     }
 
+    IEnumerator DestroyFuni(GameObject gameobject)
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameobject);
+    }
 }

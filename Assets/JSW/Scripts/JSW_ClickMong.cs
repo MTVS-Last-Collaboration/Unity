@@ -53,7 +53,6 @@ public class JSW_ClickMong : MonoBehaviour
         {
             transform.GetChild(MongLevel++).gameObject.SetActive(false);
             transform.GetChild(MongLevel).gameObject.SetActive(true);
-        } 
-
+        }
     }
 }

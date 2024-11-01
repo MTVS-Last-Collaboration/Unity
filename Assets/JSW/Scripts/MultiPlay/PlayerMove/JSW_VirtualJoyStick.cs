@@ -132,21 +132,25 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                     float y = inputDirection.y;
                     if (x > 0.5f && y > -0.5f && y < 0.5f) //오른쪽
                     {
+                        if (pressX < 0) pressX = 0;
                         pressX += Time.deltaTime;
                     }
                     else if (x < -0.5 && y > -0.5f && y < 0.5f) //왼쪽
                     {
+                        if (pressX > 0) pressX = 0;
                         pressX -= Time.deltaTime;
                     }
                     else if (y > 0.5 && x > -0.5f && x < 0.5f) //위
                     {
+                        if (pressY < 0) pressY = 0;
                         pressY += Time.deltaTime;
                     }
                     else if (y < -0.5 && x > -0.5f && x < 0.5f) //아래
                     {
+                        if (pressY > 0) pressY = 0;
                         pressY -= Time.deltaTime;
                     }
-                    if (pressX >= 2f)
+                    if (pressX >= 1.5f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -154,7 +158,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 오른쪽 옮기기
 
                     }
-                    else if (pressX <= -2f)
+                    else if (pressX <= -1.5f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -162,7 +166,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 왼쪽 옮기기
 
                     }
-                    else if (pressY >= 2f)
+                    else if (pressY >= 1.5f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -170,7 +174,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 위쪽 옮기기
 
                     }
-                    else if (pressY <= -2f)
+                    else if (pressY <= -1.5f)
                     {
                         pressX = 0;
                         pressY = 0;

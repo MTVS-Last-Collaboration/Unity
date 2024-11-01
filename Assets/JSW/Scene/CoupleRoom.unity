@@ -470,7 +470,7 @@ PrefabInstance:
     - target: {fileID: 6836556466655795446, guid: fa12db7f8a3f0714799c08ee4da865d6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.732
+      value: -0.615
       objectReference: {fileID: 0}
     - target: {fileID: 6836556466655795446, guid: fa12db7f8a3f0714799c08ee4da865d6,
         type: 3}
@@ -1514,6 +1514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 0}
+  cameraControllTest: {fileID: 112246692}
 --- !u!1 &28920546
 GameObject:
   m_ObjectHideFlags: 0
@@ -4013,6 +4014,8 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   mong: {fileID: 1088137559}
   CamPos_3D: {fileID: 1384789843}
+  CalenderPos: {fileID: 28656426}
+  AlbumPos: {fileID: 1298572236}
   aa: 1.5
   bb: -2
   cameraPos: Original
@@ -19184,7 +19187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d206ff915bf7a94690623b0cae394ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FunitureList: []
   playerDecorate: {fileID: 0}
 --- !u!4 &604980092
 Transform:
@@ -20640,7 +20642,7 @@ PrefabInstance:
     - target: {fileID: 7099655024501674457, guid: 8760cc9eb30a2b340b14499b6e150dc4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.732
+      value: -0.61
       objectReference: {fileID: 0}
     - target: {fileID: 7099655024501674457, guid: 8760cc9eb30a2b340b14499b6e150dc4,
         type: 3}
@@ -25615,6 +25617,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 112246692}
+        m_TargetAssemblyTypeName: JSW_CameraControllTest, Assembly-CSharp
+        m_MethodName: ResetCamera
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &820073776
 GameObject:
   m_ObjectHideFlags: 0
@@ -29656,7 +29670,7 @@ PrefabInstance:
     - target: {fileID: 3467851699220123360, guid: 93df5c48d5e021040916b0e984d9b01a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.732
+      value: -0.626
       objectReference: {fileID: 0}
     - target: {fileID: 3467851699220123360, guid: 93df5c48d5e021040916b0e984d9b01a,
         type: 3}
@@ -36449,7 +36463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca7d04eb94fb594d9833d370129a39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  longPressDuration: 1
+  longPressDuration: 0.7
   isPressing: 0
   isSettingFuniture: 0
   playerDecorate: {fileID: 0}
@@ -39520,6 +39534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 0}
+  cameraControllTest: {fileID: 112246692}
 --- !u!1 &1310115451
 GameObject:
   m_ObjectHideFlags: 0
@@ -57143,7 +57158,7 @@ PrefabInstance:
     - target: {fileID: 6118174221721670358, guid: 66ae442726d1cf4428dacb34edd61ac4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.732
+      value: -0.648
       objectReference: {fileID: 0}
     - target: {fileID: 6118174221721670358, guid: 66ae442726d1cf4428dacb34edd61ac4,
         type: 3}
@@ -60756,6 +60771,18 @@ MonoBehaviour:
       - m_Target: {fileID: 941484407}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnClickAlbum_Back
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 112246692}
+        m_TargetAssemblyTypeName: JSW_CameraControllTest, Assembly-CSharp
+        m_MethodName: ResetCamera
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

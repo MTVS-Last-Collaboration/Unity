@@ -16,17 +16,11 @@ public class DecoShopManager : MonoBehaviour
     public GameObject DecoUIPurchase;
     public GameObject DecoUIOkay;
 
-
     void Start()
     {
         profilePrice.text = point.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void PurchaseOkay()
     {
