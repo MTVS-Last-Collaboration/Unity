@@ -38,7 +38,6 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
-
         //PlayerMoveKey();
         //PlayerMoveJoyStick(joyStick.inputDirection);
         if(photonView.IsMine == false)  //print("내것이 아님 캐릭터 동기화");
