@@ -181,7 +181,7 @@ public class LoginTest : MonoBehaviour
 
                 //아이디와 패스워드가 일치하는지 확인
                 //if (userInfo["userId"] == idText && userInfo["userPassword"] == passText)
-                if (userInfo.userId == idText && userInfo.userPassword == passText)
+                if (userInfo.email == idText && userInfo.password == passText)
                 {
                     //정보표시해주기
                     print("id, pass 일치");

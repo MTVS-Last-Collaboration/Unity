@@ -24,6 +24,11 @@ public class LoginUI : MonoBehaviour
         startImg.SetActive(false);
     }
 
+    public void OpenUI(GameObject objecName)
+    {
+        objecName.SetActive(false);
+    }
+
     public void CloseUI(GameObject objecName)
     {
         objecName.SetActive(false);

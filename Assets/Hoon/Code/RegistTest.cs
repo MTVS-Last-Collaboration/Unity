@@ -3,27 +3,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using File = System.IO.File;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine.Analytics;
+using System.Reflection;
+using TMPro;
+using UnityEditor.PackageManager.Requests;
+using UnityEngine.Networking;
+using static System.Net.WebRequestMethods;
+using UnityEngine.UI;
 
 public class RegistTest : MonoBehaviour
 {
 
 
-    public class UserInfo
+    /*public class UserInfo
     {
         public string userId { get; set; }
         public string userPassword { get; set; }
+    }*/
+
+    public class UserInfo
+    {
+        public string email;
+        public string username;
+        public string password;
+        public string nickname;
+        public string gender;
+        public string coupleDay;
+
     }
 
     public string loadUserInfo;
-    
+
+    public TMP_InputField inputEmail;
+    public TMP_InputField inputPassword;
+    public TMP_InputField inputUsername;
+    public TMP_InputField inputNickname;
+    public TMP_Dropdown dropgender;
+    public TMP_InputField inputCoupleDay;
+    TMP_Text dropgenderTextComp;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        //inputEmail.text = "";
+        //inputPassword.text = "";
+        //inputUsername.text = "";
+        // inputNickname.text = "";
+        //inputCoupleDay.text = "";
+        dropgenderTextComp = dropgender.captionText;
+
+
     }
 
     // Update is called once per frame
@@ -31,6 +68,101 @@ public class RegistTest : MonoBehaviour
     {
         
     }*/
+
+    public void ResistNewUserInfoJSon() //유저정보를 요청함.
+    {
+        //데이터를 저장할 경로
+        string path = Application.persistentDataPath + "UserInfo.json";
+
+        // 유저 정보를 저장할 리스트 선언
+        List<UserInfo> userInfoList = new List<UserInfo>();
+
+       if (File.Exists(path)) //파일있으면
+        {
+            print("파일있어영");
+            //path의 모든 텍스트를 가져옴.
+            loadUserInfo = System.IO.File.ReadAllText(path);
+            print("JSON 파일 읽기 완료" + loadUserInfo);
+            List<UserInfo> loadDayComenList = JsonConvert.DeserializeObject<List<UserInfo>>(loadUserInfo); //List로 파싱하기
+
+        }
+        else //파일없으면
+        {
+            print("파일없어용");
+            if (inputEmail.text != "") //이메일이 빈칸이 아니면
+            {
+                System.IO.File.Create(path).Dispose();   // 파일이 없으면 새로 생성 (빈 파일)
+                print("JSON 파일 생성됨");
+
+                //값을 초기화 하지 않으면 null발생함.
+                UserInfo newUserInfo = new UserInfo
+                {
+                    email = inputEmail.text,
+                    username = inputUsername.text,  // 수정된 변수명
+                    password = inputPassword.text,
+                    nickname = inputNickname.text,
+                    gender = dropgenderTextComp.text,
+                    coupleDay = inputCoupleDay.text
+                     
+
+                };
+
+                userInfoList.Add(newUserInfo);
+                string jsonString = JsonConvert.SerializeObject(userInfoList , Formatting.Indented);
+
+                File.WriteAllText(path, jsonString); //로컬저장
+                print("저장된 문자열" + jsonString);
+
+            }
+           
+        }
+
+
+
+        //StartCoroutine(PostNewUserInfoJSon(""));
+    }
+
+    IEnumerator PostNewUserInfoJSon(string jsonString)
+    {
+        string url = "http://125.132.216.190:12223/api/auth/signup"; // 서버 URL 변경 필요
+
+        UnityWebRequest request = new UnityWebRequest(url, "POST");  // HTTP POST 요청 준비
+
+        // JSON 데이터를 담아 요청 생성
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        // 여기에 토큰 추가
+        string token = "your_token_here"; // 실제 토큰 값을 여기에 설정합니다.
+        request.SetRequestHeader("Authorization", "Bearer " + token);
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+        else
+        {
+            string responseText = request.downloadHandler.text;
+            print("서버 응답: " + responseText);
+
+
+            // 서버 응답과 newUser가 같은지 확인
+            if (responseText == jsonString)
+            {
+                Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
+            }
+            else
+            {
+                Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
+            }
+
+        }
+
+    }
 
     public void LocalRegistJson()
     {
@@ -64,8 +196,13 @@ public class RegistTest : MonoBehaviour
                 // 새로운 사용자 정보를 생성
                 UserInfo newUserInfo = new UserInfo
                 {
-                    userId = LoginTest.instance.idText,
-                    userPassword = LoginTest.instance.passText
+                    email = LoginTest.instance.idText,
+                    username = "null",
+                    password = LoginTest.instance.passText,
+                    nickname = "null",
+                    gender = "MALE",
+                   
+
                 };
 
                 userInfoList.Add(newUserInfo);
@@ -76,7 +213,7 @@ public class RegistTest : MonoBehaviour
                 print("신규유저정보" + newUserJson);
 
                 // JSON 데이터를 파일에 저장
-                File.WriteAllText(path, newUserJson);
+                System.IO.File.WriteAllText(path, newUserJson);
                 print("SaveComplete" + newUserJson);
 
 
@@ -100,7 +237,7 @@ public class RegistTest : MonoBehaviour
                 foreach (var userInfo in userInfoLists)
                 {
                     //아이디와 패스워드가 일치하는지 확인
-                    if (userInfo.userId == LoginTest.instance.idText && userInfo.userPassword == LoginTest.instance.passText)
+                    if (userInfo.email == LoginTest.instance.idText && userInfo.password == LoginTest.instance.passText)
                     {
                         //정보 표시
                         print("id 일치" + LoginTest.instance.idText + "pass 일치" + LoginTest.instance.passText);
@@ -115,8 +252,13 @@ public class RegistTest : MonoBehaviour
                     // 새로운 사용자 정보를 생성
                     UserInfo newUserInfo = new UserInfo
                     {
-                        userId = LoginTest.instance.idText,
-                        userPassword = LoginTest.instance.passText
+                        email = LoginTest.instance.idText,
+                        username = "null",
+                        password = LoginTest.instance.passText,
+                        nickname = "null",
+                        gender = "MALE"
+
+
                     };
 
                     userInfoList.Add(newUserInfo);
@@ -224,8 +366,11 @@ public class RegistTest : MonoBehaviour
                 // 새로운 사용자 정보를 생성
                 UserInfo newUserInfo = new UserInfo
                 {
-                    userId = LoginTest.instance.idText,
-                    userPassword = LoginTest.instance.passText
+                    email = LoginTest.instance.idText,
+                    username = "null",
+                    password = LoginTest.instance.passText,
+                    nickname = "null",
+                    gender = "MALE"
                 };
 
                 userInfoList.Add(newUserInfo);
@@ -236,7 +381,7 @@ public class RegistTest : MonoBehaviour
                 print("신규유저정보" + newUserJson);
 
                 // JSON 데이터를 파일에 저장
-                File.WriteAllText(path, newUserJson);
+                System.IO.File.WriteAllText(path, newUserJson);
                 print("SaveComplete" + newUserJson);
 
 
@@ -265,7 +410,7 @@ public class RegistTest : MonoBehaviour
                     //아이디와 패스워드가 일치하는지 확인
                     //if (userInfo.userId == LoginTest.instance.idText && userInfo.userPassword == LoginTest.instance.passText)
                     //일치하는 아이디가 있다면
-                    if (userInfo.userId == LoginTest.instance.idText)
+                    if (userInfo.email == LoginTest.instance.idText)
                     {
                         //정보 표시
                         print("id 일치" + LoginTest.instance.idText + "pass 일치" + LoginTest.instance.passText);
@@ -287,8 +432,11 @@ public class RegistTest : MonoBehaviour
                     // 새로운 사용자 정보를 생성
                     UserInfo newUserInfo = new UserInfo
                     {
-                        userId = LoginTest.instance.idText,
-                        userPassword = LoginTest.instance.passText
+                        email = LoginTest.instance.idText,
+                        username = "null",
+                        password = LoginTest.instance.passText,
+                        nickname = "null",
+                        gender = "null"
                     };
 
                     userInfoLists.Add(newUserInfo);
