@@ -400,7 +400,7 @@ public class FlowerUIManager : MonoBehaviourPun
             SwapButtonUI(5);  // 새 꽃 심기 버튼
             return;  // 여기서 종료
         }
-        print(isMyFlower);
+        
         // 다른 상태들 처리
         if (isMyFlower)
         {
@@ -472,6 +472,7 @@ public class FlowerUIManager : MonoBehaviourPun
     public void OnCloseButtonClick()
     {
         HideFlowerInfo();
+        click.ReturnCamera();
     }
 
     public void OnTalkButtonClick()
