@@ -11,7 +11,9 @@ public class CameraControllTest : MonoBehaviour
     public GameObject mainCamPos_Object;  //메인카메라의 위치
     public Transform player;   // 플레이어 또는 기준 오브젝트
     public float mainCamY = 8; //카메라의 높이
-    PhotonView playerPhotonview; 
+    public PhotonView playerPhotonview;
+
+    public bool isMoveAble = true;
    
 
     void Start()
@@ -25,7 +27,7 @@ public class CameraControllTest : MonoBehaviour
     {
 
 
-        if(transform != null && playerPhotonview.IsMine)
+        if(transform != null && playerPhotonview.IsMine && isMoveAble == true)
         {
             Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향

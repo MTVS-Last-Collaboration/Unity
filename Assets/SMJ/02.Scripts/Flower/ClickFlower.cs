@@ -20,6 +20,18 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
     private WaitForSeconds delay;
     private bool isInitialized = false;  // 초기화 여부 체크를 위한 변수 추가
 
+    [SerializeField] private Transform lerpTr;
+    private Transform cameraTr;
+
+    private Vector3 originPosition;
+    private Quaternion originRotation;
+
+    public CameraControllTest cameraControll;
+    float curtime = 0;
+
+    bool isFirst = false;
+    public bool isFirstClick = false;
+
     private void Awake()
     {
         targetFlower = GetComponent<Flower>();
@@ -27,7 +39,10 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
         CheckForPlayer();
         StartCoroutine(WaitForInitialization());
     }
-
+    private void Start()
+    {
+        cameraTr = Camera.main.transform;
+    }
     private IEnumerator WaitForInitialization()
     {
         // 포톤 네트워크 연결 및 플레이어 초기화 대기
@@ -98,6 +113,9 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
             IDHandler playerIDHandler = hitCollider.GetComponent<IDHandler>();
             if (playerIDHandler == null) continue;
 
+            cameraControll = hitCollider.GetComponent<CameraControllTest>();
+            if (cameraControll == null) continue;
+
             //print($"검사중인 플레이어: {hitCollider.gameObject.name}, ID: {playerIDHandler.ID}, 꽃의 managerId: {targetFlower.managerId}");
 
             float distance = Vector3.Distance(gameObject.transform.position, hitCollider.transform.position);
@@ -158,9 +176,19 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
 
     public void HandleInteraction()
     {
-        print(isPlayerInRange);
-        if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null)
+        if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null && isFirstClick == false)
         {
+            isFirstClick = true;
+            if (isFirst == false)
+            {
+                originPosition = cameraTr.position;
+                originRotation = cameraTr.rotation;
+                isFirst = true;
+            }
+
+            //카메라 보간
+            StartCoroutine(LerpCamera());
+
             if (checkID != null)
             {
                 //print(checkID.IsMine(targetFlower));
@@ -210,7 +238,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
         }
         return false;
     }
-
+    
     private void CheckInteraction(Vector2 position)
     {
         Ray ray = Camera.main.ScreenPointToRay(position);
@@ -219,6 +247,77 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
         if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
         {
             HandleInteraction();
+        }
+    }
+
+    IEnumerator LerpCamera()
+    {
+        if (cameraControll.playerPhotonview.IsMine)
+        {
+            cameraControll.isMoveAble = false;
+            curtime = 0f;
+            float lerpDuration = 0.5f;
+            Vector3 startPosition = cameraTr.position;
+            Quaternion startRotation = cameraTr.rotation;
+
+            while (curtime < lerpDuration)
+            {
+                if (Vector3.Distance(cameraTr.position, lerpTr.position) < 0.1f)
+                {
+                    cameraTr.position = lerpTr.position;
+                    cameraTr.rotation = lerpTr.rotation;
+                    break;
+                }
+
+                curtime += Time.deltaTime;
+                float t = curtime / lerpDuration;
+                cameraTr.position = Vector3.Lerp(startPosition, lerpTr.position, t);
+                cameraTr.rotation = Quaternion.Lerp(startRotation, lerpTr.rotation, t);
+                yield return null;
+            }
+            cameraTr.position = lerpTr.position;
+            cameraTr.rotation = lerpTr.rotation;
+        }
+    }
+
+    IEnumerator ReturnCameraTransform()
+    {
+        if (cameraControll.playerPhotonview.IsMine)
+        {
+            curtime = 0f;
+            float lerpDuration = 0.5f;
+            cameraTr = Camera.main.transform;
+            Vector3 startPosition = cameraTr.position;
+            Quaternion startRotation = cameraTr.rotation;
+
+            while (curtime < lerpDuration)
+            {
+                if (Vector3.Distance(cameraTr.position, originPosition) < 0.1f)
+                {
+                    cameraTr.position = originPosition;
+                    cameraTr.rotation = originRotation;
+                    break;
+                }
+
+                curtime += Time.deltaTime;
+                float t = curtime / lerpDuration;
+                cameraTr.position = Vector3.Lerp(startPosition, originPosition, t);
+                cameraTr.rotation = Quaternion.Lerp(startRotation, originRotation, t);
+                yield return null;
+            }
+            cameraTr.position = originPosition;
+            cameraTr.rotation = originRotation;
+            cameraControll.isMoveAble = true;
+        }
+    }
+
+    public void ReturnCamera()
+    {
+        if (isFirst)
+        {
+            StartCoroutine(ReturnCameraTransform());
+            isFirst = false;
+            isFirstClick = false;
         }
     }
 }

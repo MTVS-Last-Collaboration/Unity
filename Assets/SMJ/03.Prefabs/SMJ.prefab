@@ -15295,6 +15295,7 @@ Transform:
   - {fileID: 6612114981025151162}
   - {fileID: 9218938670640160039}
   - {fileID: 5648790877397536349}
+  - {fileID: 2419704394260090318}
   m_Father: {fileID: 1574402312260838966}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!65 &2244864200500430815
@@ -15333,7 +15334,6 @@ MonoBehaviour:
   managerId: test001
   nickName: "\uAF431"
   voiceClip: {fileID: 0}
-  isTouchAble: 1
   uiManager: {fileID: 5007915570533345159}
   evolutionCount: 0
   harvestCoins: 300
@@ -15370,6 +15370,7 @@ MonoBehaviour:
   detectionDistance: 2
   idHandlingRadius: 100
   checkInterval: 0.5
+  lerpTr: {fileID: 2419704394260090318}
 --- !u!114 &5007915570533345159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19402,6 +19403,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &5077334525100685684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2419704394260090318}
+  m_Layer: 15
+  m_Name: LookAtPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2419704394260090318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5077334525100685684}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.098155156, y: 0.27480653, z: -0.028217357, w: 0.95606005}
+  m_LocalPosition: {x: -0.04699997, y: 0.7415449, z: -2.102001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4150631732635184450}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5091359410723912171
 GameObject:
   m_ObjectHideFlags: 0
@@ -27448,6 +27480,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4875161659303612787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7302436873454393890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8774489765953233016}
+  m_Layer: 15
+  m_Name: LookAtPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8774489765953233016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7302436873454393890}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.098155156, y: 0.27480653, z: -0.028217357, w: 0.95606005}
+  m_LocalPosition: {x: -0.051121365, y: 0.72657365, z: -1.9075875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3797832859508167328}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7320547412991227674
 GameObject:
   m_ObjectHideFlags: 0
@@ -30473,7 +30536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2115032772911960141
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33893,6 +33956,7 @@ Transform:
   - {fileID: 1899199905383212156}
   - {fileID: 2227980964686461907}
   - {fileID: 450106842819916555}
+  - {fileID: 8774489765953233016}
   m_Father: {fileID: 1574402312260838966}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!65 &3623648981580397577
@@ -33931,7 +33995,6 @@ MonoBehaviour:
   managerId: test002
   nickName: "\uAF432"
   voiceClip: {fileID: 0}
-  isTouchAble: 1
   uiManager: {fileID: 7270257105570071876}
   evolutionCount: 0
   harvestCoins: 300
@@ -33968,6 +34031,7 @@ MonoBehaviour:
   detectionDistance: 2
   idHandlingRadius: 100
   checkInterval: 0.5
+  lerpTr: {fileID: 8774489765953233016}
 --- !u!114 &7270257105570071876
 MonoBehaviour:
   m_ObjectHideFlags: 0
