@@ -85,87 +85,21 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
 
 
         if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
-            {
-                if (Mathf.Abs(transform.forward.x) >= Mathf.Abs(transform.forward.z))
-                {
-                    funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 0.1f, playerPos.z + playerDir.z * 1);
-                    playerDir.z = 0;
-                }
-                else
-                {
-                    funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 0.1f, playerPos.z + playerDir.z * 2);
-                    playerDir.x = 0;
-                }
-            }
-            else
-            {
-                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 0.1f, playerPos.z + playerDir.z * 2);
-            }
-
-            funitureOb.transform.forward = playerDir;
-
-            if (playerDir.z == 1)
-            {
-                dir = 0;
-            }
-            else if (playerDir.x == 1)
-            {
-                dir = 1;
-            }
-            else if (playerDir.z == -1)
-            {
-                dir = 2;
-            }
-            else if (playerDir.x == -1)
-            {
-                dir = 3;
-            }
-
-            JSW_DecoObject jd = funitureOb.GetComponent<JSW_DecoObject>();
-
-
-            if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir))
-            {
-                print("helpme");
-                DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
-                funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
-                DRM.FunitureList.Add(funitureOb);
-            }
-            else
-            {
-                PhotonNetwork.Destroy(funitureOb);
-                print("no");
-            }
-            // 백엔드 연결되면 고치자
-            if (!photonView.IsMine)
-            {
-                Destroy(funitureOb);
-            }
-
-    }
-
-    public void SetFuniture2()
-    {
-        int dir = 0;
-
-        GameObject funitureOb = Instantiate(funitureObject2);
-
-        if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
         {
             if (Mathf.Abs(transform.forward.x) >= Mathf.Abs(transform.forward.z))
             {
-                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 1);
+                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 0.1f, playerPos.z + playerDir.z * 1);
                 playerDir.z = 0;
             }
             else
             {
-                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 1, playerPos.z + playerDir.z * 2);
+                funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 0.1f, playerPos.z + playerDir.z * 1);
                 playerDir.x = 0;
             }
         }
         else
         {
-            funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 2);
+            funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 0.1f, playerPos.z + playerDir.z * 1);
         }
 
         funitureOb.transform.forward = playerDir;
@@ -189,18 +123,93 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
 
         JSW_DecoObject jd = funitureOb.GetComponent<JSW_DecoObject>();
 
+
         if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir))
         {
-            DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
-            funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
-            DRM.FunitureList.Add(funitureOb);
+            print("helpme");
+            DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
+            funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
+            //JSW_InfoDecoObject infoDecoObejct = new JSW_InfoDecoObject((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
+            //DRM.FunitureList.Add(infoDecoObejct);
+            // 백엔드 연결되면 고치자
+            if (!photonView.IsMine)
+            {
+                Destroy(funitureOb);
+            }
+            else
+            {
+                Vector3 size = funitureOb.transform.localScale;
+                funitureOb.transform.localScale = Vector3.one * 0.2f;
+                iTween.ScaleTo(funitureOb, iTween.Hash(
+                "scale", size, // 최종 크기
+                "time", 1.0f,         // 애니메이션 시간
+                "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
+            ));
+            }
         }
         else
         {
-            Destroy(funitureOb);
-            print("no");
+            PhotonNetwork.Destroy(funitureOb);
         }
     }
+
+    //public void SetFuniture2()
+    //{
+    //    int dir = 0;
+
+    //    GameObject funitureOb = Instantiate(funitureObject2);
+
+    //    if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
+    //    {
+    //        if (Mathf.Abs(transform.forward.x) >= Mathf.Abs(transform.forward.z))
+    //        {
+    //            funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 1);
+    //            playerDir.z = 0;
+    //        }
+    //        else
+    //        {
+    //            funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 1, playerPos.z + playerDir.z * 2);
+    //            playerDir.x = 0;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 2);
+    //    }
+
+    //    funitureOb.transform.forward = playerDir;
+
+    //    if (playerDir.z == 1)
+    //    {
+    //        dir = 0;
+    //    }
+    //    else if (playerDir.x == 1)
+    //    {
+    //        dir = 1;
+    //    }
+    //    else if (playerDir.z == -1)
+    //    {
+    //        dir = 2;
+    //    }
+    //    else if (playerDir.x == -1)
+    //    {
+    //        dir = 3;
+    //    }
+
+    //    JSW_DecoObject jd = funitureOb.GetComponent<JSW_DecoObject>();
+
+    //    if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir))
+    //    {
+    //        DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
+    //        funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
+    //        DRM.FunitureList.Add(funitureOb);
+    //    }
+    //    else
+    //    {
+    //        Destroy(funitureOb);
+    //        print("no");
+    //    }
+    //}
 
 
     public void isPushorPull(int num)
@@ -263,6 +272,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     //[PunRPC]
     public void PushFunitureSetting()
     {
+        print("dd");
 
         GameObject funitureOb = null;
 
@@ -314,23 +324,24 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             if (realnumDir.z == 1)
             {
                 dir = 0;
-                transform.position = new Vector3(num.x, transform.position.y, num.z - 1);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x, transform.position.y, num.z - 1), Time.deltaTime * 10f);
             }
             else if (realnumDir.x == 1)
             {
                 dir = 1;
-                transform.position = new Vector3(num.x - 1, transform.position.y, num.z);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x - 1, transform.position.y, num.z), Time.deltaTime * 10f);
             }
             else if (realnumDir.z == -1)
             {
                 dir = 2;
-                transform.position = new Vector3(num.x, transform.position.y, num.z + 1);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x, transform.position.y, num.z + 1), Time.deltaTime * 10f);
             }
             else if (realnumDir.x == -1)
             {
                 dir = 3;
-                transform.position = new Vector3(num.x + 1, transform.position.y, num.z);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x + 1, transform.position.y, num.z), Time.deltaTime * 10f);
             }
+
         }
     }
 
@@ -554,22 +565,25 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     private IEnumerator moveBlockTranslate(Vector3 dir, GameObject funiture)
     {
 
-        Vector3 targetPosition = new Vector3((float)Math.Round((funiture.transform.position + dir).x), (float)Math.Round((funiture.transform.position + dir).y), (float)Math.Round((funiture.transform.position + dir).z));
+        Vector3 funiTargetPosition = new Vector3((float)Math.Round((funiture.transform.position + dir).x), funiture.transform.position.y, (float)Math.Round((funiture.transform.position + dir).z));
+        Vector3 playerTargetPosition = new Vector3((float)Math.Round((transform.position + dir).x), transform.position.y, (float)Math.Round((transform.position+dir).z));
         IsCharacterMoving = true;
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = true;
-        while (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 0.15f)
+        while (Vector3.Magnitude(funiTargetPosition - funiture.transform.position) >= 0.02f)
         {
+            funiture.transform.position = Vector3.Lerp(funiture.transform.position, funiTargetPosition, Time.deltaTime * 5f);
+            transform.position = Vector3.Lerp(transform.position, playerTargetPosition, Time.deltaTime * 5f);
             //funiture.transform.position = Vector3.Lerp(funiture.transform.position, targetPosition, speed * Time.deltaTime);
-            funiture.transform.Translate(funiture.transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
-            transform.Translate(transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
-            if (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 2f)
+            //funiture.transform.Translate(funiture.transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
+            //transform.Translate(transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
+            if (Vector3.Magnitude(funiTargetPosition - funiture.transform.position) >= 2f)
             {
                 break;
             }
             yield return new WaitForFixedUpdate(); ;
         }
-        funiture.transform.position = targetPosition;
-        transform.position = new Vector3((float)Math.Round(transform.position.x),transform.position.y, (float)Math.Round(transform.position.z));
+        funiture.transform.position = funiTargetPosition;
+        transform.position = playerTargetPosition;
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = false;
         IsCharacterMoving = false;
     }
@@ -597,11 +611,25 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         {
             if (hit.collider.tag == "Funiture")
             {
-                int[] funitureInfo = hit.collider.GetComponent<JSW_DecoObject>().GetPositionInfo();
+                GameObject funitureOb = hit.collider.gameObject;
+
+       
+                iTween.ScaleTo(funitureOb, iTween.Hash(
+                "scale", Vector3.zero, // 최종 크기
+                "time", 1.0f,         // 애니메이션 시간
+                "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
+                ));
+
+                int[] funitureInfo = funitureOb.GetComponent<JSW_DecoObject>().GetPositionInfo();
                 DRM.DestroyFuniturePos(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4]);
-                Destroy(hit.collider.gameObject);
+                StartCoroutine(DestroyFuni(hit.collider.gameObject));
             }
         }
     }
 
+    IEnumerator DestroyFuni(GameObject gameobject)
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameobject);
+    }
 }

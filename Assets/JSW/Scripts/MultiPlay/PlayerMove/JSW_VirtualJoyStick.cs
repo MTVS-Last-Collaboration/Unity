@@ -103,7 +103,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
         inputDirection.x = worldInputDirection.x;
     }
 
-    bool locking;
+    public bool locking;
     public void lockingTest()
     {
         locking = true;
@@ -119,14 +119,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
         //무브쪽으로 보내자.
 
         // 테스트 용
-        if (Input.GetKeyDown(KeyCode.H)) 
-        {
-            locking = true;
-        }
-        if (Input.GetKeyDown(KeyCode.L)) 
-        {
-            locking = false;
-        }
+
 
         if (playerMoveControl != null)
         {
@@ -139,21 +132,25 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                     float y = inputDirection.y;
                     if (x > 0.5f && y > -0.5f && y < 0.5f) //오른쪽
                     {
+                        if (pressX < 0) pressX = 0;
                         pressX += Time.deltaTime;
                     }
                     else if (x < -0.5 && y > -0.5f && y < 0.5f) //왼쪽
                     {
+                        if (pressX > 0) pressX = 0;
                         pressX -= Time.deltaTime;
                     }
                     else if (y > 0.5 && x > -0.5f && x < 0.5f) //위
                     {
+                        if (pressY < 0) pressY = 0;
                         pressY += Time.deltaTime;
                     }
                     else if (y < -0.5 && x > -0.5f && x < 0.5f) //아래
                     {
+                        if (pressY > 0) pressY = 0;
                         pressY -= Time.deltaTime;
                     }
-                    if (pressX >= 2f)
+                    if (pressX >= 1.5f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -161,7 +158,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 오른쪽 옮기기
 
                     }
-                    else if (pressX <= -2f)
+                    else if (pressX <= -1.5f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -169,7 +166,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 왼쪽 옮기기
 
                     }
-                    else if (pressY >= 2f)
+                    else if (pressY >= 1.5f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -177,7 +174,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 위쪽 옮기기
 
                     }
-                    else if (pressY <= -2f)
+                    else if (pressY <= -1.5f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -228,11 +225,19 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
     void Update()
     {
 
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            locking = true;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            locking = false;
+        }
+        //print("플레이어 움직이게 하자.");
         if (playerPhotonView != null && playerPhotonView.IsMine && isInput)
         {
-            //print("플레이어 움직이게 하자.");
             IntputControllVector();
-
+           
         }
 
 

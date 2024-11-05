@@ -5,6 +5,7 @@ using UnityEngine;
 public class JSW_ClickAlbum : MonoBehaviour
 {
     public GameObject uiManager;
+    public JSW_CameraControllTest cameraControllTest;
     private bool isPlayerInRange = false;
 
     private void Start()
@@ -15,11 +16,19 @@ public class JSW_ClickAlbum : MonoBehaviour
     private void OnMouseDown()
     {
         //추후 클릭 성공 시 플레이어 움직임 막기
-        if (isPlayerInRange)
+        if (isPlayerInRange && cameraControllTest.cameraPos != "Album")
         {
-            uiManager.GetComponent<JSW_UIManager>().OnClickAlbum();
+            cameraControllTest.CameraToAlbum();
+            StartCoroutine(OpenAlbumUI());
         }
     }
+
+    IEnumerator OpenAlbumUI()
+    {
+        yield return new WaitForSeconds(0.8f);
+        uiManager.GetComponent<JSW_UIManager>().OnClickAlbum();
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {

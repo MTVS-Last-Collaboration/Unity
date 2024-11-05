@@ -8,20 +8,20 @@ using static UnityEngine.Rendering.DebugUI.Table;
 public class JSW_DecorateRoomManager : MonoBehaviour
 {
     public bool [,] roomPosition = new bool [8, 8];
-    public List<GameObject> FunitureList = new List<GameObject>();
+    public List<JSW_InfoDecoObject> FunitureList = new List<JSW_InfoDecoObject>();
     public JSW_PlayerDecorate playerDecorate;
 
-    public enum funiture
-    {
-        TV,
-        Table,
-        Bed
-    }
+    //public enum funiture
+    //{
+    //    TV,
+    //    Table,
+    //    Bed
+    //}
 
     private void Start()
     {
         StartCoroutine(PlayerDecorate());
-        nowFuniture();
+        //nowFuniture();
     }
 
     public void nowFuniture()
@@ -35,17 +35,18 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         //}
         for(int i=0;i < FunitureList.Count; i++)
         {
-            int x = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectPositionX;
-            int z = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectPositionZ;
-            int lenx = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectLengthX;
-            int lenz = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectLengthZ;
-            int rot = FunitureList[i].GetComponent<JSW_DecoObject>().decoObjectRotation;
-            AddNewFuniture(x, z, lenx, lenz, rot);
+            int x = FunitureList[i].decoPositionX;
+            int z = FunitureList[i].decoPositionZ;
+            int lenx = FunitureList[i].decoLengthX;
+            int lenz = FunitureList[i].decoLengthZ;
+            int rot = FunitureList[i].decoObjectRotation;
+            string name = FunitureList[i].funitureName;
+            AddNewFuniture(x, z, lenx, lenz, rot, name);
         }
     }
     // 새로운 배치
     // 이거 네모난 직사각형만 가능함
-    public void AddNewFuniture(int posX, int posZ, int lenX,int lenZ, int rot)
+    public void AddNewFuniture(int posX, int posZ, int lenX,int lenZ, int rot, string name)
     {
         // 12시방향
         if (rot == 0) {
@@ -90,6 +91,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                 }
             }
         }
+        FunitureList.Add(new JSW_InfoDecoObject(posX, posZ, lenX, lenZ, rot, name));
         printRoomSpace();
     }
 
@@ -614,10 +616,10 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         playerDecorate.SetFuniture1(name);
     }
 
-    public void PlayerSetFuniture2()
-    {
-        playerDecorate.SetFuniture2();
-    }
+    //public void PlayerSetFuniture2()
+    //{
+    //    playerDecorate.SetFuniture2();
+    //}
     public void PlayerDestroyFuni()
     {
         playerDecorate.DestroyFuniture();

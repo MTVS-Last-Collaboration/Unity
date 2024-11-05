@@ -19,6 +19,7 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
 
     public bool isMovingFuniture;
 
+    public string name;
 
     public Vector3 myPos;
     public Quaternion myRot;
@@ -27,20 +28,20 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
     {
         //PlayerMoveKey();
         //PlayerMoveJoyStick(joyStick.inputDirection);
-        if (photonView.IsMine != null && photonView.IsMine == false )
+        if (photonView != null && photonView.IsMine == false )
         {
             transform.position = myPos;
             transform.rotation = myRot;
         }
     }
 
-    public void SetpositionInfo(int posX, int posZ, int lenX, int lenZ, int rot)
+    public void SetpositionInfo(int posX, int posZ, int lenX, int lenZ, int rot, string funiName)
     {
-        photonView.RPC("SetpositionInfo_RPC", RpcTarget.AllBuffered, posX, posZ, lenX, lenZ, rot);
+        photonView.RPC("SetpositionInfo_RPC", RpcTarget.AllBuffered, posX, posZ, lenX, lenZ, rot, funiName);
     }
 
     [PunRPC]
-    public void SetpositionInfo_RPC(int posX, int posZ, int lenX, int lenZ, int rot)
+    public void SetpositionInfo_RPC(int posX, int posZ, int lenX, int lenZ, int rot, string funiName)
     {
         decoObjectPositionX = posX;
         decoObjectPositionZ = posZ;
@@ -49,6 +50,7 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
         decoObjectLengthZ = lenZ;
 
         decoObjectRotation = rot;
+        name = funiName;
     }
 
     public int[] GetPositionInfo()

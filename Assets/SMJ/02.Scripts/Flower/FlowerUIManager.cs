@@ -31,6 +31,9 @@ public class FlowerUIManager : MonoBehaviourPun
     [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private bool testRecord = false;
+    [SerializeField] private GameObject hoonUI;
+
+    private UIPopupAnimation uiPopup;
 
     private VoiceRecorder recorder;
     private FlowerEvolution flowerEvol;
@@ -66,6 +69,10 @@ public class FlowerUIManager : MonoBehaviourPun
         recorder = GetComponent<VoiceRecorder>();
         flowerEvol = GetComponent<FlowerEvolution>();
         click = GetComponent<ClickFlower>();
+        uiPopup = GetComponent<UIPopupAnimation>();
+        uiPopup.SetTarget(uiPanel.GetComponent<RectTransform>());
+
+        hoonUI = GameObject.Find("HoonLoobyCanvas");
 
         // 초기 상태 텍스트 설정
         UpdateStateText(flower.curState);
@@ -382,6 +389,12 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     public void ShowFlowerInfo(Flower targetFlower, int idx)
     {
+        if (click.isFirstClick == true)
+        {
+            Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
+            hoonUI.SetActive(false);
+            uiPopup.PlayPopupAnimation(uiPanel.GetComponent<RectTransform>());
+        }
         if (targetFlower == null)
         {
             return;
@@ -428,6 +441,9 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void HideFlowerInfo()
     {
+        Camera.main.cullingMask |= ~(1 << LayerMask.NameToLayer("Player"));
+        hoonUI.SetActive(true);
+        uiPopup.Hide(uiPanel.GetComponent<RectTransform>());
         uiPanel.SetActive(false);
         recordPanel.SetActive(false);
         for (int i = 0; i < buttons.Length; i++)
@@ -809,6 +825,12 @@ public class FlowerUIManager : MonoBehaviourPun
         UpdateUI(flower);
         UpdateUIText();
     }
+
+    public void JigglingUI()
+    {
+        //iTween.mo
+    }
+
     private void OnDestroy()
     {
         PhotonNetwork.NetworkingClient.StateChanged -= OnStateChanged;

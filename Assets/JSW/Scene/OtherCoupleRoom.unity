@@ -1323,6 +1323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 0}
+  cameraControllTest: {fileID: 0}
 --- !u!1 &28920546
 GameObject:
   m_ObjectHideFlags: 0
@@ -3951,15 +3952,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam_Object: {fileID: 0}
   mainCamPos_Object: {fileID: 1926706939}
-  lobbyGameManager: {fileID: 0}
+  lobbyGameManager: {fileID: 1801501395}
   playerTransform: {fileID: 0}
   mong: {fileID: 1088137559}
   CamPos_3D: {fileID: 1384789843}
+  CalenderPos: {fileID: 0}
+  AlbumPos: {fileID: 0}
   aa: 1.5
   bb: -2
   cameraPos: Original
   mainCamY: 8
-  rotateSpeed: 0
 --- !u!1001 &116806140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20816,7 +20818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d206ff915bf7a94690623b0cae394ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FunitureList: []
   playerDecorate: {fileID: 0}
 --- !u!4 &604980092
 Transform:
@@ -31845,10 +31846,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b1ac74ddd7f1c48a7a150881f385b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraControllTest: {fileID: 0}
   album_UI: {fileID: 0}
   Album2: {fileID: 0}
   Album_Loading: {fileID: 0}
   PicUploadingUI: {fileID: 0}
+  Calender: {fileID: 0}
   Calender1: {fileID: 0}
   Calender2: {fileID: 0}
   Mong_1: {fileID: 0}
@@ -38973,6 +38976,8 @@ MonoBehaviour:
   isSettingFuniture: 0
   playerDecorate: {fileID: 0}
   playerPhotonView: {fileID: 0}
+  virtualJoyStick: {fileID: 0}
+  doubleClickTime: 0.3
 --- !u!1 &1219026400
 GameObject:
   m_ObjectHideFlags: 0
@@ -42130,6 +42135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 0}
+  cameraControllTest: {fileID: 0}
 --- !u!1 &1310115451
 GameObject:
   m_ObjectHideFlags: 0
@@ -48337,6 +48343,7 @@ MonoBehaviour:
   playerMoveControl: {fileID: 0}
   playerPhotonView: {fileID: 0}
   playerDecorate: {fileID: 0}
+  locking: 0
 --- !u!1 &1508830457
 GameObject:
   m_ObjectHideFlags: 0
@@ -57247,6 +57254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraControllTest: {fileID: 0}
   ObjectRotate: 0
+  isPlayerInRange: 0
 --- !u!1 &1763201513
 GameObject:
   m_ObjectHideFlags: 0
