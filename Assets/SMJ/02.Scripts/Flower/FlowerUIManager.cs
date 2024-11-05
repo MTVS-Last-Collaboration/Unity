@@ -441,11 +441,12 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void HideFlowerInfo()
     {
-        Camera.main.cullingMask |= ~(1 << LayerMask.NameToLayer("Player"));
+        Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("Player"));
         hoonUI.SetActive(true);
         uiPopup.Hide(uiPanel.GetComponent<RectTransform>());
-        uiPanel.SetActive(false);
-        recordPanel.SetActive(false);
+        //uiPanel.SetActive(false);
+        uiPopup.Hide(recordPanel.GetComponent<RectTransform>());
+        //recordPanel.SetActive(false);
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].SetActive(false);
