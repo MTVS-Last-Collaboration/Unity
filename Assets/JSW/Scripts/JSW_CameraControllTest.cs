@@ -34,31 +34,29 @@ public class JSW_CameraControllTest : MonoBehaviour
         //lobbyGameManager = GameObject.Find("LobbyGameManager");
     }
 
-
+    public float rotateSpeed;
+    Vector3 lastMousePosition;
     void LateUpdate()
     {
         if (cameraPos == "Original")    
         {
             Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
-            if (lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player == null)
-            {
-                return;
-            }
-            Vector3 cameraMoveDir = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
             float mainCamPosY = mainCamPos_Object.transform.position.y; //x방향
             float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
-            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position,new Vector3(mainCamPosX, mainCamPosY, mainCamPosZ) + cameraMoveDir.normalized*2.5f, Time.deltaTime); //플레이어의 움직임 따라가기
-            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward,cameraMoveDir,Time.deltaTime * 0.5f); //카메라가 플레이어 방향을 계속 보게함
+            Camera.main.fieldOfView = 60;
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position,new Vector3(mainCamPosX, mainCamPosY, mainCamPosZ), Time.deltaTime * 10); //플레이어의 움직임 따라가기
+            mainCam_Object.transform.forward = playerDir; //카메라가 플레이어 방향을 계속 보게함
         }
         else if (cameraPos == "Mong")
         {
             int layerMask = 1 << LayerMask.NameToLayer("Player");
             // 현재 카메라의 cullingMask에서 지정된 레이어를 제외시킴
             mainCam_Object.GetComponent<Camera>().cullingMask &= ~layerMask;
+            Camera.main.fieldOfView = 60;
             playerTransform = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform;
-            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, playerTransform.position + -1*((mong.position - Vector3.up * 0.5f) - playerTransform.position).normalized * 2f + Vector3.up * 1.1f, Time.deltaTime * 5);
-            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward,((mong.position - Vector3.up) - playerTransform.position).normalized,Time.deltaTime * 5);
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, playerTransform.position + -1*((mong.position - Vector3.up * 0.5f) - playerTransform.position).normalized * 1f + Vector3.up * 0.7f, Time.deltaTime * 10);
+            mainCam_Object.transform.forward = ((mong.position - Vector3.up) - playerTransform.position).normalized;
             mong.forward = ((mong.position) - mainCam_Object.transform.position).normalized * -1;
         }
         else if (cameraPos == "Calender")
@@ -73,8 +71,8 @@ public class JSW_CameraControllTest : MonoBehaviour
         }
         else if (cameraPos == "3D")
         {
-            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, CamPos_3D.position, Time.deltaTime*5);
-            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward,CamPos_3D.forward,Time.deltaTime*5);
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, CamPos_3D.position, Time.deltaTime * 25);
+            mainCam_Object.transform.forward = CamPos_3D.forward;
         }
         // 여기에 선반도 추가하면 될 듯
     }

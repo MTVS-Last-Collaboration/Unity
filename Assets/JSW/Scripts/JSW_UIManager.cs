@@ -1,20 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 
 public class JSW_UIManager : MonoBehaviour
 {
     // 캐싱 값 가지고 있는 객체 (저장 매체)
     // 코드 몰아 넣는 객체 인스턴스 하나 (코드 실행 매체)
 
-    public JSW_CameraControllTest cameraControllTest;
-
     public GameObject album_UI;
     public GameObject Album2;
     public GameObject Album_Loading;
     public GameObject PicUploadingUI;
-    public GameObject Calender;
     public GameObject Calender1;
     public GameObject Calender2;
     public GameObject Mong_1;
@@ -31,7 +27,6 @@ public class JSW_UIManager : MonoBehaviour
         Album_Loading = GameObject.Find("Album_Loading");
         PicUploadingUI = GameObject.Find("PicUploadingUI");
 
-        Calender = GameObject.Find("Calender");
         Calender1 = GameObject.Find("Calender1");
         Calender2 = GameObject.Find("Calender2");
 
@@ -64,7 +59,6 @@ public class JSW_UIManager : MonoBehaviour
     public void OnClickAlbum()
     {
         album_UI.SetActive(true);
-        easingUI(album_UI, 1f);
     }
     public void OnClickAlbum_Back()
     {
@@ -72,49 +66,34 @@ public class JSW_UIManager : MonoBehaviour
     }
 
 
-
     public void OnClickAlbum_Making()
     {
         album_UI.SetActive(false);
         Album2.SetActive(true);
-
-        easingUI(Album2, 0.5f);
     }
     public void OnClickAlbum_Making_Back()
     {
         Album2.SetActive(false);
         album_UI.SetActive(true);
-
-        easingUI(album_UI, 1f);
     }
 
 
     public void OnClickAlbum_Loading()
     {
-        //dasdsa
-        cameraControllTest.CameraTo3D();
         Album2.SetActive(false);
         Album_Loading.SetActive(true);
-        Album_Loading.GetComponent<CanvasGroup>().alpha = 0.3f;
     }
     public void OnClickAlbum_Loading_Back()
     {
-        ///fadsa
-        cameraControllTest.CameraToAlbum();
-        Album_Loading.GetComponent<CanvasGroup>().alpha = 1f;
         Album_Loading.SetActive(false);
         Album2.SetActive(true);
-        easingUI(Album2, 1f);
     }
 
     public void OnClickPicUploadingUI()
     {
         //Album2.SetActive(false);
         PicUploadingUI.SetActive(true);
-
-        easingUI(PicUploadingUI, 0.5f);
     }
-
     public void OnClickPicUploadingUI_Back()
     {
         PicUploadingUI.SetActive(false);
@@ -124,7 +103,6 @@ public class JSW_UIManager : MonoBehaviour
     // Calender와 관련된 코드
     public void OnClickCalender()
     {
-        easingUI(Calender, 1.0f);
         Calender1.SetActive(true);
         Calender2.SetActive(true);
     }
@@ -180,16 +158,5 @@ public class JSW_UIManager : MonoBehaviour
     public void OnClickDecorateMineUI_Back()
     {
         DecorateMineUI.SetActive(false);
-    }
-
-    public void easingUI(GameObject uiObject, float time)
-    {
-        Vector3 size = uiObject.transform.localScale;
-        uiObject.transform.localScale = Vector3.one * 0.2f;
-        iTween.ScaleTo(uiObject, iTween.Hash(
-        "scale", size, // 최종 크기
-        "time", time,         // 애니메이션 시간
-        "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
-        ));
     }
 }

@@ -272,7 +272,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     //[PunRPC]
     public void PushFunitureSetting()
     {
-        print("dd");
 
         GameObject funitureOb = null;
 
@@ -324,24 +323,23 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             if (realnumDir.z == 1)
             {
                 dir = 0;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x, transform.position.y, num.z - 1), Time.deltaTime * 10f);
+                transform.position = new Vector3(num.x, transform.position.y, num.z - 1);
             }
             else if (realnumDir.x == 1)
             {
                 dir = 1;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x - 1, transform.position.y, num.z), Time.deltaTime * 10f);
+                transform.position = new Vector3(num.x - 1, transform.position.y, num.z);
             }
             else if (realnumDir.z == -1)
             {
                 dir = 2;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x, transform.position.y, num.z + 1), Time.deltaTime * 10f);
+                transform.position = new Vector3(num.x, transform.position.y, num.z + 1);
             }
             else if (realnumDir.x == -1)
             {
                 dir = 3;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(num.x + 1, transform.position.y, num.z), Time.deltaTime * 10f);
+                transform.position = new Vector3(num.x + 1, transform.position.y, num.z);
             }
-
         }
     }
 
@@ -565,25 +563,22 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     private IEnumerator moveBlockTranslate(Vector3 dir, GameObject funiture)
     {
 
-        Vector3 funiTargetPosition = new Vector3((float)Math.Round((funiture.transform.position + dir).x), funiture.transform.position.y, (float)Math.Round((funiture.transform.position + dir).z));
-        Vector3 playerTargetPosition = new Vector3((float)Math.Round((transform.position + dir).x), transform.position.y, (float)Math.Round((transform.position+dir).z));
+        Vector3 targetPosition = new Vector3((float)Math.Round((funiture.transform.position + dir).x), funiture.transform.position.y, (float)Math.Round((funiture.transform.position + dir).z));
         IsCharacterMoving = true;
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = true;
-        while (Vector3.Magnitude(funiTargetPosition - funiture.transform.position) >= 0.02f)
+        while (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 0.15f)
         {
-            funiture.transform.position = Vector3.Lerp(funiture.transform.position, funiTargetPosition, Time.deltaTime * 5f);
-            transform.position = Vector3.Lerp(transform.position, playerTargetPosition, Time.deltaTime * 5f);
             //funiture.transform.position = Vector3.Lerp(funiture.transform.position, targetPosition, speed * Time.deltaTime);
-            //funiture.transform.Translate(funiture.transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
-            //transform.Translate(transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
-            if (Vector3.Magnitude(funiTargetPosition - funiture.transform.position) >= 2f)
+            funiture.transform.Translate(funiture.transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
+            transform.Translate(transform.InverseTransformDirection(dir) * Time.deltaTime * 3);
+            if (Vector3.Magnitude(targetPosition - funiture.transform.position) >= 2f)
             {
                 break;
             }
             yield return new WaitForFixedUpdate(); ;
         }
-        funiture.transform.position = funiTargetPosition;
-        transform.position = playerTargetPosition;
+        funiture.transform.position = targetPosition;
+        transform.position = new Vector3((float)Math.Round(transform.position.x),transform.position.y, (float)Math.Round(transform.position.z));
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = false;
         IsCharacterMoving = false;
     }

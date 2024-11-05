@@ -18,17 +18,10 @@ public class JSW_ClickAlbum : MonoBehaviour
         //추후 클릭 성공 시 플레이어 움직임 막기
         if (isPlayerInRange && cameraControllTest.cameraPos != "Album")
         {
+            uiManager.GetComponent<JSW_UIManager>().OnClickAlbum();
             cameraControllTest.CameraToAlbum();
-            StartCoroutine(OpenAlbumUI());
         }
     }
-
-    IEnumerator OpenAlbumUI()
-    {
-        yield return new WaitForSeconds(0.8f);
-        uiManager.GetComponent<JSW_UIManager>().OnClickAlbum();
-    }
-
 
     private void OnTriggerEnter(Collider other)
     {

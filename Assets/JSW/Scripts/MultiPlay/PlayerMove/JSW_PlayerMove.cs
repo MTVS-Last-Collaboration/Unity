@@ -165,7 +165,7 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
             {
 
                 Quaternion toRotation = Quaternion.LookRotation(playerMoveDir, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 360 * Time.deltaTime * 3);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 360 * Time.deltaTime);
             }
 
             //모델을 회전시키자.

@@ -104,7 +104,6 @@ public class JSW_CameraRotation : MonoBehaviour
         // 매 프레임마다 각도를 증가시킴
         angle += speed * Time.deltaTime;
         // x, z 좌표에서 원운동 경로를 계산
- 
         float x = player.transform.position.x + Mathf.Cos(angle) * radius;
         float z = player.transform.position.z + Mathf.Sin(angle) * radius;
 

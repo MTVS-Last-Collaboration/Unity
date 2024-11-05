@@ -29,25 +29,13 @@ public class DecoShopManager : MonoBehaviour
         {
             DecoUIPurchase.SetActive(false);
             DecoUIOkay.SetActive(true);
-            int targetPoint = point - nowPrice;
-            StartCoroutine(PurchaseCo(point, targetPoint));
+            point -= nowPrice;
+            profilePrice.text = point.ToString();
             nowOwner.text = "소유중";
             JDMO.isMineText.text = "소유중";
             JDMO.isPurchased = true;
             JDSI.isPurchase = true;
         }
-    }
-    IEnumerator PurchaseCo(int point, int targetPoint)
-    {
-        float changetPoint = point;
-        while ((int)changetPoint != targetPoint)
-        {
-            changetPoint = Mathf.Lerp(changetPoint, targetPoint, Time.deltaTime * 10f);
-            profilePrice.text = changetPoint.ToString("0");
-            yield return null;
-        }
-        this.point = targetPoint;
-        profilePrice.text = this.point.ToString("0");
     }
 
     public void OnClickPurchaseNo()

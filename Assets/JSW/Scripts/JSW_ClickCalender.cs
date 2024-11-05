@@ -18,15 +18,10 @@ public class JSW_ClickCalender : MonoBehaviour
         //추후 클릭 성공 시 플레이어 움직임 막기
         if (isPlayerInRange && cameraControllTest.cameraPos != "Calender")
         {
+            uiManager.GetComponent<JSW_UIManager>().OnClickCalender();
             cameraControllTest.CameraToCalender();
-            StartCoroutine(OpenCalenderUI());
+            print("ddd4");
         }
-    }
-
-    IEnumerator OpenCalenderUI()
-    {
-        yield return new WaitForSeconds(0.8f);
-        uiManager.GetComponent<JSW_UIManager>().OnClickCalender();
     }
 
     private void OnTriggerEnter(Collider other)
