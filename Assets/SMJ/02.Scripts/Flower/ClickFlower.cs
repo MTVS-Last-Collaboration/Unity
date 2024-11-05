@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Photon.Pun;
 
-public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
+public class ClickFlower : MonoBehaviourPunCallbacks
 {
     private Flower targetFlower;
     private bool isPlayerInRange = false;
@@ -18,7 +18,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
 
     private bool isClose = false;
     private WaitForSeconds delay;
-    private bool isInitialized = false;  // 초기화 여부 체크를 위한 변수 추가
+    private bool isInitialized = false;
 
     [SerializeField] private Transform lerpTr;
     private Transform cameraTr;
@@ -39,13 +39,36 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
         CheckForPlayer();
         StartCoroutine(WaitForInitialization());
     }
+
     private void Start()
     {
         cameraTr = Camera.main.transform;
+
+        // 로컬 플레이어의 카메라 컨트롤러 찾기
+        GameObject localPlayer = PhotonNetwork.LocalPlayer.TagObject as GameObject;
+        if (localPlayer != null)
+        {
+            cameraControll = localPlayer.GetComponent<CameraControllTest>();
+        }
+
+        // 만약 카메라 컨트롤러를 찾지 못했다면, 씬에서 찾아보기
+        if (cameraControll == null)
+        {
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (var player in players)
+            {
+                var playerPhotonView = player.GetComponent<PhotonView>();
+                if (playerPhotonView != null && playerPhotonView.IsMine)
+                {
+                    cameraControll = player.GetComponent<CameraControllTest>();
+                    break;
+                }
+            }
+        }
     }
+
     private IEnumerator WaitForInitialization()
     {
-        // 포톤 네트워크 연결 및 플레이어 초기화 대기
         while (!PhotonNetwork.IsConnectedAndReady)
         {
             yield return null;
@@ -69,18 +92,17 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
 
     private IEnumerator CheckForPlayerRoutine()
     {
-        yield return new WaitForSeconds(1f); // 초기화를 위한 딜레이
+        yield return new WaitForSeconds(1f);
 
         while (true)
         {
-            //print($"현재 체크중인 플레이어: {gameObject.name}, managerId: {targetFlower.managerId}");
             CheckForPlayer();
             yield return delay;
         }
     }
+
     private void Update()
     {
-        //print(gameObject.name + " : " + isClose);
         if (isClose == true)
         {
             if (Input.touchCount > 0)
@@ -101,7 +123,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, idHandlingRadius);
         bool foundPlayer = false;
-        bool isNearby = false;  // 거리 체크를 위한 변수 추가
+        bool isNearby = false;
 
         foreach (var hitCollider in hitColliders)
         {
@@ -113,55 +135,51 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
             IDHandler playerIDHandler = hitCollider.GetComponent<IDHandler>();
             if (playerIDHandler == null) continue;
 
-            cameraControll = hitCollider.GetComponent<CameraControllTest>();
-            if (cameraControll == null) continue;
-
-            //print($"검사중인 플레이어: {hitCollider.gameObject.name}, ID: {playerIDHandler.ID}, 꽃의 managerId: {targetFlower.managerId}");
-
-            float distance = Vector3.Distance(gameObject.transform.position, hitCollider.transform.position);
-
-            // 어떤 플레이어라도 가까이 있으면 true
-            if (distance < detectionDistance)
+            // 로컬 플레이어의 컴포넌트만 가져오기
+            if (playerCheckID.photonView.IsMine)
             {
-                isNearby = true;
-            }
+                cameraControll = hitCollider.GetComponent<CameraControllTest>();
+                if (cameraControll == null) continue;
 
-            // 이미 이 꽃의 소유자인 경우
-            if (targetFlower.managerId == playerIDHandler.ID)
-            {
-                checkID = playerCheckID;
-                foundPlayer = true;
-            }
-            // 아직 아무도 할당되지 않은 꽃이고, 다른 꽃의 소유자가 아닌 플레이어를 발견한 경우
-            else if (string.IsNullOrEmpty(targetFlower.managerId))
-            {
-                GameObject[] flowers = GameObject.FindGameObjectsWithTag("Flower");
-                bool isOtherFlowerOwner = false;
-
-                foreach (var flower in flowers)
+                float distance = Vector3.Distance(gameObject.transform.position, hitCollider.transform.position);
+                if (distance < detectionDistance)
                 {
-                    Flower otherFlower = flower.GetComponent<Flower>();
-                    if (otherFlower != targetFlower && playerCheckID.IsMine(otherFlower))
-                    {
-                        isOtherFlowerOwner = true;
-                        break;
-                    }
+                    isNearby = true;
                 }
 
-                if (!isOtherFlowerOwner)
+                if (targetFlower.managerId == playerIDHandler.ID)
                 {
                     checkID = playerCheckID;
                     foundPlayer = true;
                 }
-            }
-            // 상대방의 꽃인 경우
-            else if (!string.IsNullOrEmpty(targetFlower.managerId))
-            {
-                foundPlayer = true;
+                else if (string.IsNullOrEmpty(targetFlower.managerId))
+                {
+                    GameObject[] flowers = GameObject.FindGameObjectsWithTag("Flower");
+                    bool isOtherFlowerOwner = false;
+
+                    foreach (var flower in flowers)
+                    {
+                        Flower otherFlower = flower.GetComponent<Flower>();
+                        if (otherFlower != targetFlower && playerCheckID.IsMine(otherFlower))
+                        {
+                            isOtherFlowerOwner = true;
+                            break;
+                        }
+                    }
+
+                    if (!isOtherFlowerOwner)
+                    {
+                        checkID = playerCheckID;
+                        foundPlayer = true;
+                    }
+                }
+                else if (!string.IsNullOrEmpty(targetFlower.managerId))
+                {
+                    foundPlayer = true;
+                }
             }
         }
 
-        // 모든 플레이어 체크가 끝난 후에 거리에 따른 상태 설정
         isClose = isNearby;
         isPlayerInRange = isNearby;
 
@@ -176,9 +194,11 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
 
     public void HandleInteraction()
     {
+        // 로컬 플레이어의 상호작용만 처리
         if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null && isFirstClick == false)
         {
             isFirstClick = true;
+
             if (isFirst == false)
             {
                 originPosition = cameraTr.position;
@@ -186,12 +206,10 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
                 isFirst = true;
             }
 
-            //카메라 보간
             StartCoroutine(LerpCamera());
 
             if (checkID != null)
             {
-                //print(checkID.IsMine(targetFlower));
                 if (checkID.IsMine(targetFlower) == true)
                 {
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
@@ -238,7 +256,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
         }
         return false;
     }
-    
+
     private void CheckInteraction(Vector2 position)
     {
         Ray ray = Camera.main.ScreenPointToRay(position);
@@ -252,7 +270,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
 
     IEnumerator LerpCamera()
     {
-        if (cameraControll.playerPhotonview.IsMine)
+        if (cameraControll != null)
         {
             cameraControll.isMoveAble = false;
             curtime = 0f;
@@ -275,18 +293,28 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
                 cameraTr.rotation = Quaternion.Lerp(startRotation, lerpTr.rotation, t);
                 yield return null;
             }
+
             cameraTr.position = lerpTr.position;
             cameraTr.rotation = lerpTr.rotation;
         }
     }
 
+    public void ReturnCamera()
+    {
+        if (isFirst)
+        {
+            StartCoroutine(ReturnCameraTransform());
+            isFirst = false;
+            isFirstClick = false;
+        }
+    }
+
     IEnumerator ReturnCameraTransform()
     {
-        if (cameraControll.playerPhotonview.IsMine)
+        if (cameraControll != null)
         {
             curtime = 0f;
             float lerpDuration = 0.5f;
-            cameraTr = Camera.main.transform;
             Vector3 startPosition = cameraTr.position;
             Quaternion startRotation = cameraTr.rotation;
 
@@ -305,19 +333,10 @@ public class ClickFlower : MonoBehaviourPunCallbacks  // MonoBehaviour에서 변경
                 cameraTr.rotation = Quaternion.Lerp(startRotation, originRotation, t);
                 yield return null;
             }
+
             cameraTr.position = originPosition;
             cameraTr.rotation = originRotation;
             cameraControll.isMoveAble = true;
-        }
-    }
-
-    public void ReturnCamera()
-    {
-        if (isFirst)
-        {
-            StartCoroutine(ReturnCameraTransform());
-            isFirst = false;
-            isFirstClick = false;
         }
     }
 }
