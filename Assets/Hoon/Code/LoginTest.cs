@@ -60,6 +60,14 @@ public class LoginTest : MonoBehaviour
         public string coupleCode;
     }
 
+    public class MyInfoResponse
+    {
+        public string nickname;
+        public string gender;
+        public string anniversaryDate;
+        public string coupleCode;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -209,7 +217,7 @@ public class LoginTest : MonoBehaviour
             registImage.SetActive(false);
             loginImage.SetActive(false);
           
-            //Access Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
+            //Access Token: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffeyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjvE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
 
             // 서버 응답과 newUser가 같은지 확인
             if (responseText == input_Id.text)
@@ -269,7 +277,18 @@ public class LoginTest : MonoBehaviour
         {
             string responseText = request.downloadHandler.text;
             print("서버 응답: " + responseText); // 내가 받은 정보
-            //
+                                             
+            //받은 정보를 json으로 파싱하고 List에 저장하고, 리스트의 각 항복에 대한 keyvalue값을 저장하자.
+            MyInfoResponse myInfo = JsonUtility.FromJson<MyInfoResponse>(responseText);
+            LoginInfoManager.instance.nickName = myInfo.nickname;
+            print("내닉네임" + LoginInfoManager.instance.nickName);
+            LoginInfoManager.instance.avataChoice = myInfo.gender;
+            print("내아바타" + LoginInfoManager.instance.avataChoice);
+            LoginInfoManager.instance.coupleDay = myInfo.anniversaryDate;
+            print("내기념일" + LoginInfoManager.instance.coupleDay);
+            LoginInfoManager.instance.coupleCode = myInfo.coupleCode;
+            print("내커플코드" + LoginInfoManager.instance.coupleCode);
+
 
 
             // 서버 응답과 newUser가 같은지 확인

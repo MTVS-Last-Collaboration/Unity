@@ -49,6 +49,7 @@ public class LobbyGameManager : MonoBehaviourPun
             {
                 playerAvataType = LoginInfoManager.instance.avataChoice;
                 playerNickName = LoginInfoManager.instance.nickName;
+
             }
           
         }

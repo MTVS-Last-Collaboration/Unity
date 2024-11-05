@@ -16,7 +16,7 @@ public class LoginInfoManager : MonoBehaviour
     public string nickName;
     public TextMeshProUGUI dataPath;
     public string coupleCode;
-
+    public string coupleDay;
 
     private void Awake()
     {
@@ -94,7 +94,7 @@ public class LoginInfoManager : MonoBehaviour
 
     public void ChoiceAvata(string avataName)
     {
-        if(avataName == "male")
+        if(avataName == "MALE")
         {
             avataChoice = "PlayerMale";
             //print("남자아바타 선택됨");
@@ -103,7 +103,7 @@ public class LoginInfoManager : MonoBehaviour
         else
         {
             avataChoice = "PlayerWoman";
-            //print("여자아바타 선택됨");
+            print("여자아바타 선택됨");
             dataPath.text = "여자아바타 선택됨";
         }
     }
