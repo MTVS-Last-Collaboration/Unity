@@ -22,9 +22,31 @@ public class Board : MonoBehaviour
     private List<PostData> posts = new List<PostData>();
     private bool isPopularSortActive = false;
 
+    private TopicManager topicManager;
+
+    //private DateTime date = DateTime.Now;
+
     private void Start()
     {
+        InitTopic(DateTime.Now);
         StartCoroutine(DailyWeeklyLikesCheck());
+    }
+
+    private void InitTopic(DateTime _date)
+    {
+        topicManager = GetComponent<TopicManager>();
+        print(_date.ToString("yyyy-MM-dd"));
+        topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"));
+        topicText.text = topicManager.currentContent;
+        TimeSpan difference = DateTime.Now - _date;
+        if (difference.Days > 0)
+        {
+            dayTopicText.text = $"<{difference.Days}老傈 林力>";
+        }
+        else if(difference.Days == 0)
+        {
+            dayTopicText.text = "<坷疵狼 林力>";
+        }
     }
 
     private IEnumerator DailyWeeklyLikesCheck()
