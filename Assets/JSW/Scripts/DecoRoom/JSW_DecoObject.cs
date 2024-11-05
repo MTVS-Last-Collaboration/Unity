@@ -23,7 +23,13 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
 
     public Vector3 myPos;
     public Quaternion myRot;
+    public Vector3 myScale;
+    PhotonView photonview;
 
+    private void Start()
+    {
+
+    }
     void Update()
     {
         //PlayerMoveKey();
@@ -32,6 +38,7 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
         {
             transform.position = myPos;
             transform.rotation = myRot;
+            transform.localScale = Vector3.Lerp(transform.localScale,myScale,Time.deltaTime);
         }
     }
 
@@ -145,12 +152,25 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             //print("내 위치를 보내자");
             stream.SendNext(transform.position);    //나의 위치를 하자.
             stream.SendNext(transform.rotation);    //나의 방향을 보내자
-
+            stream.SendNext(transform.localScale);
         }
         else if (stream.IsReading)
         {
             myPos = (Vector3)stream.ReceiveNext();
             myRot = (Quaternion)stream.ReceiveNext();
+            myScale = (Vector3)stream.ReceiveNext();
         }
     }
+    //void OnDestroy()
+    //{
+    //    photonview = transform.GetComponent<PhotonView>();
+
+    //    print("d2312");
+    //    if (photonview != null && photonview.IsMine)
+    //    {
+    //        print("d");
+    //        if (PhotonNetwork.CurrentRoom.Players[0] != null) photonview.TransferOwnership(PhotonNetwork.CurrentRoom.Players[0]);
+    //        // 다른 플레이어 중 하나에게 소유권을 넘김 (예시로 마스터 클라이언트에게)
+    //    }
+    //}
 }

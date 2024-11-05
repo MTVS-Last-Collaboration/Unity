@@ -37,7 +37,7 @@ public class JSW_CameraControllTest : MonoBehaviour
 
     void LateUpdate()
     {
-        if (cameraPos == "Original")    
+        if (cameraPos == "Original")
         {
             Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             if (lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player == null)
@@ -48,6 +48,20 @@ public class JSW_CameraControllTest : MonoBehaviour
             float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
             float mainCamPosY = mainCamPos_Object.transform.position.y; //x방향
             float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, new Vector3(mainCamPosX, mainCamPosY, mainCamPosZ) + cameraMoveDir.normalized * 2.5f, Time.deltaTime); //플레이어의 움직임 따라가기
+            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward, cameraMoveDir, Time.deltaTime * 0.5f); //카메라가 플레이어 방향을 계속 보게함
+        }
+        else if (cameraPos == "Funiture")    
+        {
+            Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
+            if (lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player == null)
+            {
+                return;
+            }
+            Vector3 cameraMoveDir = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform.position + mainCam_Object.transform.right * 1.6f - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
+            float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
+            float mainCamPosY = mainCamPos_Object.transform.position.y; //x방향
+            float mainCamPosZ = mainCamPos_Object.transform.position.z ; //z방향
             mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position,new Vector3(mainCamPosX, mainCamPosY, mainCamPosZ) + cameraMoveDir.normalized*2.5f, Time.deltaTime); //플레이어의 움직임 따라가기
             mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward,cameraMoveDir,Time.deltaTime * 0.5f); //카메라가 플레이어 방향을 계속 보게함
         }
@@ -90,6 +104,10 @@ public class JSW_CameraControllTest : MonoBehaviour
     public void CameraToAlbum()
     {
         cameraPos = "Album";
+    }
+    public void CameraToFuniture()
+    {
+        cameraPos = "Funiture";
     }
 
     public void ResetCamera()

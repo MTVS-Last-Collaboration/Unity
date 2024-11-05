@@ -24,6 +24,8 @@ public class JSW_ScheduleItem : MonoBehaviour
         print(text);
         scheduleText = transform.GetChild(0).GetComponent<TMP_Text>();
         scheduleText.text = text;
+        mainImage.sprite = iconSprite[Num];
+        iconNum = Num;
     }
 
     public void OnClickImage()

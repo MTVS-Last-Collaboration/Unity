@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class JSW_IconSchedule : MonoBehaviour
 {
-    public JSW_ScheduleItem scheduleItem;
-    public Image mainImage; 
+    public JSW_ScheduleManager scheduleManager;
+    public Image mainImage;
     public void OnClickIcon()
     {
         mainImage.sprite = GetComponent<Image>().sprite;
-        scheduleItem.iconNum = transform.GetSiblingIndex();
+        scheduleManager.iconNumInput = transform.GetSiblingIndex();
     }
-
 }

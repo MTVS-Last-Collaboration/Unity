@@ -21,6 +21,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = false;
     }
 
     // Update is called once per frame
@@ -143,8 +144,8 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
 
         print(levelNumber);
         // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
-        SceneManager.LoadScene(levelNumber);
-        //PhotonNetwork.LoadLevel(levelNumber);
+        //SceneManager.LoadScene(levelNumber);
+        PhotonNetwork.LoadLevel(levelNumber);
     }
     //방참가 실패 콜백
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -213,11 +214,5 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
     }
-
-
-    //public void MoveScene()
-    //{
-    //    PhotonNetwork.LoadLevel(levelNumber);
-    //}
-
+   
 }

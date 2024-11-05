@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class JSW_LobbyGameManager : MonoBehaviour
+public class JSW_LobbyGameManager : MonoBehaviourPunCallbacks
 {
     public static LobbyGameManager instance;
 
@@ -72,6 +72,25 @@ public class JSW_LobbyGameManager : MonoBehaviour
         Debug.Log("Player instantiated and cached: " + player.gameObject);
 
         // 생성후 소유권을 Owner인 플레이어게만 권한을주자. Owner가 접속을 종료하면 같이 사라짐.
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // 떠난 플레이어의 네트워크 오브젝트를 가져오기
+            PhotonView[] allPhotonViews = FindObjectsOfType<PhotonView>();
+
+            foreach (PhotonView photonView in allPhotonViews)
+            {
+                // 떠난 플레이어가 소유한 오브젝트인지 확인
+                if (photonView.Owner == otherPlayer)
+                {
+                    // 소유권을 Master Client로 이전
+                    photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+                }
+            }
+        }
     }
 
 }

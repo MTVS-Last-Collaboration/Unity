@@ -1,8 +1,10 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnMoveTrigger : MonoBehaviour
+public class OnMoveTrigger : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
     void Start()
@@ -22,7 +24,7 @@ public class OnMoveTrigger : MonoBehaviour
         {
             GetComponent<JSW_ConnectionManager>().enabled = true;
             GetComponent<JSW_ConnectionManager>().LeaveRoom();
-            //GetComponent<JSW_ConnectionManager>().OnJoinedRoom();
+
         }
     }
 }

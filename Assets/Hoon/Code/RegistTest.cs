@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using UnityEngine.Analytics;
 using System.Reflection;
 using TMPro;
-using UnityEditor.PackageManager.Requests;
+//using UnityEditor.PackageManager.Requests;
 using UnityEngine.Networking;
 using static System.Net.WebRequestMethods;
 using UnityEngine.UI;

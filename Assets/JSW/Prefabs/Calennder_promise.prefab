@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &4508536857679474984
 MonoBehaviour:
@@ -437,19 +437,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1996624113554759744}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3164557628468011087}
-        m_TargetAssemblyTypeName: JSW_ScheduleItem, Assembly-CSharp
-        m_MethodName: OnClickImage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1730276402840063008
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &2053729483539870762
 MonoBehaviour:
@@ -722,7 +710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &492107523366556716
 MonoBehaviour:
@@ -869,7 +857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &1708332284208485426
 MonoBehaviour:
@@ -1016,7 +1004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &1221052966835064659
 MonoBehaviour:
@@ -1238,7 +1226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &5803702917116250514
 MonoBehaviour:
@@ -1385,7 +1373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &7571869857090530146
 MonoBehaviour:
@@ -1532,7 +1520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &1673014958629817548
 MonoBehaviour:
@@ -1679,7 +1667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &8030773367832107216
 MonoBehaviour:
@@ -1826,7 +1814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &8804152818600844452
 MonoBehaviour:
@@ -2225,7 +2213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &7433388071720152444
 MonoBehaviour:
@@ -2379,25 +2367,25 @@ MonoBehaviour:
   mainImage: {fileID: 1996624113554759744}
   iconSprite:
   - {fileID: 21300000, guid: 484c0504e2b1bf84494bfc55acbbb159, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: d78b46534cf2c7349807f02a833ce188, type: 3}
+  - {fileID: 21300000, guid: ea6fbf6e5fc5b614a999fc4107abd6d8, type: 3}
+  - {fileID: 21300000, guid: a44a18b815f2ce04a8334f28d3b62325, type: 3}
+  - {fileID: 21300000, guid: 45d32b1661df1c647914523ee61c7d4e, type: 3}
+  - {fileID: 21300000, guid: bc91f187e14b77f4c90b4e02fa97c9d0, type: 3}
+  - {fileID: 21300000, guid: 6afb3fc71824f7d428c0af4336294ff6, type: 3}
+  - {fileID: 21300000, guid: c408fd6b6ac2bb94d8ed62f9e5fe9afd, type: 3}
+  - {fileID: 21300000, guid: d0e4bbfdec669ed40ac9290d34aec385, type: 3}
+  - {fileID: 21300000, guid: 484c0504e2b1bf84494bfc55acbbb159, type: 3}
+  - {fileID: 21300000, guid: d78b46534cf2c7349807f02a833ce188, type: 3}
+  - {fileID: 21300000, guid: ea6fbf6e5fc5b614a999fc4107abd6d8, type: 3}
+  - {fileID: 21300000, guid: a44a18b815f2ce04a8334f28d3b62325, type: 3}
+  - {fileID: 21300000, guid: 45d32b1661df1c647914523ee61c7d4e, type: 3}
+  - {fileID: 21300000, guid: bc91f187e14b77f4c90b4e02fa97c9d0, type: 3}
+  - {fileID: 21300000, guid: 6afb3fc71824f7d428c0af4336294ff6, type: 3}
+  - {fileID: 21300000, guid: c408fd6b6ac2bb94d8ed62f9e5fe9afd, type: 3}
+  - {fileID: 21300000, guid: d0e4bbfdec669ed40ac9290d34aec385, type: 3}
+  - {fileID: 21300000, guid: 484c0504e2b1bf84494bfc55acbbb159, type: 3}
+  - {fileID: 21300000, guid: d78b46534cf2c7349807f02a833ce188, type: 3}
   iconNum: 0
 --- !u!1 &6156237680690898899
 GameObject:
@@ -2488,7 +2476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &1391649370585348635
 MonoBehaviour:
@@ -2635,7 +2623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &15815081295303077
 MonoBehaviour:
@@ -2782,7 +2770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &2398425263275056134
 MonoBehaviour:
@@ -2929,7 +2917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &261057127426529957
 MonoBehaviour:
@@ -3185,7 +3173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &344633353697375600
 MonoBehaviour:
@@ -3426,7 +3414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &7282075131331344820
 MonoBehaviour:
@@ -3663,7 +3651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &6460150675163369763
 MonoBehaviour:
@@ -3885,7 +3873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361af5a9d9684147846faf91739bee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scheduleItem: {fileID: 3164557628468011087}
+  scheduleManager: {fileID: 0}
   mainImage: {fileID: 1996624113554759744}
 --- !u!114 &2361313119300514348
 MonoBehaviour:

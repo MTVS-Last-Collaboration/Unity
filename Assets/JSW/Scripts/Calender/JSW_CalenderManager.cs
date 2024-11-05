@@ -83,13 +83,30 @@ public class JSW_CalenderManager : MonoBehaviourPun
             if ((int)GetDayFirstWeek(nowYear, nowMonth) <= i && i < (int)GetDayFirstWeek(nowYear, nowMonth) + EndDay(nowYear, nowMonth)) 
             {
                 days[i].transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = (dayNum).ToString();
+                string datee = "" + nowYear + nowMonth.ToString("00") + dayNum.ToString("00");
+                if (scheduleManager.scheduleDictionary.ContainsKey(datee))
+                {
+                   for (int k =0; k < scheduleManager.scheduleDictionary[datee].Count;k++)
+                   {
+                        if (k >= 2) break;
+                        days[i].transform.GetChild(k + 2).gameObject.GetComponent<TMP_Text>().text = scheduleManager.scheduleDictionary[datee][k].Description;
+                   }
+                }
+                else
+                {
+                    days[i].transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "";
+                    days[i].transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "";
+                }
                 dayNum++;
             }
             else
             {
                 days[i].transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = "";
+                days[i].transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "";
+                days[i].transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "";
             }
         }
+
 
         TMP_Text tmp_nowToday = days[nowDay + (int)GetDayFirstWeek(nowYear,nowMonth) - 1].transform.GetChild(1).gameObject.GetComponent<TMP_Text>();
         TMP_Text tmp_elseToday = days[(int)GetDayFirstWeek(nowYear, nowMonth)].transform.GetChild(1).gameObject.GetComponent<TMP_Text>();
@@ -109,6 +126,8 @@ public class JSW_CalenderManager : MonoBehaviourPun
 
         string dayString = "" + nowYear.ToString() + nowMonth.ToString("D2") + nowDay.ToString("D2");
         scheduleManager.ResetSchedule(dayString);
+        DateTime ScheduleDate = new DateTime(nowYear, nowMonth, nowDay);
+        scheduleManager.scheduleNowDay.text = ScheduleDate.ToString("MM월 dd일 dddd");
 
         changeNowRightCalender();
     }
@@ -223,6 +242,8 @@ public class JSW_CalenderManager : MonoBehaviourPun
 
         string dayString = "" + nowYear.ToString() + nowMonth.ToString("D2") + nowDay.ToString("D2");
         scheduleManager.ResetSchedule(dayString);
+        DateTime ScheduleDate = new DateTime(nowYear, nowMonth, nowDay);
+        scheduleManager.scheduleNowDay.text = ScheduleDate.ToString("MM월 dd일 dddd");
         changeNowRightCalender();
     }
 
@@ -250,8 +271,24 @@ public class JSW_CalenderManager : MonoBehaviourPun
         
         for (int i = nowDayEnd - nowDayEnd % 7;i < nowDayEnd - nowDayEnd % 7 + 7;i++)
         {
+            if(days[i].transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text != "")
+            {
+                string datee = "" + nowYear + nowMonth.ToString("00") + (int.Parse(days[i].transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text)).ToString("00");
+                if (scheduleManager.scheduleDictionary.ContainsKey(datee))
+                {
+                    for (int l = 0; l < scheduleManager.scheduleDictionary[datee].Count; l++)
+                    {
+                        if (l >= 2) break;
+                        days2[k].transform.GetChild(l + 2).gameObject.GetComponent<TMP_Text>().text = scheduleManager.scheduleDictionary[datee][l].Description;
+                    }
+                }
+                else
+                {
+                    days2[k].transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "";
+                    days2[k].transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "";
+                }
+            }
             days2[k++].transform.GetChild(1).GetComponent<TMP_Text>().text = days[i].transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text;
         }
     }
-
 }

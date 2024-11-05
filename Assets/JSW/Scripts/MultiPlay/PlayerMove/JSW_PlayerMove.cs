@@ -1,10 +1,11 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
+public class JSW_PlayerMove : MonoBehaviourPunCallbacks, IPunObservable
 {
     public CharacterController playerController;
     public float playerMoveSpeed = 3.0f;
@@ -41,8 +42,6 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
         if (photonView.IsMine == false)
         {
             // 서버에서 받은 위치 및 회전을 부드럽게 동기화
-            transform.position = myPos;
-            transform.rotation = myRot;
             transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * 100f);
             transform.rotation = Quaternion.Lerp(transform.rotation, myRot, Time.deltaTime * 100f);
             if (animator != null)  //animator null 아닐때
@@ -261,4 +260,7 @@ public class JSW_PlayerMove : MonoBehaviourPun, IPunObservable
     {
 
     }
+
+    
+
 }

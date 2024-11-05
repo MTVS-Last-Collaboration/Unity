@@ -272,8 +272,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     //[PunRPC]
     public void PushFunitureSetting()
     {
-        print("dd");
-
         GameObject funitureOb = null;
 
         // 플레이어의 위치와 방향 설정 (정면 방향)
