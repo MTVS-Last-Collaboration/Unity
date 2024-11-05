@@ -35,10 +35,6 @@ public class PostItem : MonoBehaviour
 
     private void Start()
     {
-        // 추후 더미데이터는 백엔드에 저장 후, 여기에서 로드하자.
-        comment.CreateComment("익명의 연인1", "잎정도는 떼어줄 수 있지 않나요? 사람이 힘들어하고 있는데 그걸 그냥 계속 보고만 있나요?", 10);
-        comment.CreateComment("익명의 연인2", "싫을 것 같은데, 그 사람도 팔이 달려 있지 않나?", 2);
-
         layout = GetComponent<LayoutElement>();
         verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         InitializeButtons();

@@ -26,8 +26,6 @@ public class BoardController : MonoBehaviour
     {
         // 버튼 이벤트 연결
         writeButton.onClick.AddListener(OnWriteButtonClick);
-        sortDateButton.onClick.AddListener(OnSortByDateClick);
-        sortLikeButton.onClick.AddListener(OnSortByPopularClick);
         exitBoardButton.onClick.AddListener(OnClickExitBoard);
     }
 
@@ -57,8 +55,6 @@ public class BoardController : MonoBehaviour
     private void OnDestroy()
     {
         writeButton.onClick.RemoveListener(OnWriteButtonClick);
-        sortDateButton.onClick.RemoveListener(OnSortByDateClick);
-        sortLikeButton.onClick.RemoveListener(OnSortByPopularClick);
         exitBoardButton.onClick.RemoveListener(OnClickExitBoard);
     }
 }
