@@ -26,7 +26,7 @@ public class LoginUI : MonoBehaviour
 
     public void OpenUI(GameObject objecName)
     {
-        objecName.SetActive(false);
+        objecName.SetActive(true);
     }
 
     public void CloseUI(GameObject objecName)

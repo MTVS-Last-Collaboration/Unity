@@ -93,7 +93,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public void CreateRoom()
     {
         //string roomName = "LoobyTestHoon";
-        string roomName = createRoomName;
+        //string roomName = createRoomName;
+        string roomName =  LoginInfoManager.instance.coupleCode;
+        print("방생성 이름" + roomName);
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -123,8 +125,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         //tring roomName = "LoobyTestHoon";
-        string roomName = joinRoomName;
-
+        //string roomName = joinRoomName;
+        string roomName = LoginInfoManager.instance.coupleCode;
+        print("방참가 이름" + roomName);
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
         {

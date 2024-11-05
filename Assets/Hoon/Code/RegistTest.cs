@@ -2,10 +2,20 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 using File = System.IO.File;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine.Analytics;
+using System.Reflection;
 using TMPro;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine.Networking;
+using static System.Net.WebRequestMethods;
+using UnityEngine.UI;
+using static RegistTest;
 
 public class RegistTest : MonoBehaviour
 {
@@ -24,8 +34,8 @@ public class RegistTest : MonoBehaviour
         public string password;
         public string nickname;
         public string gender;
-        public string coupleDay;
-
+        //public string coupleDay;
+        public string anniversary;
     }
 
     public string loadUserInfo;
@@ -38,6 +48,8 @@ public class RegistTest : MonoBehaviour
     public TMP_InputField inputCoupleDay;
     TMP_Text dropgenderTextComp;
 
+    public GameObject maleImage;
+    public GameObject womanImage;
 
 
     // Start is called before the first frame update
@@ -59,11 +71,14 @@ public class RegistTest : MonoBehaviour
     {
         
     }*/
+    
+
 
     public void ResistNewUserInfoJSon() //유저정보를 요청함.
     {
         //데이터를 저장할 경로
-        string path = Application.persistentDataPath + "UserInfo.json";
+        string path = Application.persistentDataPath + "/UserInfo.json";
+        print("dataPath" + Application.persistentDataPath);
 
         // 유저 정보를 저장할 리스트 선언
         List<UserInfo> userInfoList = new List<UserInfo>();
@@ -74,7 +89,46 @@ public class RegistTest : MonoBehaviour
             //path의 모든 텍스트를 가져옴.
             loadUserInfo = System.IO.File.ReadAllText(path);
             print("JSON 파일 읽기 완료" + loadUserInfo);
-            List<UserInfo> loadDayComenList = JsonConvert.DeserializeObject<List<UserInfo>>(loadUserInfo); //List로 파싱하기
+            List<UserInfo> loadUserInfoList = JsonConvert.DeserializeObject<List<UserInfo>>(loadUserInfo); //List로 파싱하기
+
+            bool isMatchInfo = false;
+            foreach(var UserInfo in loadUserInfoList)
+            {
+                if(UserInfo.email == inputEmail.text) //이메일이 있으면
+                {
+                    inputEmail.text = "이메일이 중복됩니다.";
+                    isMatchInfo = true;
+                    break;
+                }
+                
+            }
+
+            if (!isMatchInfo) //일치하는 정보가 없으면
+            {
+                //저장하자.
+
+                //값을 초기화 하지 않으면 null발생함.
+                UserInfo newUserInfo = new UserInfo
+                {
+                    email = inputEmail.text,
+                    username = inputUsername.text,  // 수정된 변수명
+                    password = inputPassword.text,
+                    nickname = inputNickname.text,
+                    gender = dropgenderTextComp.text,
+                    anniversary = inputCoupleDay.text
+
+                };
+                loadUserInfoList.Add(newUserInfo);
+
+                //string jsonString = JsonConvert.SerializeObject(loadUserInfoList, Formatting.Indented); //리스트를 문자열로 파싱
+                string jsonString = JsonConvert.SerializeObject(newUserInfo, Formatting.Indented);
+
+                //File.WriteAllText(path, jsonString); //로컬저장
+                print("저장된 문자열" + jsonString);
+
+                StartCoroutine(PostNewUserInfoJSon(jsonString));
+
+            }
 
         }
         else //파일없으면
@@ -93,7 +147,7 @@ public class RegistTest : MonoBehaviour
                     password = inputPassword.text,
                     nickname = inputNickname.text,
                     gender = dropgenderTextComp.text,
-                    coupleDay = inputCoupleDay.text
+                    anniversary = inputCoupleDay.text
                      
 
                 };
@@ -108,14 +162,24 @@ public class RegistTest : MonoBehaviour
            
         }
 
+        //StartCoroutine(PostNewUserInfoJSon(jsonString);
 
 
-        //StartCoroutine(PostNewUserInfoJSon(""));
+    }
+
+    private class ServerError
+    {
+        public string timestamp;
+        public int status;
+        public string errorType;
+        public string message;
+        public string code;
     }
 
     IEnumerator PostNewUserInfoJSon(string jsonString)
     {
         string url = "http://125.132.216.190:12223/api/auth/signup"; // 서버 URL 변경 필요
+
 
         UnityWebRequest request = new UnityWebRequest(url, "POST");  // HTTP POST 요청 준비
 
@@ -126,14 +190,43 @@ public class RegistTest : MonoBehaviour
         request.SetRequestHeader("Content-Type", "application/json");
 
         // 여기에 토큰 추가
-        string token = "your_token_here"; // 실제 토큰 값을 여기에 설정합니다.
-        request.SetRequestHeader("Authorization", "Bearer " + token);
+        //string token = "your_token_here"; // 실제 토큰 값을 여기에 설정합니다.
+        //request.SetRequestHeader("Authorization", "Bearer " + token);
 
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + request.error);
+            //에러500
+
+            // 서버의 응답 내용이 있는 경우, 상세 내용을 로그에 출력
+            if (!string.IsNullOrEmpty(request.downloadHandler.text))
+            {
+                Debug.LogError("Server Response: " + request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError("No response from server.");
+            }
+          /*  try
+            {
+                // JSON 응답 파싱
+                ServerError serverError = JsonUtility.FromJson<ServerError>(request.downloadHandler.text);
+
+                // 파싱한 서버 응답 출력
+                Debug.LogError($"Timestamp: {serverError.timestamp}");
+                Debug.LogError($"Status Code: {serverError.status}");
+                Debug.LogError($"Error Type: {serverError.errorType}");
+                Debug.LogError($"Message: {serverError.message}");
+                Debug.LogError($"Error Code: {serverError.code}");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Failed to parse server error response: " + e.Message);
+            }*/
+
+
         }
         else
         {
@@ -455,5 +548,25 @@ public class RegistTest : MonoBehaviour
     
     }
 
+    public void ViewGenderAvataImage()
+    {
+        //만약 드롭다운 값이 male이면 남자 이지미를 woman이면 여자 이미지를 보이게 해주기
+        if(dropgenderTextComp.text== "MALE")
+        {
+            //남자이미지를 보여주자.
+            maleImage.SetActive(true);
+            womanImage.SetActive(false);
+
+        }
+        else if(dropgenderTextComp.text == "FEMALE")
+        {
+            //여자이미지를 보여주자.
+            womanImage.SetActive(true);
+            maleImage.SetActive(false);
+        }
+    }
 
 }
+
+
+

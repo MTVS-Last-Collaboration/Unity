@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 //TMP_InputField 사용에 필요 
 using TMPro;
-
 using UnityEngine;
-using UnityEngine.UI;
+using Newtonsoft.Json;
+using UnityEngine.Networking;
+using File = System.IO.File;
 using System;
 using System.IO;
-using Newtonsoft.Json;
+using UnityEngine.UI;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
-using static RegistTest;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting.Antlr3.Runtime;
+using static RegistTest;
+using static LoginTest;
+using static System.Net.WebRequestMethods;
+
 
 public class LoginTest : MonoBehaviour
 {
@@ -25,10 +30,8 @@ public class LoginTest : MonoBehaviour
 
     public GameObject input_Id_Object;
     public GameObject input_Pass_Object;
-
     public GameObject placeHold_Id_Object;
     public GameObject placeHold_Psss_Object;
-
 
     //tmp inputfield
     public TMP_InputField input_Id;
@@ -39,7 +42,23 @@ public class LoginTest : MonoBehaviour
     public string idText;
     public string passText;
     public string loadUserInfo;
+    public string myToken;
+    public string myCoupleCode;
+    public string myCoupleCodeJson;
+    public TMP_InputField input_CoupleCode;
+    public GameObject loginImage;
+    public GameObject registImage;
 
+    public class UserInfo
+    {
+        public string email;
+        public string password;
+       
+    }
+    public class CoupleCode
+    {
+        public string coupleCode;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +75,217 @@ public class LoginTest : MonoBehaviour
     {
         
     }*/
+    public void LoginUserInfo()
+    {
+
+    }
+
+    public void CreateCoupleCode()
+    {
+         CoupleCode cpcd = new CoupleCode();
+         {
+             cpcd.coupleCode = input_CoupleCode.text;
+             //cpcd.coupleCode = "AAAAAA";
+
+         }
+
+        string jsonString = JsonConvert.SerializeObject(cpcd);
+        //string jsonString = myCoupleCodeJson;
+        //string jsonString = input_CoupleCode.text;
+        print("커플코드" + jsonString);
+        print("내토큰보기" + myToken);
+
+       
+
+        StartCoroutine(PostCreateCoupleCode(jsonString));
+        //print("내가보낸 커플코드 " + jsonString);
+
+    }
+
+    IEnumerator PostCreateCoupleCode(string jsonData)
+    {
+        string url = "http://125.132.216.190:12223/api/couple/join"; //couplecode join
+
+        UnityWebRequest request = new UnityWebRequest(url, "POST");  // HTTP POST 요청 준비
+
+        // JSON 데이터를 담아 요청 생성
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + myToken); //Bearer에 공백 있어야함. 서버로 토큰 발사
+
+        // 여기에 토큰 추가
+        //string token = "your_token_here"; // 실제 토큰 값을 여기에 설정합니다.
+
+        yield return request.SendWebRequest();
+
+        // 응답 코드 확인
+        long responseCode = request.responseCode;
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+            Debug.LogError("HTTP Status Code: " + responseCode);
+
+            // 추가 응답 메시지
+            Debug.LogError("서버 응답 내용: " + request.downloadHandler.text);
+        }
+        else
+        {
+            string responseText = request.downloadHandler.text;
+            Debug.Log("서버 응답: " + responseText);
+
+            // 서버 응답과 newUser 정보가 같은지 확인
+            if (responseText.Contains(input_Id.text))
+            {
+                Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
+            }
+            else
+            {
+                Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
+            }
+        }
+    }
+
+    public void CheckLoginUserInfo()
+    {
+        UserInfo userInfo = new UserInfo();
+        {
+            userInfo.email = input_Id.text;
+            userInfo.password = input_Pass.text;
+        }
+
+        string jsonString = JsonConvert.SerializeObject(userInfo); //구조를 파싱
+        print("id,text" + jsonString);
+
+        StartCoroutine(PostCheckUserInfo(jsonString));
+
+    }
+
+    IEnumerator PostCheckUserInfo(string jsonData)
+    {
+        string url = "http://125.132.216.190:12223/api/auth/login"; // 서버 URL 변경 필요
+
+        UnityWebRequest request = new UnityWebRequest(url, "POST");  // HTTP POST 요청 준비
+
+        // JSON 데이터를 담아 요청 생성
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        // 여기에 토큰 추가
+        //string token = "authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxQGV4YW1wbGUuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6MSwibmlja25hbWUiOiLrgqjsnpAiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMDQ0MTI3NCwiZXhwIjoxNzMwNDQ0ODc0fQ.gKuTSUGDDWVHRHQMvzv8rzZTu6JqeSnGZauaTY9B3ZE "; // 실제 토큰 값을 여기에 설정합니다.
+        //request.SetRequestHeader("Authorization", "Bearer " + token);
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+            //에러500
+        }
+        else //연결이 잘되면.
+        {
+            string responseText = request.downloadHandler.text;
+            //print("서버 응답: " + responseText);
+            myCoupleCodeJson = responseText;
+            print("커플코드json" + myCoupleCodeJson);
+            CoupleCode  cc = JsonConvert.DeserializeObject<CoupleCode>(responseText); //json을 문자열로 파싱하기.
+            myCoupleCode = cc.coupleCode; //정보 넣기
+            print("커플코드 " + myCoupleCode); //커플코드출력
+            LoginInfoManager.instance.coupleCode = myCoupleCode;
+            print("로그인인포 매니저 커플코드 " + LoginInfoManager.instance.coupleCode);
+
+            string authHeader = request.GetResponseHeader("authorization");
+            string accessToken = authHeader.Substring("Bearer ".Length).Trim();
+            Debug.Log("Access Token: " + accessToken);
+            myToken = accessToken; //토큰저장변수
+            print("내토큰보기" + myToken);
+            PlayerPrefs.SetString("token", myToken); //플레이어 프리펩에 토큰저장
+
+            //UI 닫기
+            registImage.SetActive(false);
+            loginImage.SetActive(false);
+          
+            //Access Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
+
+            // 서버 응답과 newUser가 같은지 확인
+            if (responseText == input_Id.text)
+            {
+                Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
+            }
+            else
+            {
+                Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
+            }
+
+        }
+    
+    }
+    
+    public void CheckUserInfo()
+    {   
+        /*List<UserInfo> userInfoList = new List<UserInfo>(); //정보를 담을 리스트
+
+        UserInfo userInfo = new UserInfo();
+        {
+            userInfo.email = input_Id.text;
+            userInfo.password = input_Pass.text;
+        }
+        userInfoList .Add(userInfo);
+
+
+        //string jsonString = JsonConvert.SerializeObject(userInfoList); //리스트로 파싱 담기
+         string jsonString = JsonConvert.SerializeObject(userInfo); //구조를 파싱
+        print("id,text" + jsonString);*/
+
+        StartCoroutine(GetUserInfo());
+
+    }
+
+    IEnumerator GetUserInfo()
+    {
+        string urlMyInfo = "http://125.132.216.190:12223/api/auth/my-info";
+        
+        //Get 서버요청
+        UnityWebRequest request = UnityWebRequest.Get(urlMyInfo); //Get url
+        request.SetRequestHeader("Authorization", "Bearer " + myToken);
+
+        
+        // 여기에 토큰 추가
+        //string token = "your_token_here"; // 실제 토큰 값을 여기에 설정합니다.
+        //request.SetRequestHeader("Authorization", "Bearer " + token);
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+            //에러500
+        }
+        else
+        {
+            string responseText = request.downloadHandler.text;
+            print("서버 응답: " + responseText); // 내가 받은 정보
+            //
+
+
+            // 서버 응답과 newUser가 같은지 확인
+            if (responseText == input_Id.text)
+            {
+                Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
+            }
+            else
+            {
+                Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
+            }
+
+        }
+
+    }
+
     public void LocalRegistJson()
     {
         print("회원가입 버튼 클릭");
@@ -134,7 +364,6 @@ public class LoginTest : MonoBehaviour
             print("JSON 파일 생성됨");
         }
     }
-
 
     public void LocalLoginJson()
     {
