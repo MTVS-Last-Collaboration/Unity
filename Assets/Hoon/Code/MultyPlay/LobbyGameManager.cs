@@ -47,7 +47,16 @@ public class LobbyGameManager : MonoBehaviourPun
             }
             else
             {
-                playerAvataType = LoginInfoManager.instance.avataChoice;
+                if(LoginInfoManager.instance.avataChoice == "MALE")
+                {
+                    playerAvataType = "PlayerMale";
+                }
+                else
+                {
+                    playerAvataType = "PlayerWoman";
+                }
+                
+                Debug.Log("아바타타입" + playerAvataType);
                 playerNickName = LoginInfoManager.instance.nickName;
 
             }
