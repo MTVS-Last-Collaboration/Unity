@@ -40,6 +40,11 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
     public Color color;
     public string nickName;
 
+    public void SubmitChat()
+    {
+        OnSubmit(inputChat.text);
+    }
+
     void OnSubmit(string s)
     {
         inputChat.text = "";
