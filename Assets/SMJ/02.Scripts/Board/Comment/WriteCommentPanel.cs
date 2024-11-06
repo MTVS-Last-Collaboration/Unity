@@ -12,7 +12,7 @@ public class WriteCommentPanel : MonoBehaviour
 
     [SerializeField] private CommentBoard commentBoard;                  // 게시판 참조
 
-    public void OnSubmit()
+    /*public void OnSubmit()
     {
         Debug.Log($"닉네임: {LoginInfoManager.instance.nickName}, 내용: {contentInput.text}");
         // 입력값 검증
@@ -26,5 +26,11 @@ public class WriteCommentPanel : MonoBehaviour
 
         // 게시판에 글 추가
         commentBoard.CreateComment(nickName, contentInput.text, 0);
+    }*/
+
+    public void OnSubmitComment()
+    {
+        commentBoard.CreateComment(contentInput.text);
+        // 입력 필드 초기화 등 필요한 처리
     }
 }

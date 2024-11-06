@@ -2,20 +2,10 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using File = System.IO.File;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
-using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine.Analytics;
-using System.Reflection;
 using TMPro;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine.Networking;
-using static System.Net.WebRequestMethods;
-using UnityEngine.UI;
-using static RegistTest;
 
 public class RegistTest : MonoBehaviour
 {

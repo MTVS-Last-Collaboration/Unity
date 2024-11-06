@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 using System;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -71,24 +72,83 @@ public class NetworkManager : MonoBehaviour
             }
         }
     }
-
-    public IEnumerator Get<T>(string endpoint, Action<bool, T> callback = null)
+    [Serializable]
+    private class ArrayWrapper<T>
     {
-        string url = $"{baseUrl}{endpoint}";
+        public List<T> Items;
+    }
+
+    public IEnumerator GetArray<T>(string endpoint, Action<bool, List<T>> callback = null)
+    {
+        string url = $"{baseUrl}/{endpoint}";
+        Debug.Log($"Making GET request to: {url}");
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             AddHeaders(request);
+            Debug.Log("Request headers added");
+
             yield return request.SendWebRequest();
+            Debug.Log($"Request completed with result: {request.result}");
+            Debug.Log($"Response code: {request.responseCode}");
+            Debug.Log($"Response text: {request.downloadHandler.text}");
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                T result = JsonUtility.FromJson<T>(request.downloadHandler.text);
-                callback?.Invoke(true, result);
+                try
+                {
+                    string jsonArray = request.downloadHandler.text;
+                    string wrappedJson = $"{{\"Items\":{jsonArray}}}";
+
+                    ArrayWrapper<T> wrapper = JsonUtility.FromJson<ArrayWrapper<T>>(wrappedJson);
+                    Debug.Log($"JSON parsed successfully: {wrapper.Items.Count} items");
+                    callback?.Invoke(true, wrapper.Items);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"JSON parsing failed: {e.Message}");
+                    callback?.Invoke(false, null);
+                }
             }
             else
             {
-                Debug.LogError($"GET 요청 실패: {request.error}");
+                Debug.LogError($"Request failed: {request.error}");
+                callback?.Invoke(false, null);
+            }
+        }
+    }
+    public IEnumerator Get<T>(string endpoint, Action<bool, T> callback = null)
+    {
+        string url = $"{baseUrl}/{endpoint}";
+        Debug.Log($"Making GET request to: {url}");
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            AddHeaders(request);
+            Debug.Log("Request headers added");
+
+            yield return request.SendWebRequest();
+            Debug.Log($"Request completed with result: {request.result}");
+            Debug.Log($"Response code: {request.responseCode}");
+            Debug.Log($"Response text: {request.downloadHandler.text}");
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                try
+                {
+                    T result = JsonUtility.FromJson<T>(request.downloadHandler.text);
+                    Debug.Log($"JSON parsed successfully: {JsonUtility.ToJson(result)}");
+                    callback?.Invoke(true, result);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"JSON parsing failed: {e.Message}");
+                    callback?.Invoke(false, default(T));
+                }
+            }
+            else
+            {
+                Debug.LogError($"Request failed: {request.error}");
                 callback?.Invoke(false, default(T));
             }
         }
