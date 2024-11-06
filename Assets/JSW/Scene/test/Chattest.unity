@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 197885410}
   - component: {fileID: 197885411}
   m_Layer: 0
-  m_Name: ChatTestManager
+  m_Name: CalenderTestManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,8 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7b876471a03774eb79b00fcb79df88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatUrl: http://125.132.216.190:12223/api/chat/send
-  message: "\uBCD1\uC9C4\uB2D8 \uD558\uC774!"
 --- !u!1 &203844586
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,7 +940,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 197885411}
         m_TargetAssemblyTypeName: ChatTestHttp, Assembly-CSharp
-        m_MethodName: SendMessageToChat
+        m_MethodName: OnClickCalenderButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

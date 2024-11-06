@@ -1,44 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using WebSocketSharp;
+using Newtonsoft.Json.Linq;
 
 
 public class ChatTestHttp : MonoBehaviour
 {
-    public string chatUrl = "http://localhost:8080/api/chat/send";
-
-    public string message = "병진님 데이트코스 추천해줘";  // 사용자로부터 입력받은 메시지
-
-    public void SendMessageToChat()
+    [System.Serializable]
+    public class EventData
     {
-        StartCoroutine(SendChatCoroutine());
+        public int coupleId;
+        public string eventName;
+        public int iconNumber;
+        public string eventDate;
+        public string description;
     }
 
-    IEnumerator SendChatCoroutine()
+    void Start()
     {
-        // 메시지 정보 JSON 포맷으로 변환
-        string jsonData = "{\"messages\": \"" + message + "\"}";
+        print("dd4");
+        EventData eventData = new EventData
+        {
+            coupleId = 1,
+            eventName = "기념일",
+            iconNumber = 1,
+            eventDate = "2024-12-25",
+            description = "첫 기념일"
+        };
+        StartCoroutine(PostEvent("https://125.132.216.190:12223/api/calendar/event", eventData));
+    }
 
-        // HTTP 요청 생성
-        UnityWebRequest request = new UnityWebRequest(chatUrl, "POST");
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+    public void OnClickCalenderButton()
+    {
+        print("dd3");
+        EventData eventData = new EventData
+        {
+            coupleId = 1,
+            eventName = "기념일",
+            iconNumber = 1,
+            eventDate = "2024-12-25",
+            description = "첫 기념일"
+        };
+
+        StartCoroutine(PostEvent("https://125.132.216.190:12223/api/calendar/event", eventData));
+    }
+
+    IEnumerator PostEvent(string url, EventData eventData)
+    {
+        string json = JsonUtility.ToJson(eventData);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("accept", "application/json");
+        request.SetRequestHeader("Authorization", "application/json");
 
         yield return request.SendWebRequest();
 
-        // 요청 결과 처리
-        if (request.result == UnityWebRequest.Result.Success)
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("Message sent successfully: " + request.downloadHandler.text);
+            Debug.LogError("Error: " + request.error);
         }
         else
         {
-            Debug.LogError("Message sending failed: " + request.error);
+            Debug.Log("Response: " + request.downloadHandler.text);
         }
     }
 }

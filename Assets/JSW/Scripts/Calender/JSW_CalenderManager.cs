@@ -288,6 +288,11 @@ public class JSW_CalenderManager : MonoBehaviourPun
                     days2[k].transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "";
                 }
             }
+            else
+            {
+                days2[k].transform.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "";
+                days2[k].transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "";
+            }
             days2[k++].transform.GetChild(1).GetComponent<TMP_Text>().text = days[i].transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text;
         }
     }
