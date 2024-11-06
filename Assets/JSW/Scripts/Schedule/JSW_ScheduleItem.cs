@@ -21,7 +21,6 @@ public class JSW_ScheduleItem : MonoBehaviour
 
     public void SetText(string text, int Num)
     {
-        print(text);
         scheduleText = transform.GetChild(0).GetComponent<TMP_Text>();
         scheduleText.text = text;
         mainImage.sprite = iconSprite[Num];

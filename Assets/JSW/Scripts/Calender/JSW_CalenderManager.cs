@@ -52,7 +52,6 @@ public class JSW_CalenderManager : MonoBehaviourPun
         month.GetComponent<TMP_Text>().text = System.DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
         InitCalender();
 
-        print((int)GetDayFirstWeek(nowYear, nowMonth));
     }
 
 
@@ -67,7 +66,6 @@ public class JSW_CalenderManager : MonoBehaviourPun
     public void InitCalender()
     {
         int dayNum = 1;
-
         // Ä¶¸°´õ ¸¶Áö¸· ÁÙ ÄÑÁÙ²«Áö ²ø²«Áö
         if ((int)GetDayFirstWeek(nowYear, nowMonth) + EndDay(nowYear, nowMonth) > 35)
         {

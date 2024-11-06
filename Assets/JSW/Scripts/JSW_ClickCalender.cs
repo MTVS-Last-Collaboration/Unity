@@ -6,6 +6,7 @@ public class JSW_ClickCalender : MonoBehaviour
 {
     public GameObject uiManager;
     public JSW_CameraControllTest cameraControllTest;
+    public JSW_CalenderManager calenderManger;
     private bool isPlayerInRange = false;
 
     private void Start()
@@ -27,6 +28,7 @@ public class JSW_ClickCalender : MonoBehaviour
     {
         yield return new WaitForSeconds(0.8f);
         uiManager.GetComponent<JSW_UIManager>().OnClickCalender();
+        calenderManger.InitCalender();
     }
 
     private void OnTriggerEnter(Collider other)
