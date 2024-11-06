@@ -17,6 +17,7 @@ public class LoginInfoManager : MonoBehaviour
     public TextMeshProUGUI dataPath;
     public string coupleCode;
     public string coupleDay;
+    public string myToken;
 
     private void Awake()
     {

@@ -215,6 +215,9 @@ public class LoginTest : MonoBehaviour
             myToken = accessToken; //토큰저장변수
             print("내토큰보기" + myToken);
             PlayerPrefs.SetString("token", myToken); //플레이어 프리펩에 토큰저장
+            LoginInfoManager.instance.myToken = myToken; ; //로그인인포에 토큰저장
+            print("플레이어 프리팹 내토큰" + PlayerPrefs.GetString("token"));
+
 
             //UI 닫기
             registImage.SetActive(false);
