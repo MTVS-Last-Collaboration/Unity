@@ -60,6 +60,15 @@ public class LoginTest : MonoBehaviour
         public string coupleCode;
     }
 
+    public class MyInfoResponse
+    {
+        public string nickname;
+        public string gender;
+        //public string anniversaryDate;
+        public List<int> anniversaryDate; // JSON 배열을 List<int>로 받기
+        public string coupleCode;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -127,14 +136,15 @@ public class LoginTest : MonoBehaviour
         {
             Debug.LogError("Error: " + request.error);
             Debug.LogError("HTTP Status Code: " + responseCode);
-
             // 추가 응답 메시지
             Debug.LogError("서버 응답 내용: " + request.downloadHandler.text);
+            
         }
-        else
+        else //응답성공
         {
             string responseText = request.downloadHandler.text;
             Debug.Log("서버 응답: " + responseText);
+           
 
             // 서버 응답과 newUser 정보가 같은지 확인
             if (responseText.Contains(input_Id.text))
@@ -145,6 +155,7 @@ public class LoginTest : MonoBehaviour
             {
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
             }
+
         }
     }
 
@@ -209,7 +220,7 @@ public class LoginTest : MonoBehaviour
             registImage.SetActive(false);
             loginImage.SetActive(false);
           
-            //Access Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
+            //Access Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjvE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
 
             // 서버 응답과 newUser가 같은지 확인
             if (responseText == input_Id.text)
@@ -220,6 +231,8 @@ public class LoginTest : MonoBehaviour
             {
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
             }
+
+            CheckUserInfo(); //내정보가져오기
 
         }
     
@@ -269,7 +282,35 @@ public class LoginTest : MonoBehaviour
         {
             string responseText = request.downloadHandler.text;
             print("서버 응답: " + responseText); // 내가 받은 정보
-            //
+
+            //responseText 응답결과
+            /*{
+                "nickname":"한국대장",
+                "gender":"MALE",
+                "anniversaryDate":[2024, 11, 4],
+                "coupleCode":"1X4J9"
+            }*/
+
+            //받은 정보를 json으로 파싱하고 List에 저장하고, 리스트의 각 항복에 대한 keyvalue값을 저장하자.
+            MyInfoResponse myInfo = JsonUtility.FromJson<MyInfoResponse>(responseText);
+            LoginInfoManager.instance.nickName = myInfo.nickname;
+            print("내닉네임" + LoginInfoManager.instance.nickName);
+            LoginInfoManager.instance.avataChoice = myInfo.gender;
+            print("내아바타" + LoginInfoManager.instance.avataChoice);
+            DateTime anniversary = new DateTime(myInfo.anniversaryDate[0], myInfo.anniversaryDate[1], myInfo.anniversaryDate[2]);
+            print("날짜0번" + myInfo.anniversaryDate[0] + "날짜1번"+ myInfo.anniversaryDate[1] + "날짜2번" + myInfo.anniversaryDate[2]);
+            LoginInfoManager.instance.coupleDay = anniversary.ToString("yyyy-MM-dd");
+            print("내기념일 " + LoginInfoManager.instance.coupleDay);
+            LoginInfoManager.instance.coupleCode = myInfo.coupleCode;
+            print("내커플코드" + LoginInfoManager.instance.coupleCode);
+
+
+            //print("날짜 파싱 " + anniversary);
+            /*  LoginInfoManager.instance.coupleDay = anniversary.ToString("yyyy-MM-dd");
+              print("내기념일" + LoginInfoManager.instance.coupleDay);
+              LoginInfoManager.instance.coupleCode = myInfo.coupleCode;
+              print("내커플코드" + LoginInfoManager.instance.coupleCode);*/
+
 
 
             // 서버 응답과 newUser가 같은지 확인
