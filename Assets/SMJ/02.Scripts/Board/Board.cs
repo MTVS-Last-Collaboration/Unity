@@ -12,6 +12,8 @@ public class Board : MonoBehaviour
     [SerializeField] private WritePanel writePanel;
     [SerializeField] private RectTransform postListContent;
     [SerializeField] private Canvas boardCanvas;
+    [SerializeField] private TMP_Text dayTopicText;
+    [SerializeField] private TMP_Text topicText;
 
     [Header("Sort Buttons")]
     [SerializeField] private Button sortByPopularButton;
@@ -20,11 +22,31 @@ public class Board : MonoBehaviour
     private List<PostData> posts = new List<PostData>();
     private bool isPopularSortActive = false;
 
+    private TopicManager topicManager;
+
+    //private DateTime date = DateTime.Now;
+
     private void Start()
     {
-        // 추후 더미데이터는 백엔드에 저장 후, 여기에서 로드하자.
-        CreatePost("", "<이번주의 썸톡 이슈>", "TOPIC : 식사 자리에서 연인의 친구가 깻잎을 못 떼고 있다면, 내 연인이 깻잎을 대신 떼어주는 게 괜찮을까?", 10);
+        InitTopic(DateTime.Now);
         StartCoroutine(DailyWeeklyLikesCheck());
+    }
+
+    private void InitTopic(DateTime _date)
+    {
+        topicManager = GetComponent<TopicManager>();
+        print(_date.ToString("yyyy-MM-dd"));
+        topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"));
+        topicText.text = topicManager.currentContent;
+        TimeSpan difference = DateTime.Now - _date;
+        if (difference.Days > 0)
+        {
+            dayTopicText.text = $"<{difference.Days}일전 주제>";
+        }
+        else if(difference.Days == 0)
+        {
+            dayTopicText.text = "<오늘의 주제>";
+        }
     }
 
     private IEnumerator DailyWeeklyLikesCheck()

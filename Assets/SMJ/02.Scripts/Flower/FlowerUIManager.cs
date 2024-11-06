@@ -389,9 +389,9 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     public void ShowFlowerInfo(Flower targetFlower, int idx)
     {
-        if (click.isFirstClick == true)
+        if (click.isFirstClick == true && idx == 0)
         {
-            Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
+            Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("Player_CheckFlower"));
             hoonUI.SetActive(false);
             uiPopup.PlayPopupAnimation(uiPanel.GetComponent<RectTransform>());
         }
@@ -441,11 +441,11 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void HideFlowerInfo()
     {
-        Camera.main.cullingMask |= ~(1 << LayerMask.NameToLayer("Player"));
+        Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("Player_CheckFlower"));
         hoonUI.SetActive(true);
         uiPopup.Hide(uiPanel.GetComponent<RectTransform>());
-        uiPanel.SetActive(false);
-        recordPanel.SetActive(false);
+        //uiPanel.SetActive(false);
+        //uiPopup.Hide(recordPanel.GetComponent<RectTransform>());
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].SetActive(false);
@@ -454,6 +454,7 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             recordButtons[i].SetActive(false);
         }
+        recordPanel.SetActive(false);
     }
 
     public void SwapButtonUI(int onIdx)

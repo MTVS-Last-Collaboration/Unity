@@ -15,6 +15,8 @@ public class LoginInfoManager : MonoBehaviour
     public TMP_InputField inputField_NickName;
     public string nickName;
     public TextMeshProUGUI dataPath;
+    public string coupleCode;
+
 
     private void Awake()
     {

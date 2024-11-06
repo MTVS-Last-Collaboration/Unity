@@ -7,9 +7,13 @@ public class ClickBoard : MonoBehaviour
     [SerializeField] private GameObject boardUIObject;
     [SerializeField] private GameObject playerUIObject;
 
+    private UIPopupAnimation uiPopup;
+
     private void Start()
     {
         playerUIObject = GameObject.Find("HoonLoobyCanvas");
+        uiPopup = GetComponent<UIPopupAnimation>();
+        uiPopup.SetTarget(boardUIObject.GetComponent<RectTransform>());
         boardUIObject.SetActive(false);
     }
 
@@ -17,11 +21,12 @@ public class ClickBoard : MonoBehaviour
     {
         playerUIObject.SetActive(false);
         boardUIObject.SetActive(true);
+        uiPopup.PlayPopupAnimation(boardUIObject.GetComponent<RectTransform>());
     }
 
     public void ExitBoard()
     {
         playerUIObject.SetActive(true);
-        boardUIObject.SetActive(false);
+        uiPopup.Hide(boardUIObject.GetComponent<RectTransform>());
     }
 }
