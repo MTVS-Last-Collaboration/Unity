@@ -30,7 +30,7 @@ public class WriteCommentPanel : MonoBehaviour
 
     public void OnSubmitComment()
     {
-        commentBoard.CreateComment(contentInput.text);
+        //commentBoard.CreateComment(contentInput.text);
         // 입력 필드 초기화 등 필요한 처리
     }
 }
