@@ -584,9 +584,9 @@ public class RegistTest : MonoBehaviour
 
             imgFemaleButton.sprite = registSprite[0]; //아웃라이너로
             imgFemaleButton.color = Color.black;
-            maleImage.SetActive(true);
-            womanImage.SetActive(false);
             dropgenderTextComp.text = "MALE";
+            //maleImage.SetActive(true);
+            //womanImage.SetActive(false);
         }
         else
         {
@@ -596,9 +596,9 @@ public class RegistTest : MonoBehaviour
 
             imgFemaleButton.sprite = registSprite[1]; //아웃라이너로
             imgFemaleButton.color = Color.white;
-            womanImage.SetActive(true);
-            maleImage.SetActive(false);
             dropgenderTextComp.text = "FEMALE";
+            //womanImage.SetActive(true);
+            //maleImage.SetActive(false);
         }
 
     }

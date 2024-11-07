@@ -6,6 +6,7 @@ using TMPro;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine.UI;
 public class HoonCalendar : MonoBehaviour
 {
     public TextMeshProUGUI textDate;
@@ -175,7 +176,7 @@ public class HoonCalendar : MonoBehaviour
     {
         //누르버튼의 텍스트를 숫자로 변환하자.
         textDay.text = transform.GetComponentInChildren<TextMeshProUGUI>().text;
-
+        
     }
 
 
