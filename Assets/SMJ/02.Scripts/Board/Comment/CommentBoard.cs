@@ -60,6 +60,25 @@ public class CommentBoard : MonoBehaviour
         //}
     }
 
+    public void AddComment(string text)
+    {
+        var comment = new CommentData(
+            answerId,
+            LoginInfoManager.instance.nickName,
+            text,
+            0
+        );
+        //ÃßÈÄ¿¡ Post
+        comments.Add(comment);
+        var commentObject = Instantiate(commentPrefab, commentListContent);
+        var commentItem = commentObject.GetComponent<CommentItem>();
+        if (commentItem != null)
+        {
+            commentItem.Initialize(comment);
+        }
+        //RefreshCommentList();
+    }
+
     private void RefreshCommentList()
     {
         if (commentListContent == null)
