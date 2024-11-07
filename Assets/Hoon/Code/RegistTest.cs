@@ -3,9 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using File = System.IO.File;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine.Networking;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
+using System.IO;
+using Unity.VisualScripting;
+using Newtonsoft.Json.Linq;
+using UnityEngine.Analytics;
+using System.Reflection;
+//using UnityEditor.PackageManager.Requests;
+//using static System.Net.WebRequestMethods;
+//using static RegistTest;
 
 public class RegistTest : MonoBehaviour
 {
@@ -36,11 +48,17 @@ public class RegistTest : MonoBehaviour
     public TMP_InputField inputNickname;
     public TMP_Dropdown dropgender;
     public TMP_InputField inputCoupleDay;
+    public TextMeshProUGUI textGenderButton;
+    public Image imgMaleButton;
+    public Image imgFemaleButton;
+    public TextMeshProUGUI textMaleButton;
+    public TextMeshProUGUI textFemaleButton;
+    
     TMP_Text dropgenderTextComp;
-
+    
     public GameObject maleImage;
     public GameObject womanImage;
-
+    public Sprite[] registSprite;
 
     // Start is called before the first frame update
     void Start()
@@ -556,7 +574,36 @@ public class RegistTest : MonoBehaviour
         }
     }
 
-}
+    public void ChoiceAvatatype(string objName)
+    {
+        if(objName == "Btn_Male") //오브젝트 이름
+        {
+            //버튼 눌렀을때 이미지컴포넌트의 스프라이트를 다른 스프라이트로 변경
+            imgMaleButton.sprite = registSprite[1]; //젠더초이스로
+            imgMaleButton.color = Color.white;
+
+            imgFemaleButton.sprite = registSprite[0]; //아웃라이너로
+            imgFemaleButton.color = Color.black;
+            maleImage.SetActive(true);
+            womanImage.SetActive(false);
+            dropgenderTextComp.text = "MALE";
+        }
+        else
+        {
+            //버튼 눌렀을때 이미지컴포넌트의 스프라이트를 다른 스프라이트로 변경
+            imgMaleButton.sprite = registSprite[0]; //젠더초이스로
+            imgMaleButton.color = Color.black;
+
+            imgFemaleButton.sprite = registSprite[1]; //아웃라이너로
+            imgFemaleButton.color = Color.white;
+            womanImage.SetActive(true);
+            maleImage.SetActive(false);
+            dropgenderTextComp.text = "FEMALE";
+        }
+
+    }
+
+}//클래스 끝
 
 
 
