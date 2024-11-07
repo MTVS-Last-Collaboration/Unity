@@ -420,31 +420,31 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         int value = UnityEngine.Random.Range(0, 10); //랜덤뽑기
         
         //미션설정하기
-        if (day == 27)
+        if (day == 04)
         {
             todayMission = "서로의 첫인상을 알려주세요";
         }
-        else if(day == 28)
+        else if(day == 05)
         {
             todayMission = "오늘 점심에 무엇을 먹었는지 알려주세요.";
         }
-        else if (day == 29)
+        else if (day == 06)
         {
             todayMission = "가장 소중한 사람은 누구인지 알려주세요.";
         }
-        else if (day == 30)
+        else if (day == 07)
         {
             todayMission = "오늘 날씨에 대한 느낌을 알려주세요.";
         }
-        else if (day == 31)
+        else if (day == 08)
         {
             todayMission = "둘이 함께 가보고 싶은곳을 알려주세요.";
         }
-        else if (day == 01)
+        else if (day == 09)
         {
             todayMission = "짜장 vs 짬뽕 더 선호하는 음식을 알려주세요.";
         }
-        else if (day == 02)
+        else if (day == 10)
         {
             todayMission = "요즘 즐겨듣는 노래를 알려주세요";
         }

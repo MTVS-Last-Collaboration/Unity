@@ -61,10 +61,9 @@ public class UIPopupAnimation : MonoBehaviour
         ));
     }
 
-    private void OnAnimationComplete()
+    public bool OnAnimationComplete()
     {
-        // 애니메이션 완료 후 추가 작업이 필요한 경우 여기에 작성
-        Debug.Log($"Animation Complete for {targetUI.name}!");
+        return true;
     }
 
     public void Hide(RectTransform uiElement)
