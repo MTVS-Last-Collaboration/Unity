@@ -28,7 +28,9 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-        InitTopic(DateTime.Now);
+        DateTime time = new DateTime(2024, 11, 6);
+        //InitTopic(DateTime.Today); //½ÇÀü
+        InitTopic(time);
         StartCoroutine(DailyWeeklyLikesCheck());
     }
 
