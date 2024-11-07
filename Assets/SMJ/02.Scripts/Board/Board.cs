@@ -24,14 +24,21 @@ public class Board : MonoBehaviour
 
     private TopicManager topicManager;
 
-    //private DateTime date = DateTime.Now;
-
     private void Start()
     {
         DateTime time = new DateTime(2024, 11, 6);
-        //InitTopic(DateTime.Today); //실전
         InitTopic(time);
         StartCoroutine(DailyWeeklyLikesCheck());
+
+        // 정렬 버튼 이벤트 연결
+        //sortByPopularButton.onClick.AddListener(SortByPopular);
+        //sortByDateButton.onClick.AddListener(SortByDate);
+    }
+
+    private void OnDestroy()
+    {
+        //sortByPopularButton.onClick.RemoveListener(SortByPopular);
+        //sortByDateButton.onClick.RemoveListener(SortByDate);
     }
 
     private void InitTopic(DateTime _date)
@@ -40,21 +47,22 @@ public class Board : MonoBehaviour
         topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"), (success) => {
             if (success)
             {
-                topicText.text = topicManager.currentContent;  // 성공했을 때만 DelayTopic 실행
+                topicText.text = topicManager.currentContent;
+                Debug.Log("토픽 가져오기 성공 : " + topicManager.currentContent);
                 InitPosts(topicManager.currentId);
             }
             else
             {
                 Debug.Log("토픽 가져오기 실패");
-                // 실패 시 처리할 코드
             }
         });
+
         TimeSpan difference = DateTime.Now - _date;
         if (difference.Days > 0)
         {
             dayTopicText.text = $"<{difference.Days}일전 주제>";
         }
-        else if(difference.Days == 0)
+        else if (difference.Days == 0)
         {
             dayTopicText.text = "<오늘의 주제>";
         }
@@ -69,70 +77,76 @@ public class Board : MonoBehaviour
                 foreach (var answer in topicManager.CurrentAnswers)
                 {
                     CreatePost(answer);
-
                     // 답변에 해당하는 댓글들 가져오기
-                    if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
-                    {
-                        foreach (var comment in comments)
-                        {
-                            CommentBoard commentBoard = GetLastPostCommentBoard();
-                            if (commentBoard != null)
-                            {
-                                commentBoard.CreateComment(comment.authorNickname, comment.content, 0);
-                            }
-                        }
-                    }
+                    //if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
+                    //{
+                    //    var lastPost = postListContent.GetChild(postListContent.childCount - 1);
+                    //    var commentBoard = lastPost.GetComponentInChildren<CommentBoard>();
+                    //    if (commentBoard != null)
+                    //    {
+                    //        print("제발 어디냐!: " + answer.id);
+                    //        commentBoard.Initialize(answer, this);
+                    //        foreach (var comment in comments)
+                    //        {
+                    //            print("제발!" + comment.content);
+                    //            commentBoard.AddComment(comment);
+                    //        }
+                    //    }
+                    //}
                 }
             }
         });
     }
-    private CommentBoard GetLastPostCommentBoard()
-    {
-        if (postListContent.childCount > 0)
-        {
-            var lastPost = postListContent.GetChild(postListContent.childCount - 1);
-            return lastPost.GetComponentInChildren<CommentBoard>();
-        }
-        return null;
-    }
+
     public void CreatePost(string nickName, string title, string content, int likeCount)
     {
         var post = new PostData(nickName, title, content, likeCount);
         posts.Add(post);
-        RefreshPostList();
+        //RefreshPostList();
+        GameObject postObj = Instantiate(postPrefab, postListContent);
+        postObj.GetComponent<PostItem>().Initialize(post);
     }
 
     public void CreatePost(TopicAnswer answer)
     {
         CreatePost(
-        answer.authorNickname,
-        "",
-        answer.content,
-        0
-    );
+            answer.authorNickname,
+            "",
+            answer.content,
+            answer.likeCount
+        );
 
         var lastPost = postListContent.GetChild(postListContent.childCount - 1);
         var commentBoard = lastPost.GetComponentInChildren<CommentBoard>(true);
         if (commentBoard != null)
         {
-            gameObject.SetActive(true);  // 댓글 로드를 위해 임시 활성화
-            commentBoard.Initialize(answer, () => {
-                commentBoard.gameObject.SetActive(false);  // 로드 완료 후 비활성화
-            });
+            commentBoard.Initialize(answer, this);
+
+            // 이미 로드된 댓글 데이터가 있다면 사용
+            if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
+            {
+                print("쌀숭이 어디냐!: " + answer.id);
+                foreach (var comment in comments)
+                {
+                    print("쌀숭이!" + comment.content);
+                    commentBoard.AddComment(comment);
+                }
+            }
         }
     }
 
     private void RefreshPostList()
     {
-        foreach (Transform child in postListContent)
-        {
-            Destroy(child.gameObject);
-        }
-        foreach (var post in posts)
-        {
-            GameObject postObj = Instantiate(postPrefab, postListContent);
-            postObj.GetComponent<PostItem>().Initialize(post);
-        }
+        //foreach (Transform child in postListContent)
+        //{
+        //    Destroy(child.gameObject);
+        //}
+        //foreach (var post in posts)
+        //{
+        //    GameObject postObj = Instantiate(postPrefab, postListContent);
+        //    postObj.GetComponent<PostItem>().Initialize(post);
+        //}
+        
     }
 
     private IEnumerator DailyWeeklyLikesCheck()
@@ -167,13 +181,13 @@ public class Board : MonoBehaviour
         }
     }
 
-
-
     public void SortByPopular()
     {
         isPopularSortActive = true;
         posts.Sort((a, b) => b.GetWeeklyLikes().CompareTo(a.GetWeeklyLikes()));
         RefreshPostList();
+        //전부 삭제
+        //inittopic부터 다시?
     }
 
     public void SortByDate()
@@ -181,5 +195,68 @@ public class Board : MonoBehaviour
         isPopularSortActive = false;
         posts.Sort((a, b) => b.createDate.CompareTo(a.createDate));
         RefreshPostList();
+    }
+
+    // 댓글 관련 메서드들
+    public void CreateNewComment(int answerId, string content, Action onComplete = null)
+    {
+        var newComment = new ServerCommentData
+        {
+            content = content,
+            authorNickname = PlayerPrefs.GetString("nickname", "Unknown"),
+            createdDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        };
+
+        StartCoroutine(CreateCommentCoroutine(answerId, newComment, onComplete));
+    }
+
+    private IEnumerator CreateCommentCoroutine(int answerId, ServerCommentData comment, Action onComplete)
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+        bool isComplete = false;
+
+        StartCoroutine(NetworkManager.Instance.Post($"api/topic/{answerId}/comments", comment,
+            (success, response) =>
+            {
+                if (success)
+                {
+                    Debug.Log("Comment created successfully");
+                    onComplete?.Invoke();
+                }
+                else
+                {
+                    Debug.LogError($"Failed to create comment: {response}");
+                }
+                isComplete = true;
+            }));
+
+        while (!isComplete) yield return null;
+    }
+
+    public void RefreshComments(int answerId, CommentBoard commentBoard)
+    {
+        StartCoroutine(RefreshCommentsCoroutine(answerId, commentBoard));
+    }
+
+    private IEnumerator RefreshCommentsCoroutine(int answerId, CommentBoard commentBoard)
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+        bool isComplete = false;
+
+        StartCoroutine(NetworkManager.Instance.GetArray<ServerCommentData>($"api/topic/{answerId}/comments",
+            (success, result) =>
+            {
+                if (success && result != null)
+                {
+                    commentBoard.Initialize(new TopicAnswer { id = answerId }, this);
+                    foreach (var comment in result)
+                    {
+                        commentBoard.AddComment(comment);
+                    }
+                }
+                isComplete = true;
+            }));
+
+        while (!isComplete) yield return null;
     }
 }

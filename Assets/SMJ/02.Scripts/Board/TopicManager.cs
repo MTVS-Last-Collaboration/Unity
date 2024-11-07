@@ -9,6 +9,7 @@ public class TopicAnswer
     public int id;
     public string content;
     public string authorNickname;
+    public int likeCount;
     public string createdDate;
 }
 [Serializable]
@@ -102,10 +103,11 @@ public class TopicManager : MonoBehaviour
     }
 
     private List<TopicAnswer> currentAnswers = new List<TopicAnswer>();
-    public List<TopicAnswer> CurrentAnswers => currentAnswers;
+    [SerializeField] public List<TopicAnswer> CurrentAnswers => currentAnswers;
 
     private Dictionary<int, List<ServerCommentData>> answerComments = new Dictionary<int, List<ServerCommentData>>();
     public Dictionary<int, List<ServerCommentData>> AnswerComments => answerComments;
+
 
     public void GetTopicAnswers(Action<bool> onComplete = null)
     {
@@ -120,6 +122,7 @@ public class TopicManager : MonoBehaviour
                     currentAnswers = result;
                     Debug.Log($"Successfully received {currentAnswers.Count} answers");
 
+                    // 각 답변의 댓글을 먼저 모두 로드
                     foreach (var answer in currentAnswers)
                     {
                         await LoadCommentsForAnswer(answer);
@@ -144,7 +147,6 @@ public class TopicManager : MonoBehaviour
                 if (success && comments != null)
                 {
                     answerComments[answer.id] = comments;
-                    Debug.Log($"Loaded comments for answer {answer.id}");
                 }
                 else
                 {

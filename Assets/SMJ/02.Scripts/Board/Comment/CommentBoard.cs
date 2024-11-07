@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System;
 using UnityEngine;
-using System.Collections;
+using TMPro;
+using System;
 
 [System.Serializable]
 public class ServerCommentData
@@ -10,134 +10,92 @@ public class ServerCommentData
     public string content;
     public string authorNickname;
     public string createdDate;
+    public int likeCount;
 }
-
 public class CommentBoard : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject commentPrefab;
-    [SerializeField] private WriteCommentPanel writeCommentPanel;
     [SerializeField] private RectTransform commentListContent;
-    private List<CommentData> comments = new List<CommentData>();
+    [SerializeField] private WriteCommentPanel writePanel;
 
     private int answerId;
+    private Board parentBoard;
+    private List<CommentData> comments = new List<CommentData>();
 
-    public void Initialize(TopicAnswer answer, Action onLoadComplete = null)
+    public void Initialize(TopicAnswer answer, Board board)
     {
-        this.answerId = answer.id;
-        // Board에서 코루틴 실행
-        var board = GetComponentInParent<Board>();
-        if (board != null)
-        {
-            //board.StartCoroutine(LoadCommentsCoroutine(onLoadComplete));
-        }
-    }
-    public void CreateComment(string content)
-    {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
-
-        var newComment = new ServerCommentData
-        {
-            content = content
-        };
-
-        StartCoroutine(NetworkManager.Instance.Post($"api/topic/{answerId}/comments", newComment,
-            (success, response) =>
-            {
-                if (success)
-                {
-                    Debug.Log("Comment created successfully");
-                    LoadComments();
-                    RefreshCommentList();
-                }
-                else
-                {
-                    Debug.LogError("Failed to create comment");
-                }
-            }));
+        Debug.Log($"CommentBoard Initialize - AnswerId: {answer.id}");
+        answerId = answer.id;
+        parentBoard = board;
     }
 
-    public void CreateComment(string authorNickname, string content, int likeCount)
+    public void AddComment(ServerCommentData serverComment)
     {
-        var comment = new CommentData(authorNickname, content, likeCount);
+        //Debug.Log($"AddComment called - Author: {serverComment.authorNickname}, Content: {serverComment.content}");
+
+        var comment = new CommentData(
+            serverComment.id,
+            serverComment.authorNickname,
+            serverComment.content,
+            serverComment.likeCount
+        );
+
+        //if (DateTime.TryParse(serverComment.createdDate, out DateTime date))
+        //{
+        //    comment.createDate = date;
+        //}
+
         comments.Add(comment);
-        RefreshCommentList();
-    }
+        //Debug.Log($"Comment added - Total comments: {comments.Count}");
 
-    public void LoadComments()
-    {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
-        StartCoroutine(NetworkManager.Instance.GetArray<ServerCommentData>($"api/topic/{answerId}/comments",
-            (success, result) =>
-            {
-                if (success && result != null)
-                {
-                    comments.Clear();
-                    foreach (var serverComment in result)
-                    {
-                        var comment = new CommentData(
-                            serverComment.authorNickname,
-                            serverComment.content,
-                            0  // 좋아요 수 초기화
-                        );
-                        if (DateTime.TryParse(serverComment.createdDate, out DateTime createDate))
-                        {
-                            comment.createDate = createDate;
-                        }
-                        comments.Add(comment);
-                    }
-                    RefreshCommentList();
-                    Debug.Log($"Successfully loaded {comments.Count} comments for answer {answerId}");
-                }
-                else
-                {
-                    Debug.LogError($"Failed to load comments for answer {answerId}");
-                }
-            }));
-    }
-    private IEnumerator LoadCommentsCoroutine(Action onLoadComplete)
-    {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
-        bool isComplete = false;
-
-        NetworkManager.Instance.GetArray<ServerCommentData>($"api/topic/{answerId}/comments",
-            (success, result) =>
-            {
-                if (success && result != null)
-                {
-                    comments.Clear();
-                    foreach (var comment in result)
-                    {
-                        CreateComment(comment.authorNickname, comment.content, 0);
-                    }
-                    Debug.Log($"Successfully loaded {comments.Count} comments for answer {answerId}");
-                }
-                else
-                {
-                    Debug.LogError($"Failed to load comments for answer {answerId}");
-                }
-
-                gameObject.SetActive(false);  // 댓글 로드 완료 후 비활성화
-                isComplete = true;
-                onLoadComplete?.Invoke();
-            });
-
-        while (!isComplete)
-        {
-            yield return null;
-        }
+        //if (gameObject.activeInHierarchy)
+        //{
+        //    Debug.Log("Refreshing comment list");
+        //    RefreshCommentList();
+        //}
+        //else
+        //{
+        //    Debug.Log("GameObject is inactive, skipping refresh");
+        //}
     }
 
     private void RefreshCommentList()
     {
+        if (commentListContent == null)
+        {
+            Debug.LogError("CommentListContent is null!");
+            return;
+        }
+
         foreach (Transform child in commentListContent)
         {
             Destroy(child.gameObject);
         }
+
+        Debug.Log($"RefreshCommentList - Comments count: {comments.Count}");
         foreach (var comment in comments)
         {
-            GameObject commentObj = Instantiate(commentPrefab, commentListContent);
-            commentObj.GetComponent<CommentItem>().Initialize(comment);
+            var commentObject = Instantiate(commentPrefab, commentListContent);
+            var commentItem = commentObject.GetComponent<CommentItem>();
+            if (commentItem != null)
+            {
+                commentItem.Initialize(comment);
+            }
         }
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log($"[CommentBoard] OnEnable - Comments list content null?: {commentListContent == null}, Comments count: {comments.Count}");
+        if (comments.Count > 0)  // 기존 댓글이 있을 때만 UI 갱신
+        {
+            RefreshCommentList();
+        }
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log($"CommentBoard OnDisable - Comments count: {comments.Count}");
     }
 }
