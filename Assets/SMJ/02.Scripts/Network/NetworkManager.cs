@@ -51,15 +51,20 @@ public class NetworkManager : MonoBehaviour
     {
         string url = $"{baseUrl}{endpoint}";
         string jsonData = JsonUtility.ToJson(data);
+        Debug.Log($"URL: {url}");
+        Debug.Log($"Sending data: {jsonData}");
 
-        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData))
+        using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
-            AddHeaders(request);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
+            AddHeaders(request);
 
             yield return request.SendWebRequest();
+
+            Debug.Log($"Response Code: {request.responseCode}");
+            Debug.Log($"Response: {request.downloadHandler.text}");
 
             if (request.result == UnityWebRequest.Result.Success)
             {

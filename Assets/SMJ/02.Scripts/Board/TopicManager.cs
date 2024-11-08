@@ -92,6 +92,7 @@ public class TopicManager : MonoBehaviour
             {
                 currentTopic = result;
                 Debug.Log($"Topic set: {JsonUtility.ToJson(currentTopic)}");
+                Topic topic = new Topic(currentId, currentContent, currentDate);
                 onComplete?.Invoke(true);
             }
             else
