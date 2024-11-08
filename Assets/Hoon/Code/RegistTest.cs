@@ -59,8 +59,8 @@ public class RegistTest : MonoBehaviour
     public GameObject maleImage;
     public GameObject womanImage;
     public Sprite[] registSprite;
+    public TMP_InputField myCoupleCode;
 
-    // Start is called before the first frame update
     void Start()
     {
 
@@ -251,6 +251,10 @@ public class RegistTest : MonoBehaviour
             {
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
             }
+
+            //가입완료 이미지 띄우고 로그인으로 돌아가기
+
+
 
         }
 

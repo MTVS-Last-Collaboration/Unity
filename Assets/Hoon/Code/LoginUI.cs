@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ using UnityEngine.UI;
 public class LoginUI : MonoBehaviour
 {
     public GameObject startImg;
+    public GameObject loginImg;
+    public TextMeshProUGUI noticeConnect;
 
     void Start()
     {
@@ -24,16 +27,24 @@ public class LoginUI : MonoBehaviour
         startImg.SetActive(false);
     }
 
-    public void OpenUI(GameObject objecName)
+    public void OpenUI(GameObject obj)
     {
-        objecName.SetActive(true);
+        obj.SetActive(true);
+        
+        if(obj.name == "Img_NewRegistMenu1")
+        {
+
+        }
+    
     }
 
     public void CloseUI(GameObject objecName)
     {
         objecName.SetActive(false);
+
     }
 
+    
   
         
 }
