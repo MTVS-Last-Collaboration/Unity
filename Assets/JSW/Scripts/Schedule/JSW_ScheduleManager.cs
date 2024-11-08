@@ -76,7 +76,7 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
         List<JSW_Schedule> schedules = GetSchedules(day);
         foreach (JSW_Schedule schedule in schedules)
         {
-            CreateScheduleItem(schedule.Description, schedule.iconCode);
+            CreateScheduleItem(schedule.Description, schedule.iconCode, schedule.EventID);
         }
     }
 
@@ -88,6 +88,7 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
             scheduleDictionary[date] = new List<JSW_Schedule>();
         }
         scheduleDictionary[date].Add(schedule);
+        //ResetSchedule(date);
     }
 
     public List<JSW_Schedule> GetSchedules(string date)
@@ -99,26 +100,26 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
         return new List<JSW_Schedule>();
     }
 
-    void CreateScheduleItem(string chat, int iconNum)
+    void CreateScheduleItem(string chat, int iconNum, string eventid)
     {
         // s의 내용으로 ChatItem을 만들자.
         GameObject go = Instantiate(scheduleFactory, trcontent);
         // 만들어진 go에서 ChatItem 컴포넌트 가져오자.
         JSW_ScheduleItem scheduleItem = go.GetComponent<JSW_ScheduleItem>();
         // 가져온 컴포넌트의 SetText 함수 실행
-        scheduleItem.SetText(chat, iconNum);
+        scheduleItem.SetText(chat, iconNum, eventid);
         //StartCoroutine(InitCalenderforUpdate());
     }
 
-    //public void InitCalenderforUpdate()
-    //{
-    //    StartCoroutine(InitCalenderforUpdate_CO());
-    //}
-    //IEnumerator InitCalenderforUpdate_CO()
-    //{
-    //    yield return new WaitForSeconds(1.5f);
-    //    calenderManager.InitCalender();
-    //}
+    public void InitCalenderforUpdate()
+    {
+        StartCoroutine(InitCalenderforUpdate_CO());
+    }
+    IEnumerator InitCalenderforUpdate_CO()
+    {
+        yield return new WaitForSeconds(1.5f);
+        calenderManager.UpdateDaySchedule();
+    }
 
 
 
@@ -133,30 +134,15 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
     public void ScheduleSubmit()
     {
         string chat = input_Field.text;
-        string dayString = "" + calenderManager.nowYear.ToString() +"-" + calenderManager.nowMonth.ToString("D2") +"-" + calenderManager.nowDay.ToString("D2");
+        string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
+        string forPostDayString = "" + calenderManager.nowYear.ToString() + "-" + calenderManager.nowMonth.ToString("D2") + "-" + calenderManager.nowDay.ToString("D2");
+        
 
-        object[] sendContent = new object[] { dayString, iconNumInput, chat };
-        PostforBackSchedule(iconNumInput, dayString, chat);
-        print("sss");
-
-        // 송신 옵션
-        RaiseEventOptions eventOptions = new RaiseEventOptions();
-        eventOptions.Receivers = ReceiverGroup.All;
-        //eventOptions.CachingOption = EventCaching.DoNotCache;
-
-        // 이벤트 송신 시작
-        PhotonNetwork.RaiseEvent(1, sendContent, eventOptions, SendOptions.SendUnreliable);
-
-        print("Send!");
-        EventSystem.current.SetSelectedGameObject(null);
-        inputSchedule.SetActive(false);
-
-        //string chat = input_Field.text;
-        //string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
-        //JSW_Schedule newSchedule = new JSW_Schedule(1, chat);
-        //AddSchedule(dayString, newSchedule);
-        //CreateScheduleItem(chat, Color.black);
+        PostforBackSchedule(iconNumInput, forPostDayString, chat);
     }
+
+
+
 
     public void OnEvent(EventData photonEvent)
     {
@@ -167,12 +153,14 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
             string dayString = receiveObjects[0].ToString();
             int INum = (int)receiveObjects[1];
             string chat = receiveObjects[2].ToString();
-            
+            string eventid = receiveObjects[3].ToString();
 
-            JSW_Schedule newSchedule = new JSW_Schedule(INum, chat);
+
+            JSW_Schedule newSchedule = new JSW_Schedule(INum, chat, eventid);
             AddSchedule(dayString, newSchedule);
             string nowdate = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
-            if (dayString == nowdate) CreateScheduleItem(chat, INum);
+            InitCalenderforUpdate();
+            if (dayString == nowdate) CreateScheduleItem(chat, INum, eventid);
         }
     }
 
@@ -256,7 +244,7 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
                 eventDate = $"{(int)item["eventDate"][0]}{(int)item["eventDate"][1]:D2}{(int)item["eventDate"][2]:D2}",
                 description = (string)item["description"]
             };
-            AddSchedule(eventData.eventDate, new JSW_Schedule(eventData.iconNumber, eventData.description));
+            AddSchedule(eventData.eventDate, new JSW_Schedule(eventData.iconNumber, eventData.description, eventData.eventId.ToString()));
         }
     }
     // JSON 데이터 파싱을 위한 클래스 정의 예시
@@ -267,6 +255,15 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
         public string eventName;
         public int iconNumber;
         public string eventDate;
+        public string description;
+    }
+
+    public class EventForPost
+    {
+        public int eventId;
+        public string eventName;
+        public int iconNumber;
+        public int[] eventDate;
         public string description;
     }
 
@@ -287,7 +284,6 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
 
     public void PostforBackSchedule(int iconNum, string date, string discript)
     {
-        print("sss11111");
 
         EventClenderData eventData = new EventClenderData
         {
@@ -324,10 +320,34 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
         }
         else
         {
+            EventForPost schedulepost = JsonUtility.FromJson<EventForPost>(request.downloadHandler.text);
             Debug.Log("Response: " + request.downloadHandler.text);
+            print(schedulepost.iconNumber + " + " + schedulepost.eventDate + " + " + schedulepost.description + " + " + schedulepost.eventId.ToString());
+            ScheduleSubmit2(schedulepost.iconNumber, schedulepost.eventDate[0].ToString("D4") + schedulepost.eventDate[1].ToString("D2") + schedulepost.eventDate[2].ToString("D2"), schedulepost.description, schedulepost.eventId.ToString());
+            
         }
-
-
     }
+    public void ScheduleSubmit2(int iconNum, string date, string discript, string eventnum)
+    {
 
+     
+        object[] sendContent = new object[] { date, iconNum, discript, eventnum };
+
+        // 송신 옵션
+        RaiseEventOptions eventOptions = new RaiseEventOptions();
+        eventOptions.Receivers = ReceiverGroup.All;
+        //eventOptions.CachingOption = EventCaching.DoNotCache;
+
+        // 이벤트 송신 시작
+        PhotonNetwork.RaiseEvent(1, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+        EventSystem.current.SetSelectedGameObject(null);
+        inputSchedule.SetActive(false);
+
+        //string chat = input_Field.text;
+        //string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
+        //JSW_Schedule newSchedule = new JSW_Schedule(1, chat);
+        //AddSchedule(dayString, newSchedule);
+        //CreateScheduleItem(chat, Color.black);
+    }
 }
