@@ -19,7 +19,10 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
 
     public bool isMovingFuniture;
 
-    public string name;
+    public string nameFuni;
+
+    public int funitureLayoutId;
+    public int otherFunitureLayoutId;
 
     public Vector3 myPos;
     public Quaternion myRot;
@@ -28,7 +31,13 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
-
+        Vector3 size = transform.localScale;
+        transform.localScale = Vector3.one * 0.2f;
+        iTween.ScaleTo(gameObject, iTween.Hash(
+        "scale", size, // 최종 크기
+        "time", 1.0f,         // 애니메이션 시간
+        "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
+    ));
     }
     void Update()
     {
@@ -39,8 +48,16 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             transform.position = myPos;
             transform.rotation = myRot;
             transform.localScale = Vector3.Lerp(transform.localScale,myScale,Time.deltaTime);
+            funitureLayoutId = otherFunitureLayoutId;
+        }
+        
+        if(Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            funitureLayoutId = 10;
         }
     }
+
+  
 
     public void SetpositionInfo(int posX, int posZ, int lenX, int lenZ, int rot, string funiName)
     {
@@ -57,7 +74,7 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
         decoObjectLengthZ = lenZ;
 
         decoObjectRotation = rot;
-        name = funiName;
+        nameFuni = funiName;
     }
 
     public int[] GetPositionInfo()
@@ -139,7 +156,6 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
                     }
                 }
             }
-
         }
         return minVector3;
     }
@@ -153,12 +169,14 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             stream.SendNext(transform.position);    //나의 위치를 하자.
             stream.SendNext(transform.rotation);    //나의 방향을 보내자
             stream.SendNext(transform.localScale);
+            stream.SendNext(funitureLayoutId);
         }
         else if (stream.IsReading)
         {
             myPos = (Vector3)stream.ReceiveNext();
             myRot = (Quaternion)stream.ReceiveNext();
             myScale = (Vector3)stream.ReceiveNext();
+            otherFunitureLayoutId = (int)stream.ReceiveNext();
         }
     }
     //void OnDestroy()

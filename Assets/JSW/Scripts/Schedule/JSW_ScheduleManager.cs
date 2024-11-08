@@ -51,12 +51,6 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
 
     public void OnClickCreateSchedule()
     {
-        if(inputSchedule.activeSelf == false) inputSchedule.SetActive(true);
-        else
-        {
-            iconNumInput = 0;
-            inputSchedule.SetActive(false);
-        }
     }
     public void OnClickCreateIcon()
     {
@@ -117,7 +111,7 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
     }
     IEnumerator InitCalenderforUpdate_CO()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         calenderManager.UpdateDaySchedule();
     }
 
@@ -137,7 +131,6 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
         string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
         string forPostDayString = "" + calenderManager.nowYear.ToString() + "-" + calenderManager.nowMonth.ToString("D2") + "-" + calenderManager.nowDay.ToString("D2");
         
-
         PostforBackSchedule(iconNumInput, forPostDayString, chat);
     }
 
@@ -324,7 +317,6 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
             Debug.Log("Response: " + request.downloadHandler.text);
             print(schedulepost.iconNumber + " + " + schedulepost.eventDate + " + " + schedulepost.description + " + " + schedulepost.eventId.ToString());
             ScheduleSubmit2(schedulepost.iconNumber, schedulepost.eventDate[0].ToString("D4") + schedulepost.eventDate[1].ToString("D2") + schedulepost.eventDate[2].ToString("D2"), schedulepost.description, schedulepost.eventId.ToString());
-            
         }
     }
     public void ScheduleSubmit2(int iconNum, string date, string discript, string eventnum)
@@ -342,7 +334,7 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
         PhotonNetwork.RaiseEvent(1, sendContent, eventOptions, SendOptions.SendUnreliable);
 
         EventSystem.current.SetSelectedGameObject(null);
-        inputSchedule.SetActive(false);
+        //inputSchedule.SetActive(false);
 
         //string chat = input_Field.text;
         //string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");

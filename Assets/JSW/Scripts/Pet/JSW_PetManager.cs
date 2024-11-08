@@ -32,7 +32,7 @@ public class JSW_PetManager : MonoBehaviour
     {
         if (mongUI.activeSelf == true)
         {
-            if (mongLevel >= 20) return;
+
 
             mongExp = Mathf.Lerp(mongExp, mongExpTarget, Time.deltaTime);
             expPercent.fillAmount = mongExp / 100;
@@ -42,6 +42,14 @@ public class JSW_PetManager : MonoBehaviour
             {
                 mongExp = mongExpTarget;
             }
+
+            if (mongLevel >= 20)
+            {
+                mongExpTarget = 100;
+                return;
+            }
+
+
             if (mongExp >= 100)
             {
                 mongExp = 0;

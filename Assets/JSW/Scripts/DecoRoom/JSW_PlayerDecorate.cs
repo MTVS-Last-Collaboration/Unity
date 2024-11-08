@@ -15,13 +15,17 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     public GameObject funitureObject1;
     public GameObject funitureObject2;
     public JSW_DecorateRoomManager DRM;
-    public bool IsCharacterMoving; 
+    public bool IsCharacterMoving;
+    public GameObject funiturePos;
     int dir = 0;
+    JSW_ServerDeco serverDeco;
 
     // Start is called before the first frame update
     void Start()
     {
         DRM = GameObject.Find("DecorateRoomManager").GetComponent<JSW_DecorateRoomManager>();
+        funiturePos = GameObject.Find("FuniturePos");
+        serverDeco = GetComponent<JSW_ServerDeco>();
     }
 
     // Update is called once per frame
@@ -74,8 +78,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         //GameObject funitureOb = Instantiate(funitureObject1);
         if (photonView.IsMine)
         {
-
             funitureOb = PhotonNetwork.Instantiate(finalFuni, transform.position + transform.forward, transform.rotation);
+            funitureOb.transform.SetParent(funiturePos.transform);
         }
         else
         {
@@ -129,6 +133,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             print("helpme");
             DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
             funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
+            
             //JSW_InfoDecoObject infoDecoObejct = new JSW_InfoDecoObject((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
             //DRM.FunitureList.Add(infoDecoObejct);
             // 백엔드 연결되면 고치자
@@ -138,13 +143,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             }
             else
             {
-                Vector3 size = funitureOb.transform.localScale;
-                funitureOb.transform.localScale = Vector3.one * 0.2f;
-                iTween.ScaleTo(funitureOb, iTween.Hash(
-                "scale", size, // 최종 크기
-                "time", 1.0f,         // 애니메이션 시간
-                "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
-            ));
+                // 여따가 통신 넣기
+
             }
         }
         else

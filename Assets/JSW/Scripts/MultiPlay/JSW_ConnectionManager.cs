@@ -97,6 +97,13 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
             RoomOptions roomOpt = new RoomOptions();
             //최대인원
             roomOpt.MaxPlayers = playerCount;
+            
+            if (roomName == "CoupleRoom")
+            {
+                // 룸나가도 삭제 x
+                roomOpt.CleanupCacheOnLeave = false;
+            }
+
             //룸에 사람이 들어오게 하자.
             roomOpt.IsOpen = true;
             //룸을 검색할 수 있게 해주자. 
@@ -106,6 +113,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
             //방을생성하자.
             PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
         }
+        
 
         //방생성이 완료되면
         //JoinRoom();

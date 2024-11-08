@@ -18,6 +18,6 @@ public class JSW_DayButton : MonoBehaviour
     }
     public void OnClickMe()
     {
-        if (transform.GetChild(1).GetComponent<TMP_Text>().text != "") CalenderManager.GetComponent<JSW_CalenderManager>().OnClickResetNowDay(int.Parse(transform.GetChild(1).GetComponent<TMP_Text>().text));
+        if (transform.GetChild(5).GetComponent<TMP_Text>().text != "") CalenderManager.GetComponent<JSW_CalenderManager>().OnClickResetNowDay(int.Parse(transform.GetChild(5).GetComponent<TMP_Text>().text));
     }
 }

@@ -10563,8 +10563,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avataName: {fileID: 0}
-  createRoomName: JSW_RoomTest
-  joinRoomName: JSW_RoomTest
+  createRoomName: CoupleRoom
+  joinRoomName: CoupleRoom
   levelNumber: 2
 --- !u!114 &1151646544
 MonoBehaviour:
@@ -10578,6 +10578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6749ba709749d464a8d4bfd06c31b82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  funiturePos: {fileID: 0}
+  lobbyGameManager: {fileID: 0}
 --- !u!65 &1151646545
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14002,7 +14004,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1260878492}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999884
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -18368,6 +18370,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6749ba709749d464a8d4bfd06c31b82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  funiturePos: {fileID: 0}
+  lobbyGameManager: {fileID: 0}
 --- !u!65 &1906997996
 BoxCollider:
   m_ObjectHideFlags: 0
