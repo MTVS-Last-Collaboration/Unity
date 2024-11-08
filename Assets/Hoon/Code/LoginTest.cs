@@ -15,6 +15,7 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using static RegistTest;
 using static LoginTest;
 using static System.Net.WebRequestMethods;
+using static UnityEngine.Rendering.DebugUI;
 
 
 public class LoginTest : MonoBehaviour
@@ -27,6 +28,7 @@ public class LoginTest : MonoBehaviour
         instance = this;
     }
 
+    LoginUI loginUI;
 
     public GameObject input_Id_Object;
     public GameObject input_Pass_Object;
@@ -47,8 +49,10 @@ public class LoginTest : MonoBehaviour
     public string myCoupleCodeJson;
     public TMP_InputField input_CoupleCode;
     public GameObject loginImage;
-    public GameObject registImage;
-
+    public GameObject allRegistObject;
+    public TMP_InputField viewMyCoupleCode;
+    public GameObject coupleMenu2;
+    public GameObject coupleMenu;
     public class UserInfo
     {
         public string email;
@@ -76,6 +80,7 @@ public class LoginTest : MonoBehaviour
         input_Pass = input_Pass_Object.GetComponent<TMP_InputField>();
         placeHole_Id_Text = placeHold_Id_Object.GetComponent<TextMeshProUGUI>();
         placeHole_Pass_Text = placeHold_Psss_Object.GetComponent <TextMeshProUGUI>();
+        loginUI = transform.GetComponent<LoginUI>();
 
     }
 
@@ -217,12 +222,6 @@ public class LoginTest : MonoBehaviour
             PlayerPrefs.SetString("token", myToken); //플레이어 프리펩에 토큰저장
             LoginInfoManager.instance.myToken = myToken; ; //로그인인포에 토큰저장
             print("플레이어 프리팹 내토큰" + PlayerPrefs.GetString("token"));
-
-
-            //UI 닫기
-            registImage.SetActive(false);
-            loginImage.SetActive(false);
-          
             //Access Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjvE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
 
             // 서버 응답과 newUser가 같은지 확인
@@ -236,6 +235,10 @@ public class LoginTest : MonoBehaviour
             }
 
             CheckUserInfo(); //내정보가져오기
+
+            //UI 닫기
+            allRegistObject.SetActive(false);
+            loginImage.SetActive(false);
 
         }
     
@@ -314,8 +317,6 @@ public class LoginTest : MonoBehaviour
               LoginInfoManager.instance.coupleCode = myInfo.coupleCode;
               print("내커플코드" + LoginInfoManager.instance.coupleCode);*/
 
-
-
             // 서버 응답과 newUser가 같은지 확인
             if (responseText == input_Id.text)
             {
@@ -325,6 +326,16 @@ public class LoginTest : MonoBehaviour
             {
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
             }
+
+            //여기에서 회원가입 이미지를 꺼야 합니다.
+            allRegistObject.SetActive(false);
+            //커플코드입력필드에 내코드를 넣어주기
+            viewMyCoupleCode.text = myInfo.coupleCode;
+            print(viewMyCoupleCode.text);
+            //viewMyCoupleCode.GetComponent<TextMeshPro>().text = myInfo.coupleCode;
+            //뭐하는거냐고
+            
+
 
         }
 
@@ -516,4 +527,18 @@ public class LoginTest : MonoBehaviour
         connectionManager.StartLobby();
     }
 
+    public void CopyCoupleCode()
+    {
+        // InputField에 입력된 텍스트를 클립보드로 복사
+        GUIUtility.systemCopyBuffer = viewMyCoupleCode.text;
+        Debug.Log("텍스트가 클립보드에 복사되었습니다: " + viewMyCoupleCode.text);
+
+        coupleMenu2.SetActive(false);
+        //coupleMenu.SetActive(true);
+
+
+
+
+
+    }
 }
