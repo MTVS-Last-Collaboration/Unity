@@ -110,7 +110,7 @@ public class Board : MonoBehaviour
     {
         CreatePost(
             answer.authorNickname,
-            "",
+            answer.title,
             answer.content,
             answer.likeCount
         );

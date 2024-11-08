@@ -9,6 +9,7 @@ using System.Net;
 public class WritePost
 {
     public int dailyTopicId;
+    public string title;
     public string content;
 }
 public class WritePanel : MonoBehaviour
@@ -59,7 +60,7 @@ public class WritePanel : MonoBehaviour
         // 게시판에 글 추가
         board.CreatePost(nickName, titleInput.text, contentInput.text, 0);
 
-        CreatePostAnswer(PlayerPrefs.GetInt("dailyTopicId"), contentInput.text);
+        CreatePostAnswer(PlayerPrefs.GetInt("dailyTopicId"), titleInput.text, contentInput.text);
         Hide();
     }
 
@@ -69,25 +70,25 @@ public class WritePanel : MonoBehaviour
         titleInput.text = "";
         contentInput.text = "";
     }
-    public void CreatePostAnswer(int dailyTopicId, string content, Action onComplete = null)
+    public void CreatePostAnswer(int dailyTopicId, string title, string content, Action onComplete = null)
     {
         var newPost = new WritePost
         {
             dailyTopicId = dailyTopicId,
+            title = title,
             content = content,
         };
-        Debug.Log($"topicId: {dailyTopicId}, 내용: {content}");
+        Debug.Log($"topicId: {dailyTopicId}, 제목: {title}, 내용: {content}");
         StartCoroutine(PostAnswer(dailyTopicId, newPost, onComplete));
     }
     private IEnumerator PostAnswer(int dailyTopicId, WritePost post, Action onComplete)
     {
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
-        Debug.Log($"topicId: {dailyTopicId}, 내용: {post.content}");
+        Debug.Log($"topicId: {dailyTopicId}, 제목: {post.title}, 내용: {post.content}");
 
         yield return NetworkManager.Instance.Post($"/api/topic/answer/create", post,
             (success, response) =>
             {
-                Debug.Log($"topicId: {dailyTopicId}, 내용: {post.content}");
                 if (success)
                 {
                     Debug.Log("Post created successfully");
@@ -98,8 +99,6 @@ public class WritePanel : MonoBehaviour
                     Debug.LogError($"Failed to create Post: {response}");
                 }
             });
-
-        Debug.Log($"topicId: {dailyTopicId}, 내용: {post.content}");
     }
 
     private void OnDestroy()

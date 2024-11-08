@@ -2,6 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Collections;
+
+[System.Serializable]
+public class ServerCommentPost
+{
+    public int answerId;
+    public string content;
+}
 
 [System.Serializable]
 public class ServerCommentData
@@ -76,7 +84,43 @@ public class CommentBoard : MonoBehaviour
         {
             commentItem.Initialize(comment);
         }
+        CreateNewComment(comment.answerId, comment.content);
         //RefreshCommentList(comment);
+    }
+
+    // 댓글 관련 메서드들
+    public void CreateNewComment(int answerId, string content, Action onComplete = null)
+    {
+        var newComment = new ServerCommentPost
+        {
+            answerId = answerId,
+            content = content
+        };
+
+        StartCoroutine(CreateCommentCoroutine(answerId, newComment, onComplete));
+    }
+
+    private IEnumerator CreateCommentCoroutine(int answerId, ServerCommentPost comment, Action onComplete)
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+        bool isComplete = false;
+
+        StartCoroutine(NetworkManager.Instance.Post($"/api/topic/comment/create", comment,
+            (success, response) =>
+            {
+                if (success)
+                {
+                    Debug.Log("Comment created successfully");
+                    onComplete?.Invoke();
+                }
+                else
+                {
+                    Debug.LogError($"Failed to create comment: {response}");
+                }
+                isComplete = true;
+            }));
+
+        while (!isComplete) yield return null;
     }
 
     private void RefreshCommentList()

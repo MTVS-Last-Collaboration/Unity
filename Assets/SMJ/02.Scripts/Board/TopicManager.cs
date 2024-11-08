@@ -7,6 +7,7 @@ using UnityEngine;
 public class TopicAnswer
 {
     public int id;
+    public string title;
     public string content;
     public string authorNickname;
     public int likeCount;
