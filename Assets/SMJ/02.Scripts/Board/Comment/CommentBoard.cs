@@ -76,7 +76,7 @@ public class CommentBoard : MonoBehaviour
         {
             commentItem.Initialize(comment);
         }
-        //RefreshCommentList();
+        //RefreshCommentList(comment);
     }
 
     private void RefreshCommentList()
@@ -102,6 +102,7 @@ public class CommentBoard : MonoBehaviour
                 commentItem.Initialize(comment);
             }
         }
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     private void OnEnable()

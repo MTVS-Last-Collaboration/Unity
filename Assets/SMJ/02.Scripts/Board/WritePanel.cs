@@ -37,9 +37,9 @@ public class WritePanel : MonoBehaviour
     {
         Debug.Log($"닉네임: {LoginInfoManager.instance.nickName}, 제목: {titleInput.text}, 내용: {contentInput.text}");
         // 입력값 검증
-        if (string.IsNullOrEmpty(titleInput.text) || string.IsNullOrEmpty(contentInput.text))
+        if (string.IsNullOrEmpty(contentInput.text))
         {
-            Debug.Log("제목과 내용을 입력해주세요.");
+            Debug.Log("내용을 입력해주세요.");
             return;
         }
 

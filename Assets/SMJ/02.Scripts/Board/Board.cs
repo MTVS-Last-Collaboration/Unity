@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 
 public class Board : MonoBehaviour
 {
@@ -102,9 +103,7 @@ public class Board : MonoBehaviour
     {
         var post = new PostData(nickName, title, content, likeCount);
         posts.Add(post);
-        //RefreshPostList();
-        GameObject postObj = Instantiate(postPrefab, postListContent);
-        postObj.GetComponent<PostItem>().Initialize(post);
+        RefreshPostList(post);
     }
 
     public void CreatePost(TopicAnswer answer)
@@ -135,7 +134,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void RefreshPostList()
+    private void RefreshPostList(PostData post)
     {
         //foreach (Transform child in postListContent)
         //{
@@ -146,7 +145,8 @@ public class Board : MonoBehaviour
         //    GameObject postObj = Instantiate(postPrefab, postListContent);
         //    postObj.GetComponent<PostItem>().Initialize(post);
         //}
-        
+        GameObject postObj = Instantiate(postPrefab, postListContent);
+        postObj.GetComponent<PostItem>().Initialize(post);
     }
 
     private IEnumerator DailyWeeklyLikesCheck()
@@ -185,7 +185,7 @@ public class Board : MonoBehaviour
     {
         isPopularSortActive = true;
         posts.Sort((a, b) => b.GetWeeklyLikes().CompareTo(a.GetWeeklyLikes()));
-        RefreshPostList();
+        //RefreshPostList();
         //전부 삭제
         //inittopic부터 다시?
     }
@@ -194,7 +194,7 @@ public class Board : MonoBehaviour
     {
         isPopularSortActive = false;
         posts.Sort((a, b) => b.createDate.CompareTo(a.createDate));
-        RefreshPostList();
+        //RefreshPostList();
     }
 
     // 댓글 관련 메서드들
