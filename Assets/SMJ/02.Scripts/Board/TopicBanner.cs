@@ -34,10 +34,10 @@ public class TopicBanner : MonoBehaviour
     {
         try
         {
+            topicManager.CloseWeeklyTopics();
             button.interactable = false;
             DateTime now = DateTime.Now.AddDays(-days);
             await InitTopic(now);
-            topicManager.CloseWeeklyTopics();
         }
         finally
         {
