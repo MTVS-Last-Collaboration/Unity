@@ -5,13 +5,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-
-public class JSW_InitRoom : MonoBehaviourPun
+public class JSW_InitOtherRoom : MonoBehaviourPun
 {
-    public GameObject funiturePos;
     JSW_DecorateRoomManager DRM;
+    public int CoupleRoomCode;
 
-    private string apiUrl = "http://125.132.216.190:12223/api/rooms/my"; // Replace with the actual API endpoint
+    private string apiUrl = "http://125.132.216.190:12223/api/rooms/public/"; // Replace with the actual API endpoint
 
     private void Start()
     {
@@ -26,11 +25,12 @@ public class JSW_InitRoom : MonoBehaviourPun
     public void GetRoomStatus()
     {
         StartCoroutine(GetRoomStatusCoroutine());
+        print("fdadsa");
     }
 
     private IEnumerator GetRoomStatusCoroutine()
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(apiUrl))
+        using (UnityWebRequest request = UnityWebRequest.Get(apiUrl + CoupleRoomCode))
         {
             request.SetRequestHeader("Accept", "application/json");
             string jwtToken = LoginInfoManager.instance.myToken;
@@ -48,15 +48,15 @@ public class JSW_InitRoom : MonoBehaviourPun
                 Debug.Log("Room ID: " + roomStatus.roomId);
                 Debug.Log("Furniture Count: " + roomStatus.furnitureLayouts.Length);
 
-                foreach(FurnitureLayout layout in roomStatus.furnitureLayouts)
+                foreach (FurnitureLayout layout in roomStatus.furnitureLayouts)
                 {
                     InitSetFuniture(layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, layout.width, layout.height);
                 }
             }
             else
             {
-                InitSetFuniture(1, "(Prb)Plant2", 4, 3, 3, 1, 1);
-                print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임");
+                InitSetFuniture(1, "(Prb)Plant2", 2, 4,4 , 1, 1);
+                print("JSW_InitotherRoom인데 처음 가구들 설치할 때 호출하는 것임");
                 Debug.LogError("Error: " + request.error);
             }
         }
@@ -97,7 +97,7 @@ public class JSW_InitRoom : MonoBehaviourPun
         {
             finalFuni = "(Prb)" + name;
         }
-        photonView.RPC("SetFuniture1_CO", RpcTarget.AllBuffered, finalFuni, id, posX,posZ, rot, width, height);
+        photonView.RPC("SetFuniture1_CO", RpcTarget.AllBuffered, finalFuni, id, posX, posZ, rot, width, height);
     }
 
     [PunRPC]
@@ -110,7 +110,6 @@ public class JSW_InitRoom : MonoBehaviourPun
         if (photonView.IsMine)
         {
             funitureOb = PhotonNetwork.Instantiate(finalFuni, transform.position + transform.forward, transform.rotation);
-            funitureOb.transform.SetParent(funiturePos.transform);
         }
         else
         {
@@ -118,7 +117,7 @@ public class JSW_InitRoom : MonoBehaviourPun
             funitureOb = Instantiate(prefab, transform.position + transform.forward, transform.rotation);
         }
 
-        funitureOb.transform.position = new Vector3(posX, 0.1f, posZ );
+        funitureOb.transform.position = new Vector3(posX, 0.1f, posZ);
 
         //if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
         //{

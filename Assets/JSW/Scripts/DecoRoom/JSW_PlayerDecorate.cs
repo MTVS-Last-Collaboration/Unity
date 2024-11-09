@@ -126,7 +126,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             else
             {
                 // 여따가 통신 넣기
-                GetComponent<JSW_ServerDeco>().PostforBackSchedule();
+                GetComponent<JSW_ServerDeco>().PostforBackSchedule(funitureOb.GetComponent<JSW_DecoObject>());
             }
         }
         else
@@ -425,7 +425,12 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 StartCoroutine(moveBlockTranslate(new Vector3(-1, 0, 0), funitureOb));
                 funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionX -= 1;
             }
+            if (photonView.IsMine)
+            {
+                GetComponent<JSW_ServerDeco>().PutCalenderEvent(funitureOb.GetComponent<JSW_DecoObject>().funitureLayoutId, funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionX, funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionZ, funitureOb.GetComponent<JSW_DecoObject>().decoObjectRotation);
+            }
         }
+
     }
 
     public void DrawFuniture()
@@ -539,6 +544,10 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 StartCoroutine(moveBlockTranslate(new Vector3(1, 0, 0), funitureOb));
                 funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionX += 1;
             }
+            if (photonView.IsMine)
+            {
+                GetComponent<JSW_ServerDeco>().PutCalenderEvent(funitureOb.GetComponent<JSW_DecoObject>().funitureLayoutId, funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionX, funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionZ, funitureOb.GetComponent<JSW_DecoObject>().decoObjectRotation);
+            }
         }
     }
 
@@ -602,6 +611,10 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
 
                 int[] funitureInfo = funitureOb.GetComponent<JSW_DecoObject>().GetPositionInfo();
                 DRM.DestroyFuniturePos(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4]);
+                if(photonView.IsMine)
+                {
+                    serverDeco.DeleteCalenderEvent(funitureOb.GetComponent<JSW_DecoObject>().funitureLayoutId);
+                }
                 StartCoroutine(DestroyFuni(hit.collider.gameObject));
             }
         }

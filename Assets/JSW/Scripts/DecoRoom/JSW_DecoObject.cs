@@ -47,14 +47,13 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
         {
             transform.position = myPos;
             transform.rotation = myRot;
-            transform.localScale = Vector3.Lerp(transform.localScale,myScale,Time.deltaTime);
             funitureLayoutId = otherFunitureLayoutId;
         }
         
-        if(Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            funitureLayoutId = 10;
-        }
+        //if(Input.GetKeyDown(KeyCode.Alpha8))
+        //{
+        //    funitureLayoutId = 10;
+        //}
     }
 
   
@@ -168,14 +167,12 @@ public class JSW_DecoObject : MonoBehaviourPun, IPunObservable
             //print("내 위치를 보내자");
             stream.SendNext(transform.position);    //나의 위치를 하자.
             stream.SendNext(transform.rotation);    //나의 방향을 보내자
-            stream.SendNext(transform.localScale);
             stream.SendNext(funitureLayoutId);
         }
         else if (stream.IsReading)
         {
             myPos = (Vector3)stream.ReceiveNext();
             myRot = (Quaternion)stream.ReceiveNext();
-            myScale = (Vector3)stream.ReceiveNext();
             otherFunitureLayoutId = (int)stream.ReceiveNext();
         }
     }

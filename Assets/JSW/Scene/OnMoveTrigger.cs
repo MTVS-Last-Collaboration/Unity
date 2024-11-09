@@ -24,6 +24,7 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
     {
         if (other.CompareTag("Player"))
         {
+            if (!other.transform.GetComponent<PhotonView>().IsMine) return;
             if (funiturePos != null)
             {
                 for (int i = 0; i < funiturePos.transform.childCount; i++)
@@ -48,6 +49,7 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
                     }
                 }
             }
+            
             if (lobbyGameManager != null)
             {
                 PhotonNetwork.Destroy(lobbyGameManager.player);

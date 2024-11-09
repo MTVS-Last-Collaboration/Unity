@@ -1324,6 +1324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiManager: {fileID: 0}
   cameraControllTest: {fileID: 0}
+  calenderManger: {fileID: 0}
 --- !u!1 &28920546
 GameObject:
   m_ObjectHideFlags: 0
@@ -3938,6 +3939,7 @@ MonoBehaviour:
     type: 3}
   DRM: {fileID: 604980091}
   IsCharacterMoving: 0
+  funiturePos: {fileID: 0}
 --- !u!114 &112246692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20558,6 +20560,8 @@ GameObject:
   - component: {fileID: 604980092}
   - component: {fileID: 604980091}
   - component: {fileID: 604980093}
+  - component: {fileID: 604980094}
+  - component: {fileID: 604980095}
   m_Layer: 0
   m_Name: DecorateRoomManager
   m_TagString: Untagged
@@ -20611,6 +20615,41 @@ MonoBehaviour:
   Wallmaterials: []
   floorNum: 0
   wallNum: 0
+--- !u!114 &604980094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604980090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &604980095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604980090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e35dc0a685a9724d8805196c6690b19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CoupleRoomCode: 0
 --- !u!1 &605748313
 GameObject:
   m_ObjectHideFlags: 0
@@ -61506,6 +61545,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6749ba709749d464a8d4bfd06c31b82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  funiturePos: {fileID: 0}
+  lobbyGameManager: {fileID: 0}
 --- !u!65 &1906997996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62650,6 +62691,11 @@ MonoBehaviour:
   scheduleFactory: {fileID: 5208209425143825683, guid: caffc15bfcd727a439d97a8442de3b68,
     type: 3}
   calenderManager: {fileID: 0}
+  scheduleNowDay: {fileID: 0}
+  inputSchedule: {fileID: 0}
+  inputIcon: {fileID: 0}
+  iconNumInput: 0
+  eventList: []
 --- !u!4 &1945177613
 Transform:
   m_ObjectHideFlags: 0
