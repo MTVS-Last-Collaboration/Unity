@@ -72,11 +72,11 @@ public class JSW_PetManager : MonoBehaviour
 
     public void MongLevelUp()
     {
-        if (mongLevel < 3)
-        {
-            transform.GetChild(mongLevel++).gameObject.SetActive(false);
-            transform.GetChild(mongLevel).gameObject.SetActive(true);
-        }
+        //if (mongLevel < 3)
+        //{
+        //    transform.GetChild(mongLevel++).gameObject.SetActive(false);
+        //    transform.GetChild(mongLevel).gameObject.SetActive(true);
+        //}
         StartCoroutine(AddPetExperience());
     }
 
