@@ -34,37 +34,20 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         playerDir = new Vector3(Mathf.Round(transform.forward.x), Mathf.Round(transform.forward.y), Mathf.Round(transform.forward.z));
         playerPos = new Vector3(Mathf.Round(transform.position.x), 0, Mathf.Round(transform.position.z));
         
-        //if(Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    print(1);
-        //    //SetFuniture1();
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha2))
-        //{
-        //    SetFuniture2();
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha3))
-        //{
-        //    PushFunitureSetting();
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha4))
-        //{
-        //    PushFuniture();
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha5))
-        //{
-        //    DrawFuniture();
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha6))
-        //{
-        //    DestroyFuniture();
-        //}
     }
 
 
     public void SetFuniture1(string name)
     {
-        string finalFuni = "(Prb)" + name;
+        string finalFuni;
+        if (name.Contains("(Prb)"))
+        {
+            finalFuni = name;
+        }
+        else
+        {
+            finalFuni = "(Prb)" + name;
+        }
         photonView.RPC("SetFuniture1_RPC", RpcTarget.AllBuffered, finalFuni);
     }
 
@@ -130,7 +113,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
 
         if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir))
         {
-            print("helpme");
             DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
             funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir, finalFuni);
             
@@ -144,7 +126,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             else
             {
                 // 여따가 통신 넣기
-
+                GetComponent<JSW_ServerDeco>().PostforBackSchedule();
             }
         }
         else

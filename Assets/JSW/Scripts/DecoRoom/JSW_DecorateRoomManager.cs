@@ -11,12 +11,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     public List<JSW_InfoDecoObject> FunitureList = new List<JSW_InfoDecoObject>();
     public JSW_PlayerDecorate playerDecorate;
 
-    //public enum funiture
-    //{
-    //    TV,
-    //    Table,
-    //    Bed
-    //}
 
     private void Start()
     {
@@ -26,13 +20,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
     public void nowFuniture()
     {
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    for (int j= 4; j < 8;j++)
-        //    {
-        //        roomPosition[i, j] = true;
-        //    }
-        //}
+
         for(int i=0;i < FunitureList.Count; i++)
         {
             int x = FunitureList[i].decoPositionX;
@@ -616,27 +604,12 @@ public class JSW_DecorateRoomManager : MonoBehaviour
         playerDecorate.SetFuniture1(name);
     }
 
-    //public void PlayerSetFuniture2()
-    //{
-    //    playerDecorate.SetFuniture2();
-    //}
     public void PlayerDestroyFuni()
     {
         playerDecorate.DestroyFuniture();
     }
 
-    // 여기서 필요한 것
-    // 플레이어 위치 받기
-    // 가구들 배치 받기
 
-    // 플레이어가 필요한것
-    // 물건 잡을 때 상호작용키 f
-    // 물건 밀거나 당길 때 움직일 수 있는 장소인지를 매니저 배열에서 조사
-    // 밀때 같이 이동하기
-    // 잡을 때 1,1 정수 위치로 이동하기
-    // 밀려고 할 때 다른 플레이어 위치 받아오기
-    // 당길 때도 플레이어 위치 받아오기
-    // 물건 꺼내기 꺼낼 때 주변 놓을 수 있을지 확인하기
     IEnumerator PlayerDecorate()
     {
         yield return new WaitForSeconds(1.0f);
@@ -657,9 +630,6 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                 break;
             }
         }
-
-        //playerPhotonView = GameObject.Find("PlayerWoman(Clone)").GetComponent<PhotonView>();
-        //playerPhotonView = LobbyGameManager.instance.player.gameObject.GetComponent<PhotonView>();
     }
 
 }
