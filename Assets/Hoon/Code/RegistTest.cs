@@ -207,12 +207,14 @@ public class RegistTest : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + request.error);
-            //에러500
+            //에러 500 내가틀림 , 409
 
             // 서버의 응답 내용이 있는 경우, 상세 내용을 로그에 출력
             if (!string.IsNullOrEmpty(request.downloadHandler.text))
             {
                 Debug.LogError("Server Response: " + request.downloadHandler.text);
+
+               
             }
             else
             {

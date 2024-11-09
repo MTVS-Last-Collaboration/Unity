@@ -132,6 +132,8 @@ public class LoginTest : MonoBehaviour
         // 여기에 토큰 추가
         //string token = "your_token_here"; // 실제 토큰 값을 여기에 설정합니다.
 
+        //서버의 응답을 기다리는중~
+
         yield return request.SendWebRequest();
 
         // 응답 코드 확인
