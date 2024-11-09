@@ -51,16 +51,17 @@ public class RegistTest : MonoBehaviour
     public TextMeshProUGUI textGenderButton;
     public Image imgMaleButton;
     public Image imgFemaleButton;
-    public TextMeshProUGUI textMaleButton;
-    public TextMeshProUGUI textFemaleButton;
-    
-    TMP_Text dropgenderTextComp;
-    
-    public GameObject maleImage;
-    public GameObject womanImage;
     public Sprite[] registSprite;
     public TMP_InputField myCoupleCode;
+    public GameObject registMenu2;
 
+
+    TMP_Text dropgenderTextComp;
+    TextMeshProUGUI textMaleButton;
+    TextMeshProUGUI textFemaleButton;
+    GameObject maleImage;
+    GameObject womanImage;
+    
     void Start()
     {
 
@@ -82,7 +83,7 @@ public class RegistTest : MonoBehaviour
     
 
 
-    public void ResistNewUserInfoJSon() //유저정보를 요청함.
+    public void RegistNewUserInfoJSon() //유저정보를 요청함.
     {
         //데이터를 저장할 경로
         string path = Application.persistentDataPath + "/UserInfo.json";
@@ -252,7 +253,10 @@ public class RegistTest : MonoBehaviour
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
             }
 
-            //가입완료 이미지 띄우고 로그인으로 돌아가기
+            //가입완료 이미지 띄우기
+            registMenu2.SetActive(false);
+
+
 
 
 

@@ -11,6 +11,12 @@ public class LoginUI : MonoBehaviour
     public GameObject startImg;
     public GameObject loginImg;
     public TextMeshProUGUI noticeConnect;
+    public GameObject registMenu;
+    public GameObject registMenu1;
+    public GameObject registMenu2;
+    public GameObject registMenu3;
+    public GameObject registMenuAll;
+
 
     void Start()
     {
@@ -34,6 +40,10 @@ public class LoginUI : MonoBehaviour
         if(obj.name == "Img_NewRegistMenu1")
         {
 
+        }
+        if(obj.name == "LoginMenuBG")
+        {
+            registMenuAll.SetActive(true);
         }
     
     }
