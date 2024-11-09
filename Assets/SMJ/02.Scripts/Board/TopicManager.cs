@@ -198,7 +198,12 @@ public class TopicManager : MonoBehaviour
             isClickTopicBanner = false;
             topicBannerObj.SetActive(false);
         }
-        
+    }
+
+    public void CloseWeeklyTopics()
+    {
+        isClickTopicBanner = false;
+        topicBannerObj.SetActive(false);
     }
 
     private IEnumerator GetWeeklyTopics()

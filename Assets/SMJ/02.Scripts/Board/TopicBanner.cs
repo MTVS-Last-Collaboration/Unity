@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class TopicBanner : MonoBehaviour
 {
@@ -29,16 +30,24 @@ public class TopicBanner : MonoBehaviour
             button.onClick.AddListener(OnClickBanner);
     }
 
-    public void OnClickBanner()
+    public async void OnClickBanner()
     {
-        DateTime now = DateTime.Now.AddDays(-days);
-        InitTopic(now);
+        try
+        {
+            button.interactable = false;
+            DateTime now = DateTime.Now.AddDays(-days);
+            await InitTopic(now);
+            topicManager.CloseWeeklyTopics();
+        }
+        finally
+        {
+            button.interactable = true;
+        }
     }
 
-    public void InitTopic(DateTime day)
+    public async Task InitTopic(DateTime day)
     {
-        board.ClearBoard(); // 먼저 보드를 클리어
-        board.InitTopic(day);
+        await board.InitTopic(day);
     }
 
     public void Initialize(Topic topic, int day)
