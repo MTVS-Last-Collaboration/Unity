@@ -5,6 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public class PostLikeData
+{
+    public int id;
+    public int likeCount;
+    public bool liked;
+}
+
 public class PostItem : MonoBehaviour
 {
     [SerializeField] private TMP_Text nickNameText;
@@ -13,32 +21,38 @@ public class PostItem : MonoBehaviour
     [SerializeField] private TMP_Text dateText;
     [SerializeField] private TMP_Text likeCountText;
     [SerializeField] private GameObject commentPanel;
-    [SerializeField] private LayoutElement layout;
     [SerializeField] private VerticalLayoutGroup verticalLayoutGroup;
     [SerializeField] private CommentBoard comment;
+    [SerializeField] private Button openCommentButton;
+    [SerializeField] private Button likeButton;
 
     [SerializeField] private float minHeight = 265f;
     [SerializeField] private float maxHeight = 1030f;
-
     [SerializeField] private int minVertical = 7;
     [SerializeField] private int maxVertical = 780;
 
-    [SerializeField] private Button openCommentButton;   // 댓글창 열기 버튼
-
+    private LayoutElement layout;
     private PostData data;
+    private bool isClickLike = false;
+    private bool isInitialized = false;
 
     public void Initialize(PostData postData)
     {
         data = postData;
-        UpdateUI();
-    }
-
-    private void Start()
-    {
         layout = GetComponent<LayoutElement>();
-        verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         InitializeButtons();
-        if (commentPanel.activeSelf == true)
+        UpdateUI();
+
+        if (gameObject.activeInHierarchy)
+        {
+            LoadLikeStatus();
+        }
+        else
+        {
+            isInitialized = false;
+        }
+
+        if (commentPanel.activeSelf)
         {
             layout.preferredHeight = maxHeight;
             verticalLayoutGroup.padding.bottom = maxVertical;
@@ -47,30 +61,41 @@ public class PostItem : MonoBehaviour
         {
             layout.preferredHeight = minHeight;
             verticalLayoutGroup.padding.bottom = minVertical;
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (!isInitialized && data != null)
+        {
+            LoadLikeStatus();
+        }
+    }
+
+    private void LoadLikeStatus()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(CheckInitialLikeStatus());
+            isInitialized = true;
         }
     }
 
     private void InitializeButtons()
     {
-        // 버튼 이벤트 연결
-        openCommentButton.onClick.AddListener(OnToggleCommentPanel);
+        if (openCommentButton != null)
+            openCommentButton.onClick.AddListener(OnToggleCommentPanel);
+
+        if (likeButton != null)
+            likeButton.onClick.AddListener(OnLikeButton);
     }
 
-    // 댓글창 열기 버튼 클릭
     public void OnToggleCommentPanel()
     {
-        if (commentPanel.activeSelf == true)
-        {
-            commentPanel.SetActive(false);
-            layout.preferredHeight = minHeight;
-            verticalLayoutGroup.padding.bottom = minVertical;
-        }
-        else
-        {
-            commentPanel.SetActive(true);
-            layout.preferredHeight = maxHeight;
-            verticalLayoutGroup.padding.bottom = maxVertical;
-        }
+        bool isOpen = !commentPanel.activeSelf;
+        commentPanel.SetActive(isOpen);
+        layout.preferredHeight = isOpen ? maxHeight : minHeight;
+        verticalLayoutGroup.padding.bottom = isOpen ? maxVertical : minVertical;
     }
 
     private void UpdateUI()
@@ -81,18 +106,149 @@ public class PostItem : MonoBehaviour
             titleText.text = data.title;
             contentText.text = data.content;
             dateText.text = data.createDate.ToString("yyyy-MM-dd HH:mm");
-            likeCountText.text = $"♥ {data.likeCount}";
+            UpdateLikeUI();
         }
+    }
+
+    private void UpdateLikeUI()
+    {
+        if (likeCountText != null)
+        {
+            likeCountText.text = isClickLike ? $"♥ {data.likeCount}" : $"♡ {data.likeCount}";
+        }
+    }
+
+    private IEnumerator CheckInitialLikeStatus()
+    {
+        if (!gameObject.activeInHierarchy)
+        {
+            Debug.Log("PostItem is inactive, skipping like status check");
+            yield break;
+        }
+
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+
+        yield return NetworkManager.Instance.GetWithoutBody($"api/topic/answer/{data.answerId}/like",
+            (success, response) =>
+            {
+                if (!gameObject.activeInHierarchy) return;
+
+                if (success)
+                {
+                    try
+                    {
+                        var likeData = JsonUtility.FromJson<PostLikeData>(response);
+                        if (likeData != null)
+                        {
+                            isClickLike = likeData.liked;
+                            data.likeCount = likeData.likeCount;
+                            UpdateLikeUI();
+                            Debug.Log($"Initial like status loaded: liked={isClickLike}, count={likeData.likeCount}");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Error parsing like status: {e.Message}");
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"Failed to get initial like status: {response}");
+                }
+            });
     }
 
     public void OnLikeButton()
     {
-        data.AddLike();
-        UpdateUI();
+        if (likeButton != null)
+            likeButton.interactable = false;
+
+        if (!isClickLike)
+        {
+            StartCoroutine(PostLike(data.answerId, () => {
+                data.AddLike();
+                isClickLike = true;
+                UpdateLikeUI();
+
+                if (likeButton != null)
+                    likeButton.interactable = true;
+            }, () => {
+                Debug.Log("이미 좋아요가 된 게시물입니다.");
+                isClickLike = true;
+                UpdateLikeUI();
+                if (likeButton != null)
+                    likeButton.interactable = true;
+            }));
+        }
+        else
+        {
+            StartCoroutine(PostLikeCancel(data.answerId, () => {
+                data.SubLike();
+                isClickLike = false;
+                UpdateLikeUI();
+
+                if (likeButton != null)
+                    likeButton.interactable = true;
+            }));
+        }
+    }
+
+    private IEnumerator PostLike(int answerId, Action onComplete, Action onConflict)
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+
+        yield return NetworkManager.Instance.PostWithoutBody($"/api/topic/answer/{answerId}/like",
+            (success, response) =>
+            {
+                if (success)
+                {
+                    Debug.Log("Like successfully updated");
+                    onComplete?.Invoke();
+                }
+                else
+                {
+                    if (response.Contains("409"))
+                    {
+                        Debug.Log("Already liked post");
+                        onConflict?.Invoke();
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to update like: {response}");
+                        if (likeButton != null)
+                            likeButton.interactable = true;
+                    }
+                }
+            });
+    }
+
+    private IEnumerator PostLikeCancel(int answerId, Action onComplete)
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+
+        yield return NetworkManager.Instance.PostWithoutBody($"/api/topic/answer/{answerId}/unlike",
+            (success, response) =>
+            {
+                if (success)
+                {
+                    Debug.Log("LikeCancel successfully updated");
+                    onComplete?.Invoke();
+                }
+                else
+                {
+                    Debug.LogError($"Failed to update likeCancel: {response}");
+                    if (likeButton != null)
+                        likeButton.interactable = true;
+                }
+            });
     }
 
     private void OnDestroy()
     {
-        openCommentButton.onClick.RemoveListener(OnToggleCommentPanel);
+        if (openCommentButton != null)
+            openCommentButton.onClick.RemoveListener(OnToggleCommentPanel);
+
+        if (likeButton != null)
+            likeButton.onClick.RemoveListener(OnLikeButton);
     }
 }

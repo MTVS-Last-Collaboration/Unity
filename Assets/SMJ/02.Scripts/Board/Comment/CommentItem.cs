@@ -17,7 +17,9 @@ public class CommentItem : MonoBehaviour
         data = commentData;
         print(commentData);
         UpdateUI();
+        UpdateLikeUI(true);
     }
+    bool isClickLike = false;
 
     private void UpdateUI()
     {
@@ -26,13 +28,36 @@ public class CommentItem : MonoBehaviour
             nickNameText.text = data.nickName;
             contentText.text = data.content;
             dateText.text = data.createDate.ToString("yyyy-MM-dd HH:mm");
+        }
+    }
+
+    private void UpdateLikeUI(bool isClickLike)
+    {
+        if (isClickLike == true)
+        {
+            likeCountText.text = $"¢½ {data.likeCount}";
+        }
+        else
+        {
             likeCountText.text = $"¢¾ {data.likeCount}";
         }
     }
 
     public void OnLikeButton()
     {
-        data.AddLike();
-        UpdateUI();
+        if (isClickLike == false)
+        {
+            data.AddLike();
+            UpdateLikeUI(isClickLike);
+            isClickLike = true;
+        }
+        else
+        {
+            data.SubLike();
+            UpdateLikeUI(isClickLike);
+            isClickLike = false;
+        }
     }
+
+
 }

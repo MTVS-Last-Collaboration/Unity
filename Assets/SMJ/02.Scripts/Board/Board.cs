@@ -25,6 +25,8 @@ public class Board : MonoBehaviour
 
     private TopicManager topicManager;
 
+    public int lastId = 0;
+
     private void Start()
     {
         DateTime time = new DateTime(2024, 11, 6);
@@ -99,9 +101,9 @@ public class Board : MonoBehaviour
         });
     }
 
-    public void CreatePost(string nickName, string title, string content, int likeCount)
+    public void CreatePost(int answerId, string nickName, string title, string content, int likeCount)
     {
-        var post = new PostData(nickName, title, content, likeCount);
+        var post = new PostData(answerId, nickName, title, content, likeCount);
         posts.Add(post);
         RefreshPostList(post);
     }
@@ -109,6 +111,7 @@ public class Board : MonoBehaviour
     public void CreatePost(TopicAnswer answer)
     {
         CreatePost(
+            answer.id,
             answer.authorNickname,
             answer.title,
             answer.content,
@@ -120,7 +123,7 @@ public class Board : MonoBehaviour
         if (commentBoard != null)
         {
             commentBoard.Initialize(answer, this);
-
+            lastId = answer.id;
             // 이미 로드된 댓글 데이터가 있다면 사용
             if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
             {

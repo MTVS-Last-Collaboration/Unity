@@ -25,4 +25,9 @@ public class CommentData
     {
         likeCount++;
     }
+
+    public void SubLike()
+    {
+        likeCount--;
+    }
 }
