@@ -43,15 +43,6 @@ public class PostItem : MonoBehaviour
         InitializeButtons();
         UpdateUI();
 
-        if (gameObject.activeInHierarchy)
-        {
-            LoadLikeStatus();
-        }
-        else
-        {
-            isInitialized = false;
-        }
-
         if (commentPanel.activeSelf)
         {
             layout.preferredHeight = maxHeight;
@@ -76,7 +67,6 @@ public class PostItem : MonoBehaviour
     {
         if (gameObject.activeInHierarchy)
         {
-            StartCoroutine(CheckInitialLikeStatus());
             isInitialized = true;
         }
     }
@@ -114,7 +104,7 @@ public class PostItem : MonoBehaviour
     {
         if (likeCountText != null)
         {
-            likeCountText.text = isClickLike ? $"♥ {data.likeCount}" : $"♡ {data.likeCount}";
+            likeCountText.text = isClickLike ? $"♥ {data.likeCount}" : $"♥ {data.likeCount}";
         }
     }
 
@@ -163,37 +153,17 @@ public class PostItem : MonoBehaviour
         if (likeButton != null)
             likeButton.interactable = false;
 
-        if (!isClickLike)
-        {
-            StartCoroutine(PostLike(data.answerId, () => {
-                data.AddLike();
-                isClickLike = true;
-                UpdateLikeUI();
+        StartCoroutine(PostLike(data.answerId, () => {
+            data.AddLike();
+            isClickLike = true;
+            UpdateLikeUI();
 
-                if (likeButton != null)
-                    likeButton.interactable = true;
-            }, () => {
-                Debug.Log("이미 좋아요가 된 게시물입니다.");
-                isClickLike = true;
-                UpdateLikeUI();
-                if (likeButton != null)
-                    likeButton.interactable = true;
-            }));
-        }
-        else
-        {
-            StartCoroutine(PostLikeCancel(data.answerId, () => {
-                data.SubLike();
-                isClickLike = false;
-                UpdateLikeUI();
-
-                if (likeButton != null)
-                    likeButton.interactable = true;
-            }));
-        }
+            if (likeButton != null)
+                likeButton.interactable = true;
+        }));
     }
 
-    private IEnumerator PostLike(int answerId, Action onComplete, Action onConflict)
+    private IEnumerator PostLike(int answerId, Action onComplete)
     {
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
 
@@ -209,8 +179,14 @@ public class PostItem : MonoBehaviour
                 {
                     if (response.Contains("409"))
                     {
-                        Debug.Log("Already liked post");
-                        onConflict?.Invoke();
+                        Debug.Log("Already liked post, trying to unlike");
+                        StartCoroutine(PostLikeCancel(answerId, () => {
+                            data.SubLike();
+                            isClickLike = false;
+                            UpdateLikeUI();
+                            if (likeButton != null)
+                                likeButton.interactable = true;
+                        }));
                     }
                     else
                     {

@@ -27,9 +27,13 @@ public class Board : MonoBehaviour
 
     public int lastId = 0;
 
+    public bool isFirstLoading = true;
+
     private void Start()
     {
-        DateTime time = new DateTime(2024, 11, 6);
+        //DateTime time = new DateTime(2024, 11, 6);
+        topicManager = GetComponent<TopicManager>();
+        DateTime time = DateTime.Today;
         InitTopic(time);
         StartCoroutine(DailyWeeklyLikesCheck());
 
@@ -44,59 +48,68 @@ public class Board : MonoBehaviour
         //sortByDateButton.onClick.RemoveListener(SortByDate);
     }
 
-    private void InitTopic(DateTime _date)
+    public void InitTopic(DateTime _date)
     {
-        topicManager = GetComponent<TopicManager>();
+        ClearBoard();
+
         topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"), (success) => {
             if (success)
             {
                 topicText.text = topicManager.currentContent;
                 Debug.Log("토픽 가져오기 성공 : " + topicManager.currentContent);
+
+                // 토픽 정보를 가져온 후 posts 초기화
                 InitPosts(topicManager.currentId);
+
+                // 날짜 차이에 따른 텍스트 설정
+                TimeSpan difference = DateTime.Now - _date;
+                if (difference.Days > 0)
+                {
+                    dayTopicText.text = $"<{difference.Days}일전 주제>";
+                }
+                else if (difference.Days == 0)
+                {
+                    dayTopicText.text = "<오늘의 주제>";
+                }
             }
             else
             {
                 Debug.Log("토픽 가져오기 실패");
             }
         });
+    }
+    public void ClearBoard()
+    {
+        // posts 리스트 클리어
+        posts.Clear();
 
-        TimeSpan difference = DateTime.Now - _date;
-        if (difference.Days > 0)
+        // 모든 자식 오브젝트 제거
+        foreach (Transform child in postListContent)
         {
-            dayTopicText.text = $"<{difference.Days}일전 주제>";
-        }
-        else if (difference.Days == 0)
-        {
-            dayTopicText.text = "<오늘의 주제>";
+            Destroy(child.gameObject);
         }
     }
-
     private void InitPosts(int id)
     {
+        Debug.Log($"InitPosts called with id: {id}");
+
+        // posts 리스트와 UI 초기화
+        ClearBoard();
+
         topicManager.GetTopicAnswers((success) =>
         {
             if (success)
             {
+                Debug.Log($"Successfully got {topicManager.CurrentAnswers.Count} answers");
                 foreach (var answer in topicManager.CurrentAnswers)
                 {
                     CreatePost(answer);
-                    // 답변에 해당하는 댓글들 가져오기
-                    //if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
-                    //{
-                    //    var lastPost = postListContent.GetChild(postListContent.childCount - 1);
-                    //    var commentBoard = lastPost.GetComponentInChildren<CommentBoard>();
-                    //    if (commentBoard != null)
-                    //    {
-                    //        print("제발 어디냐!: " + answer.id);
-                    //        commentBoard.Initialize(answer, this);
-                    //        foreach (var comment in comments)
-                    //        {
-                    //            print("제발!" + comment.content);
-                    //            commentBoard.AddComment(comment);
-                    //        }
-                    //    }
-                    //}
+                    Debug.Log($"Created post for answer: {answer.id}");
                 }
+            }
+            else
+            {
+                Debug.Log("Failed to get topic answers");
             }
         });
     }
@@ -105,7 +118,8 @@ public class Board : MonoBehaviour
     {
         var post = new PostData(answerId, nickName, title, content, likeCount);
         posts.Add(post);
-        RefreshPostList(post);
+        GameObject postObj = Instantiate(postPrefab, postListContent);
+        postObj.GetComponent<PostItem>().Initialize(post);
     }
 
     public void CreatePost(TopicAnswer answer)
@@ -124,13 +138,11 @@ public class Board : MonoBehaviour
         {
             commentBoard.Initialize(answer, this);
             lastId = answer.id;
-            // 이미 로드된 댓글 데이터가 있다면 사용
+
             if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
             {
-                print("쌀숭이 어디냐!: " + answer.id);
                 foreach (var comment in comments)
                 {
-                    print("쌀숭이!" + comment.content);
                     commentBoard.AddComment(comment);
                 }
             }

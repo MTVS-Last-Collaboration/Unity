@@ -15,10 +15,11 @@ public class ServerCommentPost
 public class ServerCommentData
 {
     public int id;
+    public int answerId;
     public string content;
     public string authorNickname;
-    public string createdDate;
     public int likeCount;
+    public string createdDate;
 }
 
 [System.Serializable]
@@ -91,25 +92,25 @@ public class CommentBoard : MonoBehaviour
 
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
 
-        yield return NetworkManager.Instance.GetWithoutBody($"api/topic/answer/{answerId}/comments",
-            (success, response) =>
+        yield return NetworkManager.Instance.GetArray<ServerCommentData>($"api/topic/{answerId}/comments",
+            (success, commentList) =>
             {
                 if (!gameObject.activeInHierarchy) return;
 
                 ShowLoadingState(false);
 
-                if (success)
+                if (success && commentList != null)
                 {
                     try
                     {
-                        var serverResponse = JsonUtility.FromJson<ServerCommentResponse>(response);
-                        if (serverResponse != null && serverResponse.items != null && serverResponse.items.Count > 0)
+                        comments.Clear();
+                        foreach (var serverComment in commentList)
                         {
-                            comments.Clear();
-                            foreach (var serverComment in serverResponse.items)
-                            {
-                                AddComment(serverComment);
-                            }
+                            AddComment(serverComment);
+                        }
+
+                        if (comments.Count > 0)
+                        {
                             RefreshCommentList();
                             ShowNoComments(false);
                             ShowError(false);
@@ -123,14 +124,14 @@ public class CommentBoard : MonoBehaviour
                     }
                     catch (Exception e)
                     {
-                        Debug.LogError($"Error parsing comments: {e.Message}");
+                        Debug.LogError($"Error processing comments: {e.Message}");
                         ShowError(true);
                         ShowNoComments(false);
                     }
                 }
                 else
                 {
-                    if (response.Contains("404"))
+                    if (success) // 성공했지만 댓글이 없는 경우
                     {
                         ShowNoComments(true);
                         ShowError(false);
@@ -140,7 +141,7 @@ public class CommentBoard : MonoBehaviour
                     {
                         ShowError(true);
                         ShowNoComments(false);
-                        Debug.LogError($"Failed to load comments: {response}");
+                        Debug.LogError($"Failed to load comments");
                     }
                 }
             });

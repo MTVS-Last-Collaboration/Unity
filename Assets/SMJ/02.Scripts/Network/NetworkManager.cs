@@ -95,8 +95,16 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"POST 요청 실패: {request.error}");
-                callback?.Invoke(false, request.error);
+                if (request.responseCode == 409)
+                {
+                    // 409 에러는 정상적인 케이스이므로 로그 출력하지 않음
+                    callback?.Invoke(false, request.error);
+                }
+                else
+                {
+                    Debug.LogError($"POST 요청 실패: {request.error}");
+                    callback?.Invoke(false, request.error);
+                }
             }
         }
     }
