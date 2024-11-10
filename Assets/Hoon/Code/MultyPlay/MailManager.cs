@@ -21,6 +21,7 @@ using System.Security.Cryptography;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
+using UnityEngine.Networking;
 
 [System.Serializable]
 public class DayComentData
@@ -100,13 +101,16 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     bool isHistoryScrollview = false; // 추억스크롤뷰가 보이는지 확인하는 변수
     public Transform historyContent; // 추억버튼이 컨텐츠의 위치
     public GameObject historyButton; // 추억버튼
-    
+
     string moodText1;
     string moodText2;
 
     List<DayComentData> histrotyList = new List<DayComentData>(); //히스토리 담을 리스트
-    List<Button>histroyButtonList = new List<Button>(); //버튼을 담을 리스트
+    List<Button> histroyButtonList = new List<Button>(); //버튼을 담을 리스트
 
+
+    public bool isServerComent = false;
+    public TextMeshProUGUI testSeverComentButton;
 
     void Start()
     {
@@ -119,7 +123,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-            print("json파일없음");
+            print("json파일없음, 생성시작");
             CreateNewDayComentJsonArray();
 
         }
@@ -178,14 +182,16 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     void Update()
     {
-        if (isMailImage)//메일컨텐츠BG
-        {
-            mail_ImageObject.SetActive(true);
-        }
-        else
-        {
-            mail_ImageObject.SetActive(false); //메일 이미지 오브젝트 끄기
-        }
+        /* if (isMailImage)//메일컨텐츠BG
+         {
+             mail_ImageObject.SetActive(true);
+
+         }
+         else
+         {
+             mail_ImageObject.SetActive(false); //메일 이미지 오브젝트 끄기
+             print("메일이미지 끄자");
+         }*/
 
         if (isMoodSwihtch1)//감정표현버튼1
         {
@@ -206,6 +212,81 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
 
     }
+
+    //서버에서 오늘 미션을 가져오자.
+    public void TodayMissonGetServer()
+    {
+        StartCoroutine(GetTodayMission()); 
+          
+    }
+
+    IEnumerator GetTodayMission()
+    {
+        string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //요청하는주소
+
+        UnityWebRequest request = UnityWebRequest.Get(urlTodayMission);
+        request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //저장된 내 도큰보내기
+
+        yield return request.SendWebRequest(); //웹에서 요청이 올때까지 대기
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)  //에러발생
+        {
+
+            Debug.LogError("Error: " + request.error);
+            //에러500
+
+
+
+        }
+        else //문제없음
+        {
+            string responseText = request.downloadHandler.text;
+            print("서버 응답: " + responseText); // 내가 받은 정보
+
+        }
+
+    }
+
+        //버튼을 누르면 답변 입력필드를 보여주자.
+        public void ViewComentInputField()
+    {
+        string nickName = LobbyGameManager.instance.playerNickName;
+        
+        print("서버답변하기");
+        isServerComent = true; //서버답변 참으로
+
+        //서버 버튼의 텍스트를 서버 저장으로 면경하기.
+        testSeverComentButton.text = "서버저장하기";
+        
+
+
+
+        if (isMailComentButton) //답변하기 누른후 저장하기 누르면
+        {
+            mailComentButtonText.text = "답변하기"; //코멘트버튼 텍스트 변경 답변하기
+
+            if (userNumber == "user1")
+            {
+                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //쓰여진 코멘트를 첫번째로 변경
+                //print("1번유저 위치에 답변저장");
+                mailComentText1.text = nickName + "답변" + ":" + tmp_InputField.text;
+            }
+            else
+            {
+                mailComentText2.text = nickName + "답변" + ":" + tmp_InputField.text; //쓰여진 코멘트를 첫번째로 변경
+                //print("2번유저 위치에 답변저장");
+            }
+        }
+        else 
+        {
+
+            
+        }
+
+
+
+    }
+    
 
     public void HistroyView()
     {
@@ -395,8 +476,32 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
         }   
     }
+    
+    public void CheckDate()
+    {
+        // 현재 날짜를 yyyy-MM-dd 형식의 문자열로 변환
+        startDate = "2024-10-28";
+        Debug.Log("시작 날짜: " + startDate);
+
+        currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+        Debug.Log("현재 날짜: " + currentDate);
+        // 문자열을 DateTime 형식으로 변환
+        DateTime startDay = DateTime.Parse(startDate);
+        // 오늘 날짜 가져오기
+        DateTime currDay = DateTime.Now;
+
+        // 날짜 차이 계산
+        TimeSpan difference = currDay - startDay;
+        //날짜보정
+        int totalDays = difference.Days + 1;
+        // 차이의 일수를 문자열로 변환하여 sumDay에 저장
+        string sumDay = totalDays.ToString();
+
+        string today = "Day" + sumDay + ":" + currentDate;
+        currentDay.text = today; //오늘날짜를 표시해주자.
+    }//오늘날짜확인
   
-    public void CheckMission()
+    public void CheckMission()//오늘미션확인
     {
         // 날짜 문자열을 DateTime으로 변환
         DateTime dateTime = DateTime.Parse(currentDate);
@@ -420,33 +525,50 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         int value = UnityEngine.Random.Range(0, 10); //랜덤뽑기
         
         //미션설정하기
-        if (day == 04)
+        if (day == 01 || day == 11 || day ==21) 
         {
             todayMission = "서로의 첫인상을 알려주세요";
         }
-        else if(day == 05)
+        else if(day == 02 || day == 12 || day == 22)
         {
             todayMission = "오늘 점심에 무엇을 먹었는지 알려주세요.";
         }
-        else if (day == 06)
+        else if (day == 03 || day == 13 || day == 23)
         {
             todayMission = "가장 소중한 사람은 누구인지 알려주세요.";
         }
-        else if (day == 07)
+        else if (day == 04 || day == 14 || day == 24)
         {
             todayMission = "오늘 날씨에 대한 느낌을 알려주세요.";
         }
-        else if (day == 08)
+        else if (day == 05 || day == 15 || day == 25)
         {
-            todayMission = "둘이 함께 가보고 싶은곳을 알려주세요.";
+            todayMission = "둘이 함께 여행 가고싶은 장소는 어디인가요.";
         }
-        else if (day == 09)
+        else if (day == 06 || day == 16 || day == 26)
         {
             todayMission = "짜장 vs 짬뽕 더 선호하는 음식을 알려주세요.";
         }
-        else if (day == 10)
+        else if (day == 07 || day == 17 || day == 27)
         {
             todayMission = "요즘 즐겨듣는 노래를 알려주세요";
+        }
+        else if (day == 08 || day == 18 || day == 28)
+        {
+            todayMission = "연인과 함께보고 싶은 영화를 알려주세요";
+        }
+        else if (day == 09 || day == 19 || day == 29)
+        {
+            todayMission = "연인과 함께 먹고싶은 음식을 알려주세요";
+        }
+        else if (day == 10 || day == 20 || day == 30)
+        {
+            todayMission = "연인에게 좋아하는 음료를 알려주세요.";
+        }
+        else 
+        {
+            todayMission = "내일 세계가 멸망한다면 연인에게 남기고 싶은 말은 무엇인가요.";
+
         }
 
         //미션저장하기
@@ -528,31 +650,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    public void CheckDate()
-    {
-        // 현재 날짜를 yyyy-MM-dd 형식의 문자열로 변환
-        startDate = "2024-10-28";
-        Debug.Log("시작 날짜: " + startDate);
-
-        currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-        Debug.Log("현재 날짜: " + currentDate);
-        // 문자열을 DateTime 형식으로 변환
-        DateTime startDay = DateTime.Parse(startDate);
-        // 오늘 날짜 가져오기
-        DateTime currDay = DateTime.Now;
-
-        // 날짜 차이 계산
-        TimeSpan difference = currDay - startDay;
-        //날짜보정
-        int totalDays = difference.Days + 1;
-        // 차이의 일수를 문자열로 변환하여 sumDay에 저장
-        string sumDay = totalDays.ToString();
-
-        string today = "Day" + sumDay + ":" + currentDate;
-        currentDay.text = today; //오늘날짜를 표시해주자.
-    }
-
-    public void CheckMood() //변경한 무드 불러오기
+    public void CheckMood() //기분상태확인
     {
 
         //이미지를 골랐는지 확인하기
@@ -612,8 +710,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
         }
     }
-
-    public void CheckMail()
+    
+    public void CheckMail()//미션, 기분, 답변이 있는지 확인
     {
         CheckMission();
         CheckMood();
@@ -1007,6 +1105,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void ViewInputMailComent()
     {
+      
         //print("ViewInputMailComent");
         tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // 코멘트 인풋필드 컴포넌트
         mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //코멘트1 의 텍스트
@@ -1039,7 +1138,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             mail_IconImage.gameObject.SetActive(enabled);
             
             //버튼을 눌렀을때 함수 호출, 한번만 호출하게 하자.
-            touchButton.onClick.AddListener(MailImageControll);
+            touchButton.onClick.AddListener(WithInRangeViewMailImageControll);
 
         }
     }
@@ -1051,18 +1150,22 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     private void OnTriggerExit(Collider other)
     {
         //버튼을 눌렀을때 함수 호출 
-        touchButton.onClick.RemoveListener(MailImageControll);
+        touchButton.onClick.RemoveListener(WithInRangeViewMailImageControll);
         mail_IconImage.gameObject.SetActive(false);
         print("이미지 끄기");
     }
 
-    public void MailImageControll()
+    public void WithInRangeViewMailImageControll()
     {
         isMailImage = !isMailImage;
 
         if (!isMailImage)
         {
             mail_ImageObject.SetActive(false);
+        }
+        else
+        {
+            mail_ImageObject.SetActive(true);
         }
     }
 

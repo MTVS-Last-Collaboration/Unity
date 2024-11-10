@@ -276,9 +276,11 @@ public class LoginTest : MonoBehaviour
     IEnumerator GetUserInfo()
     {
         string urlMyInfo = "http://125.132.216.190:12223/api/auth/my-info";
-        
+        //string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //테스트용
+
         //Get 서버요청
         UnityWebRequest request = UnityWebRequest.Get(urlMyInfo); //Get url
+        //UnityWebRequest request = UnityWebRequest.Get(urlTodayMission); //Get url 미션가져오기테스트용
         request.SetRequestHeader("Authorization", "Bearer " + myToken);
 
         
