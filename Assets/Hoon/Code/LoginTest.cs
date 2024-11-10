@@ -51,8 +51,9 @@ public class LoginTest : MonoBehaviour
     public GameObject loginImage;
     public GameObject allRegistObject;
     public TMP_InputField viewMyCoupleCode;
-    public GameObject coupleMenu2;
     public GameObject coupleMenu;
+    public GameObject coupleMenu2to1;
+    public GameObject coupleMenu3;
     public class UserInfo
     {
         public string email;
@@ -163,7 +164,13 @@ public class LoginTest : MonoBehaviour
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
             }
 
+
+            //여기에서 UI Img_CoupleMenu3 꺼야합니다.
+            coupleMenu3.SetActive(false);
+
+
         }
+
     }
 
     public void CheckLoginUserInfo()
@@ -535,7 +542,7 @@ public class LoginTest : MonoBehaviour
         GUIUtility.systemCopyBuffer = viewMyCoupleCode.text;
         Debug.Log("텍스트가 클립보드에 복사되었습니다: " + viewMyCoupleCode.text);
 
-        coupleMenu2.SetActive(false);
+        coupleMenu2to1.SetActive(false);
         //coupleMenu.SetActive(true);
 
 
