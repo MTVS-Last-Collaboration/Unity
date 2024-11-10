@@ -106,6 +106,7 @@ public class RegistTest : MonoBehaviour
                 if(UserInfo.email == inputEmail.text) //이메일이 있으면
                 {
                     inputEmail.text = "이메일이 중복됩니다.";
+                    print("이메일이 중복됩니다.");
                     isMatchInfo = true;
                     break;
                 }
@@ -114,6 +115,7 @@ public class RegistTest : MonoBehaviour
 
             if (!isMatchInfo) //일치하는 정보가 없으면
             {
+                print("일치하는 정보가 없습니다.");
                 //저장하자.
 
                 //값을 초기화 하지 않으면 null발생함.
@@ -136,7 +138,7 @@ public class RegistTest : MonoBehaviour
                 print("저장된 문자열" + jsonString);
 
                 StartCoroutine(PostNewUserInfoJSon(jsonString));
-
+                
             }
 
         }
