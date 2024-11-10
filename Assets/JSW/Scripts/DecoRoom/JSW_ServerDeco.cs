@@ -15,7 +15,7 @@ public class JSW_ServerDeco : MonoBehaviour
     [System.Serializable]
     public class FurnitureData
     {
-        public int coupleId;
+        //public int coupleId;
         public int furnitureId;
         public int positionX;
         public int positionY;
@@ -36,7 +36,7 @@ public class JSW_ServerDeco : MonoBehaviour
     {
         FurnitureData data = new FurnitureData
         {
-            coupleId = JSW_CoupleSceneManager.instance.CoupleId,
+            //coupleId = JSW_CoupleSceneManager.instance.CoupleId,
             furnitureId = 1,
             positionX = 100,
             positionY = 200,

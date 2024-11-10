@@ -169,6 +169,7 @@ public class JSW_UIManager : MonoBehaviour
     public void OnClickDecorateShopUI_Back()
     {
         DecorateShopUI.SetActive(false);
+        DecorateMineUI.SetActive(false);
     }
 
     public void OnClickDecorateMineUI()

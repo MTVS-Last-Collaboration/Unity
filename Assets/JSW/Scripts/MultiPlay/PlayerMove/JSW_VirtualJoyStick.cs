@@ -245,7 +245,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     IEnumerator PlayerMoveControll()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.5f);
 
         // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
@@ -272,7 +272,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     IEnumerator PlayerDecorate()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.5f);
 
         // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
         GameObject[] allObjects = FindObjectsOfType<GameObject>();

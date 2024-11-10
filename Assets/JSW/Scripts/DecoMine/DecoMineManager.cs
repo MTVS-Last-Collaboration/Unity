@@ -28,20 +28,9 @@ public class DecoMineManager : MonoBehaviourPun, IOnEventCallback
         Walls.GetComponent<MeshRenderer>().material = Wallmaterials[wallNum];
     }
 
-    public void changeFloor()
+    public void changeFloor(int floorNum)
     {
-
-
-        if (floorNum < 4)
-        {
-            floorNum++;
-            //Floors.GetComponent<MeshRenderer>().material = Floormaterials[floorNum++];
-        }
-        else
-        {
-            floorNum = 0;
-        }
-
+        this.floorNum = floorNum;
         object[] sendContent = new object[] { floorNum };
 
         // 价脚 可记
@@ -54,19 +43,9 @@ public class DecoMineManager : MonoBehaviourPun, IOnEventCallback
 
         EventSystem.current.SetSelectedGameObject(null);
     }
-    public void changeWalls()
+    public void changeWalls(int wallNum)
     {
-
-        if (wallNum < 10)
-        {
-            wallNum++;
-            //Walls.GetComponent<MeshRenderer>().material = Wallmaterials[wallNum++];
-        }
-        else
-        {
-            wallNum = 0;
-        }
-
+        this.wallNum = wallNum;
         object[] sendContent = new object[] { wallNum };
 
         // 价脚 可记

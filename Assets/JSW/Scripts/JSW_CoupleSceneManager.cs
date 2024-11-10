@@ -12,6 +12,7 @@ public class JSW_CoupleSceneManager : MonoBehaviour
     public string CoupleCode;
     public int Points;
     public string AnniversaryDate;
+    public DecoShopManager decoShopManager;
 
     private void Awake()
     {
@@ -63,7 +64,7 @@ public class JSW_CoupleSceneManager : MonoBehaviour
                 CoupleCode = couple.coupleCode;
                 Points = couple.points;
                 AnniversaryDate = couple.anniversaryDate;
-
+                decoShopManager.point = Points;
 
                 // JSON µ•¿Ã≈Õ ∆ƒΩÃ
                 //ProcessEvents(request.downloadHandler.text);

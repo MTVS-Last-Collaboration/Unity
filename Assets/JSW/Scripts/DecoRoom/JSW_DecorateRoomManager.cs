@@ -612,7 +612,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
     IEnumerator PlayerDecorate()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
 
         // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
         GameObject[] allObjects = FindObjectsOfType<GameObject>();

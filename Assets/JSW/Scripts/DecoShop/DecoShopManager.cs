@@ -7,6 +7,7 @@ public class DecoShopManager : MonoBehaviour
 {
     public int point;
     public int nowPrice;
+    public float targetPoint;
     public TMP_Text nowOwner;
     public TMP_Text profilePrice;
     
@@ -21,6 +22,11 @@ public class DecoShopManager : MonoBehaviour
         profilePrice.text = point.ToString();
     }
 
+    private void Update()
+    {
+        targetPoint = Mathf.Lerp(targetPoint, point, Time.deltaTime * 10f);
+        profilePrice.text = targetPoint.ToString("0");
+    }
 
     public void PurchaseOkay()
     {
@@ -29,26 +35,26 @@ public class DecoShopManager : MonoBehaviour
         {
             DecoUIPurchase.SetActive(false);
             DecoUIOkay.SetActive(true);
-            int targetPoint = point - nowPrice;
-            StartCoroutine(PurchaseCo(point, targetPoint));
+            point = point - nowPrice;
+            //StartCoroutine(PurchaseCo(point, targetPoint));
             nowOwner.text = "소유중";
             JDMO.isMineText.text = "소유중";
             JDMO.isPurchased = true;
             JDSI.isPurchase = true;
         }
     }
-    IEnumerator PurchaseCo(int point, int targetPoint)
-    {
-        float changetPoint = point;
-        while ((int)changetPoint != targetPoint)
-        {
-            changetPoint = Mathf.Lerp(changetPoint, targetPoint, Time.deltaTime * 10f);
-            profilePrice.text = changetPoint.ToString("0");
-            yield return null;
-        }
-        this.point = targetPoint;
-        profilePrice.text = this.point.ToString("0");
-    }
+    //IEnumerator PurchaseCo(int point, int targetPoint)
+    //{
+    //    float changetPoint = point;
+    //    while ((int)changetPoint != targetPoint)
+    //    {
+    //        changetPoint = Mathf.Lerp(changetPoint, targetPoint, Time.deltaTime * 10f);
+    //        profilePrice.text = changetPoint.ToString("0");
+    //        yield return null;
+    //    }
+    //    this.point = targetPoint;
+    //    profilePrice.text = this.point.ToString("0");
+    //}
 
     public void OnClickPurchaseNo()
     {

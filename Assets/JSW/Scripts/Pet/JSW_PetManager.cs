@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static JSW_ServerDeco;
 
 public class JSW_PetManager : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class JSW_PetManager : MonoBehaviour
     public Image expPercent;
     bool isOpenMongUI;
 
+    public TMP_Text mainMongText;
     void Start()
     {
         mongExp = 0;
@@ -30,13 +33,13 @@ public class JSW_PetManager : MonoBehaviour
 
     private void Update()
     {
+        mainMongText.text = mongLevel.ToString();
         if (mongUI.activeSelf == true)
         {
-
-
             mongExp = Mathf.Lerp(mongExp, mongExpTarget, Time.deltaTime);
             expPercent.fillAmount = mongExp / 100;
             mongLevel_Exp.text = ((int)mongExp).ToString() + "%";
+            
 
             if (mongExpTarget - mongExp <= 0.4f)
             {
@@ -123,6 +126,7 @@ public class JSW_PetManager : MonoBehaviour
     [System.Serializable]
     public class PetStatus
     {
+        public string name;
         public int level;
         public int experience;
     }
@@ -147,6 +151,7 @@ public class JSW_PetManager : MonoBehaviour
             //Debug.Log("펫 상태 조회 성공: " + request.downloadHandler.text);
             PetStatus petStatus = JsonUtility.FromJson<PetStatus>(request.downloadHandler.text);
             Debug.Log("펫 상태 조회 성공: 레벨 = " + petStatus.level + ", 경험치 = " + petStatus.experience);
+            MongName = petStatus.name;
             mongLevel = petStatus.level;
             mongExpTarget = petStatus.experience;
             SetNickNameMong();
@@ -189,4 +194,65 @@ public class JSW_PetManager : MonoBehaviour
             Mong.transform.GetChild(3).gameObject.SetActive(true);
         }
     }
+
+
+    public void MongNickname(string nickName)
+    {
+        //if (mongLevel < 3)
+        //{
+        //    transform.GetChild(mongLevel++).gameObject.SetActive(false);
+        //    transform.GetChild(mongLevel).gameObject.SetActive(true);
+        //}
+        StartCoroutine(ChangeNickname(nickName));
+    }
+
+    private string Nickurl = "http://125.132.216.190:12223/api/pet/name";
+
+
+    public class Namess
+    {
+        public string name;
+    }
+
+
+    IEnumerator ChangeNickname(string nickName)
+    {
+        // 요청을 생성합니다.
+        UnityWebRequest request = new UnityWebRequest(Nickurl, "PUT");
+
+        Namess data = new Namess
+        {
+            name = nickName
+        };
+
+        string json = JsonUtility.ToJson(data);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+
+        // 인증 토큰이 필요한 경우 헤더에 추가합니다.
+        // request.SetRequestHeader("Authorization", "Bearer YOUR_TOKEN");
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        string jwtToken = LoginInfoManager.instance.myToken;
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+        //request.SetRequestHeader("accept", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+        // 요청을 서버로 전송하고 응답을 기다립니다.
+        yield return request.SendWebRequest();
+
+        // 서버의 응답을 확인합니다.
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            // 성공 응답 처리
+            Debug.Log("경험치 추가 성공: " + request.downloadHandler);
+        }
+        else
+        {
+            // 실패 응답 처리
+            Debug.LogError("경험치 추가 실패: " + request.error);
+        }
+    }
+
 }
