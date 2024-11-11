@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DetailPost : MonoBehaviour
@@ -21,6 +22,7 @@ public class DetailPost : MonoBehaviour
     private void Start()
     {
         uiPopup = GetComponent<UIPopupAnimation>();
+        inputCommentObj.transform.SetAsLastSibling();
     }
 
     public DetailPost(int answerId, string title, string nickName, DateTime date, int likeCount, int commentCount)
@@ -33,7 +35,7 @@ public class DetailPost : MonoBehaviour
         this.commentCount = commentCount;
         ActivateDetail();
     }
-
+    
     public void ActivateDetail()
     {
         //boardViewObj.SetActive(false);

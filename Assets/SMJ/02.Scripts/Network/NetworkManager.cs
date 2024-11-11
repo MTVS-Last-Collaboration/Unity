@@ -149,8 +149,16 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Request failed: {request.error}");
-                callback?.Invoke(false, null);
+                if (request.responseCode == 404)
+                {
+                    Debug.Log("Resource not found (404)");
+                    callback?.Invoke(true, new List<T>()); // 404인 경우 빈 리스트 반환
+                }
+                else
+                {
+                    Debug.LogError($"Request failed: {request.error}");
+                    callback?.Invoke(false, null);
+                }
             }
         }
     }

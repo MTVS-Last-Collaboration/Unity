@@ -97,6 +97,11 @@ public class PostItem : MonoBehaviour
         }
     }
 
+    private void OnClickPost()
+    {
+        
+    }
+
     private IEnumerator CheckInitialLikeStatus()
     {
         if (!gameObject.activeInHierarchy)
