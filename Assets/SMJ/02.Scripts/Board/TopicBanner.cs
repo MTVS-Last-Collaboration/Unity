@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 public class TopicBanner : MonoBehaviour
 {
-    [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text contentText;
     [SerializeField] private Button button;
     private int days;
@@ -52,8 +51,6 @@ public class TopicBanner : MonoBehaviour
 
     public void Initialize(Topic topic, int day)
     {
-        days = day;
-        titleText.text = day == 0 ? "<¿À´ÃÀÇ ½æÅå ÀÌ½´>" : $"<{day}ÀÏÀü ½æÅå ÀÌ½´>";
         contentText.text = topic.content;
     }
 
