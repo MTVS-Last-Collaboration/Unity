@@ -277,7 +277,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1022873874}
   m_Direction: 2
   m_Value: 1.0000007
-  m_Size: 0.81666094
+  m_Size: 0.8166667
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -567,10 +567,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 44
   mineShopObjectText: {fileID: 5351658}
   decoMineObject: {fileID: 526635127}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &5735852
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,15 +806,15 @@ RectTransform:
   m_GameObject: {fileID: 8933451}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 18.102, y: 1, z: 1}
+  m_LocalScale: {x: 22.687965, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 843421274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -46, y: 198.08347}
-  m_SizeDelta: {x: 50, y: 103.8342}
+  m_AnchoredPosition: {x: -71, y: 216.63}
+  m_SizeDelta: {x: 50, y: 110.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8933453
 MonoBehaviour:
@@ -1708,12 +1710,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -1836,10 +1838,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1500
+  shopid: 15
   mineShopObjectText: {fileID: 24494030}
   decoMineObject: {fileID: 513836668}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &24494033 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -2037,8 +2041,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 292.69995, y: 353}
-  m_SizeDelta: {x: 118, y: 60}
+  m_AnchoredPosition: {x: 300.46362, y: 353}
+  m_SizeDelta: {x: 102.4725, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &27272125
 MonoBehaviour:
@@ -2116,7 +2120,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3c2e4897369efd941ba3c674485bde96, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e41ec1e9a4b050c43ad25b65a7afc349, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2507,7 +2511,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -2676,8 +2680,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 1623786099}
+  shopid: 30
+  initRoom: {fileID: 0}
   ResourceName: 1
   decoMineManager: {fileID: 0}
 --- !u!114 &33404475
@@ -3590,10 +3596,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 20
   mineShopObjectText: {fileID: 60322770}
   decoMineObject: {fileID: 1223375537}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &60322773 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -3751,9 +3759,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62636641}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8421052, y: 0.8421052, z: 0.8421052}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 287844732}
@@ -3762,13 +3770,13 @@ RectTransform:
   - {fileID: 1508580533}
   - {fileID: 1143808713}
   - {fileID: 1208583314}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 820073780}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 960, y: 454.73685}
+  m_SizeDelta: {x: 2280, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &68497802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3820,12 +3828,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -3948,10 +3956,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 5
   mineShopObjectText: {fileID: 68497804}
   decoMineObject: {fileID: 934892122}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &68497807 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -4259,7 +4269,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 564637808}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.2710181}
+  m_AnchorMin: {x: 0, y: 0.18333328}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 275}
   m_SizeDelta: {x: 20, y: -566}
@@ -5441,6 +5451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 120823173}
+  - component: {fileID: 120823174}
   m_Layer: 5
   m_Name: BottomPanel
   m_TagString: Untagged
@@ -5473,6 +5484,18 @@ RectTransform:
   m_AnchoredPosition: {x: 882, y: -608.1}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &120823174
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120823172}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &124243984
 GameObject:
   m_ObjectHideFlags: 0
@@ -5640,7 +5663,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &126800180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6304,7 +6327,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 5cf46ad0fae38994caa0bf14f18c11c1, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -6352,7 +6375,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2334857}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.24111104}
+  m_AnchorMin: {x: 0, y: 0.18333328}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 275}
   m_SizeDelta: {x: 20, y: -566}
@@ -6564,17 +6587,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f1bede955deb00a4daf4a32fc1f1b87b,
+      objectReference: {fileID: 21300000, guid: 47ad1412951d5d74c8a4374660548fd1,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uBD80\uC0B0 \uAD11\uC548\uB9AC\uC5D0\uC11C"
+      value: "\uC774\uC05C\uC9D3!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4072083269007695653, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_Maskable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4072083269007695653, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -6584,12 +6617,12 @@ PrefabInstance:
     - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uB2E4\uB9AC \uC704\uC5D0\uC11C \uC0AC\uB791\uC758 \uB9F9\uC138\u314E\n"
+      value: "\uC798\uC0DD\uAE30\uACE0 \uC608\uC05C \uC6B0\uB9AC!"
       objectReference: {fileID: 0}
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: 2024-09-15
+      value: 2024-11-1
       objectReference: {fileID: 0}
     - target: {fileID: 8006728576425162363, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -6700,6 +6733,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7284,6 +7322,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 389970335}
+  shopid: 22
+  initRoom: {fileID: 0}
 --- !u!114 &165772704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7433,17 +7473,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 47ad1412951d5d74c8a4374660548fd1,
+      objectReference: {fileID: 21300000, guid: 40aeab8542d03e348b9ad50e5b3178fa,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uC77C\uBCF8 \uC5EC\uD589\n"
+      value: "\uC5EC\uC218 \uC5EC\uD589"
       objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -7453,12 +7493,12 @@ PrefabInstance:
     - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "300\uC77C \uC5EC\uD589~ \uC0AC\uB791 \uC601\uC6D0\uD788\u314E\u314E"
+      value: "\u314B\u314B\u314B \uC6C3\uAE30\uB2E4 \u314B\u314B \uC608\uBED0"
       objectReference: {fileID: 0}
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: 2024-07-12
+      value: 2024-06-17
       objectReference: {fileID: 0}
     - target: {fileID: 8006728576425162363, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -7569,6 +7609,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7857,8 +7902,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8012,12 +8057,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -8155,10 +8200,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1500
+  shopid: 19
   mineShopObjectText: {fileID: 184450287}
   decoMineObject: {fileID: 253027842}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &184450290 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -8362,7 +8409,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -8598,10 +8645,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 43
   mineShopObjectText: {fileID: 188768536}
   decoMineObject: {fileID: 1528777687}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &198071631
 GameObject:
   m_ObjectHideFlags: 0
@@ -10669,12 +10718,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -10815,6 +10864,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 845948891}
+  shopid: 19
+  initRoom: {fileID: 0}
 --- !u!114 &253027843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11038,7 +11089,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: bf62530755860e348b59fb3bbfde2a4c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -11140,7 +11191,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -11309,8 +11360,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 2117045089}
+  shopid: 33
+  initRoom: {fileID: 0}
   ResourceName: 4
   decoMineManager: {fileID: 0}
 --- !u!114 &262488852
@@ -11551,6 +11604,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1503130285}
+  shopid: 35
+  initRoom: {fileID: 0}
   ResourceName: 6
   decoMineManager: {fileID: 0}
 --- !u!114 &264522874
@@ -11800,10 +11855,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 25
   mineShopObjectText: {fileID: 270872405}
   decoMineObject: {fileID: 711900290}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &270872408 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -11923,12 +11980,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -12051,10 +12108,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 9
   mineShopObjectText: {fileID: 278975695}
   decoMineObject: {fileID: 710765460}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &278975698 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -12185,7 +12244,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -12556,7 +12615,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -13860,7 +13919,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -14029,8 +14088,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 1116414784}
+  shopid: 32
+  initRoom: {fileID: 0}
   ResourceName: 3
   decoMineManager: {fileID: 0}
 --- !u!114 &330633504
@@ -14100,7 +14161,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -14336,10 +14397,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 31
   mineShopObjectText: {fileID: 339995433}
   decoMineObject: {fileID: 1052725504}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &340009377
 GameObject:
   m_ObjectHideFlags: 0
@@ -14399,7 +14462,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -14965,12 +15028,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -15111,6 +15174,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 238620004}
+  shopid: 2
+  initRoom: {fileID: 0}
 --- !u!114 &355306847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16825,12 +16890,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -16956,6 +17021,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 1789883183}
+  shopid: 14
+  initRoom: {fileID: 0}
 --- !u!114 &396502933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17493,8 +17560,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 300}
+  m_AnchoredPosition: {x: 1, y: -14}
+  m_SizeDelta: {x: 540.9669, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &416586202
 MonoBehaviour:
@@ -17509,15 +17576,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.76729554, g: 0.76729554, b: 0.76729554, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 8c8bcc3deea71ef4185467c8b70973e8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -18049,7 +18116,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -448, y: 201}
+  m_AnchoredPosition: {x: -579, y: 219}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &430621417
@@ -18899,10 +18966,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 39
   mineShopObjectText: {fileID: 450300551}
   decoMineObject: {fileID: 1884930770}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &452216196
 GameObject:
   m_ObjectHideFlags: 0
@@ -20543,7 +20612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00091438234}
+  m_AnchoredPosition: {x: -0.00024414062, y: 0.00091438234}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &478713380
@@ -20771,12 +20840,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -20902,6 +20971,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 2085997495}
+  shopid: 26
+  initRoom: {fileID: 0}
 --- !u!114 &484837134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21661,12 +21732,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -21792,6 +21863,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 511285950}
+  shopid: 15
+  initRoom: {fileID: 0}
 --- !u!114 &513836669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21899,12 +21972,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -22026,10 +22099,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7168bd839700b84eab385d5d33f2d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResoucesName: Bedside Table
+  ResoucesName: BedsideTable
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 432073820}
+  shopid: 1
+  initRoom: {fileID: 0}
 --- !u!114 &515607259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22462,6 +22537,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1480694392}
+  shopid: 44
+  initRoom: {fileID: 0}
   ResourcesName: 4
   decoMineManager: {fileID: 0}
 --- !u!114 &526635128
@@ -22839,7 +22916,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -22864,7 +22941,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -22874,7 +22951,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -22924,12 +23001,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -23078,10 +23155,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 2000
+  shopid: 10
   mineShopObjectText: {fileID: 586910668}
   decoMineObject: {fileID: 1961304316}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1001 &533769359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23257,12 +23336,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -23385,10 +23464,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1500
+  shopid: 16
   mineShopObjectText: {fileID: 534348438}
   decoMineObject: {fileID: 1359458799}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &534348441 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -23572,7 +23653,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 373, y: -260}
+  m_AnchoredPosition: {x: 458, y: -293}
   m_SizeDelta: {x: 50, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &536919310
@@ -23848,10 +23929,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 27
   mineShopObjectText: {fileID: 538681243}
   decoMineObject: {fileID: 1700270505}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &538681246 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -25592,6 +25675,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   funiturePos: {fileID: 457434907}
+  DMM: {fileID: 1219026402}
+  initShopId: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!1 &605748313
 GameObject:
   m_ObjectHideFlags: 0
@@ -26009,7 +26094,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -26193,8 +26278,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 1648359816}
+  shopid: 29
+  initRoom: {fileID: 0}
   ResourceName: 0
   decoMineManager: {fileID: 0}
 --- !u!114 &618995778
@@ -26379,12 +26466,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -26522,10 +26609,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 3
   mineShopObjectText: {fileID: 627015605}
   decoMineObject: {fileID: 1569043228}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &627015608 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -27592,7 +27681,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -28063,7 +28152,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -28191,6 +28280,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 854763987}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &656012698
 MonoBehaviour:
@@ -28379,7 +28480,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -28957,7 +29058,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -29208,10 +29309,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 29
   mineShopObjectText: {fileID: 692684655}
   decoMineObject: {fileID: 618995777}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &694619035
 GameObject:
   m_ObjectHideFlags: 0
@@ -30080,6 +30183,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1177573092}
+  shopid: 9
+  initRoom: {fileID: 0}
 --- !u!114 &710765461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30334,12 +30439,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -30465,6 +30570,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 519075239}
+  shopid: 25
+  initRoom: {fileID: 0}
 --- !u!114 &711900291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31109,7 +31216,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 0.80817604, b: 0.97095644, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -31164,8 +31271,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 39b6e238d0407634595b4b5072f7cfe6, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -31677,8 +31784,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.2745, y: 2.1064}
-  m_SizeDelta: {x: 842.0183, y: 418.4659}
+  m_AnchoredPosition: {x: -15.375908, y: 2.1064}
+  m_SizeDelta: {x: 1058.2483, y: 418.4659}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &759435032
 MonoBehaviour:
@@ -32312,9 +32419,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -32431,6 +32538,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1729919109}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &784690232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32444,7 +32563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -32531,7 +32650,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -32842,9 +32961,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -32961,6 +33080,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2048539963}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &794772692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32974,7 +33105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -33352,12 +33483,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -33480,10 +33611,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1500
+  shopid: 14
   mineShopObjectText: {fileID: 804883242}
   decoMineObject: {fileID: 396502932}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &804883245 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -34267,12 +34400,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1191363901}
-  - {fileID: 957380691}
   - {fileID: 458362545}
   - {fileID: 879552255}
   - {fileID: 97540946}
   - {fileID: 1568139190}
   - {fileID: 896638909}
+  - {fileID: 62636645}
   - {fileID: 2037398465}
   - {fileID: 502611947}
   m_Father: {fileID: 0}
@@ -34476,6 +34609,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 1667430422}
+  shopid: 23
+  initRoom: {fileID: 0}
 --- !u!114 &822542746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34873,6 +35008,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 254179275}
+  shopid: 36
+  initRoom: {fileID: 0}
   ResourceName: 7
   decoMineManager: {fileID: 0}
 --- !u!114 &825603892
@@ -35178,10 +35315,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 34
   mineShopObjectText: {fileID: 826212512}
   decoMineObject: {fileID: 2002322581}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &827041877
 GameObject:
   m_ObjectHideFlags: 0
@@ -35401,7 +35540,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -35411,7 +35550,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -35461,12 +35600,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -453
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -35562,6 +35701,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1262475532}
+  shopid: 12
+  initRoom: {fileID: 0}
 --- !u!114 &839737961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36131,7 +36272,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.8427, y: -255}
+  m_AnchoredPosition: {x: -132, y: -291}
   m_SizeDelta: {x: 845.7175, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &862130414
@@ -36412,7 +36553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -100}
+  m_AnchoredPosition: {x: 0, y: -114}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &864638700
@@ -36954,6 +37095,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 500847745}
+  shopid: 37
+  initRoom: {fileID: 0}
   ResourceName: 8
   decoMineManager: {fileID: 0}
 --- !u!114 &879336877
@@ -38300,8 +38443,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 39b6e238d0407634595b4b5072f7cfe6, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -38329,7 +38472,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -38354,7 +38497,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -38364,7 +38507,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -38414,12 +38557,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 438
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -38513,8 +38656,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: DoubleBed_Gray
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 1264264879}
+  shopid: 11
+  initRoom: {fileID: 0}
 --- !u!114 &916033490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39077,7 +39222,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -39328,10 +39473,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 40
   mineShopObjectText: {fileID: 926876343}
   decoMineObject: {fileID: 1001889783}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1001 &926882432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39514,6 +39661,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 37760684}
+  shopid: 42
+  initRoom: {fileID: 0}
   ResourcesName: 2
   decoMineManager: {fileID: 0}
 --- !u!114 &926882437
@@ -39734,12 +39883,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -39921,6 +40070,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 801806847}
+  shopid: 5
+  initRoom: {fileID: 0}
 --- !u!1 &940141698
 GameObject:
   m_ObjectHideFlags: 0
@@ -39958,7 +40109,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &940141700
 MonoBehaviour:
@@ -40059,6 +40210,7 @@ MonoBehaviour:
   album_UI: {fileID: 0}
   Album2: {fileID: 0}
   Album_Loading: {fileID: 0}
+  Album_Loading2: {fileID: 0}
   PicUploadingUI: {fileID: 0}
   Calender: {fileID: 0}
   Calender1: {fileID: 0}
@@ -40067,6 +40219,10 @@ MonoBehaviour:
   Mong_Chat_2: {fileID: 0}
   DecorateShopUI: {fileID: 0}
   DecorateMineUI: {fileID: 0}
+  PlayerInfoUI: {fileID: 0}
+  heartInfoUI: {fileID: 120823172}
+  time: 1
+  heartTime: 1
 --- !u!1001 &942018779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40228,7 +40384,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &942020190
 MonoBehaviour:
@@ -40391,18 +40547,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957380690}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 611592728}
   - {fileID: 328389279}
-  m_Father: {fileID: 820073780}
+  m_Father: {fileID: 1191363901}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -48, y: -456}
+  m_AnchoredPosition: {x: 861.99994, y: -456}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &960021475 stripped
@@ -40778,8 +40934,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
-  m_SizeDelta: {x: 783, y: 0}
+  m_AnchoredPosition: {x: 112.052574, y: 0.000061035156}
+  m_SizeDelta: {x: 942.5475, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &967493881
 MonoBehaviour:
@@ -40796,10 +40952,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 15
     m_Right: 15
-    m_Top: 15
+    m_Top: 25
     m_Bottom: 20
   m_ChildAlignment: 6
-  m_Spacing: 0
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -41259,7 +41415,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -41483,10 +41639,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 41
   mineShopObjectText: {fileID: 1605594519}
   decoMineObject: {fileID: 987111574}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1001 &987111570
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41498,7 +41656,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -41667,8 +41825,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 1110802299}
+  shopid: 41
+  initRoom: {fileID: 0}
   ResourcesName: 1
   decoMineManager: {fileID: 0}
 --- !u!114 &987111575
@@ -41738,7 +41898,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -41974,10 +42134,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 33
   mineShopObjectText: {fileID: 991552170}
   decoMineObject: {fileID: 262488851}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &991929596
 GameObject:
   m_ObjectHideFlags: 0
@@ -42230,7 +42392,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -42419,8 +42581,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 385072927}
+  shopid: 40
+  initRoom: {fileID: 0}
   ResourcesName: 0
   decoMineManager: {fileID: 0}
 --- !u!114 &1001889784
@@ -42770,12 +42934,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -42957,6 +43121,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1622559314}
+  shopid: 6
+  initRoom: {fileID: 0}
 --- !u!1 &1013063826
 GameObject:
   m_ObjectHideFlags: 0
@@ -43019,8 +43185,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: b23bef64e52672d4bae5478e8feaba84, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -43096,7 +43262,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 456bd30c9fedf114a81630e07fe062a2, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -43163,12 +43329,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -43291,10 +43457,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 21
   mineShopObjectText: {fileID: 1015517900}
   decoMineObject: {fileID: 1274967054}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &1015517903 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -43401,7 +43569,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 184126397}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.18333906}
+  m_AnchorMin: {x: 0, y: 0.18333328}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 275}
   m_SizeDelta: {x: 20, y: -566}
@@ -43732,7 +43900,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: f1bede955deb00a4daf4a32fc1f1b87b, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -43916,7 +44084,7 @@ RectTransform:
   m_Father: {fileID: 488130915}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 275}
   m_SizeDelta: {x: 20, y: -566}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -44252,7 +44420,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -44421,8 +44589,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 611296038}
+  shopid: 31
+  initRoom: {fileID: 0}
   ResourceName: 2
   decoMineManager: {fileID: 0}
 --- !u!114 &1052725505
@@ -45012,9 +45182,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -45131,6 +45301,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 666908860}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1085799913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45144,7 +45326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -45304,7 +45486,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1086087005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 941484407}
+        m_TargetAssemblyTypeName: JSW_UIManager, Assembly-CSharp
+        m_MethodName: OnClickAlbum_Loading0_Back
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1086087005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45519,7 +45713,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -45544,7 +45738,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -45554,7 +45748,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -45604,12 +45798,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 438
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -45758,10 +45952,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 2000
+  shopid: 11
   mineShopObjectText: {fileID: 1805578761}
   decoMineObject: {fileID: 839737960}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &1103716430
 GameObject:
   m_ObjectHideFlags: 0
@@ -45998,8 +46194,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 600}
+  m_AnchoredPosition: {x: -21.854, y: 0}
+  m_SizeDelta: {x: 1138.7615, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1104455411
 MonoBehaviour:
@@ -46090,12 +46286,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -46221,6 +46417,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1628820695}
+  shopid: 8
+  initRoom: {fileID: 0}
 --- !u!114 &1105810398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47151,8 +47349,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 87655622}
   m_HandleRect: {fileID: 87655621}
   m_Direction: 2
-  m_Value: 1.0000023
-  m_Size: 0.7289819
+  m_Value: 1.0000037
+  m_Size: 0.8166667
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -47246,12 +47444,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -47389,10 +47587,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1500
+  shopid: 2
   mineShopObjectText: {fileID: 1128145694}
   decoMineObject: {fileID: 355306846}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &1128145697 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -47511,7 +47711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7264151, g: 0.69128275, b: 0.5722232, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -48291,10 +48491,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 26
   mineShopObjectText: {fileID: 1155574650}
   decoMineObject: {fileID: 484837133}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &1155574653 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -48649,8 +48851,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 10.400024, y: 345}
-  m_SizeDelta: {x: 100, y: 50}
+  m_AnchoredPosition: {x: 9, y: 333.9}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1162937089
 MonoBehaviour:
@@ -48721,14 +48923,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.54402506, b: 0.54402506, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 217d7f5283dd3a147b7b5062eb459136, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 12e480da971a66841bb4640b1b6ba48c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -48797,7 +48999,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00057474506}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 603}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1167138705
 MonoBehaviour:
@@ -49300,7 +49502,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 40aeab8542d03e348b9ad50e5b3178fa, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -49325,6 +49527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1191363901}
+  - component: {fileID: 1191363902}
   m_Layer: 5
   m_Name: PlayerInfoUI
   m_TagString: Untagged
@@ -49349,6 +49552,7 @@ RectTransform:
   - {fileID: 1961410419}
   - {fileID: 1340083101}
   - {fileID: 120823173}
+  - {fileID: 957380691}
   m_Father: {fileID: 820073780}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -49356,6 +49560,18 @@ RectTransform:
   m_AnchoredPosition: {x: 50, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1191363902
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191363900}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1195874681
 GameObject:
   m_ObjectHideFlags: 0
@@ -50348,7 +50564,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1220444506}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 941484407}
+        m_TargetAssemblyTypeName: JSW_UIManager, Assembly-CSharp
+        m_MethodName: OnClickAlbum_Loading
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1220444506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50422,7 +50650,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -93, y: -63}
+  m_AnchoredPosition: {x: -117, y: -80}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1221013068
@@ -50446,7 +50674,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.9, g: 0.7, b: 0.9, a: 1}
+    m_NormalColor: {r: 0.93710685, g: 0.93710685, b: 0.93710685, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -50501,7 +50729,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: b3820331fe405fd4da17964122f2f7ea, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -50570,12 +50798,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -50701,6 +50929,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1571394584}
+  shopid: 20
+  initRoom: {fileID: 0}
 --- !u!114 &1223375538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50910,7 +51140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1230981369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -51373,8 +51603,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 145378835}
   m_HandleRect: {fileID: 145378834}
   m_Direction: 2
-  m_Value: 1.0000029
-  m_Size: 0.75888896
+  m_Value: 1.0000037
+  m_Size: 0.8166667
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -51569,7 +51799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1253549593
 RectTransform:
   m_ObjectHideFlags: 0
@@ -51784,7 +52014,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: 2000P
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -51809,7 +52039,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -51819,7 +52049,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -51869,12 +52099,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 438
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -453
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -52023,10 +52253,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 2000
+  shopid: 13
   mineShopObjectText: {fileID: 1778051981}
   decoMineObject: {fileID: 1969967688}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &1264264879 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -52098,7 +52330,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -52165,12 +52397,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -52293,10 +52525,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 6
   mineShopObjectText: {fileID: 1266986403}
   decoMineObject: {fileID: 1011202468}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &1266986406 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -52547,6 +52781,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 1166419392}
+  shopid: 21
+  initRoom: {fileID: 0}
 --- !u!114 &1274967055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52764,7 +53000,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -53000,10 +53236,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 32
   mineShopObjectText: {fileID: 1277993913}
   decoMineObject: {fileID: 330633503}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &1282002178
 GameObject:
   m_ObjectHideFlags: 0
@@ -53538,7 +53776,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1291905746
 MonoBehaviour:
@@ -53836,7 +54074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -30}
+  m_AnchoredPosition: {x: 0, y: -44}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1310115453
@@ -53949,17 +54187,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f1bede955deb00a4daf4a32fc1f1b87b,
+      objectReference: {fileID: 21300000, guid: bf62530755860e348b59fb3bbfde2a4c,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uBD80\uC0B0 \uAD11\uC548\uB9AC\uC5D0\uC11C"
+      value: "\uB180\uC774\uB3D9\uC0B0\uC5D0\uC11C"
       objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -53969,7 +54207,7 @@ PrefabInstance:
     - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uB2E4\uB9AC \uC704\uC5D0\uC11C \uC0AC\uB791\uC758 \uB9F9\uC138\u314E\n"
+      value: "\uC6B0\uB9AC \uADC0\uC5EC\uC6CC ><"
       objectReference: {fileID: 0}
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -54086,6 +54324,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -54157,9 +54400,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -54276,6 +54519,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 156567573}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1324938206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54289,7 +54544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -54326,18 +54581,29 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f1bede955deb00a4daf4a32fc1f1b87b,
+      objectReference: {fileID: 21300000, guid: 3653699e695b69840b1bde39cbffaeac,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
       value: "\uBD80\uC0B0 \uAD11\uC548\uB9AC\uC5D0\uC11C"
       objectReference: {fileID: 0}
+    - target: {fileID: 4072083269007695653, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4072083269007695653, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3653699e695b69840b1bde39cbffaeac,
+        type: 3}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_Name
@@ -54346,12 +54612,12 @@ PrefabInstance:
     - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uB2E4\uB9AC \uC704\uC5D0\uC11C \uC0AC\uB791\uC758 \uB9F9\uC138\u314E\n"
+      value: "\uC774\uC05C\uC774\uC640 \uBA4B\uC7C1\uC774 \uD558\uB69C!"
       objectReference: {fileID: 0}
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: 2024-09-15
+      value: 2024-10-19
       objectReference: {fileID: 0}
     - target: {fileID: 8006728576425162363, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -54462,6 +54728,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -54741,8 +55012,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: ab9d79deedda6f34087c3519a0c4a642, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -54947,6 +55218,7 @@ MonoBehaviour:
   JDMO: {fileID: 0}
   DecoUIPurchase: {fileID: 1013063826}
   DecoUIOkay: {fileID: 416586200}
+  shopId: 0
 --- !u!1 &1340083100
 GameObject:
   m_ObjectHideFlags: 0
@@ -55420,12 +55692,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -55551,6 +55823,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 823942112}
+  shopid: 16
+  initRoom: {fileID: 0}
 --- !u!114 &1359458800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55644,7 +55918,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1374533249
 MonoBehaviour:
@@ -55895,7 +56169,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 8222ad9b65e218e48a09ea3cfd4a2fd2, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -56778,8 +57052,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -57538,7 +57812,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 8400e375361814248b61968d66659c99, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -57936,10 +58210,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 38
   mineShopObjectText: {fileID: 1433663559}
   decoMineObject: {fileID: 2097200292}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &1434758002
 GameObject:
   m_ObjectHideFlags: 0
@@ -58002,7 +58278,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -58692,7 +58968,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1456774857
 MonoBehaviour:
@@ -59130,7 +59406,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -360.4, y: 410.7}
+  m_AnchoredPosition: {x: -365.9, y: 410.7}
   m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1470567903
@@ -60090,10 +60366,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 36
   mineShopObjectText: {fileID: 1499845866}
   decoMineObject: {fileID: 825603891}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &1503130285 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -60945,7 +61223,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -61114,8 +61392,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: 
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 1544654941}
+  shopid: 43
+  initRoom: {fileID: 0}
   ResourcesName: 3
   decoMineManager: {fileID: 0}
 --- !u!114 &1528777688
@@ -61207,7 +61487,7 @@ RectTransform:
   m_Father: {fileID: 41349651}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 275}
   m_SizeDelta: {x: 20, y: -566}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -61588,9 +61868,9 @@ RectTransform:
   m_Father: {fileID: 1619293550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1543751422
 MonoBehaviour:
@@ -61683,7 +61963,7 @@ RectTransform:
   m_GameObject: {fileID: 1548001918}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1936049711}
@@ -61692,8 +61972,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -839, y: 25.2704}
-  m_SizeDelta: {x: 448.22, y: 319.5299}
+  m_AnchoredPosition: {x: -5.1319, y: -7.2674}
+  m_SizeDelta: {x: 1313.7542, y: 473.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1548001920
 MonoBehaviour:
@@ -61738,7 +62018,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -61814,12 +62094,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -61942,10 +62222,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 4
   mineShopObjectText: {fileID: 1556052447}
   decoMineObject: {fileID: 1972802387}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &1556052450 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -62052,7 +62334,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 500P
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -62276,10 +62558,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 30
   mineShopObjectText: {fileID: 339995433}
   decoMineObject: {fileID: 33404474}
   decoShopManager: {fileID: 0}
-  isPurchase: 1
+  isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &1564362353
 GameObject:
   m_ObjectHideFlags: 0
@@ -62627,12 +62911,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -62829,6 +63113,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 1660393820}
+  shopid: 3
+  initRoom: {fileID: 0}
 --- !u!114 &1571394584 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -63031,7 +63317,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1577077416
 RectTransform:
   m_ObjectHideFlags: 0
@@ -63239,17 +63525,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 47ad1412951d5d74c8a4374660548fd1,
+      objectReference: {fileID: 21300000, guid: f7c98d5fdeacbe1418290635ee0be92f,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uC77C\uBCF8 \uC5EC\uD589\n"
+      value: "\uAC15\uB0A8 \uCE74\uD398\uC5D0\uC11C"
       objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -63259,12 +63545,12 @@ PrefabInstance:
     - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "300\uC77C \uC5EC\uD589~ \uC0AC\uB791 \uC601\uC6D0\uD788\u314E\u314E"
+      value: "\uCE74\uD398 \uB108\uBB34 \uC88B\uB354\uB77C!! \uB610 \uAC00\uC7C8!"
       objectReference: {fileID: 0}
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: 2024-07-12
+      value: 2024-07-29
       objectReference: {fileID: 0}
     - target: {fileID: 8006728576425162363, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -63375,6 +63661,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -63768,10 +64059,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 37
   mineShopObjectText: {fileID: 1588236491}
   decoMineObject: {fileID: 879336876}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &1590177104
 GameObject:
   m_ObjectHideFlags: 0
@@ -63817,7 +64110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputChat: {fileID: 0}
-  chatItemFactory: {fileID: 2495266138659859908, guid: a5668d5b90cebec4fab566480dd151a9,
+  chatItemFactory: {fileID: 8706526400658194453, guid: 7c4c76419e7c7d1499fb4d4db72f43a3,
+    type: 3}
+  MongchatItemFactory: {fileID: 7734261295858600525, guid: 557d30561eca08549baef88db9320807,
     type: 3}
   trContent: {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
@@ -63885,7 +64180,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -64546,10 +64841,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 42
   mineShopObjectText: {fileID: 1605594519}
   decoMineObject: {fileID: 926882436}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1001 &1606745785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64601,12 +64898,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -64729,10 +65026,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 18
   mineShopObjectText: {fileID: 1606745787}
   decoMineObject: {fileID: 1617369907}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &1606745790 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -64813,17 +65112,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 47ad1412951d5d74c8a4374660548fd1,
+      objectReference: {fileID: 21300000, guid: f1bede955deb00a4daf4a32fc1f1b87b,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uC77C\uBCF8 \uC5EC\uD589\n"
+      value: "\uBC14\uB2E4 \uCCB4\uD5D8"
       objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -64833,12 +65132,12 @@ PrefabInstance:
     - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "300\uC77C \uC5EC\uD589~ \uC0AC\uB791 \uC601\uC6D0\uD788\u314E\u314E"
+      value: "\uB108\uBB34 \uB354\uC6E0\uC5B4 \u3160\u3160"
       objectReference: {fileID: 0}
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: 2024-07-12
+      value: 2024-07-8
       objectReference: {fileID: 0}
     - target: {fileID: 8006728576425162363, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -64949,6 +65248,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -65182,10 +65486,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 24
   mineShopObjectText: {fileID: 1616733875}
   decoMineObject: {fileID: 1673536750}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &1616733878 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -65436,6 +65742,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 748770476}
+  shopid: 18
+  initRoom: {fileID: 0}
 --- !u!114 &1617369908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65559,8 +65867,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -65645,7 +65953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1619293550
 RectTransform:
   m_ObjectHideFlags: 0
@@ -66458,8 +66766,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -66586,9 +66894,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -66705,6 +67013,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5735852}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1644625919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66718,7 +67038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -67466,12 +67786,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -67597,6 +67917,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 1482955056}
+  shopid: 24
+  initRoom: {fileID: 0}
 --- !u!114 &1673536751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68155,7 +68477,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -68258,6 +68580,102 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: JSW_UIManager, Assembly-CSharp
         m_MethodName: OnClickDecorateMineUI
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1253549592}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 5735852}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 156567573}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 666908860}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2048539963}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1729919109}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 854763987}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 21828627}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -68509,7 +68927,6 @@ RectTransform:
   - {fileID: 1865519573}
   - {fileID: 1667569663}
   - {fileID: 306283221}
-  - {fileID: 1548001919}
   - {fileID: 2006557287}
   - {fileID: 2000992744}
   - {fileID: 1453190273}
@@ -68517,6 +68934,7 @@ RectTransform:
   - {fileID: 20408836}
   - {fileID: 131686817}
   - {fileID: 1577077416}
+  - {fileID: 1548001919}
   m_Father: {fileID: 879552255}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -68753,12 +69171,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -68884,6 +69302,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 1232883568}
+  shopid: 27
+  initRoom: {fileID: 0}
 --- !u!114 &1700270506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69369,7 +69789,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: 2000P
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -69394,7 +69814,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -69404,7 +69824,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -69454,12 +69874,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -453
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -69608,10 +70028,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 2000
+  shopid: 12
   mineShopObjectText: {fileID: 325658237}
   decoMineObject: {fileID: 839737960}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &1729919109
 GameObject:
   m_ObjectHideFlags: 0
@@ -70178,8 +70600,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -70405,6 +70827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0e03a91367254418f8f9c7bd6ca0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 941484407}
   cameraControllTest: {fileID: 0}
   ObjectRotate: 0
   isPlayerInRange: 0
@@ -70816,7 +71239,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1765893124
 MonoBehaviour:
@@ -71024,7 +71447,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 47ad1412951d5d74c8a4374660548fd1, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -71110,7 +71533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 247}
+  m_AnchoredPosition: {x: -12.3, y: 266}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1787933255
@@ -71923,7 +72346,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -72041,6 +72464,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 468475790}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 21828627}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -72350,8 +72785,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 496198726}
   m_HandleRect: {fileID: 496198725}
   m_Direction: 0
-  m_Value: -0.00000003436877
-  m_Size: 0.112055
+  m_Value: 0.00000009088545
+  m_Size: 0.32843858
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -72369,7 +72804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -72591,8 +73026,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 600}
+  m_AnchoredPosition: {x: -21.845, y: -8.0101}
+  m_SizeDelta: {x: 1138.7, y: 662.7374}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1834064248
 MonoBehaviour:
@@ -72644,17 +73079,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 47ad1412951d5d74c8a4374660548fd1,
+      objectReference: {fileID: 21300000, guid: 5cf46ad0fae38994caa0bf14f18c11c1,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uC77C\uBCF8 \uC5EC\uD589\n"
+      value: "\uD1B5\uC601\uC5EC\uD589"
       objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -72669,7 +73104,7 @@ PrefabInstance:
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: 2024-07-12
+      value: 2024-05-12
       objectReference: {fileID: 0}
     - target: {fileID: 8006728576425162363, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -72781,6 +73216,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -72843,12 +73283,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -72989,6 +73429,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 265771385}
+  shopid: 17
+  initRoom: {fileID: 0}
 --- !u!114 &1838927665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73096,12 +73538,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -73224,10 +73666,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 7
   mineShopObjectText: {fileID: 1842348192}
   decoMineObject: {fileID: 1892152826}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &1842348195 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -73490,10 +73934,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1000
+  shopid: 17
   mineShopObjectText: {fileID: 1847674831}
   decoMineObject: {fileID: 1838927664}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &1847674834 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -73624,7 +74070,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -74746,6 +75192,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 1977003115}
+  shopid: 39
+  initRoom: {fileID: 0}
   ResourceName: 10
   decoMineManager: {fileID: 0}
 --- !u!114 &1884930771
@@ -75112,6 +75560,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 656481632}
+  shopid: 7
+  initRoom: {fileID: 0}
 --- !u!114 &1892152827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75282,7 +75732,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00046295192}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 603}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1904700756
 MonoBehaviour:
@@ -76341,9 +76791,9 @@ RectTransform:
   m_Father: {fileID: 1253549593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1940405110
 MonoBehaviour:
@@ -76931,7 +77381,7 @@ PrefabInstance:
     - target: {fileID: 19029162162458344, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_text
-      value: "\uC18C\uC720\uC911"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2870098292536831244, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -76956,7 +77406,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -76966,7 +77416,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -77016,12 +77466,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -77115,8 +77565,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResoucesName: DoubleBed_Blue
   decorateRoomManager: {fileID: 0}
-  isPurchased: 1
+  isPurchased: 0
   isMineText: {fileID: 364407777}
+  shopid: 10
+  initRoom: {fileID: 0}
 --- !u!114 &1961304317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77520,7 +77972,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -77530,7 +77982,7 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -77580,12 +78032,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 438
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -453
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -77681,6 +78133,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 817998730}
+  shopid: 13
+  initRoom: {fileID: 0}
 --- !u!114 &1969967689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77788,12 +78242,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -77975,6 +78429,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 1
   isMineText: {fileID: 829825622}
+  shopid: 4
+  initRoom: {fileID: 0}
 --- !u!1 &1976920964
 GameObject:
   m_ObjectHideFlags: 0
@@ -78618,12 +79074,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -78746,10 +79202,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1500
+  shopid: 1
   mineShopObjectText: {fileID: 1994773249}
   decoMineObject: {fileID: 515607258}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &1994773252 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -79291,6 +79749,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 824098719}
+  shopid: 34
+  initRoom: {fileID: 0}
   ResourceName: 5
   decoMineManager: {fileID: 0}
 --- !u!114 &2002322582
@@ -80336,7 +80796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2037398465
 RectTransform:
   m_ObjectHideFlags: 0
@@ -80354,7 +80814,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 752, y: 0}
+  m_AnchoredPosition: {x: 960, y: 0}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2037398466
@@ -80401,16 +80861,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 351878865}
-        m_TargetAssemblyTypeName: JSW_PetManager, Assembly-CSharp
-        m_MethodName: MongNickname
-        m_Mode: 5
+      - m_Target: {fileID: 1691321813}
+        m_TargetAssemblyTypeName: ChatTestHttp, Assembly-CSharp
+        m_MethodName: AddPoints
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 300
           m_FloatArgument: 0
-          m_StringArgument: "\"\uB8E8\uAC70\""
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2037398467
@@ -80513,7 +80973,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -81010,12 +81470,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -81126,10 +81586,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 23
   mineShopObjectText: {fileID: 1842348192}
   decoMineObject: {fileID: 822542745}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &2067834713 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -81445,10 +81907,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 35
   mineShopObjectText: {fileID: 2068082277}
   decoMineObject: {fileID: 264522873}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!1 &2068891888
 GameObject:
   m_ObjectHideFlags: 0
@@ -81590,12 +82054,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -81733,10 +82197,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 500
+  shopid: 22
   mineShopObjectText: {fileID: 2068937527}
   decoMineObject: {fileID: 165772703}
   decoShopManager: {fileID: 0}
   isPurchase: 1
+  initRoom: {fileID: 0}
 --- !u!114 &2068937530 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -82740,6 +83206,8 @@ MonoBehaviour:
   decorateRoomManager: {fileID: 0}
   isPurchased: 0
   isMineText: {fileID: 681058087}
+  shopid: 38
+  initRoom: {fileID: 0}
   ResourceName: 9
   decoMineManager: {fileID: 0}
 --- !u!114 &2097200293
@@ -82849,12 +83317,12 @@ PrefabInstance:
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5482205423333181100, guid: cdc1fe90d348b904abc92f038a139a24,
         type: 3}
@@ -82977,10 +83445,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price: 1500
+  shopid: 8
   mineShopObjectText: {fileID: 2097568514}
   decoMineObject: {fileID: 1105810397}
   decoShopManager: {fileID: 0}
   isPurchase: 0
+  initRoom: {fileID: 0}
 --- !u!114 &2097568517 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1924392941482176307, guid: cdc1fe90d348b904abc92f038a139a24,
@@ -83579,8 +84049,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 941484407}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickAlbum_Loading
+        m_TargetAssemblyTypeName: JSW_UIManager, Assembly-CSharp
+        m_MethodName: OnClickAlbum_Loading0
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -83664,17 +84134,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f7c98d5fdeacbe1418290635ee0be92f,
+      objectReference: {fileID: 21300000, guid: 8400e375361814248b61968d66659c99,
         type: 3}
     - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_PreserveAspect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uAC15\uB0A8 \uCE74\uD398\uC5D0\uC11C"
+      value: "\uBB3C\uB180\uC774!!"
       objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -83684,12 +84154,12 @@ PrefabInstance:
     - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: "\uCE74\uD398\uC5D0\uC11C \uCEE4\uD53C \uC3DF\uC740 \uB0A0\u314B\u314B"
+      value: "\uC2DC\uC6D0\uD558\uB2E4!!\u314E\u314E"
       objectReference: {fileID: 0}
     - target: {fileID: 5147093200029434597, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_text
-      value: 2024-08-29
+      value: 2024-08-21
       objectReference: {fileID: 0}
     - target: {fileID: 8006728576425162363, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -83801,6 +84271,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8705348661663083628, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -83872,9 +84347,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -83991,6 +84466,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1253549592}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2119810133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84004,7 +84491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -84063,7 +84550,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 80}
+  m_AnchoredPosition: {x: 0, y: 58.6}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2125954827
@@ -84096,8 +84583,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -86228,7 +86715,6 @@ SceneRoots:
   - {fileID: 927288321}
   - {fileID: 28656426}
   - {fileID: 820073780}
-  - {fileID: 62636645}
   - {fileID: 1485579794}
   - {fileID: 1516938175}
   - {fileID: 7661493090836443447}

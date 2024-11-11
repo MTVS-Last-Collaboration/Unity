@@ -89,7 +89,6 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     public TMP_InputField AlbumInputField;
     public void FindAlbumPicTitle()
     {
-        print("ddd");
         for (int i = 0; i < Content.transform.childCount;i++)
         {
             if (Content.transform.GetChild(i).GetChild(1).GetComponent<TMP_Text>().text.Contains(AlbumInputField.text))

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements.Experimental;
 
 public class JSW_UIManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class JSW_UIManager : MonoBehaviour
     public GameObject album_UI;
     public GameObject Album2;
     public GameObject Album_Loading;
+    public GameObject Album_Loading2;
     public GameObject PicUploadingUI;
     public GameObject Calender;
     public GameObject Calender1;
@@ -22,12 +24,20 @@ public class JSW_UIManager : MonoBehaviour
     public GameObject DecorateShopUI;
     public GameObject DecorateMineUI;
 
+    public GameObject PlayerInfoUI;
+    public GameObject heartInfoUI;
+
+    CanvasGroup playerInfo;
+    CanvasGroup heartInfo;
+    public float time=1;
+    public float heartTime = 1;
 
     // Start is called before the first frame update
     void Start()
     {
         album_UI = GameObject.Find("UI_Album");
         Album2 = GameObject.Find("Album2");
+        Album_Loading2 = GameObject.Find("Album_Loading2");
         Album_Loading = GameObject.Find("Album_Loading");
         PicUploadingUI = GameObject.Find("PicUploadingUI");
 
@@ -41,13 +51,23 @@ public class JSW_UIManager : MonoBehaviour
         DecorateShopUI = GameObject.Find("DecorateShopUI_All");
         DecorateMineUI = GameObject.Find("DecorateMineUI_All");
 
-        AllActiveFasle();
+        PlayerInfoUI = GameObject.Find("PlayerInfoUI");
+
+        playerInfo = PlayerInfoUI.GetComponent<CanvasGroup>();
+        heartInfo = heartInfoUI.GetComponent<CanvasGroup>();
+        AllActiveFalse();
     }
 
-    void AllActiveFasle()
+    private void Update()
+    {
+        playerInfo.alpha = Mathf.Lerp(playerInfo.alpha, time, Time.deltaTime * 5);
+        heartInfo.alpha = Mathf.Lerp(heartInfo.alpha, heartTime, Time.deltaTime * 5);
+    }
+    void AllActiveFalse()
     {
         album_UI.SetActive(false);
         Album2.SetActive(false);
+        Album_Loading2.SetActive(false);
         Album_Loading.SetActive(false);
         PicUploadingUI.SetActive(false);
         Calender1.SetActive(false);
@@ -65,10 +85,12 @@ public class JSW_UIManager : MonoBehaviour
     {
         album_UI.SetActive(true);
         easingUI(album_UI, 1f);
+        easingUIDark(PlayerInfoUI, 0f);
     }
     public void OnClickAlbum_Back()
     {
         album_UI.SetActive(false);
+        easingUIDark(PlayerInfoUI, 1f);
     }
 
 
@@ -88,24 +110,60 @@ public class JSW_UIManager : MonoBehaviour
         easingUI(album_UI, 1f);
     }
 
+    public void OnClickAlbum_Loading0()
+    {
+        //dasdsa
+        Album2.SetActive(false);
+        Album_Loading2.SetActive(true);
+    }
+    public void OnClickAlbum_Loading0_Back()
+    {
+        //dasdsa
+        Album2.SetActive(true);
+        Album_Loading2.SetActive(false);
+    }
+
 
     public void OnClickAlbum_Loading()
     {
         //dasdsa
         cameraControllTest.CameraTo3D();
-        Album2.SetActive(false);
+        Album_Loading2.SetActive(false);
         Album_Loading.SetActive(true);
-        Album_Loading.GetComponent<CanvasGroup>().alpha = 0.3f;
+        StartCoroutine(OnClickAlbum_Loading_Back());
     }
-    public void OnClickAlbum_Loading_Back()
+
+    IEnumerator OnClickAlbum_Loading_Back()
     {
-        ///fadsa
+        float time = 0;
+        while (true)
+        {
+            if(time >= 5)
+            {
+                break;
+            }
+            Album_Loading.GetComponent<CanvasGroup>().alpha= Mathf.Lerp(Album_Loading.GetComponent<CanvasGroup>().alpha,0,Time.deltaTime * 0.5f);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
         cameraControllTest.CameraToAlbum();
         Album_Loading.GetComponent<CanvasGroup>().alpha = 1f;
         Album_Loading.SetActive(false);
-        Album2.SetActive(true);
+        album_UI.SetActive(true);
         easingUI(Album2, 1f);
     }
+
+    //public void OnClickAlbum_Loading_Back()
+    //{
+    //    ///fadsa
+    //    cameraControllTest.CameraToAlbum();
+    //    Album_Loading.GetComponent<CanvasGroup>().alpha = 1f;
+    //    Album_Loading.SetActive(false);
+    //    Album_Loading2.SetActive(true);
+    //    easingUI(Album2, 1f);
+    //}
+
 
     public void OnClickPicUploadingUI()
     {
@@ -124,6 +182,7 @@ public class JSW_UIManager : MonoBehaviour
     // Calender와 관련된 코드
     public void OnClickCalender()
     {
+        easingUIDark(PlayerInfoUI, 0f);
         easingUI(Calender, 1.0f);
         Calender1.SetActive(true);
         Calender2.SetActive(true);
@@ -132,6 +191,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickCalender_Back()
     {
+        easingUIDark(PlayerInfoUI, 1f);
         Calender1.SetActive(false);
         Calender2.SetActive(false);
     }
@@ -139,10 +199,12 @@ public class JSW_UIManager : MonoBehaviour
     // Mong과 관련된 코드
     public void OnClickMong()
     {
+        easingUIDark(PlayerInfoUI, 0f);
         Mong_1.SetActive(true);
     }
     public void OnClickMong_Back()
     {
+        easingUIDark(PlayerInfoUI, 1f);
         Mong_1.SetActive(false);
     }
 
@@ -162,24 +224,28 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickDecorateShopUI()
     {
+        heartTime = 0;
         DecorateShopUI.SetActive(true);
         DecorateMineUI.SetActive(true);
     }
 
     public void OnClickDecorateShopUI_Back()
     {
+        heartTime = 1;
         DecorateShopUI.SetActive(false);
         DecorateMineUI.SetActive(false);
     }
 
     public void OnClickDecorateMineUI()
     {
+        heartTime = 0;
         DecorateMineUI.SetActive(true);
         DecorateShopUI.SetActive(false);
     }
 
     public void OnClickDecorateMineUI_Back()
     {
+        heartTime = 1;
         DecorateMineUI.SetActive(false);
     }
 
@@ -192,5 +258,9 @@ public class JSW_UIManager : MonoBehaviour
         "time", time,         // 애니메이션 시간
         "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
         ));
+    }
+    public void easingUIDark(GameObject uiObject, float time)
+    {
+        this.time = time;
     }
 }

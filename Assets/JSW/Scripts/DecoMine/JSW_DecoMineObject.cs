@@ -12,6 +12,8 @@ public class JSW_DecoMineObject : MonoBehaviour
     public bool isPurchased;
     public TMP_Text isMineText;
 
+    public int shopid;
+    public JSW_InitRoom initRoom;
 
     private void Awake()
     {
@@ -21,6 +23,20 @@ public class JSW_DecoMineObject : MonoBehaviour
     private void Start()
     {
         isMineText = transform.transform.GetChild(2).GetComponent<TMP_Text>();
+
+        initRoom = GameObject.Find("DecorateRoomManager").GetComponent<JSW_InitRoom>();
+        if (initRoom.initShopId[shopid])
+        {
+            isPurchased = true;
+            //transform.GetChild(1).GetComponent<TMP_Text>().text = "소유중";
+            transform.GetChild(2).GetComponent<TMP_Text>().text = "소유중";
+        }
+        else
+        {
+            isPurchased = false;
+            transform.GetChild(2).GetComponent<TMP_Text>().text = "";
+        }
+        print("fdsafdasfdafdasfda");
     }
     public void OnClickMineDeco()
     {

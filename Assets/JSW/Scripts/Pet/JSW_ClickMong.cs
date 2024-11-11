@@ -12,6 +12,7 @@ public class JSW_ClickMong : MonoBehaviour
     public GameObject uiManager;
     public JSW_CameraControllTest cameraControll;
     private bool isPlayerInRange = false;
+    private bool oneClick;
 
     public int MongLevel = 0;
 
@@ -24,10 +25,11 @@ public class JSW_ClickMong : MonoBehaviour
     private void OnMouseDown()
     {
         //추후 클릭 성공 시 플레이어 움직임 막기
-        if (isPlayerInRange)
+        if (isPlayerInRange && !oneClick)
         {
             uiManager.GetComponent<JSW_UIManager>().OnClickMong();
             cameraControll.CameraToMong();
+            oneClick = true;
         }
     }
 
@@ -45,12 +47,7 @@ public class JSW_ClickMong : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            //if (targetFlower != null && targetFlower.uiManager != null)
-            //{
-            //    targetFlower.uiManager.HideFlowerInfo();
-            //    checkID = null;
-            //}
-            //추후 끄는 버튼 생성
+            oneClick = false;
         }
     }
 

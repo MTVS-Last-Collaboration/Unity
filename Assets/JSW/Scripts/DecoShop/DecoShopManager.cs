@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class DecoShopManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class DecoShopManager : MonoBehaviour
 
     public GameObject DecoUIPurchase;
     public GameObject DecoUIOkay;
+
+    public int shopId;
 
     void Start()
     {
@@ -41,20 +44,10 @@ public class DecoShopManager : MonoBehaviour
             JDMO.isMineText.text = "소유중";
             JDMO.isPurchased = true;
             JDSI.isPurchase = true;
+            BuyId(shopId);
         }
     }
-    //IEnumerator PurchaseCo(int point, int targetPoint)
-    //{
-    //    float changetPoint = point;
-    //    while ((int)changetPoint != targetPoint)
-    //    {
-    //        changetPoint = Mathf.Lerp(changetPoint, targetPoint, Time.deltaTime * 10f);
-    //        profilePrice.text = changetPoint.ToString("0");
-    //        yield return null;
-    //    }
-    //    this.point = targetPoint;
-    //    profilePrice.text = this.point.ToString("0");
-    //}
+
 
     public void OnClickPurchaseNo()
     {
@@ -64,5 +57,62 @@ public class DecoShopManager : MonoBehaviour
     public void OnClickPurchaseOkay()
     {
         DecoUIOkay.SetActive(false);
+    }
+
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="points"></param>
+    /// 
+
+
+    public void BuyId(int id)
+    {
+        ItemIDs itemids = new ItemIDs
+        {
+            itemId = id
+        };
+
+        StartCoroutine(PostAddPoints(itemids));
+    }
+
+    public class ItemIDs
+    {
+        public int itemId;
+    }
+
+    // Coroutine을 통해 POST 요청을 수행
+    private IEnumerator PostAddPoints(ItemIDs ids)
+    {
+        // 요청 URL 설정 (서버의 URL로 변경해야 합니다)
+        //string url = "http://125.132.216.190:12223/api/couple/add-points";
+        string url = "http://125.132.216.190:12223/api/shop/purchase";
+        string jwtToken = LoginInfoManager.instance.myToken;
+
+        //string jsonData = points.ToString();
+        string jsonData = JsonUtility.ToJson(ids);
+
+        // UnityWebRequest 생성 및 설정
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+        // 요청 전송 및 응답 대기
+        yield return request.SendWebRequest();
+
+        // 응답 처리
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("구매가 성공적으로 추가되었습니다: " + request.downloadHandler.text);
+        }
+        else
+        {
+            Debug.LogError("구매 실패: " + request.error);
+        }
     }
 }

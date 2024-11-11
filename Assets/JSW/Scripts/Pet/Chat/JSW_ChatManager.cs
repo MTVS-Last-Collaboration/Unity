@@ -19,6 +19,7 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
 
     // ChatItem Prefab
     public GameObject chatItemFactory;
+    public GameObject MongchatItemFactory;
     // ChatItem의 부모 Transform
     public RectTransform trContent;
 
@@ -52,29 +53,18 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
         nickName = LoginInfoManager.instance.nickName;
         string nick = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">" + nickName + "</color>";
 
-        string chat = nick + " : " + s;
-
+        //string chat = nick + " : " + s;
+        string chat = s;
         SendMessageToChat(chat);
 
-        CreateChatItem(chat, Color.black);
+        CreateChatItem(chat, "ME");
     }
 
-    void CreateChatItem(string chat, Color chatColor)
+    void CreateChatItem(string chat, string isMong)
     {
-        string chatColorCode;
-        if (chatColor == Color.black)
-        {
-            chatColorCode = "Black";
-        }
-        else if (chatColor == Color.blue)
-        {
-            chatColorCode = "Blue";
-        }
-        else
-        {
-            chatColorCode = "Red";
-        }
-        object[] sendContent = new object[] { chat, chatColorCode };
+
+
+        object[] sendContent = new object[] { chat, isMong };
 
         // 송신 옵션
         RaiseEventOptions eventOptions = new RaiseEventOptions();
@@ -103,17 +93,31 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
             // 받은 내용을 "닉네임: 채팅 내용" 형식으로 스크롤뷰의 텍스트에 전달한다.
             object[] receiveObjects = (object[])photonEvent.CustomData;
             string chat = receiveObjects[0].ToString();
-            string chatColorCode = receiveObjects[1].ToString();
+            string isMong = receiveObjects[1].ToString();
+
+            if (isMong == "Mong")
+            {
+                // s의 내용으로 ChatItem을 만들자.
+                GameObject go = Instantiate(MongchatItemFactory, trContent);
+                // 만들어진 go에서 ChatItem 컴포넌트 가져오자.
+                JSW_ChatItem chatItem = go.GetComponent<JSW_ChatItem>();
 
 
-            // s의 내용으로 ChatItem을 만들자.
-            GameObject go = Instantiate(chatItemFactory, trContent);
-            // 만들어진 go에서 ChatItem 컴포넌트 가져오자.
-            JSW_ChatItem chatItem = go.GetComponent<JSW_ChatItem>();
+                // 가져온 컴포넌트의 SetText 함수 실행
+                chatItem.SetText(chat, isMong, DateTime.Now.ToString("HH:mm"));
+            }
+            else
+            {
+                // s의 내용으로 ChatItem을 만들자.
+                GameObject go = Instantiate(chatItemFactory, trContent);
+                // 만들어진 go에서 ChatItem 컴포넌트 가져오자.
+                JSW_ChatItem chatItem = go.GetComponent<JSW_ChatItem>();
 
 
-            // 가져온 컴포넌트의 SetText 함수 실행
-            chatItem.SetText(chat, chatColorCode);
+                // 가져온 컴포넌트의 SetText 함수 실행
+                chatItem.SetText(chat, isMong, DateTime.Now.ToString("HH:mm"));
+            }
+
         }
     }
 
@@ -158,13 +162,13 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
             string extractedText = aiResponse;
             Debug.Log("Extracted AI Response: " + extractedText);
 
-            CreateChatItem(extractedText, Color.black);
+            CreateChatItem(extractedText, "Mong");
         }
         else
         {
             Debug.LogError("Message sending failed: " + request.error);
             string extractedText = "생각이 많아서 답변이 어려워...ㅠ";
-            CreateChatItem(extractedText, Color.black);
+            CreateChatItem(extractedText,"Mong");
         }
     }
 }

@@ -6,13 +6,25 @@ using UnityEngine.UI;
 
 public class JSW_ChatItem : MonoBehaviour
 {
-    TMP_Text chatText;
+    public TMP_Text chatText;
+    public TMP_Text time;
+    public TMP_Text mongName;
+
 
     private void Awake()
     {
-        chatText = GetComponent<TMP_Text>();
+        //chatText = GetComponent<TMP_Text>();
+
+        RectTransform rectTransform = GetComponent<RectTransform>();
+
+            rectTransform.anchorMin = new Vector2(1, 0.5f);
+            rectTransform.anchorMax = new Vector2(1, 0.5f);
+            rectTransform.pivot = new Vector2(1, 0.5f);
+        
+
     }
 
+   
 
     // Update is called once per frame
     void Update()
@@ -20,18 +32,18 @@ public class JSW_ChatItem : MonoBehaviour
 
     }
 
-    public void SetText(string msg, string chatColor)
+    public void SetText(string msg, string isMong, string times)
     {
-        if(chatColor != "Black")
+        if(isMong == "Mong")
         {
-            chatText.text = "µø±€¿Ã : " + msg;
-            chatText.color = new Color(50, 50, 50);
-            print("fdafdaf");
+            mongName.text = GameObject.Find("PetManager").GetComponent<JSW_PetManager>().MongName;
+            chatText.text = msg;
+            //time.text = times;
         }
         else
         {
             chatText.text = msg;
-            chatText.color = Color.black;
+            time.text = times;
         }
     }
 }

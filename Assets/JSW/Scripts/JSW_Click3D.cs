@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class JSW_Click3D : MonoBehaviour
 {
-
+    public JSW_UIManager uiManager;
     public JSW_CameraControllTest cameraControllTest;
     public bool ObjectRotate;
     GameObject Object1_3D;
@@ -29,6 +29,7 @@ public class JSW_Click3D : MonoBehaviour
             }
             ObjectRotate = true;
             cameraControllTest.CameraTo3D();
+            uiManager.time = 0;
         }
         else
         {
@@ -39,6 +40,7 @@ public class JSW_Click3D : MonoBehaviour
             Object1_3D.transform.forward = Camera.main.transform.forward;
             ObjectRotate = false;
             cameraControllTest.ResetCamera();
+            uiManager.time = 1;
         }
     }
     private void Update()

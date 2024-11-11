@@ -10,6 +10,25 @@ using UnityEngine.UIElements;
 public class JSW_ServerDeco : MonoBehaviour
 {
 
+    [System.Serializable]
+    public class ResponseData
+    {
+        public string message;
+        public ResponsFurnitureData data;
+    }
+
+    [System.Serializable]
+    public class ResponsFurnitureData
+    {
+        public int layoutId;
+        public int furnitureId;
+        public string furnitureName;
+        public int positionX;
+        public int positionY;
+        public int rotation;
+        public int width;
+        public int height;
+    }
 
     // 가구 배치를 위한 데이터 구조
     [System.Serializable]
@@ -24,6 +43,7 @@ public class JSW_ServerDeco : MonoBehaviour
         public int height;
     }
 
+    [System.Serializable]
     public class FurnitureDataPut
     {
         public int positionX;
@@ -37,15 +57,15 @@ public class JSW_ServerDeco : MonoBehaviour
         FurnitureData data = new FurnitureData
         {
             //coupleId = JSW_CoupleSceneManager.instance.CoupleId,
-            furnitureId = 1,
-            positionX = 100,
-            positionY = 200,
-            rotation = 90,
-            width = 50,
-            height = 30
+            furnitureId = decoobject.GetComponent<JSW_DecoObject>().funitureNum,
+            positionX = decoobject.GetComponent<JSW_DecoObject>().decoObjectPositionX,
+            positionY = decoobject.GetComponent<JSW_DecoObject>().decoObjectPositionZ,
+            rotation = decoobject.GetComponent<JSW_DecoObject>().decoObjectRotation,
+            width = decoobject.GetComponent<JSW_DecoObject>().decoObjectLengthX,
+            height = decoobject.GetComponent<JSW_DecoObject>().decoObjectLengthZ
         };
 
-        StartCoroutine(PostEvent("http://125.132.216.190:12223/api/rooms/decorate", data, decoobject));
+        StartCoroutine(PostEvent("http://125.132.216.190:12223/api/rooms/furniture", data, decoobject));
     }
 
     IEnumerator PostEvent(string url, FurnitureData eventData, JSW_DecoObject decoobject)
@@ -80,6 +100,9 @@ public class JSW_ServerDeco : MonoBehaviour
 
             //FurnitureData schedulepost = JsonUtility.FromJson<FurnitureData>(request.downloadHandler.text);
             Debug.Log("Response: " + request.downloadHandler.text);
+            ResponseData responseData = JsonUtility.FromJson<ResponseData>(request.downloadHandler.text);
+            decoobject.funitureLayoutId = responseData.data.layoutId;
+            print("layoutID: " + decoobject.funitureLayoutId);
             //print(schedulepost.iconNumber + " + " + schedulepost.eventDate + " + " + schedulepost.description + " + " + schedulepost.eventId.ToString());
             //ScheduleSubmit2(schedulepost.iconNumber, schedulepost.eventDate[0].ToString("D4") + schedulepost.eventDate[1].ToString("D2") + schedulepost.eventDate[2].ToString("D2"), schedulepost.description, schedulepost.eventId.ToString());
         }
@@ -132,7 +155,7 @@ public class JSW_ServerDeco : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 // 성공적으로 데이터를 받아온 경우
-                Debug.Log("이벤트 목록: " + request.downloadHandler.text);
+                Debug.Log("삭제");
 
             }
             else if (request.responseCode == 404)
@@ -167,15 +190,19 @@ public class JSW_ServerDeco : MonoBehaviour
 
     IEnumerator PutEvents_CO(int layoutId, FurnitureDataPut eventData)
     {
+        print(layoutId.ToString());
+        print(apiPutUrl + layoutId.ToString() + "/move");
         // UnityWebRequest를 사용하여 GET 요청 전송
-        using (UnityWebRequest request = new UnityWebRequest(apiPutUrl + layoutId.ToString() + "/move", "PUT"))
+        using (UnityWebRequest request = new UnityWebRequest(apiPutUrl + layoutId.ToString(), "PUT"))
         {
-            print(apiPutUrl + layoutId.ToString() + "/move");
-
 
             // JSON 직렬화
             string jsonBody = JsonUtility.ToJson(eventData);
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
 
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
             // 헤더 설정
             request.SetRequestHeader("Accept", "application/json");
             string jwtToken = LoginInfoManager.instance.myToken;

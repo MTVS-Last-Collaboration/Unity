@@ -23,7 +23,7 @@ public class JSW_LobbyGameManager : MonoBehaviourPunCallbacks
 
         playerAvataType = LoginInfoManager.instance.avataChoice;
         nickName.text = LoginInfoManager.instance.nickName;
-        if (playerAvataType == "PlayerMale")
+        if (playerAvataType == "MALE")
         {
             playerAvataType = "JSW_PlayerMale";
             profile.sprite = man;
