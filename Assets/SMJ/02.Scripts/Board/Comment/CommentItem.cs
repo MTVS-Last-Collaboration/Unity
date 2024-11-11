@@ -52,7 +52,7 @@ public class CommentItem : MonoBehaviour
     {
         if (likeCountText != null)
         {
-            likeCountText.text = isClickLike ? $"¢¾ {data.likeCount}" : $"¢½ {data.likeCount}";
+            likeCountText.text = isClickLike ? $"{data.likeCount}" : $"{data.likeCount}";
         }
     }
 

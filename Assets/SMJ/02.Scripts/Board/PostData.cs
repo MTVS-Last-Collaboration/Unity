@@ -40,6 +40,11 @@ public class PostData
         weeklyLikeCount--;
     }
 
+    public int GetLike()
+    {
+        return likeCount;
+    }
+
     public void ResetWeeklyLikes()
     {
         weeklyLikeCount = 0;

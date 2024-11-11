@@ -53,7 +53,7 @@ public class TopicBanner : MonoBehaviour
     public void Initialize(Topic topic, int day)
     {
         days = day;
-        titleText.text = day == 0 ? "<¿À´ÃÀÇ ÁÖÁ¦>" : $"<{day}ÀÏÀü ÁÖÁ¦>";
+        titleText.text = day == 0 ? "<¿À´ÃÀÇ ½æÅå ÀÌ½´>" : $"<{day}ÀÏÀü ½æÅå ÀÌ½´>";
         contentText.text = topic.content;
     }
 

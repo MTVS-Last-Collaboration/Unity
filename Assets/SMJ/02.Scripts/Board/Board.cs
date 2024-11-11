@@ -233,6 +233,7 @@ public class Board : MonoBehaviour
         postItem.Initialize(post);
 
         var commentBoard = postObj.GetComponentInChildren<CommentBoard>(true);
+        postObj.GetComponent<PostItem>().commentBoard = commentBoard;
         if (commentBoard != null)
         {
             commentBoard.Initialize(answer, this);
@@ -261,6 +262,8 @@ public class Board : MonoBehaviour
         //}
         GameObject postObj = Instantiate(postPrefab, postListContent);
         postObj.GetComponent<PostItem>().Initialize(post);
+        var commentBoard = gameObject.GetComponentInChildren<CommentBoard>(true);
+        postObj.GetComponent<PostItem>().commentBoard = commentBoard;
     }
 
     private IEnumerator DailyWeeklyLikesCheck()

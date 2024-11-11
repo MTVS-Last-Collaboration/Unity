@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Collections;
@@ -31,17 +32,28 @@ public class ServerCommentResponse
 public class CommentBoard : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private GameObject commentPrefab;
+    [SerializeField] private GameObject commentPanel;
     [SerializeField] private RectTransform commentListContent;
+    [SerializeField] private GameObject commentPrefab;
     [SerializeField] private WriteCommentPanel writePanel;
-    [SerializeField] private GameObject noCommentsText;
-    [SerializeField] private GameObject loadingIndicator;
-    [SerializeField] private GameObject errorMessage;
+    [SerializeField] private Button closeButton;
+    [SerializeField] private Button recentButton;
+    [SerializeField] public PostItem item;
 
     private int answerId;
     private Board parentBoard;
     private List<CommentData> comments = new List<CommentData>();
     private bool isInitialized = false;
+
+    [SerializeField] public TMP_Text title;
+    [SerializeField] public TMP_Text nickName;
+    [SerializeField] public TMP_Text content;
+    [SerializeField] public TMP_Text date;
+    [SerializeField] public DateTime time;
+    [SerializeField] public TMP_Text likeCountText;
+    public int likeCount = 0;
+
+    [SerializeField] public Button likeButton;
 
     public void Initialize(TopicAnswer answer, Board board)
     {
@@ -72,32 +84,62 @@ public class CommentBoard : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        closeButton.onClick.AddListener(() => Close());
+        likeButton.onClick.AddListener(() => LikeClick());
+        commentPanel.SetActive(false);
+
+        // NetworkManager 미리 초기화
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+    }
+
+    public void LikeClick()
+    {
+        item.OnLikeButton();
+    }
+
+    public void Close()
+    {
+        commentPanel.SetActive(false);
+        closeButton.gameObject.SetActive(false);
+        recentButton.gameObject.SetActive(true);
+    }
+
+    public void DisplayCommentsForAnswer(int id)
+    {
+        answerId = id;
+        commentPanel.SetActive(true);
+        closeButton.gameObject.SetActive(true);
+        recentButton.gameObject.SetActive(false);
+        ClearComments();
+        LoadComments();
+    }
+
+    private void ClearComments()
+    {
+        foreach (Transform child in commentListContent)
+        {
+            Destroy(child.gameObject);
+        }
+        comments.Clear();
+    }
+
     private void LoadComments()
     {
-        if (gameObject.activeInHierarchy)
-        {
-            ShowLoadingState(true);
-            StartCoroutine(LoadCommentsCoroutine());
-            isInitialized = true;
-        }
+        if (!gameObject.activeInHierarchy) return;
+
+        // NetworkManager가 이미 초기화되어 있으므로 바로 코루틴 시작
+        StartCoroutine(LoadCommentsCoroutine());
+        isInitialized = true;
     }
 
     private IEnumerator LoadCommentsCoroutine()
     {
-        if (!gameObject.activeInHierarchy)
-        {
-            Debug.Log("CommentBoard is inactive, skipping comments load");
-            yield break;
-        }
-
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
-
         yield return NetworkManager.Instance.GetArray<ServerCommentData>($"api/topic/{answerId}/comments",
             (success, commentList) =>
             {
                 if (!gameObject.activeInHierarchy) return;
-
-                ShowLoadingState(false);
 
                 if (success && commentList != null)
                 {
@@ -112,36 +154,11 @@ public class CommentBoard : MonoBehaviour
                         if (comments.Count > 0)
                         {
                             RefreshCommentList();
-                            ShowNoComments(false);
-                            ShowError(false);
-                        }
-                        else
-                        {
-                            ShowNoComments(true);
-                            ShowError(false);
-                            Debug.Log($"No comments found for answer {answerId}");
                         }
                     }
                     catch (Exception e)
                     {
                         Debug.LogError($"Error processing comments: {e.Message}");
-                        ShowError(true);
-                        ShowNoComments(false);
-                    }
-                }
-                else
-                {
-                    if (success) // 성공했지만 댓글이 없는 경우
-                    {
-                        ShowNoComments(true);
-                        ShowError(false);
-                        Debug.Log($"No comments found for answer {answerId}");
-                    }
-                    else
-                    {
-                        ShowError(true);
-                        ShowNoComments(false);
-                        Debug.LogError($"Failed to load comments");
                     }
                 }
             });
@@ -172,25 +189,9 @@ public class CommentBoard : MonoBehaviour
             return;
         }
 
-        var comment = new CommentData(
-            answerId,
-            LoginInfoManager.instance.nickName,
-            text,
-            0
-        );
-
-        ShowLoadingState(true);
-        CreateNewComment(comment.answerId, comment.content, () =>
+        CreateNewComment(answerId, text, () =>
         {
-            comments.Add(comment);
-            var commentObject = Instantiate(commentPrefab, commentListContent);
-            var commentItem = commentObject.GetComponent<CommentItem>();
-            if (commentItem != null)
-            {
-                commentItem.Initialize(comment);
-            }
-            ShowLoadingState(false);
-            ShowNoComments(false);
+            LoadComments(); // 댓글 목록 새로고침
         });
     }
 
@@ -220,9 +221,7 @@ public class CommentBoard : MonoBehaviour
                 else
                 {
                     Debug.LogError($"Failed to create comment: {response}");
-                    ShowError(true);
                 }
-                ShowLoadingState(false);
             });
     }
 
@@ -251,27 +250,8 @@ public class CommentBoard : MonoBehaviour
         }
     }
 
-    private void ShowLoadingState(bool show)
+    private void OnDestroy()
     {
-        if (loadingIndicator != null)
-            loadingIndicator.SetActive(show);
-    }
-
-    private void ShowNoComments(bool show)
-    {
-        if (noCommentsText != null)
-            noCommentsText.SetActive(show);
-    }
-
-    private void ShowError(bool show)
-    {
-        if (errorMessage != null)
-            errorMessage.SetActive(show);
-    }
-
-    private void OnDisable()
-    {
-        Debug.Log($"CommentBoard OnDisable - Comments count: {comments.Count}");
-        ShowLoadingState(false);
+        closeButton.onClick.RemoveAllListeners();
     }
 }

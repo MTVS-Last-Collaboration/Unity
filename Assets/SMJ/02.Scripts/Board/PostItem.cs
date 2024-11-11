@@ -20,25 +20,23 @@ public class PostItem : MonoBehaviour
     [SerializeField] private TMP_Text contentText;
     [SerializeField] private TMP_Text dateText;
     [SerializeField] private TMP_Text likeCountText;
-    [SerializeField] private GameObject commentPanel;
     [SerializeField] private VerticalLayoutGroup verticalLayoutGroup;
-    [SerializeField] private CommentBoard comment;
-    [SerializeField] private Button openCommentButton;
+    public CommentBoard commentBoard;
     [SerializeField] private Button likeButton;
-
+    [SerializeField] private Button viewCommentsButton;
     [SerializeField] private float minHeight = 265f;
     [SerializeField] private float maxHeight = 1030f;
     [SerializeField] private int minVertical = 7;
     [SerializeField] private int maxVertical = 780;
-
+    private bool isRequesting = false;
     private LayoutElement layout;
-    private PostData data;
+    [SerializeField] public PostData data;
     private bool isClickLike = false;
     private bool isInitialized = false;
-
     public void Initialize(PostData postData)
     {
         data = postData;
+
         layout = GetComponent<LayoutElement>();
         InitializeButtons();
         UpdateUI();
@@ -52,6 +50,17 @@ public class PostItem : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartCoroutine(Delay());
+    }
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(1.0f);
+        GameObject detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
+    }
+
     private void LoadLikeStatus()
     {
         if (gameObject.activeInHierarchy)
@@ -62,8 +71,8 @@ public class PostItem : MonoBehaviour
 
     private void InitializeButtons()
     {
-        if (openCommentButton != null)
-            openCommentButton.onClick.AddListener(OnToggleCommentPanel);
+        if (viewCommentsButton != null)
+            viewCommentsButton.onClick.AddListener(OnToggleCommentPanel);
 
         if (likeButton != null)
             likeButton.onClick.AddListener(OnLikeButton);
@@ -71,12 +80,50 @@ public class PostItem : MonoBehaviour
 
     public void OnToggleCommentPanel()
     {
-        bool isOpen = !commentPanel.activeSelf;
-        commentPanel.SetActive(isOpen);
-        layout.preferredHeight = isOpen ? maxHeight : minHeight;
-        verticalLayoutGroup.padding.bottom = isOpen ? maxVertical : minVertical;
+        GameObject detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
+        if (detailPostPanel != null)
+        {
+            // CommentBoard 가져오기 및 댓글 표시
+            CommentBoard commentBoard = detailPostPanel.GetComponent<CommentBoard>();
+            if (commentBoard != null)
+            {
+                commentBoard.item = gameObject.GetComponent<PostItem>();
+                // DisplayCommentsForAnswer만 호출
+                commentBoard.DisplayCommentsForAnswer(data.answerId);
+                commentBoard.title.text = data.title;
+                commentBoard.nickName.text = data.nickName;
+                commentBoard.content.text = data.content;
+                commentBoard.date.text = date;
+                commentBoard.likeCountText.text = data.likeCount.ToString();
+                detailPostPanel.SetActive(true);
+            }
+        }
+        //bool isOpen = !commentPanel.activeSelf;
+        //commentPanel.SetActive(isOpen);
+        //layout.preferredHeight = isOpen ? maxHeight : minHeight;
+        //verticalLayoutGroup.padding.bottom = isOpen ? maxVertical : minVertical;
     }
+    private IEnumerator WaitForNetworkAndShowPanel()
+    {
+        isRequesting = true;
 
+        // 네트워크 매니저 초기화가 완료될 때까지 대기
+        yield return new WaitForSeconds(0.1f);
+
+        GameObject detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
+        if (detailPostPanel != null)
+        {
+            CommentBoard commentBoard = detailPostPanel.GetComponent<CommentBoard>();
+            if (commentBoard != null)
+            {
+                detailPostPanel.SetActive(true);
+                commentBoard.DisplayCommentsForAnswer(data.answerId);
+            }
+        }
+
+        isRequesting = false;
+    }
+    string date;
     private void UpdateUI()
     {
         if (data != null)
@@ -85,6 +132,7 @@ public class PostItem : MonoBehaviour
             titleText.text = data.title;
             contentText.text = data.content;
             dateText.text = data.createDate.ToString("yyyy-MM-dd HH:mm");
+            date = data.createDate.ToString("MM/dd HH:mm");
             UpdateLikeUI();
         }
     }
@@ -126,6 +174,7 @@ public class PostItem : MonoBehaviour
                         {
                             isClickLike = likeData.liked;
                             data.likeCount = likeData.likeCount;
+                            commentBoard.likeCountText.text = data.likeCount.ToString();
                             UpdateLikeUI();
                             Debug.Log($"Initial like status loaded: liked={isClickLike}, count={likeData.likeCount}");
                         }
@@ -151,7 +200,8 @@ public class PostItem : MonoBehaviour
             data.AddLike();
             isClickLike = true;
             UpdateLikeUI();
-
+            commentBoard = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel").GetComponent<CommentBoard>();
+            commentBoard.likeCountText.text = data.likeCount.ToString();
             if (likeButton != null)
                 likeButton.interactable = true;
         }));
@@ -178,6 +228,7 @@ public class PostItem : MonoBehaviour
                             data.SubLike();
                             isClickLike = false;
                             UpdateLikeUI();
+                            commentBoard.likeCountText.text = data.likeCount.ToString();
                             if (likeButton != null)
                                 likeButton.interactable = true;
                         }));
@@ -215,8 +266,8 @@ public class PostItem : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (openCommentButton != null)
-            openCommentButton.onClick.RemoveListener(OnToggleCommentPanel);
+        if (viewCommentsButton != null)
+            viewCommentsButton.onClick.AddListener(OnToggleCommentPanel);
 
         if (likeButton != null)
             likeButton.onClick.RemoveListener(OnLikeButton);
