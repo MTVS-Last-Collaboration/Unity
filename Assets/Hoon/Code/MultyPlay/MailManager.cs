@@ -8,8 +8,11 @@ using Newtonsoft.Json;
 using System.Collections;
 using Photon.Pun;
 using Photon.Realtime;
-//claabackÀÌº¥Æ®
+//claaback????
 using ExitGames.Client.Photon;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
+using UnityEngine.Networking;
 using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.LookDev;
@@ -19,9 +22,8 @@ using Photon.Pun.Demo.Cockpit;
 using System.Reflection;
 using System.Security.Cryptography;
 using UnityEngine.UIElements;
-using Button = UnityEngine.UI.Button;
-using Image = UnityEngine.UI.Image;
-using UnityEngine.Networking;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 [System.Serializable]
 public class DayComentData
@@ -36,35 +38,52 @@ public class DayComentData
     public string user2coment;
 }
 
+[System.Serializable]
+public class SeverMailData
+{
+    public string missionNumber;
+    public int[] missionDate;
+    public string missionContent;
+    public string partner1Mood;
+    public string partner1Answer;
+    public string partner2Mood;
+    public string partner2Answer;
+    public string completed;
+
+}
+
+
 public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
-    public GameObject mail_IconObject; //¸ÞÀÏ¾ÆÀÌÄÜ¿ÀºêÁ§Æ®
-    public GameObject mail_ImageObject; //¸ÞÀÏ¹Ì¼ÇÀÌ¹ÌÁö
-    public Button touchButton; //ÅÍÄ¡¹öÆ°
-    public TextMeshProUGUI currentDay; //³¯Â¥Ç¥½Ã
-    public GameObject moodChoiceObject; //¿À´ÃÀÇ±âºÐ º¯°æ ¿ÀºêÁ§Æ®
-    //public Button moodSwitch; //¹öÆ°±âºÐº¯°æ
-    public Button moodSwitch1;
-    public Button moodSwitch2;
-    public Image moodChice1; // ±âºÐº¯°æ BG
+    public GameObject mail_IconObject; //???????????????
+    public GameObject mail_ImageObject; //???????????
+    public Button touchButton; //??????
+    public TextMeshProUGUI currentDay; //??????
+    public GameObject moodChoiceObject; //???????? ???? ???????
+    //public Button moodSwitch; //?????¬Ü???
+    public GameObject moodSwitch1; //??¬Ü???1
+    public GameObject moodSwitch2;  //??¬Ü???2
+    public GameObject moodChoice1Object;
+    public GameObject moodChoice2Object;
+    public Image moodChice1; // ??¬Ü??? BG
     public Image moodChice2;
-    public Button moodGood; // ¹öÆ° ±âºÐÁÁÀ½
-    public Button moodNormal; //¹öÆ° ±âºÐÁß°£
-    public Button moodBad; //¹öÆ° ±âºÐ³ª»Ý
-    public Sprite[] moodSprites; //±âºÐÀÌ¹ÌÁö ¹è¿­
-    public GameObject tmp_InputFieldObject; //ÄÚ¸àÆ® ÀÎÇ²
-    public Button mailComentButton; //ÄÚ¸àÆ® ÀÎÇ² ¿­±â
-    public GameObject mailComentTestObject; //¸ÞÀÏÄÚ¸àÆ®
+    public Button moodGood; // ??? ???????
+    public Button moodNormal; //??? ??????
+    public Button moodBad; //??? ??¬Ô???
+    public Sprite[] moodSprites; //???????? ?ò÷
+    public GameObject tmp_InputFieldObject; //???? ???
+    public Button mailComentButton; //???? ??? ????
+    public GameObject mailComentTestObject; //????????
     public GameObject dayMisiionObject;
     public GameObject Coment1;
     public GameObject Coment2;
-    public string startDate; //½ÃÀÛÀÏ ÁöÁ¤º¯¼ö
+    public string startDate; //?????? ????????
     public string userNumber;
 
     GameObject player1;
     GameObject player2;
     Image mail_IconImage;
-    bool isMailImage = false;
+    bool isMailImage = false; //????BG ?????
     bool isMoodSwihtch1 = false;
     bool isMoodSwihtch2 = false;
     bool isMailComentButton = false;
@@ -76,19 +95,19 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     bool isMailComent1 = false;
     bool isMainComent2 = false;
 
-    string currentDate; //¿À´Ã ³¯Â¥¸¦ ÀúÀåÇÒ º¯¼ö
-    string playerNickName; //´Ð³×ÀÓ ÀúÀå º¯¼ö
+    string currentDate; //???? ????? ?????? ????
+    string playerNickName; //?¬Ô??? ???? ????
 
-    List<DayComentData> loadDayComenList; //·ÎµåÇÑ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏ´Â ¸®½ºÆ®
-    string matchDayComentinfo; //¸®½ºÆ®¿¡¼­ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ¹®ÀÚ¿­
+    List<DayComentData> loadDayComenList; //?¥å??? ??????? ??????? ?????
+    string matchDayComentinfo; //????????? ?????? ??????? ?????? ?????
 
     PlayerNicknameManager playerNicknameMgr1;
     PlayerNicknameManager playerNicknameMgr2;
 
-    // Æ÷ÅæÀ» ÅëÇØ¼­ ÀÌº¥Æ®·Ñ º¸³»ÀÚ.
-    // Æ÷Åæ¿¡¼­ ¹ÞÀ» ÀÌº¥Æ® ÄÚµå (¿¹: 100)
+    // ?????? ????? ?????? ??????.
+    // ???ë¡?? ???? ???? ??? (??: 100)
     private const byte DATA_SYNC_EVENT_CODE = 100;
-    // JSON ÆÄÀÏÀÌ ÀúÀåµÉ ·ÎÄÃ °æ·Î
+    // JSON ?????? ????? ???? ???
     public string jsonSyncPath;
     //public string jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
     public string jsonSyncString;
@@ -97,20 +116,23 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public GameObject moodButton1;
     public GameObject moodButton2;
-    public GameObject historyScrollview; //Ãß¾ïÇÏ±â¹öÆ°À¸·Î ½ºÅ©·Ñºä¸¦ Ä×´Ù ²°´ÙÇÏÀÚ.
-    bool isHistoryScrollview = false; // Ãß¾ï½ºÅ©·Ñºä°¡ º¸ÀÌ´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
-    public Transform historyContent; // Ãß¾ï¹öÆ°ÀÌ ÄÁÅÙÃ÷ÀÇ À§Ä¡
-    public GameObject historyButton; // Ãß¾ï¹öÆ°
+    public GameObject historyScrollview; //???????????? ?????? ??? ????????.
+    bool isHistoryScrollview = false; // ??????? ??????? ?????? ????
+    public Transform historyContent; // ??????? ???????? ???
+    public GameObject historyButton; // ?????
 
     string moodText1;
     string moodText2;
 
-    List<DayComentData> histrotyList = new List<DayComentData>(); //È÷½ºÅä¸® ´ãÀ» ¸®½ºÆ®
-    List<Button> histroyButtonList = new List<Button>(); //¹öÆ°À» ´ãÀ» ¸®½ºÆ®
-
+    List<DayComentData> histrotyList = new List<DayComentData>(); //?????? ???? ?????
+    List<Button> histroyButtonList = new List<Button>(); //????? ???? ?????
 
     public bool isServerComent = false;
     public TextMeshProUGUI testSeverComentButton;
+
+    public List<Image> moodChoice1ButtonImageList;
+    public List<Image> moodChoice2ButtonImageList;
+
 
     void Start()
     {
@@ -119,36 +141,36 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
         if (File.Exists(jsonSyncPath))
         {
-            print("jsonÆÄÀÏÀÖÀ½");
+            print("json????????");
         }
         else
         {
-            print("jsonÆÄÀÏ¾øÀ½, »ý¼º½ÃÀÛ");
+            print("json???????, ????????");
             CreateNewDayComentJsonArray();
 
         }
-        //PhotonNetwork.AddCallbackTarget(this);  // ÀÌº¥Æ® ÄÝ¹é µî·Ï
+        //PhotonNetwork.AddCallbackTarget(this);  // ???? ??? ???
         //Debug.Log(Application.persistentDataPath);
         //DataPath.text = Application.persistentDataPath;
 
-        //¹ÝÈ¯°ªÀÌ int
+        //??????? int
 
-        string playerList = "Âü°¡ÇÑ ÇÃ·¹ÀÌ¾î " + PhotonNetwork.PlayerList.Length; //+ "\n" + // + "\n" +
+        string playerList = "?????? ?¡À???? " + PhotonNetwork.PlayerList.Length; //+ "\n" + // + "\n" +
         string roomName = "";
         string nickName = "";
 
         if (PhotonNetwork.CurrentRoom != null)
         {
-            roomName = "¹æÀÌ¸§ " + PhotonNetwork.CurrentRoom.Name;
+            roomName = "????? " + PhotonNetwork.CurrentRoom.Name;
         }
         else
         {
-            roomName = "¹æÀÌ¸§¾øÀ½";
+            roomName = "?????????";
         }
 
         if (PhotonNetwork.LocalPlayer.NickName != null)
         {
-            nickName = "´Ð³×ÀÓ" + PhotonNetwork.LocalPlayer.NickName;
+            nickName = "?¬Ô???" + PhotonNetwork.LocalPlayer.NickName;
         }
 
         DataPath.text = playerList + "\n" + roomName + "\n" + nickName;
@@ -157,172 +179,183 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (mail_IconObject != null)
         {
-            //print("¿ÀºêÁ§Æ® ÀÖÀ½");
+            //print("??????? ????");
             mail_IconImage = mail_IconObject.GetComponent<Image>();
             mail_IconImage.gameObject.SetActive(false);
         }
 
         if (mail_ImageObject != null)
         {
-            //mail_ImageObject.SetActive(false); //¿ÀºêÁ§Æ®¸¦ ²ôÀÚ.
+            //mail_ImageObject.SetActive(false); //????????? ????.
         }
 
-        tmp_InputFieldObject.SetActive(false); //ÀÎÇ²ÇÊµå ¿ÀºêÁ§Æ® ²ô±â.
-        mailComentButtonText = mailComentTestObject.GetComponent<TextMeshProUGUI>(); //¸ÞÀÏÄÚ¸àÆ®¹öÆ°ÅØ½ºÆ®
+        tmp_InputFieldObject.SetActive(false); //?????? ??????? ????.
+        mailComentButtonText = mailComentTestObject.GetComponent<TextMeshProUGUI>(); //???????????????
 
-
-        DataPath.gameObject.SetActive(false);//µ¥ÀÌÅ¸ ÅØ½ºÆ® ²ô±â
-        //È÷½ºÅä¸® ½ºÅ©·Ñºä ²ô±â
+        DataPath.gameObject.SetActive(false);//????? ???? ????
+        //?????? ?????? ????
         historyScrollview.gameObject.SetActive(false);
+
+        //?????¬Þ???UI????
+        moodChoice1Object.SetActive(false); //1???????????
+        moodChoice2Object.SetActive(false); //2???????????
 
 
 
     }
 
-
     void Update()
     {
-        /* if (isMailImage)//¸ÞÀÏÄÁÅÙÃ÷BG
+        /* if (isMailImage)//??????????BG
          {
              mail_ImageObject.SetActive(true);
 
          }
          else
          {
-             mail_ImageObject.SetActive(false); //¸ÞÀÏ ÀÌ¹ÌÁö ¿ÀºêÁ§Æ® ²ô±â
-             print("¸ÞÀÏÀÌ¹ÌÁö ²ôÀÚ");
+             mail_ImageObject.SetActive(false); //???? ????? ??????? ????
+             print("????????? ????");
          }*/
 
-        if (isMoodSwihtch1)//°¨Á¤Ç¥Çö¹öÆ°1
-        {
-            moodChice1.gameObject.SetActive(true);
-        }
-        else
-        {
-            moodChice1.gameObject.SetActive(false);
-        }
+        /* if (isMoodSwihtch1)//??????????1
+         {
+             moodChice1.gameObject.SetActive(true);
+         }
+         else
+         {
+             moodChice1.gameObject.SetActive(false);
+         }
 
-        if (isMoodSwihtch2)//°¨Á¤Ç¥Çö¹öÆ°2
-        {
-            moodChice2.gameObject.SetActive(true);
-        }
-        else
-        {
-            moodChice2.gameObject.SetActive(false);
-        }
+         if (isMoodSwihtch2)//??????????2
+         {
+             moodChice2.gameObject.SetActive(true);
+         }
+         else
+         {
+             moodChice2.gameObject.SetActive(false);
+         }*/
 
     }
 
-    //¼­¹ö¿¡¼­ ¿À´Ã ¹Ì¼ÇÀ» °¡Á®¿ÀÀÚ.
-    public void TodayMissonGetServer()
+    public void TodayMissonGetServer()//???????? ???? ????? ????????.
     {
-        StartCoroutine(GetTodayMission()); 
-          
+        StartCoroutine(GetTodayMission());
+
     }
 
-    IEnumerator GetTodayMission()
+    IEnumerator GetTodayMission() //???????? Get ????? ????????.
     {
-        string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //¿äÃ»ÇÏ´ÂÁÖ¼Ò
+        string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //?????????
 
         UnityWebRequest request = UnityWebRequest.Get(urlTodayMission);
-        request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //ÀúÀåµÈ ³» µµÅ«º¸³»±â
+        request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //????? ?? ?????????
 
-        yield return request.SendWebRequest(); //À¥¿¡¼­ ¿äÃ»ÀÌ ¿Ã¶§±îÁö ´ë±â
+        yield return request.SendWebRequest(); //?????? ????? ??????? ???
 
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)  //¿¡·¯¹ß»ý
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)  //???????
         {
 
             Debug.LogError("Error: " + request.error);
-            //¿¡·¯500
-
-
+            //????500
 
         }
-        else //¹®Á¦¾øÀ½
+        else //????????
         {
             string responseText = request.downloadHandler.text;
-            print("¼­¹ö ÀÀ´ä: " + responseText); // ³»°¡ ¹ÞÀº Á¤º¸
+            print("???? ????: " + responseText); // ???? ???? ????
 
-        }
-
-    }
-
-        //¹öÆ°À» ´©¸£¸é ´äº¯ ÀÔ·ÂÇÊµå¸¦ º¸¿©ÁÖÀÚ.
-        public void ViewComentInputField()
-    {
-        string nickName = LobbyGameManager.instance.playerNickName;
-        
-        print("¼­¹ö´äº¯ÇÏ±â");
-        isServerComent = true; //¼­¹ö´äº¯ ÂüÀ¸·Î
-
-        //¼­¹ö ¹öÆ°ÀÇ ÅØ½ºÆ®¸¦ ¼­¹ö ÀúÀåÀ¸·Î ¸é°æÇÏ±â.
-        testSeverComentButton.text = "¼­¹öÀúÀåÇÏ±â";
-        
-
-
-
-        if (isMailComentButton) //´äº¯ÇÏ±â ´©¸¥ÈÄ ÀúÀåÇÏ±â ´©¸£¸é
-        {
-            mailComentButtonText.text = "´äº¯ÇÏ±â"; //ÄÚ¸àÆ®¹öÆ° ÅØ½ºÆ® º¯°æ ´äº¯ÇÏ±â
-
-            if (userNumber == "user1")
-            {
-                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-                //print("1¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
-                mailComentText1.text = nickName + "´äº¯" + ":" + tmp_InputField.text;
-            }
-            else
-            {
-                mailComentText2.text = nickName + "´äº¯" + ":" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-                //print("2¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
-            }
-        }
-        else 
-        {
-
+            //???????? Json ???? ????? ?? ????????
+            JObject jsonObj = JObject.Parse(responseText); //json???? 
+            string missionContent = jsonObj["missionContent"].ToString();  // missionContent ????                                                     
+            Debug.Log("Mission Content: " + missionContent);// ??? ???
+            dayMisiionObject.GetComponent<TextMeshProUGUI>().text = missionContent; //????? ????;
             
         }
 
+    }
 
+    public void ViewComentInputField()//????? ?????? ?? ?????? ????????.
+    {
+        string nickName;
+        if(LobbyGameManager.instance.playerNickName != null)
+        {
+             nickName = LobbyGameManager.instance.playerNickName;
+        }
+        else
+        {
+             nickName = "?????¬Ô???";
+        }
+
+        print("?????????");
+        isServerComent = true; //?????? ??????
+
+        //???? ????? ?????? ???? ???????? ??????.
+        testSeverComentButton.text = "???????????";
+
+
+
+
+        if (isMailComentButton) //????? ?????? ??????? ??????
+        {
+            mailComentButtonText.text = "?????"; //??????? ???? ???? ?????
+
+            if (userNumber == "user1")
+            {
+                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //?????? ?????? ???¡Æ?? ????
+                //print("1?????? ????? ??????");
+                mailComentText1.text = nickName + "??" + ":" + tmp_InputField.text;
+            }
+            else
+            {
+                mailComentText2.text = nickName + "??" + ":" + tmp_InputField.text; //?????? ?????? ???¡Æ?? ????
+                //print("2?????? ????? ??????");
+            }
+        }
+        else
+        {
+
+
+        }
+
+
+
+    }
+
+    public void HistroyView() //int histroyButtonIndex = 0;
+    {
 
     }
     
-
-    public void HistroyView()
-    {
-
-    }
-    //int histroyButtonIndex = 0;
     public void CheckHistoty()
     {
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
-        if (File.Exists(path))//ÆÄÀÏÀÖ´Ï?
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //????????
+        if (File.Exists(path))//????????
         {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List·Î ÆÄ½ÌÇÏ±â
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //??????? ????????
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List?? ??????
 
             bool isCurrentDate = false;
-            foreach (var ComentData in loadDayComenList) 
+            foreach (var ComentData in loadDayComenList)
             {
-                
-                //³¯Â¥°¡ ÀÏÄ¡
+
+                //????? ???
                 if (ComentData.date != null && ComentData.dateMission != null)
                 {
-                    histrotyList.Add(ComentData); //ºÒ·¯¿ÂÁ¤º¸ historyList ´ã±â
+                    histrotyList.Add(ComentData); //????????? historyList ???
 
-                    string historyDate = ComentData.date; //³¯Â¥
-                    string historyDateMission = ComentData.dateMission; //¹Ì¼Ç
+                    string historyDate = ComentData.date; //???
+                    string historyDateMission = ComentData.dateMission; //???
 
-                    // ¹öÆ° »ý¼º ¹× ¼³Á¤
-                    GameObject newButtonObj = Instantiate(historyButton, historyContent); // ÇÁ¸®ÆÕÀ» ContentÀÇ ÀÚ½ÄÀ¸·Î »ý¼º
-                    Button newButton = newButtonObj.GetComponent<Button>(); //»ý¼ºµÈ ¹öÆ°ÀÇ ÄÄÆ÷³ÍÆ® °¡Á®¿À±â  
-                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>(); // Button ÀÚ½ÄÄÄÆ÷³ÍÆ® TextMeshProUGUI °¡Á®¿À±â
+                    // ??? ???? ?? ????
+                    GameObject newButtonObj = Instantiate(historyButton, historyContent); // ???????? Content?? ??????? ????
+                    Button newButton = newButtonObj.GetComponent<Button>(); //?????? ????? ??????? ????????  
+                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>(); // Button ?????????? TextMeshProUGUI ????????
 
-                    histroyButtonList.Add(newButton); //È÷½ºÅä¸® ¹öÆ° ¸®½ºÆ®¿¡ ½Å±Ô »ý¼ºÇÑ ¹öÆ°À» ´ã±â
+                    histroyButtonList.Add(newButton); //?????? ??? ??????? ??? ?????? ????? ???
 
-                    int buttonIndex = histroyButtonList.Count - 1; // °íÀ¯ ÀÎµ¦½º ¼³Á¤ (ÇöÀç ¸®½ºÆ®ÀÇ ¸¶Áö¸· ÀÎµ¦½º)
+                    int buttonIndex = histroyButtonList.Count - 1; // ???? ?¥å??? ???? (???? ??????? ?????? ?¥å???)
 
-                    // ¹öÆ° Å¬¸¯ ÀÌº¥Æ® ¼³Á¤
+                    // ??? ??? ???? ????
                     newButton.onClick.AddListener(() =>
                     {
                         newButton.GetComponent<MailHistoryManager>().buttonNumber = buttonIndex;
@@ -332,11 +365,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     if (buttonText != null)
                     {
-                        buttonText.text = "Day" + (histroyButtonList.Count) + ":" + historyDateMission + "\n" + historyDate; // ¹öÆ° ÅØ½ºÆ® ¼³Á¤
-                        
+                        buttonText.text = "Day" + (histroyButtonList.Count) + ":" + historyDateMission + "\n" + historyDate; // ??? ???? ????
+
                     }
                 }
-               
+
             }
 
         }
@@ -346,7 +379,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void ViewHistoryScrollview()
     {
 
-        if(!isHistoryScrollview)
+        if (!isHistoryScrollview)
         {
             historyScrollview.gameObject.SetActive(true);
             isHistoryScrollview = true;
@@ -356,97 +389,110 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             historyScrollview.gameObject.SetActive(false);
             isHistoryScrollview = false;
         }
-        
+
     }
 
-    public void CheckComent() //ÀúÁ¤µÈ ³»¿ëÀÌ ÀÖÀ¸¸é ·ÎµåÇØÁÖ±â.
+    public void CheckComent() //?????? ?????? ?????? ?¥å??????.
     {
-        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ÄÚ¸àÆ® ÀÎÇ²ÇÊµå ÄÄÆ÷³ÍÆ®
-        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //ÄÚ¸àÆ®1 ÀÇ ÅØ½ºÆ®
-        mailComentText2 = Coment2.GetComponent<TextMeshProUGUI>(); //ÄÚ¸àÆ®2ÀÇ ÅØ½ºÆ®
+        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ???? ?????? ???????
+        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //????1 ?? ????
+        mailComentText2 = Coment2.GetComponent<TextMeshProUGUI>(); //????2?? ????
 
-        //ÀúÀåµÈ µ¥ÀÌÅÍ°¡ ÀÖ´ÂÁö È®ÀÎÇÏ±â
-        //ÆÄÀÏÀÌ ÀÖÀ¸¸é °¢ ÇÊµå¿¡ ÀúÀåµÈ °ªÀ» ¼¼ÆÃÇÏ±â
-        //°æ·ÎÆÄÀÏÀ» ºÒ·¯¿É´Ï´Ù.
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
+        //????? ??????? ????? ??????
+        //?????? ?????? ?? ??? ????? ???? ???????
+        //????????? ???????.
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //???©£??
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //????????
 
-        string fakeDate = "2010-10-22";//°¡Â¥³¯Â¥µ¥ÀÌÅÍ
-        if (File.Exists(path))//ÆÄÀÏÀÖ´Ï?
+        string fakeDate = "2010-10-22";//????????????
+        if (File.Exists(path))//????????
         {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List·Î ÆÄ½ÌÇÏ±â
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //??????? ????????
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List?? ??????
 
             bool isCurrentDate = false;
             foreach (var ComentData in loadDayComenList)
             {
-                if (ComentData.date == currentDate) //³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
-                //f(ComentData.date == fakeDate) //°¡Â¥³¯Â¥·Î ÀÏÄ¡È®ÀÎ
+                print("???????" + ComentData.date + "??????" + currentDate);
+                if (ComentData.date == currentDate) //????? ??????
+                //f(ComentData.date == fakeDate) //???????? ??????
                 {
-                    print("CheckComent, ³¯Â¥ÀÏÄ¡");
-                    //mailComentText1.text = "´Ð³×ÀÓ" + ":" + ComentData.user1name + "," + "±âºÐ" + ":" + ComentData.user1mood + "," + "´äº¯" + ":" + ComentData.user1coment;
-                    //mailComentText2.text = "´Ð³×ÀÓ" + ":" + ComentData.user2name + "," + "±âºÐ" + ":" + ComentData.user2mood + "," + "´äº¯" + ":" + ComentData.user2coment;
-                    //mailComentText1.text = ComentData.user1name + "´äº¯" + ":" + ComentData.user1coment;
-                    //mailComentText2.text = ComentData.user2name + "´äº¯" + ":" + ComentData.user2coment;
-                    
-                    
-                    if(userNumber == "user1" && mailComentText1.text == null) //À¯Àú1, ÅØ½ºÆ®1µ¥ÀÌÅÍ¾øÀ½.
+                    print("CheckComent, ??????");
+                    //mailComentText1.text = "?¬Ô???" + ":" + ComentData.user1name + "," + "???" + ":" + ComentData.user1mood + "," + "??" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = "?¬Ô???" + ":" + ComentData.user2name + "," + "???" + ":" + ComentData.user2mood + "," + "??" + ":" + ComentData.user2coment;
+                    //mailComentText1.text = ComentData.user1name + "??" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = ComentData.user2name + "??" + ":" + ComentData.user2coment;
+
+                    //?????? ???
+                    if (ComentData.user1coment != "null" && ComentData.user2coment != "null")
                     {
-                        mailComentText1.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
+                        //??? ?? ???????? ???????
+                        mailComentText1.text = ComentData.user1coment;
+                        mailComentText2.text = ComentData.user2coment;
+                        print("????? ???????????~");
+                        isCurrentDate = true;
+                        break;
+                    }
+
+
+                    if (userNumber == "user1" && mailComentText1.text == null) //????1, ????1?????????.
+                    {
+                        mailComentText1.text = "???? ???? ??????????";
                         //print("111");
-                    } 
-                    else if (userNumber == "user1" && ComentData.user1coment == "null") //À¯Àú1, ÅØ½ºÆ®1null
+                    }
+                    else if (userNumber == "user1" && ComentData.user1coment == "null") //????1, ????1null
                     {
-                        mailComentText1.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
+                        mailComentText1.text = "???? ???? ??????????";
                         //print("112");
                     }
-                    else if(userNumber == "user1" && ComentData.user1coment != "null") //À¯Àú1, ÅØ½ºÆ®1!null
+                    else if (userNumber == "user1" && ComentData.user1coment != "null") //????1, ????1!null
                     {
-                        mailComentText1.text = ComentData.user1coment;
+                        //?? ?? ???? ???? ????.
+                        mailComentText1.text = mailComentText1.text = ComentData.user1coment; ;
                         //print("113" + ComentData.user1coment);
                     }
 
-                    if(userNumber == "user1" && mailComentText2.text == null)
+                    if (userNumber == "user1" && mailComentText2.text == null)
                     {
-                        mailComentText2.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä"; //À¯Àú1, ÅØ½ºÆ®2µ¥ÀÌÅÍ¾øÀ½.
+                        mailComentText2.text = "???? ?????? ?????? ?????"; //????1, ????2?????????.
                         //print("121");
                     }
-                    else if (userNumber =="user1"&& ComentData.user2coment == "null")//À¯Àú1, ÅØ½ºÆ®2null
+                    else if (userNumber == "user1" && ComentData.user2coment == "null")//????1, ????2null
                     {
-                        mailComentText2.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä";
+                        mailComentText2.text = "???? ?????? ?????? ?????";
                         //print("122");
                     }
-                    else if(userNumber == "user1" && ComentData.user2coment != "null") //À¯Àú1, ÅØ½ºÆ®2!null
+                    else if (userNumber == "user1" && ComentData.user2coment != "null") //????1, ????2!null
                     {
-                        mailComentText2.text = ComentData.user2coment;
+                        mailComentText2.text = mailComentText2.text = ComentData.user2coment;
                         //print("123" + ComentData.user2coment);
                     }
 
-                    //À¯Àú2ÀÏ¶§
-                    if (userNumber == "user2" && mailComentText1.text == null) //À¯Àú1, ÅØ½ºÆ®1µ¥ÀÌÅÍ¾øÀ½
+                    //????2???
+                    if (userNumber == "user2" && mailComentText1.text == null) //????1, ????1?????????
                     {
-                        mailComentText1.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä."; 
+                        mailComentText1.text = "???? ?????? ?????? ?????.";
                     }
-                    else if (userNumber == "user2" && ComentData.user1coment == "null") //ÅØ½ºÆ®°¡ ¾øÀ¸¸é
+                    else if (userNumber == "user2" && ComentData.user1coment == "null") //?????? ??????
                     {
-                        mailComentText1.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä.";
+                        mailComentText1.text = "???? ?????? ?????? ?????.";
                     }
-                    else if(userNumber == "user2" && ComentData.user1coment != "null")
+                    else if (userNumber == "user2" && ComentData.user1coment != "null")
                     {
-                        mailComentText1.text = ComentData.user1coment;
+                        mailComentText1.text = "???? ??????????. ?????? ???? ?????? ?????? ??????????.";
                     }
 
-                    if(userNumber == "user2" && mailComentText2.text == null)
+                    if (userNumber == "user2" && mailComentText2.text == null)
                     {
-                        mailComentText2.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
+                        mailComentText2.text = "???? ???? ??????????";
                     }
-                    else if(userNumber == "user2" && ComentData.user2coment == "null")
+                    else if (userNumber == "user2" && ComentData.user2coment == "null")
                     {
-                        mailComentText2.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
+                        mailComentText2.text = "???? ???? ??????????";
                     }
-                    else if (userNumber == "user2" && ComentData.user2coment != "null") //À¯Àú1, ÅØ½ºÆ®2!null
+                    else if (userNumber == "user2" && ComentData.user2coment != "null") //????1, ????2!null
                     {
-                        mailComentText2.text = ComentData.user2coment;
+                        mailComentText2.text = "???? ??????????. ?????? ???? ?????? ?????? ??????????.";
                         //print("123" + ComentData.user2coment);
                     }
 
@@ -454,167 +500,167 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     break;
 
                 }
-                
-            }
-            if(!isCurrentDate) //ÀÏÄ¡ÇÏ´Â°Å ¾øÀ¸¸é
-            {
-                print("³¯Â¥ºÒÀÏÄ¡, ÀúÀå±â·Ï¾øÀ½");
 
-                if(userNumber =="user1")
-                {
-                    print("user1 ³¯Â¥¾øÀ½");
-                    mailComentText1.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                    mailComentText2.text = "»ó´ë¹æÀÌ ´äº¯À» ÀÔ·ÂÇÏÁö ¾Ê¾Ò¾î¿ä";
-                }
-                else if(userNumber == "user2")
-                {
-                    print("user2 ³¯Â¥¾øÀ½");
-                    mailComentText2.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                    mailComentText1.text = "»ó´ë¹æÀÌ ´äº¯À» ÀÔ·ÂÇÏÁö ¾Ê¾Ò¾î¿ä";
-                }
-         
             }
-        }   
+            if (!isCurrentDate) //?????¡Æ? ??????
+            {
+                print("????????, ?????????");
+
+                if (userNumber == "user1")
+                {
+                    print("user1 ???????");
+                    mailComentText1.text = "???? ???? ??????????";
+                    mailComentText2.text = "?????? ???? ??????? ?????";
+                }
+                else if (userNumber == "user2")
+                {
+                    print("user2 ???????");
+                    mailComentText2.text = "???? ???? ??????????";
+                    mailComentText1.text = "?????? ???? ??????? ?????";
+                }
+
+            }
+        }
     }
-    
-    public void CheckDate()
+
+    public void CheckDate()//?????????
     {
-        // ÇöÀç ³¯Â¥¸¦ yyyy-MM-dd Çü½ÄÀÇ ¹®ÀÚ¿­·Î º¯È¯
+        // ???? ????? yyyy-MM-dd ?????? ??????? ???
         startDate = "2024-10-28";
-        Debug.Log("½ÃÀÛ ³¯Â¥: " + startDate);
+        Debug.Log("???? ???: " + startDate);
 
         currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-        Debug.Log("ÇöÀç ³¯Â¥: " + currentDate);
-        // ¹®ÀÚ¿­À» DateTime Çü½ÄÀ¸·Î º¯È¯
+        Debug.Log("???? ???: " + currentDate);
+        // ??????? DateTime ???????? ???
         DateTime startDay = DateTime.Parse(startDate);
-        // ¿À´Ã ³¯Â¥ °¡Á®¿À±â
+        // ???? ??? ????????
         DateTime currDay = DateTime.Now;
 
-        // ³¯Â¥ Â÷ÀÌ °è»ê
+        // ??? ???? ???
         TimeSpan difference = currDay - startDay;
-        //³¯Â¥º¸Á¤
+        //???????
         int totalDays = difference.Days + 1;
-        // Â÷ÀÌÀÇ ÀÏ¼ö¸¦ ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© sumDay¿¡ ÀúÀå
+        // ?????? ????? ??????? ?????? sumDay?? ????
         string sumDay = totalDays.ToString();
 
         string today = "Day" + sumDay + ":" + currentDate;
-        currentDay.text = today; //¿À´Ã³¯Â¥¸¦ Ç¥½ÃÇØÁÖÀÚ.
-    }//¿À´Ã³¯Â¥È®ÀÎ
-  
-    public void CheckMission()//¿À´Ã¹Ì¼ÇÈ®ÀÎ
+        currentDay.text = today; //???????? ?????????.
+    }
+
+    public void CheckMission()//?????????
     {
-        // ³¯Â¥ ¹®ÀÚ¿­À» DateTimeÀ¸·Î º¯È¯
+        // ??? ??????? DateTime???? ???
         DateTime dateTime = DateTime.Parse(currentDate);
-        
-        // ¿¬µµ, ¿ù, ÀÏÀ» °¢°¢ int·Î º¯È¯
+
+        // ????, ??, ???? ???? int?? ???
         int year = dateTime.Year;
         int month = dateTime.Month;
         int day = dateTime.Day;
 
-       /*  // °á°ú Ãâ·Â
-         Console.WriteLine("Year: " + year);
-         Console.WriteLine("Month: " + month);*/
-         Console.WriteLine("Day: " + day);
+        /*  // ??? ???
+          Console.WriteLine("Year: " + year);
+          Console.WriteLine("Month: " + month);*/
+        Console.WriteLine("Day: " + day);
 
-        // ÀÏ(Day) ºÎºÐÀ» ¹®ÀÚ¿­·Î º¯È¯
-        string dayString = dateTime.Day.ToString("D2"); // "25" (µÎ ÀÚ¸® ¼ýÀÚ Çü½ÄÀ¸·Î º¯È¯)
-        // Ã¹ ¹øÂ° ÀÚ¸®¿Í µÎ ¹øÂ° ÀÚ¸®¸¦ °¢°¢ int·Î º¯È¯ÇÏ¿© ÀúÀå
-        int firstDigit = int.Parse(dayString[0].ToString()); // Ã¹ ¹øÂ° ÀÚ¸® ¹®ÀÚ¿­·Î ÀúÀå
-        int secondDigit = int.Parse(dayString[1].ToString()); // µÎ ¹øÂ° ÀÚ¸® ¹®ÀÚ¿­·Î ÀúÀå
+        // ??(Day) ?¥ê??? ??????? ???
+        string dayString = dateTime.Day.ToString("D2"); // "25" (?? ??? ???? ???????? ???)
+        // ? ??¡Æ ????? ?? ??¡Æ ????? ???? int?? ?????? ????
+        int firstDigit = int.Parse(dayString[0].ToString()); // ? ??¡Æ ??? ??????? ????
+        int secondDigit = int.Parse(dayString[1].ToString()); // ?? ??¡Æ ??? ??????? ????
         int dayCheck = firstDigit + secondDigit;
-        int value = UnityEngine.Random.Range(0, 10); //·£´ý»Ì±â
-        
-        //¹Ì¼Ç¼³Á¤ÇÏ±â
-        if (day == 01 || day == 11 || day ==21) 
+        int value = UnityEngine.Random.Range(0, 10); //???????
+
+        //?????????
+        if (day == 01 || day == 11 || day == 21)
         {
-            todayMission = "¼­·ÎÀÇ Ã¹ÀÎ»óÀ» ¾Ë·ÁÁÖ¼¼¿ä";
+            todayMission = "?????? ??¥ë??? ????????";
         }
-        else if(day == 02 || day == 12 || day == 22)
+        else if (day == 02 || day == 12 || day == 22)
         {
-            todayMission = "¿À´Ã Á¡½É¿¡ ¹«¾ùÀ» ¸Ô¾ú´ÂÁö ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "???? ????? ?????? ??????? ????????.";
         }
         else if (day == 03 || day == 13 || day == 23)
         {
-            todayMission = "°¡Àå ¼ÒÁßÇÑ »ç¶÷Àº ´©±¸ÀÎÁö ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "???? ?????? ????? ???????? ????????.";
         }
         else if (day == 04 || day == 14 || day == 24)
         {
-            todayMission = "¿À´Ã ³¯¾¾¿¡ ´ëÇÑ ´À³¦À» ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "???? ?????? ???? ?????? ????????.";
         }
         else if (day == 05 || day == 15 || day == 25)
         {
-            todayMission = "µÑÀÌ ÇÔ²² ¿©Çà °¡°í½ÍÀº Àå¼Ò´Â ¾îµðÀÎ°¡¿ä.";
+            todayMission = "???? ??? ???? ???????? ???? ????????.";
         }
         else if (day == 06 || day == 16 || day == 26)
         {
-            todayMission = "Â¥Àå vs Â«»Í ´õ ¼±È£ÇÏ´Â À½½ÄÀ» ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "??? vs ??? ?? ?????? ?????? ????????.";
         }
         else if (day == 07 || day == 17 || day == 27)
         {
-            todayMission = "¿äÁò Áñ°Üµè´Â ³ë·¡¸¦ ¾Ë·ÁÁÖ¼¼¿ä";
+            todayMission = "???? ????? ?•L?? ????????";
         }
         else if (day == 08 || day == 18 || day == 28)
         {
-            todayMission = "¿¬ÀÎ°ú ÇÔ²²º¸°í ½ÍÀº ¿µÈ­¸¦ ¾Ë·ÁÁÖ¼¼¿ä";
+            todayMission = "????? ??????? ???? ????? ????????";
         }
         else if (day == 09 || day == 19 || day == 29)
         {
-            todayMission = "¿¬ÀÎ°ú ÇÔ²² ¸Ô°í½ÍÀº À½½ÄÀ» ¾Ë·ÁÁÖ¼¼¿ä";
+            todayMission = "????? ??? ??????? ?????? ????????";
         }
         else if (day == 10 || day == 20 || day == 30)
         {
-            todayMission = "¿¬ÀÎ¿¡°Ô ÁÁ¾ÆÇÏ´Â À½·á¸¦ ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "???¥ï??? ??????? ???? ????????.";
         }
-        else 
+        else
         {
-            todayMission = "³»ÀÏ ¼¼°è°¡ ¸ê¸ÁÇÑ´Ù¸é ¿¬ÀÎ¿¡°Ô ³²±â°í ½ÍÀº ¸»Àº ¹«¾ùÀÎ°¡¿ä.";
+            todayMission = "???? ???? ??????? ???¥ï??? ????? ???? ???? ?????????.";
 
         }
 
-        //¹Ì¼ÇÀúÀåÇÏ±â
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
-       
-        if (File.Exists(path))  // ÆÄÀÏÀÌ Á¸ÀçÇÏ¸é
+        //??????????
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //????????
+
+        if (File.Exists(path))  // ?????? ???????
         {
             string loadDayComentInfo = System.IO.File.ReadAllText(path);
             bool isMatchDate = false;
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //¹®ÀÚ¿­À» Json ¹è¿­·Î º¯°æ
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //??????? Json ?ò÷?? ????
 
-            for (int i = 0; i < loadDayComenList.Count; i++) //for¹®À¸·Î µ¥ÀÌÆ® idx·Î ¼³Á¤ÇÏ±â.
+            for (int i = 0; i < loadDayComenList.Count; i++) //for?????? ????? idx?? ???????.
             {
 
 
                 var ComentData = loadDayComenList[i];
-                if (ComentData.date == currentDate) // ³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
+                if (ComentData.date == currentDate) // ????? ??????
                 {
-                    // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ ÀúÀå.
+                    // ?????? ?????? ?¥á?? ?????? ????.
                     matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                    //Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
-                    //±âÁ¸µ¥ÀÌÅÍ ¼öÁ¤
+                    //Debug.Log("????? ?????? ??????: " + matchDayComentinfo);
+                    //?????????? ????
                     ComentData.dateMission = todayMission;
-                    // ¼öÁ¤µÈ µ¥ÀÌÅÍ¸¦ ¸®½ºÆ®¿¡ ¹Ý¿µ
+                    // ?????? ??????? ??????? ???
                     loadDayComenList[i] = ComentData;
-                    // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                    // ??????? JSON ??????? ???
                     string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
-                    //Json ÇüÅÂ·Î ÆÄÀÏÀ» º¸³»ÀÚ.
+                    //Json ???¡¤? ?????? ??????.
                     jsonSyncString = jsonString;
 
                     PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
-                    Debug.Log("Photon ÀÌº¥Æ®°¡ ¹ß»ýÇß½À´Ï´Ù.");
+                    Debug.Log("Photon ?????? ?????????.");
 
                     TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
                     dayMissionText.text = todayMission;
                     isMatchDate = true;
                     break;
-            
+
                 }
-                
-            }        
-            if(!isMatchDate) //ÀÏÄ¡ÇÏ´Â ³¯Â¥ ¾øÀ¸¸é ¹Ì¼Ç»ý¼ºÇÏ±â
+
+            }
+            if (!isMatchDate) //?????? ??? ?????? ?????????
             {
-                DayComentData  dayComentData = new DayComentData //Å¬·¡½º Á¤º¸ ÀçÁ¤ÀÇ
+                DayComentData dayComentData = new DayComentData //????? ???? ??????
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ???? ???
                     dateMission = todayMission,
                     user1name = "null",
                     user1mood = "null",
@@ -624,18 +670,18 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     user2coment = "null"
                 };
 
-                loadDayComenList.Add(dayComentData); //±âÁ¸¿¡ ºÒ·¯¿Â List¿¡ dayComentData ¿¡ usertype ¿¡ ¸Â´Â Á¤º¸¸¦ ÀúÀåÇÏ±â
+                loadDayComenList.Add(dayComentData); //?????? ????? List?? dayComentData ?? usertype ?? ?¢¥? ?????? ???????
 
-                // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                // ??????? JSON ??????? ???
                 string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
-                // JSON ÆÄÀÏ·Î ÀúÀå
+                // JSON ????? ????
                 File.WriteAllText(path, jsonString);
-                //Debug.Log("ÆÄÀÏ »ý¼º ¿Ï·á: " + path);
-                //Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+                //Debug.Log("???? ???? ???: " + path);
+                //Debug.Log("????? JSON ??????: " + jsonString);
 
-                //UIÀÇ ¹Ì¼ÇÅØ½ºÆ® °»½Å
+                //UI?? ??????? ????
                 TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
-                dayMissionText.text = todayMission; 
+                dayMissionText.text = todayMission;
 
 
             }
@@ -643,25 +689,38 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-            DataPath.text = "ÆÄÀÏÀÌ ¾ø½À´Ï´Ù";
-            //³¯Â¥°¡ ¾øÀ¸´Ï±î »õ·Î ¸¸µé¾îÁÖ°í °»½ÅÇÏÀÚ.
+            DataPath.text = "?????? ???????";
+            //????? ??????? ???? ???????? ????????.
 
 
         }
     }
 
-    public void CheckMood() //±âºÐ»óÅÂÈ®ÀÎ
+    public void GetChecMission() //???????? ????? ??????. 
+    {
+        //??????? FindPlayer???? ???
+        StartCoroutine(GetTodayMission());
+        
+    }
+
+    public void CheckMood() //??¬Ý??????
     {
 
-        //ÀÌ¹ÌÁö¸¦ °ñ¶ú´ÂÁö È®ÀÎÇÏ±â
+        //??????? ??????? ??????
         foreach (var ComentData in loadDayComenList)
         {
-            if (ComentData.date == currentDate) //³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
-            //if(ComentData.date == fakeDate) //°¡Â¥³¯Â¥·Î ÀÏÄ¡È®ÀÎ
+            if (ComentData.date == currentDate) //????? ??????
+            //if(ComentData.date == fakeDate) //???????? ??????
             {
-                print("³¯Â¥ÀÏÄ¡, ÀúÀå±â·ÏÀÖÀ½");
+                print("??????, ??????????");
                 Image img1 = moodSwitch1.GetComponent<Image>();
                 Image img2 = moodSwitch2.GetComponent<Image>();
+
+                if (ComentData.user1coment != "null" && ComentData.user2coment != "null")
+                {
+
+                }
+
 
                 if (ComentData.user1mood == "null")
                 {
@@ -669,6 +728,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 }
                 else if (ComentData.user1mood == "Good")
                 {
+                    //????1?? ????? ??? ??????? ???? ?????? ????????????
                     img1.sprite = moodSprites[1];
                 }
                 else if (ComentData.user1mood == "Normal")
@@ -679,8 +739,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     img1.sprite = moodSprites[3];
                 }
-                
-                print("1¹ø ÀÌ¹ÌÁö º¯°æ»çÇ× È®ÀÎÇÏ±â" + ComentData.user1mood);
+
+                print("1?? ????? ??????? ??????" + ComentData.user1mood);
 
 
                 if (ComentData.user2mood == "null")
@@ -699,19 +759,19 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     img2.sprite = moodSprites[3];
                 }
-             
-                print("user2 ÀÌ¹ÌÁö º¯°æ»çÇ× È®ÀÎÇÏ±â");
+
+                print("user2 ????? ??????? ??????");
                 break;
 
             }
             else
             {
-                print("CheckMood, ÀÏÄ¡ÇÏ´Â ³¯Â¥ ¾øÀ½, ÀÏÄ¡ÇÏ´Â ÀÌ¹ÌÁö°¡ ¾øÀ½.");
+                print("CheckMood, ?????? ??? ????, ?????? ??????? ????.");
             }
         }
     }
-    
-    public void CheckMail()//¹Ì¼Ç, ±âºÐ, ´äº¯ÀÌ ÀÖ´ÂÁö È®ÀÎ
+
+    public void CheckMail()//???, ???, ???? ????? ???
     {
         CheckMission();
         CheckMood();
@@ -720,97 +780,97 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void SaveDayComentJsonTest()
     {
-        string nickName = LobbyGameManager.instance.playerNickName; //´Ð³×ÀÓ Ä³½Ì
+        string nickName = LobbyGameManager.instance.playerNickName; //?¬Ô??? ©¦??
         string jsonString;
-        DayComentData dayComentData; //Å¬·¡½º º¯¼ö ¼±¾ð
+        DayComentData dayComentData; //????? ???? ????
 
-        if (isMailComentButton) //´äº¯ÇÏ±â ´©¸¥ÈÄ ÀúÀåÇÏ±â ´©¸£¸é
+        if (isMailComentButton) //????? ?????? ??????? ??????
         {
-            mailComentButtonText.text = "´äº¯ÇÏ±â"; //ÄÚ¸àÆ®¹öÆ° ÅØ½ºÆ® º¯°æ ´äº¯ÇÏ±â
+            mailComentButtonText.text = "?????"; //??????? ???? ???? ?????
 
             if (userNumber == "user1")
             {
-                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-                //print("1¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
-                 mailComentText1.text = nickName + "´äº¯" + ":"  + tmp_InputField.text;
+                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //?????? ?????? ???¡Æ?? ????
+                //print("1?????? ????? ??????");
+                mailComentText1.text = nickName + "??" + ":" + tmp_InputField.text;
             }
             else
             {
-                mailComentText2.text = nickName + "´äº¯" + ":" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-                //print("2¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
+                mailComentText2.text = nickName + "??" + ":" + tmp_InputField.text; //?????? ?????? ???¡Æ?? ????
+                //print("2?????? ????? ??????");
             }
 
-            //´äº¯À» ÀúÀåÇÏÀÚ.
-            //°æ·Î ÆÄÀÏÀ» ºÒ·¯¿ÀÀÚ.
-            //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //·ÎÄÃ°æ·Î
-            string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
-            if (File.Exists(path))  // ÆÄÀÏÀÌ Á¸ÀçÇÏ¸é
+            //???? ????????.
+            //??? ?????? ???????.
+            //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //???©£??
+            string path = Application.persistentDataPath + "/DayComentTest.json"; //????????
+            if (File.Exists(path))  // ?????? ???????
             {
-                string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-                //print("loadDayComentInfo" + loadDayComentInfo); //¹®ÀÚ¿­ Ãâ·ÂÇÏ±â
+                string loadDayComentInfo = System.IO.File.ReadAllText(path); //??????? ????????
+                //print("loadDayComentInfo" + loadDayComentInfo); //????? ??????
                 loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
                 //Debug.Log("loadedDataList" + loadDayComenList);
 
-                bool isMatched = false; // À¯È¿¼º°Ë»ç º¯¼ö
+                bool isMatched = false; // ???????? ????
 
-                for (int i = 0; i < loadDayComenList.Count; i++) //for¹®À¸·Î µ¥ÀÌÆ® idx·Î ¼³Á¤ÇÏ±â.
+                for (int i = 0; i < loadDayComenList.Count; i++) //for?????? ????? idx?? ???????.
                 {
                     var ComentData = loadDayComenList[i];
 
-                    if (ComentData.date == currentDate) // ³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
+                    if (ComentData.date == currentDate) // ????? ??????
                     {
-                        // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ ÀúÀå.
+                        // ?????? ?????? ?¥á?? ?????? ????.
                         matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                        //Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
-                        isMatched = true; //À¯È¿¼º°Ë»ç
+                        //Debug.Log("????? ?????? ??????: " + matchDayComentinfo);
+                        isMatched = true; //????????
 
-                        // ±âÁ¸ µ¥ÀÌÅÍ¸¦ ¼öÁ¤
+                        // ???? ??????? ????
                         if (userNumber == "user1")
                         {
-                            //Debug.Log("ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ÀÖÀ½, user1 Á¤º¸ ¾÷µ¥ÀÌÆ®");
+                            //Debug.Log("?????? ?????? ????, user1 ???? ???????");
                             ComentData.user1name = playerNicknameMgr1.nickNameComp.text;
                             ComentData.user1mood = moodText1;
                             ComentData.user1coment = mailComentText1.text;
                         }
                         else
                         {
-                            //Debug.Log("ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ÀÖÀ½, user2 Á¤º¸ ¾÷µ¥ÀÌÆ®");
+                            //Debug.Log("?????? ?????? ????, user2 ???? ???????");
                             ComentData.user2name = playerNicknameMgr2.nickNameComp.text;
                             ComentData.user2mood = moodText2;
                             ComentData.user2coment = mailComentText2.text;
                         }
 
-                        // ¼öÁ¤µÈ µ¥ÀÌÅÍ¸¦ ¸®½ºÆ®¿¡ ¹Ý¿µ
+                        // ?????? ??????? ??????? ???
                         loadDayComenList[i] = ComentData;
 
-                        // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                        // ??????? JSON ??????? ???
                         jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
 
-                        //Json ÇüÅÂ·Î ÆÄÀÏÀ» º¸³»ÀÚ.
+                        //Json ???¡¤? ?????? ??????.
                         jsonSyncString = jsonString;
 
-                        // JSON ÆÄÀÏ·Î ÀúÀå
-                        //File.WriteAllText(path, jsonString); //·ÎÄÃÀúÀå
-                        //Debug.Log("ÆÄÀÏ ÀúÀå ¿Ï·á: " + path);
-                        //Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+                        // JSON ????? ????
+                        //File.WriteAllText(path, jsonString); //????????
+                        //Debug.Log("???? ???? ???: " + path);
+                        //Debug.Log("????? JSON ??????: " + jsonString);
 
                         PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
-                        Debug.Log("Photon ÀÌº¥Æ®°¡ ¹ß»ýÇß½À´Ï´Ù.");
-                        break; //for¹® ÁßÁö
+                        Debug.Log("Photon ?????? ?????????.");
+                        break; //for?? ????
 
                     }
 
 
                 }
 
-                if (!isMatched) //ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é »õ·Î »ý¼ºÇØ¼­ ³Ö±â
+                if (!isMatched) //?????? ??????? ?????? ???? ??????? ???
                 {
 
-                    if (userNumber == "user1") //À¯Àú1 ÀÌ¸é
+                    if (userNumber == "user1") //????1 ???
                     {
-                        dayComentData = new DayComentData //Å¬·¡½º Á¤º¸ ÀçÁ¤ÀÇ
+                        dayComentData = new DayComentData //????? ???? ??????
                         {
-                            date = currentDate, // ÇöÀç ³¯Â¥
+                            date = currentDate, // ???? ???
                             dateMission = todayMission,
                             user1name = playerNicknameMgr1.nickNameComp.text,
                             user1mood = "Good",
@@ -821,11 +881,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         };
 
                     }
-                    else //À¯Àú2 ÀÌ¸é
+                    else //????2 ???
                     {
-                        dayComentData = new DayComentData //Å¬·¡½º Á¤º¸ ÀçÁ¤ÀÇ
+                        dayComentData = new DayComentData //????? ???? ??????
                         {
-                            date = currentDate, // ÇöÀç ³¯Â¥
+                            date = currentDate, // ???? ???
                             dateMission = todayMission,
                             user1name = "null",
                             user1mood = "null",
@@ -835,69 +895,117 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                             user2coment = mailComentText2.text,
                         };
                     }
-                    loadDayComenList.Add(dayComentData); //±âÁ¸¿¡ ºÒ·¯¿Â List¿¡ dayComentData ¿¡ usertype ¿¡ ¸Â´Â Á¤º¸¸¦ ÀúÀåÇÏ±â
+                    loadDayComenList.Add(dayComentData); //?????? ????? List?? dayComentData ?? usertype ?? ?¢¥? ?????? ???????
 
-                    // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                    // ??????? JSON ??????? ???
                     jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
-                    
-                    // JSON ÆÄÀÏ·Î ÀúÀå
+
+                    // JSON ????? ????
                     File.WriteAllText(path, jsonString);
-                    Debug.Log("ÆÄÀÏ »ý¼º ¿Ï·á: " + path);
-                    Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
-                  
+                    Debug.Log("???? ???? ???: " + path);
+                    Debug.Log("????? JSON ??????: " + jsonString);
+
                 }
 
             }
 
-            tmp_InputFieldObject.SetActive(false);  //ÀÎÇ²ÇÊµå ²ôÀÚ
+            tmp_InputFieldObject.SetActive(false);  //?????? ????
             isMailComentButton = false;
-           
+
 
         }
-        else //´äº¯ÇÏ±â¸¦ ´©¸£¸é
+        else //????? ??????
         {
 
-            tmp_InputFieldObject.SetActive(true); //ÀÎÇ²ÇÊµå ÄÑÀÚ.
+            tmp_InputFieldObject.SetActive(true); //?????? ????.
             if (userNumber == "user1")
             {
-                mailComentText1.text = nickName + ":" + "´äº¯";
-                print("1¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
+                mailComentText1.text = nickName + ":" + "??";
+                print("1?????? ????? ??????");
             }
             else
             {
-                mailComentText2.text = nickName + ":" + "´äº¯";
-                print("2¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
+                mailComentText2.text = nickName + ":" + "??";
+                print("2?????? ????? ??????");
             }
 
-            mailComentButtonText.text = "ÀúÀåÇÏ±â"; //ÄÚ¸àÆ®¹öÆ° ÅØ½ºÆ®¸¦ ÀúÀåÇÏ±â·Î º¯°æ
+            mailComentButtonText.text = "???????"; //??????? ?????? ???????? ????
             isMailComentButton = true;
 
         }
     }
 
+    public void SaveServerDayComentQuaryParameter()
+    {
+        // ?????? ???? JSON ??????
+        string jsonData = "{\"missionNumber\":1,\"missionDate\":[2024,11,11],\"missionContent\":\"???¥ï??? ???? ?????? ???? ?????????? ?? ?????? ??????????\",\"partner1Mood\":\"Good\",\"partner1Answer\":\"????\",\"partner2Mood\":\"Good\",\"partner2Answer\":\"?\",\"completed\":true}";
+
+        // JSON ??????? JObject?? ???
+        JObject jsonObject = JObject.Parse(jsonData);
+
+
+       /* string arg1 = "Good";
+        string arg2 = "????";
+
+        // ???? ?????? ???????? ???
+        string url = "http://125.132.216.190:12223/api/missions/answer?" + arg1 + "&" + arg2;*/
+
+        string arg1 = "Good";
+        string arg2 = "????";
+
+        // ???? ?????? ???????? ??? ?? URL ?????
+        string url = "http://125.132.216.190:12223/api/missions/answer?" +
+                     "param1=" + UnityWebRequest.EscapeURL(arg1) + "&" +
+                     "param2=" + UnityWebRequest.EscapeURL(arg2);
+
+        // POST ??? ??????
+        StartCoroutine(PostDayComentQuaryParameter(url));
+
+
+    }
+    
+    IEnumerator PostDayComentQuaryParameter(string url)
+    {
+        UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "");
+
+        yield return request.SendWebRequest();
+
+        // ??? ???
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Response: " + request.downloadHandler.text);
+        }
+        else
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+    }
+
+
+
     public void LoadDayComentJson()
     {
-        //°æ·Î ÆÄÀÏÀ» ºÒ·¯¿ÀÀÚ.
+        //??? ?????? ???????.
         string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";
 
-        if (File.Exists(path))  // ÆÄÀÏÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+        if (File.Exists(path))  // ?????? ????????? ???
         {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-            print("·ÎµåÁ¦ÀÌ½¼" + loadDayComentInfo);
-            print("¿À´Ã³¯Â¥" + currentDate);
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //??????? ????????
+            print("?¥å??????" + loadDayComentInfo);
+            print("??????" + currentDate);
 
-            // JSON ¹®ÀÚ¿­À» DayCommentData °´Ã¼ÀÇ ¸®½ºÆ®·Î ÆÄ½Ì
+            // JSON ??????? DayCommentData ????? ??????? ???
             //List<DayComentData> loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             Debug.Log("loadedDataList" + loadDayComenList);
 
-            CheckDayComentJsonDate(); //³¯Â¥Á¤º¸°¡ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎÇÏ°í ¾øÀ¸¸é »ý¼ºÇØ¼­ Á¤º¸¸¦ °»½Å
+            CheckDayComentJsonDate(); //????????? ???????? ?????? ?????? ??????? ?????? ????
 
         }
 
         else
         {
-            CreateNewDayComentJsonArray(); //ÆÄÀÏ¾øÀ¸¸é »õ·Î »ý¼º
+            CreateNewDayComentJsonArray(); //????????? ???? ????
 
         }
 
@@ -905,25 +1013,25 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void CheckDayComentJsonDate()
     {
-        // ³¯Â¥ È®ÀÎ ¹× ·Î±× Ãâ·Â
+        // ??? ??? ?? ?¥á? ???
         foreach (var ComentData in loadDayComenList)
         {
-            if (ComentData.date == currentDate) //³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
+            if (ComentData.date == currentDate) //????? ??????
             {
-                // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ÀúÀå.
+                // ?????? ?????? ?¥á?? ??????????.
                 //string matchDayComentinfo = JsonConvert.SerializeObject(dayComentData, Formatting.Indented);
                 matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
+                Debug.Log("????? ?????? ??????: " + matchDayComentinfo);
                 break;
 
             }
-            else //ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é »õ·Î »ý¼ºÇØ¼­ ³Ö±â
+            else //?????? ??????? ?????? ???? ??????? ???
             {
 
 
                 DayComentData dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ???? ???
                     user1name = "null",
                     user1mood = "null",
                     user1coment = "null",
@@ -937,15 +1045,15 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    public void CreateNewDayComentJsonArray() //Á¦ÀÌ½¼ ¹è¿­·Î ÀúÀåÇÏ±â
+    public void CreateNewDayComentJsonArray() //????? ?ò÷?? ???????
     {
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//???©£??
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //????????
 
-        // DayComentData °´Ã¼ »ý¼º
+        // DayComentData ??? ????
         DayComentData dayComentData = new DayComentData
         {
-            date = currentDate, // ÇöÀç ³¯Â¥
+            date = currentDate, // ???? ???
             dateMission = "null",
             user1name = "null",
             user1mood = "null",
@@ -955,29 +1063,29 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             user2coment = "null"
         };
 
-        // DayComentData¸¦ JSON ¹®ÀÚ¿­ ¹è¿­·Î º¯¼ö¿¡ÀúÀå
+        // DayComentData?? JSON ????? ?ò÷?? ??????????
         string jsonString = JsonConvert.SerializeObject(new[] { dayComentData }, Formatting.Indented);
 
-        // JSON ÆÄÀÏ·Î ÀúÀå
+        // JSON ????? ????
         File.WriteAllText(path, jsonString);
-        Debug.Log("ÆÄÀÏ »ý¼º ¿Ï·á: " + path);
-        Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+        Debug.Log("???? ???? ???: " + path);
+        Debug.Log("????? JSON ??????: " + jsonString);
 
 
     }
 
-    public void CreateNewDayComentJsonArray(string mood) //Á¦ÀÌ½¼ ¹è¿­·Î ÀúÀåÇÏ±â
+    public void CreateNewDayComentJsonArray(string mood) //????? ?ò÷?? ???????
     {
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//???©£??
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //????????
 
         string jsonString = "";
-        if (File.Exists(path)) //ÆÄÀÏ ÀÖ´Ï?
+        if (File.Exists(path)) //???? ????
         {
-            //ÆÄÀÏÀÖÀ¸¸é ±âÁ¸°Å ºÒ·¯¿À·Å.
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-           
-            // JSON ¹®ÀÚ¿­À» DayCommentData °´Ã¼ÀÇ ¸®½ºÆ®·Î ÆÄ½Ì
+            //?????????? ?????? ???????.
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //??????? ????????
+
+            // JSON ??????? DayCommentData ????? ??????? ???
             //List<DayComentData> loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             Debug.Log("loadedDataList" + loadDayComenList);
@@ -985,11 +1093,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             DayComentData dayComentData;
             if (userNumber == "user1")
             {
-                print("ChangeMoodImage À¯Àú³Ñ¹ö1" + userNumber);
-                // DayComentData °´Ã¼ »ý¼º
+                print("ChangeMoodImage ???????1" + userNumber);
+                // DayComentData ??? ????
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ???? ???
                     dateMission = "null",
                     user1name = "null",
                     user1mood = mood,
@@ -1001,11 +1109,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
             else
             {
-                print("ChangeMoodImage À¯Àú³Ñ¹ö2" + userNumber);
-                // DayComentData °´Ã¼ »ý¼º
+                print("ChangeMoodImage ???????2" + userNumber);
+                // DayComentData ??? ????
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ???? ???
                     dateMission = "null",
                     user1name = "null",
                     user1mood = "null",
@@ -1015,23 +1123,23 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     user2coment = mood
                 };
             }
-            //±âÁ¸¹è¿­¿¡ ½Å±Ô ¹è¿­Ãß°¡ÇÏ¿© ÀúÀå
+            //?????ò÷?? ??? ?ò÷?????? ????
             loadDayComenList.Add(dayComentData);
 
-            // DayComentData¸¦ JSON ¹®ÀÚ¿­ ¹è¿­·Î º¯¼ö¿¡ÀúÀå
+            // DayComentData?? JSON ????? ?ò÷?? ??????????
             jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
 
 
         }
-        else //ÆÄÀÏ¾ø´Ï
+        else //???????
         {
             DayComentData dayComentData;
             if (userNumber == "user1")
             {
-                // DayComentData °´Ã¼ »ý¼º
+                // DayComentData ??? ????
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ???? ???
                     dateMission = "null",
                     user1name = "null",
                     user1mood = mood,
@@ -1043,10 +1151,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
             else
             {
-                // DayComentData °´Ã¼ »ý¼º
+                // DayComentData ??? ????
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ???? ???
                     dateMission = "null",
                     user1name = "null",
                     user1mood = mood,
@@ -1056,19 +1164,19 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     user2coment = mood
                 };
 
-                // DayComentData¸¦ JSON ¹®ÀÚ¿­ ¹è¿­·Î º¯¼ö¿¡ÀúÀå
+                // DayComentData?? JSON ????? ?ò÷?? ??????????
                 jsonString = JsonConvert.SerializeObject(new[] { dayComentData }, Formatting.Indented);
 
             }
         }
 
 
-       
 
-        // JSON ÆÄÀÏ·Î ÀúÀå
+
+        // JSON ????? ????
         File.WriteAllText(path, jsonString);
-        Debug.Log("ÆÄÀÏ »ý¼º ¿Ï·á: " + path);
-        Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+        Debug.Log("???? ???? ???: " + path);
+        Debug.Log("????? JSON ??????: " + jsonString);
 
 
     }
@@ -1077,13 +1185,13 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";
 
-        // ÆÄÀÏÀÌ ¾øÀ¸¸é »õ ÆÄÀÏ »ý¼º
-        Debug.Log("ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê¾Æ »õ·Î »ý¼ºÇÕ´Ï´Ù.");
+        // ?????? ?????? ?? ???? ????
+        Debug.Log("?????? ???????? ??? ???? ????????.");
 
-        // ÇöÀç ³¯Â¥¸¦ yyyy-MM - dd Çü½ÄÀ¸·Î °¡Á®¿À±â
+        // ???? ????? yyyy-MM - dd ???????? ????????
         currentDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-        // ±âº» ±¸Á¶ÀÇ °´Ã¼ »ý¼º
+        // ?? ?????? ??? ????
         DayComentData dayComent = new DayComentData
         {
             date = "null",
@@ -1095,49 +1203,49 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             user2coment = "null"
         };
 
-        // Å¬·¡½º¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯ (Á÷·ÄÈ­)
+        // ??????? JSON ??????? ??? (?????)
         string jsonString = JsonUtility.ToJson(dayComent, true);
 
-        // ÆÄÀÏ »ý¼º ¹× ±âº» ³»¿ë ¾²±â
+        // ???? ???? ?? ?? ???? ????
         File.WriteAllText(path, jsonString);
-        Debug.Log("ÆÄÀÏ »ý¼º ¿Ï·á: " + path);
+        Debug.Log("???? ???? ???: " + path);
     }
 
     public void ViewInputMailComent()
     {
-      
+
         //print("ViewInputMailComent");
-        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ÄÚ¸àÆ® ÀÎÇ²ÇÊµå ÄÄÆ÷³ÍÆ®
-        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //ÄÚ¸àÆ®1 ÀÇ ÅØ½ºÆ®
-        if (isMailComentButton) //´äº¯ÇÏ±â ´©¸¥ÈÄ ÀúÀåÈ÷±â ´©¸£¸é
+        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ???? ?????? ???????
+        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //????1 ?? ????
+        if (isMailComentButton) //????? ?????? ???????? ??????
         {
-            mailComentButtonText.text = "´äº¯ÇÏ±â"; //ÄÚ¸àÆ®¹öÆ° ÅØ½ºÆ®¸¦ º¯°æ
-            //print("ÀÔ·Â¸¸ ÄÚ¸àÆ®" +tmp_InputField.text); //ÅØ½ºÆ® Ãâ·ÂÇØº¸±â
-            mailComentText1.text = currentDate + "\n" + "³ªÀÇ´äº¯:" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-            tmp_InputFieldObject.SetActive(false);  //ÀÎÇ²ÇÊµå ²ôÀÚ
+            mailComentButtonText.text = "?????"; //??????? ?????? ????
+            //print("??¢¬? ????" +tmp_InputField.text); //???? ????????
+            mailComentText1.text = currentDate + "\n" + "?????:" + tmp_InputField.text; //?????? ?????? ???¡Æ?? ????
+            tmp_InputFieldObject.SetActive(false);  //?????? ????
             isMailComentButton = false;
 
         }
-        else //´äº¯ÇÏ±â¸¦ ´©¸£¸é
+        else //????? ??????
         {
-            tmp_InputFieldObject.SetActive(true); //ÀÎÇ²ÇÊµå ÄÑÀÚ.
-            mailComentText1.text = "³ªÀÇ´äº¯:";
-            mailComentButtonText.text = "ÀúÀåÇÏ±â"; //ÀúÀåÇÏ±â ¹öÆ°À¸·Î º¯°æ
+            tmp_InputFieldObject.SetActive(true); //?????? ????.
+            mailComentText1.text = "?????:";
+            mailComentButtonText.text = "???????"; //??????? ??????? ????
             isMailComentButton = true;
 
         }
 
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
-        print("ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖÀ½");
-        if (other.gameObject.name.Contains("Player")) //°ÔÀÓ¿ÀºêÁ§Æ®°¡ ÇÃ·¹ÀÌ¾î¸¦ Æ÷ÇÔÇÏ°í ÀÖ´Ù¸é
+        print("?¡À???? ????? ????");
+        if (other.gameObject.name.Contains("Player")) //???????????? ?¡À???? ??????? ????
         {
-            print("ÀÌ¹ÌÁö º¸¿©ÁÖ±â");
+            print("????? ???????");
             mail_IconImage.gameObject.SetActive(enabled);
-            
-            //¹öÆ°À» ´­·¶À»¶§ ÇÔ¼ö È£Ãâ, ÇÑ¹ø¸¸ È£ÃâÇÏ°Ô ÇÏÀÚ.
+
+            //????? ???????? ??? ???, ????? ?????? ????.
             touchButton.onClick.AddListener(WithInRangeViewMailImageControll);
 
         }
@@ -1147,12 +1255,23 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
 
     }*/
+
     private void OnTriggerExit(Collider other)
     {
-        //¹öÆ°À» ´­·¶À»¶§ ÇÔ¼ö È£Ãâ 
+        //????? ???????? ??? ??? 
         touchButton.onClick.RemoveListener(WithInRangeViewMailImageControll);
         mail_IconImage.gameObject.SetActive(false);
-        print("ÀÌ¹ÌÁö ²ô±â");
+        print("????? ????");
+    }
+
+    public void OpenMailUI(GameObject obj)//??????? ????
+    {
+        obj.SetActive(true);
+    }
+
+    public void CloseMailUI(GameObject obj)//??????? ???
+    {
+        obj.SetActive(false);
     }
 
     public void WithInRangeViewMailImageControll()
@@ -1174,15 +1293,17 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (switchNum == 1 && userNumber == "user1")
         {
-           
+
             isMoodSwihtch1 = !isMoodSwihtch1;
-            print("³²ÀÚ½ºÀ§Ä¡");
+            OpenMailUI(moodChoice1Object);
+            print("????????");
 
         }
         else if (switchNum == 2 && userNumber == "user2")
         {
             isMoodSwihtch2 = !isMoodSwihtch2;
-            print("¿©ÀÚ½ºÀ§Ä¡");
+            OpenMailUI(moodChoice2Object);
+            print("????????");
         }
 
     }
@@ -1192,60 +1313,84 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         Image img1 = moodSwitch1.GetComponent<Image>();
         Image img2 = moodSwitch2.GetComponent<Image>();
 
-        print("ÀÌ¹ÌÁö¸¦ ¹Ù²Ù¸é ±× °ªÀ» jsonÆÄÀÏ¿¡ ÀúÀåÇÕ´Ï´Ù.");
-        
-        if(userNumber =="user1")
+        print("??????? ???? ?? ???? json????? ????????.");
+
+
+
+
+
+        if (userNumber == "user1")
         {
-            //1¹øÀÌ¹ÌÁö º¯°æ
+            //??¬Ûò÷????¢¬?? ????? ??????? ????.
+            for (int i = 1; i < moodChoice1ButtonImageList.Count; i++)
+            {
+                moodChoice1ButtonImageList[i].color = new Color(1, 1, 1, 0.4f);
+            }
+
+            //1??????? ????
             if (mood == "Good")
             {
                 img1.sprite = moodSprites[1];
+                moodChoice1ButtonImageList[1].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Normal")
             {
                 img1.sprite = moodSprites[2];
+                moodChoice1ButtonImageList[2].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Bad")
             {
                 img1.sprite = moodSprites[3];
+                moodChoice1ButtonImageList[3].color = new Color(1, 1, 1, 1);
             }
+
+
         }
         else
         {
-            //2¹øÀÌ¹ÌÁö º¯°æ
+            //??¬Ûò÷????¢¬?? ????? ??????? ????.
+            for (int i = 1; i < moodChoice2ButtonImageList.Count; i++)
+            {
+                moodChoice2ButtonImageList[i].color = new Color(1, 1, 1, 0.4f);
+            }
+
+            //2??????? ????
             if (mood == "Good")
             {
                 img2.sprite = moodSprites[1];
+                moodChoice1ButtonImageList[1].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Normal")
             {
                 img2.sprite = moodSprites[2];
+                moodChoice1ButtonImageList[2].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Bad")
             {
                 img2.sprite = moodSprites[3];
+                moodChoice1ButtonImageList[3].color = new Color(1, 1, 1, 1);
             }
         }
-       
-        //°æ·Î ÆÄÀÏÀ» ºÒ·¯¿ÀÀÚ.
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //½ÌÅ©°æ·Î
+
+        //??? ?????? ???????.
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //???©£??
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //??????
         bool isCurrentDate = false;
-        for (int i = 0; i < loadDayComenList.Count; i++) // ³¯Â¥ È®ÀÎ ¹× ·Î±× Ãâ·Â
+        for (int i = 0; i < loadDayComenList.Count; i++) // ??? ??? ?? ?¥á? ???
         {
             var ComentData = loadDayComenList[i];
 
-           
-            if (ComentData.date == currentDate) // ³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
-            {
-                // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ ÀúÀå.
-                matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
 
-                if(userNumber == "user1")
+            if (ComentData.date == currentDate) // ????? ??????
+            {
+                // ?????? ?????? ?¥á?? ?????? ????.
+                matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
+                Debug.Log("????? ?????? ??????: " + matchDayComentinfo);
+
+                if (userNumber == "user1")
                 {
-                    print("ChangeMoodImage À¯Àú³Ñ¹ö1" + userNumber);
-                    //1¹øÀÌ¹ÌÁöº¯°æ
+                    print("ChangeMoodImage ???????1" + userNumber);
+                    //1???????????
                     if (mood == "Good")
                     {
                         ComentData.user1mood = "Good";
@@ -1263,8 +1408,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 }
                 else
                 {
-                    print("ChangeMoodImage À¯Àú³Ñ¹ö2" + userNumber);
-                    //2¹øÀÌ¹ÌÁö º¯°æ
+                    print("ChangeMoodImage ???????2" + userNumber);
+                    //2??????? ????
                     if (mood == "Good")
                     {
                         ComentData.user2mood = "Good";
@@ -1279,149 +1424,149 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     }
                     moodText2 = mood;
                 }
-              
-                // ¼öÁ¤µÈ µ¥ÀÌÅÍ¸¦ ¸®½ºÆ®¿¡ ¹Ý¿µ
+
+                // ?????? ??????? ??????? ???
                 loadDayComenList[i] = ComentData;
 
-                // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
-                //string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); ·ÎÄÃÀúÀå
-                // JSON ÆÄÀÏ·Î ÀúÀå
-                //File.WriteAllText(path, jsonString); //·ÎÄÃÀúÀå
-                //Debug.Log("ÆÄÀÏ ÀúÀå ¿Ï·á: " + path);
-                //Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+                // ??????? JSON ??????? ???
+                //string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); ????????
+                // JSON ????? ????
+                //File.WriteAllText(path, jsonString); //????????
+                //Debug.Log("???? ???? ???: " + path);
+                //Debug.Log("????? JSON ??????: " + jsonString);
 
-                jsonSyncString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); //½ÌÅ©ÀúÀå
+                jsonSyncString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); //???????
                 PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
-                Debug.Log("Photon ÀÌº¥Æ®°¡ ¹ß»ýÇß½À´Ï´Ù.");
+                Debug.Log("Photon ?????? ?????????.");
                 isCurrentDate = true;
                 break;
             }
-            
+
         }
         if (!isCurrentDate)
         {
-            print("ÀÏÄ¡ÇÏ´Â ³¯Â¥°¡ ¾øÀ½");
+            print("?????? ????? ????");
             CreateNewDayComentJsonArray(mood);
-            
+
         }
 
     }
-    //·¹º§¿¡ ÀÖ´Â ÇÃ·¹ÀÌ¾î Ã£±â
-    IEnumerator FindPlayer()
+
+    IEnumerator FindPlayer()//?????? ??? ?¡À???? ???
     {
         yield return new WaitForSeconds(0.1f);
 
-        player1 = GameObject.Find("PlayerMale(Clone)"); //ÇÃ·¹ÀÌ¾î´Â ³²ÀÚ¾Æ¹ÙÅ¸
-        player2 = GameObject.Find("PlayerWoman(Clone)"); //ÇÃ·¹ÀÌ¾î´Â ¿©ÀÚ¾Æ¹ÙÅ¸
+        player1 = GameObject.Find("PlayerMale(Clone)"); //?¡À????? ???????
+        player2 = GameObject.Find("PlayerWoman(Clone)"); //?¡À????? ???????
 
-        // ³²ÀÚ°¡ ¸ÕÀú ÀÔÀåÇÑ °æ¿ì user1, ¿©ÀÚ°¡ ³ªÁß¿¡ ÀÔÀåÇÏ¸é user2, ´Ð³×ÀÓ ÀúÀå
-       if(player1 != null)
+        // ????? ???? ?????? ??? user1, ????? ????? ??????? user2, ?¬Ô??? ????
+        if (player1 != null)
         {
             playerNicknameMgr1 = player1.GetComponent<PlayerNicknameManager>();
         }
-            
-        if(player2 != null)
+
+        if (player2 != null)
         {
             playerNicknameMgr2 = player2.GetComponent<PlayerNicknameManager>();
         }
-     
-        if (player1 != null && player2 == null) // ³²ÀÚ È¥ÀÚ ÀÔÀå
+
+        if (player1 != null && player2 == null) // ???? ??? ????
         {
             playerNicknameMgr1 = player1.GetComponent<PlayerNicknameManager>();
-            userNumber = "user1";  // ³²ÀÚ´Â user1
-            print("FindPlayer ³²ÀÚ È¥ÀÚ ÀÔÀå, À¯Àú¹øÈ£: " + userNumber);
-            
+            userNumber = "user1";  // ????? user1
+            print("FindPlayer ???? ??? ????, ???????: " + userNumber);
+
         }
-        else if (player2 != null && player1 == null) // ¿©ÀÚ È¥ÀÚ ÀÔÀå
+        else if (player2 != null && player1 == null) // ???? ??? ????
         {
             playerNicknameMgr2 = player2.GetComponent<PlayerNicknameManager>();
-            userNumber = "user2";  // ¿©ÀÚ´Â user2
-            print("FindPlayer ¿©ÀÚ È¥ÀÚ ÀÔÀå, À¯Àú¹øÈ£: " + userNumber);
-            
+            userNumber = "user2";  // ????? user2
+            print("FindPlayer ???? ??? ????, ???????: " + userNumber);
+
         }
-        else if (player1 != null && player2 != null) // ³²ÀÚ¿Í ¿©ÀÚ°¡ ¸ðµÎ ÀÔÀåÇÑ °æ¿ì
+        else if (player1 != null && player2 != null) // ????? ????? ??? ?????? ???
         {
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == player1.GetComponent<PhotonView>().Owner.ActorNumber)
             {
-                // ³²ÀÚ°¡ ÇöÀç ·ÎÄÃ ÇÃ·¹ÀÌ¾îÀÏ ¶§
-                userNumber = "user1";  // ³²ÀÚ´Â Ç×»ó user1
-                print("FindPlayer ³²ÀÚ À¯Àú ÀÔÀå, À¯Àú¹øÈ£: user1");
+                // ????? ???? ???? ?¡À?????? ??
+                userNumber = "user1";  // ????? ??? user1
+                print("FindPlayer ???? ???? ????, ???????: user1");
             }
             else if (PhotonNetwork.LocalPlayer.ActorNumber == player2.GetComponent<PhotonView>().Owner.ActorNumber)
             {
-                // ¿©ÀÚ°¡ ÇöÀç ·ÎÄÃ ÇÃ·¹ÀÌ¾îÀÏ ¶§
-                userNumber = "user2";  // ¿©ÀÚ´Â Ç×»ó user2
-                print("FindPlayer ¿©ÀÚ À¯Àú ÀÔÀå, À¯Àú¹øÈ£: user2");
+                // ????? ???? ???? ?¡À?????? ??
+                userNumber = "user2";  // ????? ??? user2
+                print("FindPlayer ???? ???? ????, ???????: user2");
             }
 
         }
 
-        if (!player1 && !player2)//³²ÀÚ¿©ÀÚ µÑ´Ù¾øÀ½
+        if (!player1 && !player2)//??????? ??????
         {
-            //Debug.LogError("ÇÃ·¹ÀÌ¾î ¾øÀ½");
-            print("ÇÃ·¹ÀÌ¾î ¾øÀ½");
+            //Debug.LogError("?¡À???? ????");
+            print("?¡À???? ????");
         }
 
-        //¹«µå¹öÆ°²ô±â
+        //??????????
         /* if (userNumber == "user1")
          {
              moodButton2.SetActive(false);
-             print("À¯Àú³Ñ¹ö1 2¹ø¹«µå¹öÆ°²ôÀÚ");
+             print("???????1 2????????????");
          }
          else
          {
              moodButton1.SetActive(false);
-             print("À¯Àú³Ñ¹ö2 1¹ø¹«µå¹öÆ°²ôÀÚ");
+             print("???????2 1????????????");
          }*/
 
-        CheckDate(); //³¯Â¥¸¦ °è»êÇØÁÝ´Ï´Ù.
-        CheckMission(); //³¯Â¥¿¡ ¸Â´Â ¹Ì¼ÇÀ» »ý¼ºÇÕ´Ï´Ù.
-        CheckComent(); //ÄÚ¸Çµå°¡ ÀÖ´ÂÁö °è»êÇÕ´Ï´Ù.
-        CheckMood(); //¹«µå¸¦ ¹Ù²ÙÀÚ. FindPlayer ¸¦ ÁÜ.
+        CheckDate(); //????? ?????????.
+        //CheckMission(); //????? ?¢¥? ????? ????????.
+        GetChecMission();
+        CheckComent(); //???? ????? ???????.
+        CheckMood(); //???? ?????. FindPlayer ?? ??.
         CheckHistoty();
     }
 
-    // ¹®ÀÚ¿­À» JSON Çü½ÄÀ¸·Î ·ÎÄÃ °æ·Î¿¡ ÀúÀåÇÏ´Â ¸Þ¼­µå
-    private void SaveStringAsJson(string data)
+    private void SaveStringAsJson(string data) // ??????? JSON ???????? ???? ??¥ï? ??????? ?????
     {
-        // JSON Á÷·ÄÈ­ (´Ü¼ø stringÀ» JSON ±¸Á¶·Î º¯È¯ÇÏ´Â °æ¿ì)
+        // JSON ????? (??? string?? JSON ?????? ?????? ???)
         //var jsonData = new { syncedData = data };
 
-        // Á÷·ÄÈ­µÈ JSON µ¥ÀÌÅÍ¸¦ ¹®ÀÚ¿­·Î º¯È¯
+        // ??????? JSON ??????? ??????? ???
         //string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
 
-        // ·ÎÄÃ ÆÄÀÏ¿¡ ÀúÀå
+        // ???? ????? ????
         //File.WriteAllText(jsonSyncPath, jsonString);
         File.WriteAllText(jsonSyncPath, data);
 
         Debug.Log("Data saved as JSON at: " + jsonSyncPath);
     }
-    private void OnEnable()
+
+    private void OnEnable()  // ?????? ??? ?????
     {
         PhotonNetwork.AddCallbackTarget(this);
     }
-    // ÀÌº¥Æ®¸¦ ¹Þ´Â ¸Þ¼­µå
-    public void OnEvent(EventData photonEvent)
+
+    public void OnEvent(EventData photonEvent)  // Photon ?????????? ??? ??? ???
     {
-        // ¿ì¸®°¡ Á¤ÀÇÇÑ ÀÌº¥Æ®ÀÎÁö È®ÀÎ
+        // ?¯C?? ?????? ???????? ???
         if (photonEvent.Code == DATA_SYNC_EVENT_CODE)
         {
-            // ÀÌº¥Æ® µ¥ÀÌÅÍ ¹Þ±â (string ÇüÅÂ¶ó°í °¡Á¤)
+            // ???? ?????? ??? (string ???¢Ò?? ????)
             string jsonString = (string)photonEvent.CustomData;
 
             Debug.Log("Received data: " + jsonString);
 
-            // ¹ÞÀº µ¥ÀÌÅÍ¸¦ JSONÀ¸·Î ÀúÀå
+            // ???? ??????? JSON???? ????
             SaveStringAsJson(jsonString);
         }
     }
-    // Photon ³×Æ®¿öÅ©¿¡¼­ ÄÝ¹é Å¸°Ù µî·Ï
-   
-
+  
     private void OnDestroy()
     {
-        PhotonNetwork.RemoveCallbackTarget(this);  // ÀÌº¥Æ® ÄÝ¹é ÇØÁ¦
+        PhotonNetwork.RemoveCallbackTarget(this);  // ???? ??? ????
     }
 
-}//Å¬·¡½º ³¡
+
+}//????? ??

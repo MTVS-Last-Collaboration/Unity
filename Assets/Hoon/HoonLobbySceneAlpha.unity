@@ -3383,7 +3383,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -562, y: 0}
+  m_AnchoredPosition: {x: -562, y: 144.99998}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &268495372
@@ -3516,7 +3516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -882, y: 0}
+  m_AnchoredPosition: {x: -882, y: 145}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &272006149
@@ -3565,7 +3565,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1605153625}
         m_TargetAssemblyTypeName: MailManager, Assembly-CSharp
-        m_MethodName: ViewComentInputField
+        m_MethodName: SaveServerDayComentQuaryParameter
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3847,10 +3847,10 @@ RectTransform:
   m_Children:
   - {fileID: 1722562318}
   - {fileID: 1472162543}
+  - {fileID: 605748314}
   - {fileID: 258180212}
   - {fileID: 257691865}
   - {fileID: 1449953525}
-  - {fileID: 605748314}
   - {fileID: 212880094}
   - {fileID: 458984123}
   - {fileID: 267747833}
@@ -6614,7 +6614,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 85, y: 0}
+  m_AnchoredPosition: {x: 85, y: 144.99998}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &544965106
@@ -7137,11 +7137,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1605153625}
         m_TargetAssemblyTypeName: MailManager, Assembly-CSharp
-        m_MethodName: MailImageControll
-        m_Mode: 1
+        m_MethodName: CloseMailUI
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1359706984}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7368,7 +7368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &637913546
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7664,7 +7664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &654194124
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10706,8 +10706,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 637913546}
   - {fileID: 1046413529}
+  - {fileID: 637913546}
   m_Father: {fileID: 287844732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -10784,14 +10784,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 45d32b1661df1c647914523ee61c7d4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c28951aa6a20e864da11a7a7aecc1e6b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12088,7 +12088,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1046413529
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12419,7 +12419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -242.00003, y: 0}
+  m_AnchoredPosition: {x: -242.00003, y: 144.99998}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1076203571
@@ -13064,7 +13064,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.4}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13616,11 +13616,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1605153625}
         m_TargetAssemblyTypeName: MailManager, Assembly-CSharp
-        m_MethodName: MailImageControll
-        m_Mode: 1
+        m_MethodName: CloseMailUI
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 654194123}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -14448,7 +14448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1202665896
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14916,8 +14916,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2002034531}
   - {fileID: 654194124}
+  - {fileID: 2002034531}
   m_Father: {fileID: 287844732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -14994,14 +14994,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 45d32b1661df1c647914523ee61c7d4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c28951aa6a20e864da11a7a7aecc1e6b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -15460,7 +15460,7 @@ RectTransform:
   m_Father: {fileID: 36790021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -17144,7 +17144,7 @@ GameObject:
   - component: {fileID: 1377334007}
   - component: {fileID: 1377334006}
   m_Layer: 5
-  m_Name: Btn_Mail_History (2)
+  m_Name: Btn_Mail_MissionTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17167,7 +17167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 406, y: 0}
+  m_AnchoredPosition: {x: 406, y: 144.99998}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1377334006
@@ -17465,8 +17465,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1100, y: 200}
+  m_AnchoredPosition: {x: 0, y: 10.39291}
+  m_SizeDelta: {x: 1100, y: 206.9285}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1390388515
 MonoBehaviour:
@@ -18142,8 +18142,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1260878493}
   m_HandleRect: {fileID: 1260878492}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1.0000074
+  m_Size: 0.47619048
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -18511,7 +18511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1449953525
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19570,9 +19570,9 @@ RectTransform:
   m_Father: {fileID: 1771602917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1508730281
 MonoBehaviour:
@@ -20549,18 +20549,20 @@ MonoBehaviour:
   touchButton: {fileID: 1208583315}
   currentDay: {fileID: 2046910675}
   moodChoiceObject: {fileID: 1046413528}
-  moodSwitch1: {fileID: 1211014940}
-  moodSwitch2: {fileID: 900743341}
+  moodSwitch1: {fileID: 1211014938}
+  moodSwitch2: {fileID: 900743339}
+  moodChoice1Object: {fileID: 654194123}
+  moodChoice2Object: {fileID: 1046413528}
   moodChice1: {fileID: 654194125}
   moodChice2: {fileID: 1046413530}
   moodGood: {fileID: 894195155}
   moodNormal: {fileID: 1025817816}
   moodBad: {fileID: 290195832}
   moodSprites:
-  - {fileID: 21300000, guid: 45d32b1661df1c647914523ee61c7d4e, type: 3}
-  - {fileID: 21300000, guid: bb6a618890d09c04aa472948282e03a7, type: 3}
-  - {fileID: 21300000, guid: 52cb98fe76c21404d96b3ae6bf92302e, type: 3}
-  - {fileID: 21300000, guid: 38bd1c1c0dd7fad4db434157ce47b75c, type: 3}
+  - {fileID: 21300000, guid: c28951aa6a20e864da11a7a7aecc1e6b, type: 3}
+  - {fileID: 21300000, guid: b3124d5a0e9f5fd4cbf12bb87323656a, type: 3}
+  - {fileID: 21300000, guid: ed83664222381e64eba206dcc3eae622, type: 3}
+  - {fileID: 21300000, guid: bce360a3b5a8e46478101b3f81a2a7a3, type: 3}
   tmp_InputFieldObject: {fileID: 1449953524}
   mailComentButton: {fileID: 458984124}
   mailComentTestObject: {fileID: 752427666}
@@ -20581,6 +20583,16 @@ MonoBehaviour:
     type: 3}
   isServerComent: 0
   testSeverComentButton: {fileID: 2088689575}
+  moodChoice1ButtonImageList:
+  - {fileID: 1211014941}
+  - {fileID: 1124381370}
+  - {fileID: 1133661478}
+  - {fileID: 1328409178}
+  moodChoice2ButtonImageList:
+  - {fileID: 900743342}
+  - {fileID: 894195156}
+  - {fileID: 1025817817}
+  - {fileID: 290195833}
 --- !u!1001 &1624942500
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21549,11 +21561,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1605153625}
         m_TargetAssemblyTypeName: MailManager, Assembly-CSharp
-        m_MethodName: MailImageControll
-        m_Mode: 1
+        m_MethodName: CloseMailUI
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1046413528}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -22241,7 +22253,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -225, y: 0}
-  m_SizeDelta: {x: 700, y: 450}
+  m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1771602918
 MonoBehaviour:
@@ -22962,7 +22974,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC11C\uBC84"
+  m_text: "\uC11C\uBC84\uB2F5\uBCC0\uBCF4\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0af5d34d47d55b4b96c8244321037d8, type: 2}
   m_sharedMaterial: {fileID: -7903076556103479083, guid: b0af5d34d47d55b4b96c8244321037d8,
@@ -22990,8 +23002,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -24113,9 +24125,9 @@ Transform:
   - {fileID: 222006382}
   - {fileID: 857316330}
   - {fileID: 653434570}
-  - {fileID: 83316091}
   - {fileID: 1199791544}
   - {fileID: 256228442}
+  - {fileID: 83316091}
   - {fileID: 1582574285}
   - {fileID: 216960045}
   - {fileID: 8844625039684870669}
@@ -24435,8 +24447,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 450.00003}
-  m_SizeDelta: {x: 0, y: 210}
+  m_AnchoredPosition: {x: 0, y: 99.99919}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1968268376
 MonoBehaviour:
@@ -25061,7 +25073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2002034531
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26374,8 +26386,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -27279,7 +27291,7 @@ PrefabInstance:
     - target: {fileID: 1754873040454117894, guid: 4e349d49e3557eb459dbc3d25b61354c,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1754873040454117894, guid: 4e349d49e3557eb459dbc3d25b61354c,
         type: 3}
@@ -27289,7 +27301,7 @@ PrefabInstance:
     - target: {fileID: 1754873040454117894, guid: 4e349d49e3557eb459dbc3d25b61354c,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1754873040454117894, guid: 4e349d49e3557eb459dbc3d25b61354c,
         type: 3}
@@ -27339,12 +27351,12 @@ PrefabInstance:
     - target: {fileID: 1754873040454117894, guid: 4e349d49e3557eb459dbc3d25b61354c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 360
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1754873040454117894, guid: 4e349d49e3557eb459dbc3d25b61354c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -110
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1754873040454117894, guid: 4e349d49e3557eb459dbc3d25b61354c,
         type: 3}

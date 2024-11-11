@@ -470,6 +470,7 @@ public class LoginTest : MonoBehaviour
             // 유저 정보가 있는지 확인하는 변수
             bool isUserFound = false;
 
+            print("유저리스트 있음, 유저검색시작");
             //리스트파일을 순차검사
             foreach (var userInfo in userInfoList)
             {
