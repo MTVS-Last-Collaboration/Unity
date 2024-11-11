@@ -42,17 +42,6 @@ public class PostItem : MonoBehaviour
         layout = GetComponent<LayoutElement>();
         InitializeButtons();
         UpdateUI();
-
-        if (commentPanel.activeSelf)
-        {
-            layout.preferredHeight = maxHeight;
-            verticalLayoutGroup.padding.bottom = maxVertical;
-        }
-        else
-        {
-            layout.preferredHeight = minHeight;
-            verticalLayoutGroup.padding.bottom = minVertical;
-        }
     }
 
     private void OnEnable()
@@ -104,7 +93,7 @@ public class PostItem : MonoBehaviour
     {
         if (likeCountText != null)
         {
-            likeCountText.text = isClickLike ? $"¢¾ {data.likeCount}" : $"¢¾ {data.likeCount}";
+            likeCountText.text = isClickLike ? $"{data.likeCount}" : $"{data.likeCount}";
         }
     }
 
