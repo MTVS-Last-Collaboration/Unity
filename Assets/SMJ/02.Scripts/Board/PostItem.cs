@@ -104,7 +104,7 @@ public class PostItem : MonoBehaviour
     {
         if (likeCountText != null)
         {
-            likeCountText.text = isClickLike ? $"¢¾ {data.likeCount}" : $"¢¾ {data.likeCount}";
+            likeCountText.text = isClickLike ? $"{data.likeCount}" : $"{data.likeCount}";
         }
     }
 
