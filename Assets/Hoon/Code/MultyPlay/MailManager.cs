@@ -363,54 +363,120 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             else
             {
                 print("MissionInProgress");
-                // user1Mood
-                if (jsonObj["partner1Mood"].ToString() == "null")
-                {
-                    partner1Mood = "null";
-                    ChangeMoodImage(partner1Mood);
-                    print("partner1Mood" + partner1Mood);
-                    moodSwitch1.GetComponent<Image>().color = Color.white;
 
-                }
-                else
+                if(userNumber == "user1") //user1
                 {
-                    partner1Mood = "null";
-                    ChangeMoodImage(partner1Mood);
-                    moodSwitch1.GetComponent<Image>().color = Color.white;
-                    //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
-                    //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
-                }
-                // user1coment
-                if (jsonObj["partner1Answer"].ToString() == "null")
-                {
-                    Coment1.GetComponent<TextMeshProUGUI>().text = "연인이 답변을 기다리고 있습니다."; ;
-                }
-                else
-                {
-                    Coment1.GetComponent<TextMeshProUGUI>().text = "답변이 등록되었습니다. 답변을 작성하면 공개됩니다.";
-                }
-                // user2Mood
-                if (jsonObj["partner2Mood"].ToString() == "null")
-                {
-                    partner2Mood = "null";
-                }
-                else
-                {
-                    partner2Mood = "null";
-                    ChangeMoodImage(partner2Mood);
-                    moodSwitch2.GetComponent<Image>().color = Color.white;
-                    //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
-                    //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+                    // user1Mood
+                    if (partner1Mood == "null")
+                    {
+                        Debug.LogError("1111");
+                        partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood);
+                        print("partner1Mood" + partner1Mood);
+                        //moodSwitch1.GetComponent<Image>().color = Color.white;
 
+                    }
+                    else
+                    {
+                        Debug.LogError("2222");
+                        //partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood); //user1 showMyMood
+                        moodSwitch1.GetComponent<Image>().color = Color.white;
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+                    }
+                    // user1coment
+                    if (jsonObj["partner1Answer"].ToString() == "null")
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "작성하기를 눌러 답변을 작성하고 저장해보세요.";
+                    }
+                    else
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = jsonObj["partner1Answer"].ToString(); //user1 showMyComent
+                    }
+
+                    // user2Mood
+                    if (jsonObj["partner2Mood"].ToString() == "null")
+                    {
+                        partner2Mood = "null";
+                    }
+                    else
+                    {
+                        partner2Mood = "null";
+                        ChangeMoodImage(partner2Mood);
+                        moodSwitch2.GetComponent<Image>().color = Color.white; // hideUser2Mood
+
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+
+                    }
+                    // user2coment.
+                    if (jsonObj["partner2Answer"].ToString() == "null")
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = "연인이 답변을 기다리고있습니다.";
+                    }
+                    else
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = "연인의 답변이 등록되었습니다. 답반을 작성하고 저장하면 공개됩니다."; //hideUser2Mood
+                    }
+                
                 }
-                if (jsonObj["partner2Answer"].ToString() == "null")
+                else //user2
                 {
-                    Coment2.GetComponent<TextMeshProUGUI>().text = "아직 답변을 입력하지 않았습니다.";
+                    // user1Mood
+                    if (partner1Mood == "null")
+                    {
+                        Debug.LogError("1111");
+                        partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood);
+                        print("partner1Mood" + partner1Mood);
+                        //moodSwitch1.GetComponent<Image>().color = Color.white;
+
+                    }
+                    else
+                    {
+                        Debug.LogError("2222");
+                        partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood);
+                        moodSwitch1.GetComponent<Image>().color = Color.white; //hideUser1Mood
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+                    }
+                    // user1coment
+                    if (jsonObj["partner1Answer"].ToString() == "null")
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "아직 연인의 답변이 입력되지 않았습니다.";
+                    }
+                    else
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "연인의 답변이 등록되었습니다. 답반을 작성하고 저장하면 공개됩니다.";  //hideUser1Coment
+                    }
+
+                    // user2Mood
+                    if (jsonObj["partner2Mood"].ToString() == "null")
+                    {
+                        partner2Mood = "null";
+                    }
+                    else
+                    {
+                        //partner2Mood = "null";
+                        ChangeMoodImage(partner2Mood);
+                        moodSwitch2.GetComponent<Image>().color = Color.white;
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+
+                    }
+                    // user2coment.
+                    if (jsonObj["partner2Answer"].ToString() == "null")
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = "작성하기를 눌러 답변을 작성하고 저장해보세요.";
+                    }
+                    else
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = jsonObj["partner2Answer"].ToString();  // showUser2coment
+                    }
                 }
-                else
-                {
-                    Coment2.GetComponent<TextMeshProUGUI>().text = "답변이 등록되었습니다. 답변을 작성하면 공개됩니다.";  // user2coment
-                }
+                
             }
 
         }
