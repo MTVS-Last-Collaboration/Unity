@@ -14,6 +14,7 @@ using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
+using System.Net.NetworkInformation;
 /*using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.LookDev;
@@ -70,7 +71,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public Button moodGood; // Btn_Good
     public Button moodNormal; //Btn_Normal
     public Button moodBad; //Btn_Bad
-    public Sprite[] moodSprites; 
+    public Sprite[] moodSprites;
     public GameObject tmp_InputFieldObject; //Input_DayMission
     public Button mailComentButton; //Btn_Mail_Coment
     public GameObject mailComentTestObject; //Text_Mail_Coment
@@ -92,7 +93,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     TMP_InputField tmp_InputField;
     TextMeshProUGUI mailComentButtonText;
     bool isMailComentSave = false;
-    
+
     bool isMailComent1 = false;
     bool isMainComent2 = false;
 
@@ -138,6 +139,19 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public TextMeshProUGUI btnText_MailServerComent; //button save coment server
     bool isButtonSaveComentSever = false;
 
+    public string textMyMood;
+
+    //Histroty value
+    public TextMeshProUGUI text_HistoryDate;
+    public TextMeshProUGUI text_HistoryUser1NickName;
+    public TextMeshProUGUI text_HistoryUser2NickName;
+    public TextMeshProUGUI text_HistoryUser1Coment;
+    public TextMeshProUGUI text_HistoryUser2Coment;
+    public Image img_HistoryUser1Mood;
+    public Image img_HistoryUser2Mood;
+    //GetMoodServer
+    public string partner1Mood;
+    public string partner2Mood;
 
     void Start()
     {
@@ -146,7 +160,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
         if (System.IO.File.Exists(jsonSyncPath))
         {
-            print("jsonfile 있음");
+            print("findLocalJsonFile");
         }
         else
         {
@@ -211,7 +225,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     }
 
-void Update()
+    void Update()
     {
         /* if (isMailImage)//����������BG
          {
@@ -247,19 +261,19 @@ void Update()
     public void TodayMissonGetServer()//�������� ���� �̼��� ��������.
     {
         StartCoroutine(GetTodayMission());
-
+        
     }
 
     IEnumerator GetTodayMission() //�������� Get �̼��� ��������.
     {
-        string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //��û�ϴ��ּ�
+        string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //url 
 
         UnityWebRequest request = UnityWebRequest.Get(urlTodayMission);
         request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //get mytoken
 
         yield return request.SendWebRequest(); //������ ��û�� �ö����� ���
 
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)  //�����߻�
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)  //error
         {
 
             Debug.LogError("Error: " + request.error);
@@ -289,38 +303,51 @@ void Update()
             string partner2Answer;
             string completed;
 
-          
-
-            currentDay.text = "No:" + missionNumber +""+ formattedDate;  // +missionDate //numMisson 
+            currentDay.text = "No:" + missionNumber + " " + formattedDate;  // +missionDate //numMisson 
             dayMisiionObject.GetComponent<TextMeshProUGUI>().text = missionContent; //change dayMission text
             partner1Mood = jsonObj["partner1Mood"].ToString();
-            partner1Mood = jsonObj["partner1Answer"].ToString();
+            partner1Answer = jsonObj["partner1Answer"].ToString();
             partner2Mood = jsonObj["partner2Mood"].ToString();
-            partner1Mood = jsonObj["partner2Answer"].ToString();
-            // isComplete
-            if (jsonObj["completed"].ToString() == "true")
-            {
-                partner1Mood = jsonObj["partner1Mood"].ToString();
+            partner2Answer = jsonObj["partner2Answer"].ToString();
+            completed = jsonObj["completed"].ToString();
 
+            print("partner1Mood" + partner1Mood);
+            print("partner1Answer" + partner1Answer);
+            print("partner2Mood" + partner2Mood);
+            print("partner2Answer" + partner2Answer);
+            print("completed" + completed);
+
+            // isComplete
+            if (completed =="True") //uppdercase true
+            {
+                print("MissionComplite");
+
+                ChangeMoodImage(partner1Mood);
+                ChangeMoodImage(partner2Mood);
                 Coment1.GetComponent<TextMeshProUGUI>().text = jsonObj["partner1Answer"].ToString();
-                partner2Mood = jsonObj["partner2Mood"].ToString();
                 Coment2.GetComponent<TextMeshProUGUI>().text = jsonObj["partner2Answer"].ToString();
+                moodSwitch1.GetComponent<Image>().color = Color.white; //chage switch color
+                moodSwitch2.GetComponent<Image>().color = Color.white; //chage switch color
             }
             else
             {
+                print("MissionInProgress");
                 // user1Mood
                 if (jsonObj["partner1Mood"].ToString() == "null")
                 {
                     partner1Mood = "null";
                     ChangeMoodImage(partner1Mood);
                     print("partner1Mood" + partner1Mood);
-                   
+                    moodSwitch1.GetComponent<Image>().color = Color.white;
+
                 }
                 else
                 {
                     partner1Mood = "null";
                     ChangeMoodImage(partner1Mood);
-                    moodChice1.color = Color.white;//colorChange
+                    moodSwitch1.GetComponent<Image>().color = Color.white;
+                    //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                    //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
                 }
                 // user1coment
                 if (jsonObj["partner1Answer"].ToString() == "null")
@@ -329,7 +356,7 @@ void Update()
                 }
                 else
                 {
-                    Coment1.GetComponent<TextMeshProUGUI>().text  = "답변이 등록되었습니다. 답변을 작성하면 공개됩니다.";
+                    Coment1.GetComponent<TextMeshProUGUI>().text = "답변이 등록되었습니다. 답변을 작성하면 공개됩니다.";
                 }
                 // user2Mood
                 if (jsonObj["partner2Mood"].ToString() == "null")
@@ -338,7 +365,12 @@ void Update()
                 }
                 else
                 {
-                    partner2Mood = jsonObj["partner2Mood"].ToString();  // user1Mood
+                    partner2Mood = "null";
+                    ChangeMoodImage(partner2Mood);
+                    moodSwitch2.GetComponent<Image>().color = Color.white;
+                    //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                    //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+
                 }
                 if (jsonObj["partner2Answer"].ToString() == "null")
                 {
@@ -350,18 +382,6 @@ void Update()
                 }
             }
 
-           
-            
-
-
-
-
-
-
-
-
-
-
         }
 
     }
@@ -369,13 +389,13 @@ void Update()
     public void ViewComentInputField()//��ư�� ������ �亯 �Է��ʵ带 ��������.
     {
         string nickName;
-        if(LobbyGameManager.instance.playerNickName != null)
+        if (LobbyGameManager.instance.playerNickName != null)
         {
-             nickName = LobbyGameManager.instance.playerNickName;
+            nickName = LobbyGameManager.instance.playerNickName;
         }
         else
         {
-             nickName = "�׽�Ʈ�г���";
+            nickName = "�׽�Ʈ�г���";
         }
 
         print("�����亯�ϱ�");
@@ -417,9 +437,10 @@ void Update()
     {
 
     }
-    
+
     public void CheckHistoty()
     {
+        print("Check LocalHistory");
         string path = Application.persistentDataPath + "/DayComentTest.json"; //����ȭ���
         if (System.IO.File.Exists(path))//�����ִ�?
         {
@@ -447,17 +468,22 @@ void Update()
 
                     int buttonIndex = histroyButtonList.Count - 1; // ���� �ε��� ���� (���� ����Ʈ�� ������ �ε���)
 
-                    // ��ư Ŭ�� �̺�Ʈ ����
-                    newButton.onClick.AddListener(() =>
+                    //Create newButton onClick Button
+                    /*newButton.onClick.AddListener(() =>
                     {
                         newButton.GetComponent<MailHistoryManager>().buttonNumber = buttonIndex;
                         Instantiate(histroyButtonList[buttonIndex], historyContent);
 
+                    });*/
+
+                    newButton.onClick.AddListener(() =>
+                    {
+                       
                     });
 
                     if (buttonText != null)
                     {
-                        buttonText.text = "Day" + (histroyButtonList.Count) + ":" + historyDateMission + "\n" + historyDate; // ��ư �ؽ�Ʈ ����
+                        buttonText.text = "질문" + (histroyButtonList.Count) + ":" + " "+ historyDateMission;//+ "\n" + historyDate; // ��ư �ؽ�Ʈ ����
 
                     }
                 }
@@ -467,176 +493,114 @@ void Update()
         }
 
     }
+
+    public void NewCheckHistory()
+    {
+        print("Check LocalHistory");
+        string path = Application.persistentDataPath + "/DayComentTest.json"; // JSON 파일 경로
+
+        if (System.IO.File.Exists(path))
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); // JSON 파일 읽기
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); // JSON 데이터를 리스트로 변환
+
+            foreach (var comentData in loadDayComenList)
+            {
+                if (comentData.date != null && comentData.dateMission != null)
+                {
+                    // 버튼 생성 및 설정
+                    GameObject newButtonObj = Instantiate(historyButton, historyContent);
+                    Button newButton = newButtonObj.GetComponent<Button>();
+                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>();
+
+                    histroyButtonList.Add(newButton); // 생성된 버튼을 리스트에 추가
+                    int buttonIndex = histroyButtonList.Count - 1; // 버튼 인덱스
+
+                    // 버튼 클릭 시 해당 인덱스의 데이터를 반환하도록 설정
+                    newButton.onClick.AddListener(() =>
+                    {
+                        DisplayHistory(buttonIndex); // 버튼 클릭 시 DisplayHistory 호출
+                    });
+
+                    // 버튼 텍스트 설정
+                    if (buttonText != null)
+                    {
+                        buttonText.text = "질문 " + (buttonIndex + 1) + ": " + comentData.dateMission;
+                    }
+                }
+            }
+        }
+    }
+
+    public void DisplayHistory(int index)
+    {
+        if (index >= 0 && index < loadDayComenList.Count)
+        {
+            DayComentData data = loadDayComenList[index];
+            // 데이터를 반환하거나 원하는 방식으로 사용
+            Debug.Log("날짜: " + data.date + ", 미션: " + data.dateMission +", 닉네임1: " + data.user1name + ", 기분1: " + data.user1mood + ", 답변1: " + data.user1coment + ", 닉네임2: " + data.user2name + ", 기분2: " + data.user2mood + ", 답변2: " + data.user2coment);
+
+            text_HistoryDate.text = data.date;
+            text_HistoryUser1NickName.text = data.user1name;
+            text_HistoryUser2NickName.text = data.user2name;
+            text_HistoryUser1Coment.text = data.user1coment;
+            text_HistoryUser2Coment.text = data.user2coment;
+
+            if(data.user1mood == "null")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[0];
+            }
+            else if(data.user1mood == "Good")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[1];
+            }
+            else if (data.user1mood == "Normal")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[2];
+            }
+            else if (data.user1mood == "Bad")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[3];
+            }
+
+            if (data.user2mood == "null")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[0];
+            }
+            else if (data.user1mood == "Good")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[1];
+            }
+            else if (data.user2mood == "Normal")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[2];
+            }
+            else if (data.user2mood == "Bad")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[3];
+            }
+
+
+        }
+    }
+
 
     public void ViewHistoryScrollview()
     {
 
         if (!isHistoryScrollview)
         {
+            historyBGObject.SetActive(true);
             historyScrollview.gameObject.SetActive(true);
             isHistoryScrollview = true;
         }
         else
         {
+            historyBGObject.SetActive(false);
             historyScrollview.gameObject.SetActive(false);
             isHistoryScrollview = false;
         }
 
-    }
-
-    public void CheckComent() //������ ������ ������ �ε����ֱ�.
-    {
-        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // �ڸ�Ʈ ��ǲ�ʵ� ������Ʈ
-        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //�ڸ�Ʈ1 �� �ؽ�Ʈ
-        mailComentText2 = Coment2.GetComponent<TextMeshProUGUI>(); //�ڸ�Ʈ2�� �ؽ�Ʈ
-
-        //����� �����Ͱ� �ִ��� Ȯ���ϱ�
-        //������ ������ �� �ʵ忡 ����� ���� �����ϱ�
-        //��������� �ҷ��ɴϴ�.
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //���ð��
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //����ȭ���
-
-        string fakeDate = "2010-10-22";//��¥��¥������
-        if (System.IO.File.Exists(path))//�����ִ�?
-        {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //���ڿ��� ��������
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List�� �Ľ��ϱ�
-
-            bool isCurrentDate = false;
-            foreach (var ComentData in loadDayComenList)
-            {
-                print("����ȳ�¥" + ComentData.date + "���ҳ�¥" + currentDate);
-                if (ComentData.date == currentDate) //��¥�� ��ġ�ϸ�
-                //f(ComentData.date == fakeDate) //��¥��¥�� ��ġȮ��
-                {
-                    print("CheckComent, ��¥��ġ");
-                    //mailComentText1.text = "�г���" + ":" + ComentData.user1name + "," + "���" + ":" + ComentData.user1mood + "," + "�亯" + ":" + ComentData.user1coment;
-                    //mailComentText2.text = "�г���" + ":" + ComentData.user2name + "," + "���" + ":" + ComentData.user2mood + "," + "�亯" + ":" + ComentData.user2coment;
-                    //mailComentText1.text = ComentData.user1name + "�亯" + ":" + ComentData.user1coment;
-                    //mailComentText2.text = ComentData.user2name + "�亯" + ":" + ComentData.user2coment;
-
-                    //�Ѵٴ亯�� ���
-                    if (ComentData.user1coment != "null" && ComentData.user2coment != "null")
-                    {
-                        //�Ѵ� �亯 �������� ����ó��
-                        mailComentText1.text = ComentData.user1coment;
-                        mailComentText2.text = ComentData.user2coment;
-                        print("�޽��� �����ع�����~");
-                        isCurrentDate = true;
-                        break;
-                    }
-
-
-                    if (userNumber == "user1" && mailComentText1.text == null) //����1, �ؽ�Ʈ1�����;���.
-                    {
-                        mailComentText1.text = "���� �亯�� �Է����ּ���";
-                        //print("111");
-                    }
-                    else if (userNumber == "user1" && ComentData.user1coment == "null") //����1, �ؽ�Ʈ1null
-                    {
-                        mailComentText1.text = "���� �亯�� �Է����ּ���";
-                        //print("112");
-                    }
-                    else if (userNumber == "user1" && ComentData.user1coment != "null") //����1, �ؽ�Ʈ1!null
-                    {
-                        //�� �亯 ���� ���� ����.
-                        mailComentText1.text = mailComentText1.text = ComentData.user1coment; ;
-                        //print("113" + ComentData.user1coment);
-                    }
-
-                    if (userNumber == "user1" && mailComentText2.text == null)
-                    {
-                        mailComentText2.text = "���� ������ �亯���� �ʾҾ��"; //����1, �ؽ�Ʈ2�����;���.
-                        //print("121");
-                    }
-                    else if (userNumber == "user1" && ComentData.user2coment == "null")//����1, �ؽ�Ʈ2null
-                    {
-                        mailComentText2.text = "���� ������ �亯���� �ʾҾ��";
-                        //print("122");
-                    }
-                    else if (userNumber == "user1" && ComentData.user2coment != "null") //����1, �ؽ�Ʈ2!null
-                    {
-                        mailComentText2.text = mailComentText2.text = ComentData.user2coment;
-                        //print("123" + ComentData.user2coment);
-                    }
-
-                    //����2�϶�
-                    if (userNumber == "user2" && mailComentText1.text == null) //����1, �ؽ�Ʈ1�����;���
-                    {
-                        mailComentText1.text = "���� ������ �亯���� �ʾҾ��.";
-                    }
-                    else if (userNumber == "user2" && ComentData.user1coment == "null") //�ؽ�Ʈ�� ������
-                    {
-                        mailComentText1.text = "���� ������ �亯���� �ʾҾ��.";
-                    }
-                    else if (userNumber == "user2" && ComentData.user1coment != "null")
-                    {
-                        mailComentText1.text = "�亯�� �����߽��ϴ�. ������ �亯�� �Ϸ��ϰ� �亯���⸦ ����������.";
-                    }
-
-                    if (userNumber == "user2" && mailComentText2.text == null)
-                    {
-                        mailComentText2.text = "���� �亯�� �Է����ּ���";
-                    }
-                    else if (userNumber == "user2" && ComentData.user2coment == "null")
-                    {
-                        mailComentText2.text = "���� �亯�� �Է����ּ���";
-                    }
-                    else if (userNumber == "user2" && ComentData.user2coment != "null") //����1, �ؽ�Ʈ2!null
-                    {
-                        mailComentText2.text = "�亯�� �����߽��ϴ�. ������ �亯�� �Ϸ��ϰ� �亯���⸦ ����������.";
-                        //print("123" + ComentData.user2coment);
-                    }
-
-                    isCurrentDate = true;
-                    break;
-
-                }
-
-            }
-            if (!isCurrentDate) //��ġ�ϴ°� ������
-            {
-                print("��¥����ġ, �����Ͼ���");
-
-                if (userNumber == "user1")
-                {
-                    print("user1 ��¥����");
-                    mailComentText1.text = "���� �亯�� �Է����ּ���";
-                    mailComentText2.text = "������ �亯�� �Է����� �ʾҾ��";
-                }
-                else if (userNumber == "user2")
-                {
-                    print("user2 ��¥����");
-                    mailComentText2.text = "���� �亯�� �Է����ּ���";
-                    mailComentText1.text = "������ �亯�� �Է����� �ʾҾ��";
-                }
-
-            }
-        }
-    }
-
-    public void CheckDate()//���ó�¥Ȯ��
-    {
-        // ���� ��¥�� yyyy-MM-dd ������ ���ڿ��� ��ȯ
-        startDate = "2024-10-28";
-        Debug.Log("���� ��¥: " + startDate);
-
-        currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-        Debug.Log("���� ��¥: " + currentDate);
-        // ���ڿ��� DateTime �������� ��ȯ
-        DateTime startDay = DateTime.Parse(startDate);
-        // ���� ��¥ ��������
-        DateTime currDay = DateTime.Now;
-
-        // ��¥ ���� ���
-        TimeSpan difference = currDay - startDay;
-        //��¥����
-        int totalDays = difference.Days + 1;
-        // ������ �ϼ��� ���ڿ��� ��ȯ�Ͽ� sumDay�� ����
-        string sumDay = totalDays.ToString();
-
-        string today = "Day" + sumDay + ":" + currentDate;
-        currentDay.text = today; //���ó�¥�� ǥ��������.
     }
 
     public void CheckMission()//���ù̼�Ȯ��
@@ -788,12 +752,211 @@ void Update()
         }
     }
 
-    public void GetCheckMission() //�������� �̼��� �޾ƿ���. 
+    public void CheckDate()//���ó�¥Ȯ��
     {
-        //findplayer
-        StartCoroutine(GetTodayMission());
-        
+        // ���� ��¥�� yyyy-MM-dd ������ ���ڿ��� ��ȯ
+        startDate = "2024-10-28";
+        Debug.Log("coupleAnivarsary: " + startDate);
+
+        currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+        Debug.Log("todayDate: " + currentDate);
+        // ���ڿ��� DateTime �������� ��ȯ
+        DateTime startDay = DateTime.Parse(startDate);
+        // ���� ��¥ ��������
+        DateTime currDay = DateTime.Now;
+
+        // ��¥ ���� ���
+        TimeSpan difference = currDay - startDay;
+        //��¥����
+        int totalDays = difference.Days + 1;
+        // ������ �ϼ��� ���ڿ��� ��ȯ�Ͽ� sumDay�� ����
+        string sumDay = totalDays.ToString();
+
+        string today = "Day" + sumDay + ":" + currentDate;
+        //currentDay.text = today; //���ó�¥�� ǥ��������.
+
+        string path = Application.persistentDataPath + "/DayComentTest.json";
+        if (System.IO.File.Exists(path))  // findFile
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //filePath
+                                                                         //print("loadDayComentInfo" + loadDayComentInfo); //���ڿ� ����ϱ�
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
+
+            bool isCurrentDateMatch = false;
+            for (int i = 0; i < loadDayComenList.Count; i++) //
+            {
+                var ComentData = loadDayComenList[i];
+
+                if (ComentData.date == currentDate) //find MatchDate
+                {
+                    print("Find Match Date");
+                    isCurrentDateMatch = true;
+                    break;
+                }
+
+            }
+
+            if (!isCurrentDateMatch) //UnMatchDate
+            {
+                print("not Find Match Date");
+                DayComentData dayComentData = new DayComentData();
+                {
+                    dayComentData.date = currentDate;
+                    dayComentData.dateMission = "null";
+                    dayComentData.user1name = "null";
+                    dayComentData.user1mood = "null";
+                    dayComentData.user1coment = "null";
+                    dayComentData.user2name = "null";
+                    dayComentData.user2mood = "null";
+                    dayComentData.user2coment = "null";
+
+                }
+
+                loadDayComenList.Add(dayComentData);
+
+                // ����Ʈ�� JSON ���ڿ��� ��ȯ
+                string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
+
+                // JSON ���Ϸ� ����
+                System.IO.File.WriteAllText(path, jsonString);
+                Debug.Log("SaveResult" + jsonString);
+               
+            }
+
+        }
     }
+
+    public void CheckComent() //������ ������ ������ �ε����ֱ�.
+    {
+        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // �ڸ�Ʈ ��ǲ�ʵ� ������Ʈ
+        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //�ڸ�Ʈ1 �� �ؽ�Ʈ
+        mailComentText2 = Coment2.GetComponent<TextMeshProUGUI>(); //�ڸ�Ʈ2�� �ؽ�Ʈ
+
+        //����� �����Ͱ� �ִ��� Ȯ���ϱ�
+        //������ ������ �� �ʵ忡 ����� ���� �����ϱ�
+        //��������� �ҷ��ɴϴ�.
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //���ð��
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //����ȭ���
+
+        string fakeDate = "2010-10-22";//��¥��¥������
+        if (System.IO.File.Exists(path))//�����ִ�?
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //���ڿ��� ��������
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List�� �Ľ��ϱ�
+
+            bool isCurrentDate = false;
+            foreach (var ComentData in loadDayComenList)
+            {
+                print("����ȳ�¥" + ComentData.date + "���ҳ�¥" + currentDate);
+                if (ComentData.date == currentDate) //��¥�� ��ġ�ϸ�
+                //f(ComentData.date == fakeDate) //��¥��¥�� ��ġȮ��
+                {
+                    print("CheckComent, ��¥��ġ");
+                    //mailComentText1.text = "�г���" + ":" + ComentData.user1name + "," + "���" + ":" + ComentData.user1mood + "," + "�亯" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = "�г���" + ":" + ComentData.user2name + "," + "���" + ":" + ComentData.user2mood + "," + "�亯" + ":" + ComentData.user2coment;
+                    //mailComentText1.text = ComentData.user1name + "�亯" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = ComentData.user2name + "�亯" + ":" + ComentData.user2coment;
+
+                    //�Ѵٴ亯�� ���
+                    if (ComentData.user1coment != "null" && ComentData.user2coment != "null")
+                    {
+                        //�Ѵ� �亯 �������� ����ó��
+                        mailComentText1.text = ComentData.user1coment;
+                        mailComentText2.text = ComentData.user2coment;
+                        print("�޽��� �����ع�����~");
+                        isCurrentDate = true;
+                        break;
+                    }
+
+
+                    if (userNumber == "user1" && mailComentText1.text == null) //����1, �ؽ�Ʈ1�����;���.
+                    {
+                        mailComentText1.text = "���� �亯�� �Է����ּ���";
+                        //print("111");
+                    }
+                    else if (userNumber == "user1" && ComentData.user1coment == "null") //����1, �ؽ�Ʈ1null
+                    {
+                        mailComentText1.text = "���� �亯�� �Է����ּ���";
+                        //print("112");
+                    }
+                    else if (userNumber == "user1" && ComentData.user1coment != "null") //����1, �ؽ�Ʈ1!null
+                    {
+                        //�� �亯 ���� ���� ����.
+                        mailComentText1.text = mailComentText1.text = ComentData.user1coment; ;
+                        //print("113" + ComentData.user1coment);
+                    }
+
+                    if (userNumber == "user1" && mailComentText2.text == null)
+                    {
+                        mailComentText2.text = "���� ������ �亯���� �ʾҾ��"; //����1, �ؽ�Ʈ2�����;���.
+                        //print("121");
+                    }
+                    else if (userNumber == "user1" && ComentData.user2coment == "null")//����1, �ؽ�Ʈ2null
+                    {
+                        mailComentText2.text = "���� ������ �亯���� �ʾҾ��";
+                        //print("122");
+                    }
+                    else if (userNumber == "user1" && ComentData.user2coment != "null") //����1, �ؽ�Ʈ2!null
+                    {
+                        mailComentText2.text = mailComentText2.text = ComentData.user2coment;
+                        //print("123" + ComentData.user2coment);
+                    }
+
+                    //����2�϶�
+                    if (userNumber == "user2" && mailComentText1.text == null) //����1, �ؽ�Ʈ1�����;���
+                    {
+                        mailComentText1.text = "���� ������ �亯���� �ʾҾ��.";
+                    }
+                    else if (userNumber == "user2" && ComentData.user1coment == "null") //�ؽ�Ʈ�� ������
+                    {
+                        mailComentText1.text = "���� ������ �亯���� �ʾҾ��.";
+                    }
+                    else if (userNumber == "user2" && ComentData.user1coment != "null")
+                    {
+                        mailComentText1.text = "�亯�� �����߽��ϴ�. ������ �亯�� �Ϸ��ϰ� �亯���⸦ ����������.";
+                    }
+
+                    if (userNumber == "user2" && mailComentText2.text == null)
+                    {
+                        mailComentText2.text = "���� �亯�� �Է����ּ���";
+                    }
+                    else if (userNumber == "user2" && ComentData.user2coment == "null")
+                    {
+                        mailComentText2.text = "���� �亯�� �Է����ּ���";
+                    }
+                    else if (userNumber == "user2" && ComentData.user2coment != "null") //����1, �ؽ�Ʈ2!null
+                    {
+                        mailComentText2.text = "�亯�� �����߽��ϴ�. ������ �亯�� �Ϸ��ϰ� �亯���⸦ ����������.";
+                        //print("123" + ComentData.user2coment);
+                    }
+
+                    isCurrentDate = true;
+                    break;
+
+                }
+
+            }
+            if (!isCurrentDate) //��ġ�ϴ°� ������
+            {
+                print("��¥����ġ, �����Ͼ���");
+
+                if (userNumber == "user1")
+                {
+                    print("user1 ��¥����");
+                    mailComentText1.text = "���� �亯�� �Է����ּ���";
+                    mailComentText2.text = "������ �亯�� �Է����� �ʾҾ��";
+                }
+                else if (userNumber == "user2")
+                {
+                    print("user2 ��¥����");
+                    mailComentText2.text = "���� �亯�� �Է����ּ���";
+                    mailComentText1.text = "������ �亯�� �Է����� �ʾҾ��";
+                }
+
+            }
+        }
+    }
+
 
     public void CheckMood() //��л���Ȯ��
     {
@@ -810,26 +973,34 @@ void Update()
 
                 if (ComentData.user1coment != "null" && ComentData.user2coment != "null")
                 {
-
+                    print("둘다값이 있으니 보여주자.");
+     
                 }
-
 
                 if (ComentData.user1mood == "null")
                 {
                     img1.sprite = moodSprites[0];
+                    textMyMood = "null";
+                    print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Good")
                 {
-                    //����1�� ����� �ٷ� ǥ������ ���� ������ ������������
+                    //chage switch mood
                     img1.sprite = moodSprites[1];
+                    textMyMood = "Good";
+                    print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Normal")
                 {
                     img1.sprite = moodSprites[2];
+                    textMyMood = "Normal";
+                    print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Bad")
                 {
                     img1.sprite = moodSprites[3];
+                    textMyMood = "Bad";
+                    print("textMyMood" + textMyMood);
                 }
 
                 print("1�� �̹��� ������� Ȯ���ϱ�" + ComentData.user1mood);
@@ -838,18 +1009,22 @@ void Update()
                 if (ComentData.user2mood == "null")
                 {
                     img2.sprite = moodSprites[0];
+                    textMyMood = "null";
                 }
                 else if (ComentData.user2mood == "Good")
                 {
                     img2.sprite = moodSprites[1];
+                    textMyMood = "Good";
                 }
                 else if (ComentData.user2mood == "Normal")
                 {
                     img2.sprite = moodSprites[2];
+                    textMyMood = "Normal";
                 }
                 else if (ComentData.user2mood == "Bad")
                 {
                     img2.sprite = moodSprites[3];
+                    textMyMood = "Bad";
                 }
 
                 print("user2 �̹��� ������� Ȯ���ϱ�");
@@ -870,6 +1045,13 @@ void Update()
         CheckComent();
     }
 
+    public void GetCheckMission() //�������� �̼��� �޾ƿ���. 
+    {
+        //findplayer
+        StartCoroutine(GetTodayMission());
+
+    }
+    
     public void SaveDayComentJsonTest()
     {
         string nickName = LobbyGameManager.instance.playerNickName; //�г��� ĳ��
@@ -1034,59 +1216,116 @@ void Update()
         // jsonObjectParse
         //JObject jsonObject = JObject.Parse(jsonData);
 
-        if(!isButtonSaveComentSever)
+        if (!isButtonSaveComentSever)
         {
             btnText_MailServerComent.text = "저장하기"; //btn text change save
             tmp_InputFieldObject.SetActive(true); //Active inputField
             isButtonSaveComentSever = !isButtonSaveComentSever; //chage true
-            print("isButtonSaveComentSever" + isButtonSaveComentSever);
-        
+            //print("isButtonSaveComentSever" + isButtonSaveComentSever);
+
         }
         else
         {
             //string coment1 = tmp_InputFieldObject.GetComponent<TextMeshPro>().text;
 
-            if(userNumber == "user1")
+            if (userNumber == "user1")
             {
-                Coment1.GetComponent<TextMeshPro>().text = LoginInfoManager.instance.nickName + "답변" + tmp_InputFieldObject.GetComponent<TextMeshPro>().text;
+                /* if(Coment1 != null)
+                 {
+                     print("coment" + Coment1.GetComponent<TextMeshProUGUI>().text);
+                     print("playerNickName" + LoginInfoManager.instance.nickName);
+                     print("답변" + tmp_InputFieldObject.GetComponent<TextMeshPro>().text);
+                 }*/
+
+                Coment1.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "답변" + ":" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
+
             }
             else
             {
-                Coment2.GetComponent<TextMeshPro>().text = LoginInfoManager.instance.nickName + "답변" + tmp_InputFieldObject.GetComponent<TextMeshProUGUI>().text;
+                /* print("coment" + Coment2.GetComponent<TextMeshProUGUI>().text);
+                 //print("playerNickName" + LoginInfoManager.instance.nickName);
+                 if(tmp_InputFieldObject != null)
+                 {
+                     print("답변" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text);
+                 }*/
+
+                Coment2.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "답변" + ":" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
+
             }
 
 
             btnText_MailServerComent.text = "답변하기"; //btn text change Coment
             tmp_InputFieldObject.SetActive(false); //Active inputField
             isButtonSaveComentSever = !isButtonSaveComentSever; //chage false
-            print("isButtonSaveComentSever" + isButtonSaveComentSever);
+            //print("isButtonSaveComentSever" + isButtonSaveComentSever);
+
+            //PostSever
+            string myMood = "null";
+            string myComent = "null";
+            if (userNumber =="user1")
+            {
+                 myComent = Coment1.GetComponent<TextMeshProUGUI>().text; //user1coment
+            }
+            else
+            {
+                myComent = Coment2.GetComponent<TextMeshProUGUI>().text; //user2coment
+            }
+            
+            if (textMyMood != "null")
+            {
+                myMood = textMyMood;
+                print("myComent" + myComent + "myMood" + myMood);
+                if(myMood == "")
+                {
+                    myMood = "null";
+                }
+
+                if(myMood != "null")
+                {
+                    // 쿼리 파라미터를 포함한 URL 생성
+                    string baseUrl = "http://125.132.216.190:12223/api/missions/answer";
+                    string url = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(myMood)}&answer={UnityWebRequest.EscapeURL(myComent)}";
+                    string url1 = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(myMood)}&answer={UnityWebRequest.EscapeURL(myComent)}";
+                    StartCoroutine(PostDayComentQuaryParameter(url1));
+                }
+                else
+                {
+                    print("감정표현을 선택해주세요.");
+                    if(userNumber == "user1")
+                    {
+                        //Img_MoodChoice1 오브젝트를 보여주자.
+                        moodChoice1Object.SetActive(true);
+                    }
+                    else
+                    {
+                        //Img_MoodChoice2 오브젝트를 보여주자.
+                        moodChoice2Object.SetActive(true);
+                    }
 
 
+                    return;
+                }
+                
 
+                
+            }
+            else 
+            {
+                print("감정표현을 선택해주세요.");
+                return;
+
+            }
+           
         }
-        
 
-
-
-        string arg1 = "Good";
-        string arg2 = "kind";
-        string mood = "Nomal";
-        string coment = "칠절한재협님";
-        // 쿼리 파라미터를 포함한 URL 생성
-        string baseUrl = "http://125.132.216.190:12223/api/missions/answer";
-        string url = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(arg1)}&answer={UnityWebRequest.EscapeURL(arg2)}";
-        string url1 = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(mood)}&answer={UnityWebRequest.EscapeURL(coment)}";
-
-        //StartCoroutine(PostDayComentQuaryParameter(url1));
-        
     }
-    
+
     IEnumerator PostDayComentQuaryParameter(string url)
     {
         print("서버에 요청시작");
         UnityWebRequest request = new UnityWebRequest(url, "POST");
         request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //Bearer에 공백 있어야함. 서버로 토큰 발사
-        print("내토큰" + LoginInfoManager.instance.myToken);
+        //print("내토큰" + LoginInfoManager.instance.myToken);
         print("서버에 요청중");
 
         yield return request.SendWebRequest();
@@ -1095,6 +1334,8 @@ void Update()
         if (request.result == UnityWebRequest.Result.Success) //성공이니?
         {
             Debug.Log("Response: " + request.downloadHandler.text);
+            Debug.Log("Response Code: " + request.responseCode);
+            Debug.Log("Response Body: " + request.downloadHandler.text);
         }
         else //응 아니야~
         {
@@ -1102,7 +1343,7 @@ void Update()
             Debug.LogError("Response Code: " + request.responseCode);
             Debug.LogError("Response Body: " + request.downloadHandler.text);
 
-            if(request.responseCode == 409)
+            if (request.responseCode == 409)
             {
                 //put하는 
             }
@@ -1221,7 +1462,7 @@ void Update()
             DayComentData dayComentData;
             if (userNumber == "user1")
             {
-                print("ChangeMoodImage �����ѹ�1" + userNumber);
+                print("ChangeMoodImage userNumber" + userNumber);
                 // DayComentData ��ü ����
                 dayComentData = new DayComentData
                 {
@@ -1416,8 +1657,7 @@ void Update()
         }
     }
 
-    public void MoodSwitch(int switchNum)
-
+    public void TouchMoodSwitchButton(int switchNum)
     {
         if (switchNum == 1 && userNumber == "user1")
         {
@@ -1425,6 +1665,9 @@ void Update()
             isMoodSwihtch1 = !isMoodSwihtch1;
             OpenMailUI(moodChoice1Object);
             print("maleMoodSwitch");
+            moodSwitch1.GetComponent<Image>().color = Color.white; //chage switch color
+
+
 
         }
         else if (switchNum == 2 && userNumber == "user2")
@@ -1432,6 +1675,7 @@ void Update()
             isMoodSwihtch2 = !isMoodSwihtch2;
             OpenMailUI(moodChoice2Object);
             print("femaleMoodSwitch");
+            moodSwitch2.GetComponent<Image>().color = Color.white; //chage switch color
         }
 
     }
@@ -1441,10 +1685,16 @@ void Update()
         Image img1 = moodSwitch1.GetComponent<Image>();
         Image img2 = moodSwitch2.GetComponent<Image>();
 
-        print("switch image cashing");
+        //print("switch image cashing");
+
+        
+
+
+
 
         if (userNumber == "user1")
         {
+            print("checkUserNumber" + userNumber);
             //��й迭���ִ¸�� �׸��� �����ϰ� ����.
             for (int i = 1; i < moodChoice1ButtonImageList.Count; i++)
             {
@@ -1456,21 +1706,28 @@ void Update()
             {
                 img1.sprite = moodSprites[1];
                 moodChoice1ButtonImageList[1].color = new Color(1, 1, 1, 1);
+                textMyMood = "Good";
+                print("textMyMood" + textMyMood);
             }
             else if (mood == "Normal")
             {
                 img1.sprite = moodSprites[2];
                 moodChoice1ButtonImageList[2].color = new Color(1, 1, 1, 1);
+                textMyMood = "Normal";
+                print("textMyMood" + textMyMood);
             }
             else if (mood == "Bad")
             {
                 img1.sprite = moodSprites[3];
                 moodChoice1ButtonImageList[3].color = new Color(1, 1, 1, 1);
+                textMyMood = "Bad";
+                print("textMyMood" + textMyMood);
             }
 
         }
         else
         {
+            print("checkUserNumber" + userNumber);
             //��й迭���ִ¸�� �׸��� �����ϰ� ����.
             for (int i = 1; i < moodChoice2ButtonImageList.Count; i++)
             {
@@ -1480,6 +1737,8 @@ void Update()
             //2���̹��� ����
             if (mood == "Good")
             {
+                textMyMood = "Good";
+                textMyMood = "Normal";
                 img2.sprite = moodSprites[1];
                 moodChoice1ButtonImageList[1].color = new Color(1, 1, 1, 1);
             }
@@ -1490,14 +1749,24 @@ void Update()
             }
             else if (mood == "Bad")
             {
+                textMyMood = "Bad";
                 img2.sprite = moodSprites[3];
                 moodChoice1ButtonImageList[3].color = new Color(1, 1, 1, 1);
-            }
-        }
 
+            }
+            
+        }
+        print("myChoiceMood" + mood);
+
+        //내껄먼저 설정하고 상대방기분을 설정하기
+        
+        
+        
+        
+        
         //��� ������ �ҷ�����.
         //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //���ð��
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //��ũ���
+       /* string path = Application.persistentDataPath + "/DayComentTest.json"; //��ũ���
         bool isCurrentDate = false;
         for (int i = 0; i < loadDayComenList.Count; i++) // ��¥ Ȯ�� �� �α� ���
         {
@@ -1506,32 +1775,35 @@ void Update()
 
             if (ComentData.date == currentDate) // ��¥�� ��ġ�ϸ�
             {
-                // ��ġ�ϴ� ������ �α׸� ������ ����.
+                // check match date.
                 matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                Debug.Log("��¥�� ��ġ�ϴ� ������: " + matchDayComentinfo);
+                Debug.Log("checkMatchDay: " + matchDayComentinfo);
 
                 if (userNumber == "user1")
                 {
-                    print("ChangeMoodImage �����ѹ�1" + userNumber);
+                    print("ChangeMoodImage user1" + userNumber);
                     //1���̹�������
                     if (mood == "Good")
                     {
                         ComentData.user1mood = "Good";
+                        textMyMood = "Good";
                     }
                     else if (mood == "Normal")
                     {
                         ComentData.user1mood = "Normal";
+                        textMyMood = "Normal";
                     }
                     else if (mood == "Bad")
                     {
                         ComentData.user1mood = "Bad";
+                        textMyMood = "Bad";
                     }
-                    moodText1 = mood;
 
+                    moodText1 = mood;
                 }
                 else
                 {
-                    print("ChangeMoodImage �����ѹ�2" + userNumber);
+                    print("ChangeMoodImage userNumer" + userNumber);
                     //2���̹��� ����
                     if (mood == "Good")
                     {
@@ -1548,32 +1820,38 @@ void Update()
                     moodText2 = mood;
                 }
 
-                // ������ �����͸� ����Ʈ�� �ݿ�
-                loadDayComenList[i] = ComentData;
-
-                // ����Ʈ�� JSON ���ڿ��� ��ȯ
-                //string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); ��������
-                // JSON ���Ϸ� ����
-                //File.WriteAllText(path, jsonString); //��������
-                //Debug.Log("���� ���� �Ϸ�: " + path);
-                //Debug.Log("����� JSON ������: " + jsonString);
-
-                jsonSyncString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); //��ũ����
-                PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
-                Debug.Log("Photon �̺�Ʈ�� �߻��߽��ϴ�.");
-                isCurrentDate = true;
-                break;
             }
 
+
+            // ������ �����͸� ����Ʈ�� �ݿ�
+            loadDayComenList[i] = ComentData;
+
+            // ����Ʈ�� JSON ���ڿ��� ��ȯ
+            //string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); ��������
+            // JSON ���Ϸ� ����
+            //File.WriteAllText(path, jsonString); //��������
+            //Debug.Log("���� ���� �Ϸ�: " + path);
+            //Debug.Log("����� JSON ������: " + jsonString);
+
+            jsonSyncString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); //��ũ����
+            PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
+            //Debug.Log("Photon ?");
+            isCurrentDate = true;
+            break;
         }
         if (!isCurrentDate)
         {
-            print("��ġ�ϴ� ��¥�� ����");
+            print("noneMatchDate");
             CreateNewDayComentJsonArray(mood);
 
-        }
+        }*/
+    
+    }//함수끝
 
-    }
+
+
+
+
 
     IEnumerator FindPlayer()//playerFind afterSpawn
     {
@@ -1644,12 +1922,13 @@ void Update()
          }*/
 
         //local only
-        //CheckDate(); //load date local
+        CheckDate(); //load date local
         //CheckMission(); //load mission local
         //CheckComent(); //load coment local
         //CheckMood(); //load mood local
         GetCheckMission();
-        CheckHistoty();
+        //CheckHistoty();
+        NewCheckHistory();
     }
 
     private void SaveStringAsJson(string data) // ���ڿ��� JSON �������� ���� ��ο� �����ϴ� �޼���
@@ -1664,7 +1943,7 @@ void Update()
         //File.WriteAllText(jsonSyncPath, jsonString);
         System.IO.File.WriteAllText(jsonSyncPath, data);
 
-        Debug.Log("Data saved as JSON at: " + jsonSyncPath);
+        //Debug.Log("Data saved as JSON at: " + jsonSyncPath);
     }
 
     private void OnEnable()  // �̺�Ʈ�� �޴� �޼���
@@ -1680,13 +1959,13 @@ void Update()
             // �̺�Ʈ ������ �ޱ� (string ���¶�� ����)
             string jsonString = (string)photonEvent.CustomData;
 
-            Debug.Log("Received data: " + jsonString);
+            //Debug.Log("Received data: " + jsonString);
 
             // ���� �����͸� JSON���� ����
             SaveStringAsJson(jsonString);
         }
     }
-  
+
     private void OnDestroy()
     {
         PhotonNetwork.RemoveCallbackTarget(this);  // �̺�Ʈ �ݹ� ����

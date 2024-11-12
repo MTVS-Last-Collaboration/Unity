@@ -59,6 +59,7 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
 
         }
     }
+
     // Update is called once per frame
     /*void Update()
       {
