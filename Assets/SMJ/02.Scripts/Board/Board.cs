@@ -90,7 +90,6 @@ public class Board : MonoBehaviour
     private async Task<bool> LoadTopicAndPosts(DateTime _date)
     {
         var topicLoadingTask = new TaskCompletionSource<bool>();
-
         topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"), async (success) => {
             if (success)
             {
