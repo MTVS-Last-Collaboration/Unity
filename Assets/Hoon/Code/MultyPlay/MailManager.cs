@@ -1688,10 +1688,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //print("switch image cashing");
 
         
-
-
-
-
         if (userNumber == "user1")
         {
             print("checkUserNumber" + userNumber);
