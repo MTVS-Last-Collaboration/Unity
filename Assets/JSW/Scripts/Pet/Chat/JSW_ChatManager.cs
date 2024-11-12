@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static UnityEditor.PlayerSettings;
 
 public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
 {
@@ -132,15 +133,24 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
 
     //public string message = "병진님 데이트코스 추천해줘";  // 사용자로부터 입력받은 메시지
 
+
     public void SendMessageToChat(string message)
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound2);
         StartCoroutine(SendChatCoroutine(message));
     }
 
+    public class MongChat
+    {
+        public string messages;
+    }
+
+
     IEnumerator SendChatCoroutine(string message)
     {
+        MongChat chat = new MongChat { messages = message };
         // 메시지 정보 JSON 포맷으로 변환
-        string jsonData = "{\"messages\": \"" + message + "\"}";
+        string jsonData = JsonUtility.ToJson(chat);
 
         // HTTP 요청 생성
         UnityWebRequest request = new UnityWebRequest(chatUrl, "POST");
@@ -148,7 +158,8 @@ public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("accept", "application/json");
+        string jwtToken = LoginInfoManager.instance.myToken;
+        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
         yield return request.SendWebRequest();
 

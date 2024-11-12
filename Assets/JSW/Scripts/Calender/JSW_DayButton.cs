@@ -18,6 +18,7 @@ public class JSW_DayButton : MonoBehaviour
     }
     public void OnClickMe()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound2);
         if (transform.GetChild(5).GetComponent<TMP_Text>().text != "") CalenderManager.GetComponent<JSW_CalenderManager>().OnClickResetNowDay(int.Parse(transform.GetChild(5).GetComponent<TMP_Text>().text));
     }
 }

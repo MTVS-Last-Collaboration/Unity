@@ -32,6 +32,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
 
     public void SettingPic()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
         //GameObject newPic = Instantiate(PicFactory, trContent);
         //string title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
         //string content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;

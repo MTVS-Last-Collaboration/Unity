@@ -18,7 +18,8 @@ public class AlbumItem : MonoBehaviour
 
         image.sprite = sprite;
 
-        aspectRatioFitter.aspectRatio = (float)image1.width / image1.height;
+        //aspectRatioFitter.aspectRatio = (float)image1.width / image1.height; <- 비율 조정
+
         title.text = title1;
         content.text = content1;
         day.text = day1;

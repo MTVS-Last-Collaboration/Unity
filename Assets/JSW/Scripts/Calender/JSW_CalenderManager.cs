@@ -211,6 +211,7 @@ public class JSW_CalenderManager : MonoBehaviourPun
     // 달력 왼쪽 버튼 누르면 1달 내려감
     public void OnClickDownMonth()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound2);
         TMP_Text tmp_nowToday = days[nowDay + (int)GetDayFirstWeek(nowYear, nowMonth) - 1].transform.GetChild(5).gameObject.GetComponent<TMP_Text>();
         days[nowDay + (int)GetDayFirstWeek(nowYear, nowMonth) - 1].transform.GetChild(0).gameObject.SetActive(false);
 
@@ -236,6 +237,7 @@ public class JSW_CalenderManager : MonoBehaviourPun
     // 달력 오른쪽 버튼 누르면 1달 올라감
     public void OnClickUpMonth()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound2);
         TMP_Text tmp_nowToday = days[nowDay + (int)GetDayFirstWeek(nowYear, nowMonth) - 1].transform.GetChild(5).gameObject.GetComponent<TMP_Text>();
         days[nowDay + (int)GetDayFirstWeek(nowYear, nowMonth) - 1].transform.GetChild(0).gameObject.SetActive(false);
 

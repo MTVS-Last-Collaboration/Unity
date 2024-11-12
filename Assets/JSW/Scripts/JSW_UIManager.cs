@@ -83,12 +83,14 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickAlbum()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
         album_UI.SetActive(true);
         easingUI(album_UI, 1f);
         easingUIDark(PlayerInfoUI, 0f);
     }
     public void OnClickAlbum_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         album_UI.SetActive(false);
         easingUIDark(PlayerInfoUI, 1f);
     }
@@ -97,6 +99,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickAlbum_Making()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         album_UI.SetActive(false);
         Album2.SetActive(true);
 
@@ -104,6 +107,7 @@ public class JSW_UIManager : MonoBehaviour
     }
     public void OnClickAlbum_Making_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         Album2.SetActive(false);
         album_UI.SetActive(true);
 
@@ -112,12 +116,14 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickAlbum_Loading0()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         //dasdsa
         Album2.SetActive(false);
         Album_Loading2.SetActive(true);
     }
     public void OnClickAlbum_Loading0_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         //dasdsa
         Album2.SetActive(true);
         Album_Loading2.SetActive(false);
@@ -126,6 +132,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickAlbum_Loading()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         //dasdsa
         cameraControllTest.CameraTo3D();
         Album_Loading2.SetActive(false);
@@ -135,6 +142,7 @@ public class JSW_UIManager : MonoBehaviour
 
     IEnumerator OnClickAlbum_Loading_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_To3D);
         float time = 0;
         while (true)
         {
@@ -167,6 +175,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickPicUploadingUI()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         //Album2.SetActive(false);
         PicUploadingUI.SetActive(true);
 
@@ -175,6 +184,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickPicUploadingUI_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         PicUploadingUI.SetActive(false);
         //Album2.SetActive(true);
     }
@@ -182,6 +192,7 @@ public class JSW_UIManager : MonoBehaviour
     // Calender客 包访等 内靛
     public void OnClickCalender()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
         easingUIDark(PlayerInfoUI, 0f);
         easingUI(Calender, 1.0f);
         Calender1.SetActive(true);
@@ -191,6 +202,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickCalender_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         easingUIDark(PlayerInfoUI, 1f);
         Calender1.SetActive(false);
         Calender2.SetActive(false);
@@ -199,11 +211,14 @@ public class JSW_UIManager : MonoBehaviour
     // Mong苞 包访等 内靛
     public void OnClickMong()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_PetSound);
         easingUIDark(PlayerInfoUI, 0f);
         Mong_1.SetActive(true);
     }
     public void OnClickMong_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         easingUIDark(PlayerInfoUI, 1f);
         Mong_1.SetActive(false);
     }
@@ -211,12 +226,14 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickMongChat()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         Mong_1.SetActive(false);
         Mong_Chat_2.SetActive(true);
         //Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 1;
     }
     public void OnClickMongChat_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         //Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 0;
         Mong_Chat_2.SetActive(false);
         Mong_1.SetActive(true);
@@ -224,6 +241,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickDecorateShopUI()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         heartTime = 0;
         DecorateShopUI.SetActive(true);
         DecorateMineUI.SetActive(true);
@@ -231,6 +249,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickDecorateShopUI_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         heartTime = 1;
         DecorateShopUI.SetActive(false);
         DecorateMineUI.SetActive(false);
@@ -238,6 +257,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickDecorateMineUI()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         heartTime = 0;
         DecorateMineUI.SetActive(true);
         DecorateShopUI.SetActive(false);
@@ -245,6 +265,7 @@ public class JSW_UIManager : MonoBehaviour
 
     public void OnClickDecorateMineUI_Back()
     {
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         heartTime = 1;
         DecorateMineUI.SetActive(false);
     }

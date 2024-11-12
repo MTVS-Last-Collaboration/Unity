@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -9,6 +10,7 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
     public GameObject funiturePos;
     public JSW_LobbyGameManager lobbyGameManager;
     public GameObject byeUI;
+    public JSW_SoundManager soundManager;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +42,10 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
 
     public void GoOtherRoom()
     {
+        if (soundManager != null)
+        {
+            soundManager.PlayEftSound(JSW_SoundManager.ESoundType.EFT_DoorSound);
+        }
         if (funiturePos != null)
         {
             for (int i = 0; i < funiturePos.transform.childCount; i++)

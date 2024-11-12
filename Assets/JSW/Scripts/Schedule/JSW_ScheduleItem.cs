@@ -51,6 +51,7 @@ public class JSW_ScheduleItem : MonoBehaviourPun, IOnEventCallback
     public void OnClickDelete()
     {
         DeleteCalendarEvent(eventID);
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
     }
 
     public void DeleteCalendarEvent(string eventId)

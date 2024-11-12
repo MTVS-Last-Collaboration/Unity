@@ -130,7 +130,7 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
         string chat = input_Field.text;
         string dayString = "" + calenderManager.nowYear.ToString() + calenderManager.nowMonth.ToString("D2") + calenderManager.nowDay.ToString("D2");
         string forPostDayString = "" + calenderManager.nowYear.ToString() + "-" + calenderManager.nowMonth.ToString("D2") + "-" + calenderManager.nowDay.ToString("D2");
-        
+        JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound2);
         PostforBackSchedule(iconNumInput, forPostDayString, chat);
     }
 

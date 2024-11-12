@@ -55,7 +55,7 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
             }
             else
             {
-                InitSetFuniture(1, "(Prb)Plant2", 2, 4,4 , 1, 1);
+                //InitSetFuniture(1, "(Prb)Plant2", 2, 4,4 , 1, 1);
                 print("JSW_InitotherRoom인데 처음 가구들 설치할 때 호출하는 것임");
                 Debug.LogError("Error: " + request.error);
             }

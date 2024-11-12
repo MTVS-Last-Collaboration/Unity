@@ -22,9 +22,13 @@ public class JSW_InitRoom : MonoBehaviourPun
     {
         DRM = GetComponent<JSW_DecorateRoomManager>();
 
-        if (PhotonNetwork.CountOfPlayersInRooms == 1)
+        if (PhotonNetwork.IsMasterClient)
         {
             GetRoomStatus();
+        }
+        else
+        {
+            //GetRoomStatus();
         }
         GetShopStatus();
     }
@@ -66,12 +70,19 @@ public class JSW_InitRoom : MonoBehaviourPun
 
                 DMM.floorNum = roomStatus.data.floor.floorNumber-1;
                 DMM.wallNum = roomStatus.data.wallpaper.wallpaperNumber-1;
+
+
+
+                print("처음인데 잘 나왔어요!!!!!!!");
+
             }
             else
             {
                 InitSetFuniture(0, 1, "(Prb)Plant2", 4, 3, 3, 1, 1);
                 print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임");
                 Debug.LogError("Error: " + request.error);
+
+                print("안나왓어요!!!!!!!!!!");
             }
         }
     }
@@ -168,10 +179,10 @@ public class JSW_InitRoom : MonoBehaviourPun
                 print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임");
                 Debug.LogError("Error: " + request.error);
             }
-            for (int i=0; i < 45;i++)
-            {
-                print(i+ " = " + initShopId[i]);
-            }
+            //for (int i=0; i < 45;i++)
+            //{
+            //    print(i+ " = " + initShopId[i]);
+            //}
         }
     }
 
