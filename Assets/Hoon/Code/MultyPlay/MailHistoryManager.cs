@@ -24,9 +24,7 @@ public class MailHistoryManager : MonoBehaviour
             }
    
         }
-
        
-        
     }
 
     // Update is called once per frame

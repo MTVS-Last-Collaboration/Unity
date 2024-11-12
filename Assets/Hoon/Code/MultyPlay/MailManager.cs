@@ -321,9 +321,40 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             if (completed =="True") //uppdercase true
             {
                 print("MissionComplite");
+                if(userNumber == "user1")
+                {
+                    ChangeMoodImage(partner1Mood);
+                    Image img2 = moodSwitch2.GetComponent<Image>();
+                    if (partner2Mood == "null")
+                    {
+                        img2.sprite = moodSprites[0];
+                        textMyMood = "null";
+                    }
+                    else if (partner2Mood == "Good")
+                    {
+                        img2.sprite = moodSprites[1];
+                        textMyMood = "Good";
+                    }
+                    else if (partner2Mood == "Normal")
+                    {
+                        img2.sprite = moodSprites[2];
+                        textMyMood = "Normal";
+                    }
+                    else if (partner2Mood == "Bad")
+                    {
+                        img2.sprite = moodSprites[3];
+                        textMyMood = "Bad";
+                    }
 
-                ChangeMoodImage(partner1Mood);
-                ChangeMoodImage(partner2Mood);
+                }
+                else
+                {
+                    
+
+
+
+                }
+                
                 Coment1.GetComponent<TextMeshProUGUI>().text = jsonObj["partner1Answer"].ToString();
                 Coment2.GetComponent<TextMeshProUGUI>().text = jsonObj["partner2Answer"].ToString();
                 moodSwitch1.GetComponent<Image>().color = Color.white; //chage switch color

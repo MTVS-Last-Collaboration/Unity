@@ -53,8 +53,5 @@ public class LoginUI : MonoBehaviour
         objecName.SetActive(false);
 
     }
-
-    
-  
         
 }
