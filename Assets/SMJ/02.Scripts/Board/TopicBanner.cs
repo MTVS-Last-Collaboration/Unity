@@ -52,6 +52,7 @@ public class TopicBanner : MonoBehaviour
     public void Initialize(Topic topic, int day)
     {
         contentText.text = topic.content;
+        days = day;
     }
 
     private void OnDestroy()

@@ -23,7 +23,10 @@ public class CommentItem : MonoBehaviour
 
     private CommentData data;
     private bool isClickLike = false;
-
+    private void Start()
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+    }
     public void Initialize(CommentData commentData)
     {
         data = commentData;
@@ -41,9 +44,10 @@ public class CommentItem : MonoBehaviour
     {
         if (data != null)
         {
+            Debug.Log($"UpdateUI called - date value: {data.createdDate}");
             nickNameText.text = data.nickName;
             contentText.text = data.content;
-            dateText.text = data.createDate.ToString("yyyy-MM-dd HH:mm");
+            dateText.text = data.createdDate;
             UpdateLikeUI();
         }
     }
@@ -73,11 +77,14 @@ public class CommentItem : MonoBehaviour
 
     private IEnumerator CommentLike(int commentId, Action onComplete)
     {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+        // NetworkManager 초기화 제거
+        Debug.Log($"Sending like request for comment {commentId}");
+        Debug.Log($"Using token: {PlayerPrefs.GetString("token")}");
 
         yield return NetworkManager.Instance.PostWithoutBody($"/api/topic/comment/{commentId}/like",
             (success, response) =>
             {
+                Debug.Log($"Response received: {response}"); // 상세 응답 로깅
                 if (success)
                 {
                     Debug.Log("Comment like successfully updated");
@@ -108,8 +115,6 @@ public class CommentItem : MonoBehaviour
 
     private IEnumerator CommentLikeCancel(int commentId, Action onComplete)
     {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
-
         yield return NetworkManager.Instance.PostWithoutBody($"/api/topic/comment/{commentId}/unlike",
             (success, response) =>
             {

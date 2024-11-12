@@ -90,7 +90,6 @@ public class Board : MonoBehaviour
     private async Task<bool> LoadTopicAndPosts(DateTime _date)
     {
         var topicLoadingTask = new TaskCompletionSource<bool>();
-
         topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"), async (success) => {
             if (success)
             {
@@ -321,7 +320,7 @@ public class Board : MonoBehaviour
         {
             content = content,
             authorNickname = PlayerPrefs.GetString("nickname", "Unknown"),
-            createdDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            createdDate = DateTime.Now.ToString("MM/dd HH:mm")
         };
 
         StartCoroutine(CreateCommentCoroutine(answerId, newComment, onComplete));
