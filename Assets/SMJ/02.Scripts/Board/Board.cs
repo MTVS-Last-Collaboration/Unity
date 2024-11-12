@@ -2,9 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using System.Linq;
 
 public class Board : MonoBehaviour
 {
@@ -25,9 +27,15 @@ public class Board : MonoBehaviour
 
     private TopicManager topicManager;
 
+    public int lastId = 0;
+
+    public bool isFirstLoading = true;
+
     private void Start()
     {
-        DateTime time = new DateTime(2024, 11, 6);
+        //DateTime time = new DateTime(2024, 11, 6);
+        topicManager = GetComponent<TopicManager>();
+        DateTime time = DateTime.Today;
         InitTopic(time);
         StartCoroutine(DailyWeeklyLikesCheck());
 
@@ -42,92 +50,198 @@ public class Board : MonoBehaviour
         //sortByDateButton.onClick.RemoveListener(SortByDate);
     }
 
-    private void InitTopic(DateTime _date)
-    {
-        topicManager = GetComponent<TopicManager>();
-        topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"), (success) => {
-            if (success)
-            {
-                topicText.text = topicManager.currentContent;
-                Debug.Log("토픽 가져오기 성공 : " + topicManager.currentContent);
-                InitPosts(topicManager.currentId);
-            }
-            else
-            {
-                Debug.Log("토픽 가져오기 실패");
-            }
-        });
+    private bool isLoading = false;
+    private TaskCompletionSource<bool> currentLoadingTask = null;
 
-        TimeSpan difference = DateTime.Now - _date;
-        if (difference.Days > 0)
+    public async Task<bool> InitTopic(DateTime _date)
+    {
+        // 이미 같은 날짜의 토픽을 로딩 중이면 현재 작업이 완료될 때까지 대기
+        if (isLoading)
         {
-            dayTopicText.text = $"<{difference.Days}일전 주제>";
+            Debug.Log("[Board] Already loading, waiting for completion...");
+            if (currentLoadingTask != null)
+            {
+                await currentLoadingTask.Task;
+            }
+            return true;
         }
-        else if (difference.Days == 0)
+
+        try
         {
-            dayTopicText.text = "<오늘의 주제>";
+            isLoading = true;
+            currentLoadingTask = new TaskCompletionSource<bool>();
+            Debug.Log($"[Board] Loading topic for date: {_date:yyyy-MM-dd}");
+
+            // 보드 초기화는 한 번만 수행
+            ClearBoard();
+            SetPostsVisibility(false);
+
+            bool result = await LoadTopicAndPosts(_date);
+            currentLoadingTask.SetResult(result);
+            return result;
+        }
+        finally
+        {
+            isLoading = false;
+            currentLoadingTask = null;
         }
     }
 
-    private void InitPosts(int id)
+    private async Task<bool> LoadTopicAndPosts(DateTime _date)
     {
-        topicManager.GetTopicAnswers((success) =>
-        {
+        var topicLoadingTask = new TaskCompletionSource<bool>();
+        topicManager.GetDailyTopic(_date.ToString("yyyy-MM-dd"), async (success) => {
+            if (success)
+            {
+                topicText.text = topicManager.currentContent;
+                Debug.Log($"[Board] Topic loaded: {topicManager.currentContent}");
+
+                // 포스트 로딩
+                bool postsLoaded = await LoadPosts(topicManager.currentId);
+                if (postsLoaded)
+                {
+                    SetPostsVisibility(true);
+                }
+
+                // 날짜 텍스트 업데이트
+                TimeSpan difference = DateTime.Now - _date;
+                dayTopicText.text = difference.Days > 0
+                    ? $"<{difference.Days}일전 주제>"
+                    : "<오늘의 주제>";
+
+                topicLoadingTask.SetResult(true);
+            }
+            else
+            {
+                Debug.LogError("[Board] Failed to load topic");
+                topicLoadingTask.SetResult(false);
+            }
+        });
+
+        return await topicLoadingTask.Task;
+    }
+
+    private async Task<bool> LoadPosts(int topicId)
+    {
+        var postsLoadingTask = new TaskCompletionSource<bool>();
+
+        topicManager.GetTopicAnswers((success) => {
             if (success)
             {
                 foreach (var answer in topicManager.CurrentAnswers)
                 {
                     CreatePost(answer);
-                    // 답변에 해당하는 댓글들 가져오기
-                    //if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
-                    //{
-                    //    var lastPost = postListContent.GetChild(postListContent.childCount - 1);
-                    //    var commentBoard = lastPost.GetComponentInChildren<CommentBoard>();
-                    //    if (commentBoard != null)
-                    //    {
-                    //        print("제발 어디냐!: " + answer.id);
-                    //        commentBoard.Initialize(answer, this);
-                    //        foreach (var comment in comments)
-                    //        {
-                    //            print("제발!" + comment.content);
-                    //            commentBoard.AddComment(comment);
-                    //        }
-                    //    }
-                    //}
                 }
+                postsLoadingTask.SetResult(true);
+            }
+            else
+            {
+                Debug.LogError("[Board] Failed to load posts");
+                postsLoadingTask.SetResult(false);
+            }
+        });
+
+        return await postsLoadingTask.Task;
+    }
+
+    private void SetPostsVisibility(bool visible)
+    {
+        if (postListContent != null)
+        {
+            foreach (Transform child in postListContent)
+            {
+                if (child != null)
+                {
+                    child.gameObject.SetActive(visible);
+                }
+            }
+        }
+    }
+
+    private void ClearBoard()
+    {
+        Debug.Log("[Board] Clearing board");
+        posts?.Clear();
+
+        if (postListContent != null)
+        {
+            foreach (Transform child in postListContent)
+            {
+                if (child != null)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
+    }
+
+    private void InitPosts(int id)
+    {
+        Debug.Log($"InitPosts called with id: {id}");
+
+        // posts 리스트와 UI 초기화
+        ClearBoard();
+
+        topicManager.GetTopicAnswers((success) =>
+        {
+            if (success)
+            {
+                Debug.Log($"Successfully got {topicManager.CurrentAnswers.Count} answers");
+                foreach (var answer in topicManager.CurrentAnswers)
+                {
+                    CreatePost(answer);
+                    Debug.Log($"Created post for answer: {answer.id}");
+                }
+            }
+            else
+            {
+                Debug.Log("Failed to get topic answers");
             }
         });
     }
 
-    public void CreatePost(string nickName, string title, string content, int likeCount)
+    public void CreatePost(int answerId, string nickName, string title, string content, int likeCount)
     {
-        var post = new PostData(nickName, title, content, likeCount);
+        var post = new PostData(answerId, nickName, title, content, likeCount);
         posts.Add(post);
-        RefreshPostList(post);
+        GameObject postObj = Instantiate(postPrefab, postListContent);
+        postObj.GetComponent<PostItem>().Initialize(post);
     }
 
     public void CreatePost(TopicAnswer answer)
     {
-        CreatePost(
+        if (posts.Any(p => p.answerId == answer.id))
+        {
+            return;
+        }
+
+        var post = new PostData(
+            answer.id,
             answer.authorNickname,
             answer.title,
             answer.content,
             answer.likeCount
         );
 
-        var lastPost = postListContent.GetChild(postListContent.childCount - 1);
-        var commentBoard = lastPost.GetComponentInChildren<CommentBoard>(true);
+        posts.Add(post);
+
+        GameObject postObj = Instantiate(postPrefab, postListContent);
+        postObj.SetActive(false);
+
+        var postItem = postObj.GetComponent<PostItem>();
+        postItem.Initialize(post);
+
+        var commentBoard = postObj.GetComponentInChildren<CommentBoard>(true);
+        postObj.GetComponent<PostItem>().commentBoard = commentBoard;
         if (commentBoard != null)
         {
             commentBoard.Initialize(answer, this);
+            lastId = answer.id;
 
-            // 이미 로드된 댓글 데이터가 있다면 사용
             if (topicManager.AnswerComments.TryGetValue(answer.id, out var comments))
             {
-                print("쌀숭이 어디냐!: " + answer.id);
                 foreach (var comment in comments)
                 {
-                    print("쌀숭이!" + comment.content);
                     commentBoard.AddComment(comment);
                 }
             }
@@ -147,6 +261,8 @@ public class Board : MonoBehaviour
         //}
         GameObject postObj = Instantiate(postPrefab, postListContent);
         postObj.GetComponent<PostItem>().Initialize(post);
+        var commentBoard = gameObject.GetComponentInChildren<CommentBoard>(true);
+        postObj.GetComponent<PostItem>().commentBoard = commentBoard;
     }
 
     private IEnumerator DailyWeeklyLikesCheck()
@@ -204,7 +320,7 @@ public class Board : MonoBehaviour
         {
             content = content,
             authorNickname = PlayerPrefs.GetString("nickname", "Unknown"),
-            createdDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            createdDate = DateTime.Now.ToString("MM/dd HH:mm")
         };
 
         StartCoroutine(CreateCommentCoroutine(answerId, newComment, onComplete));

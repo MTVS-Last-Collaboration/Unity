@@ -77,6 +77,38 @@ public class NetworkManager : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator PostWithoutBody(string endpoint, Action<bool, string> callback = null)
+    {
+        string url = $"{baseUrl}{endpoint}";
+        Debug.Log($"URL: {url}");
+        using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
+        {
+            request.downloadHandler = new DownloadHandlerBuffer();
+            AddHeaders(request);
+            yield return request.SendWebRequest();
+            Debug.Log($"Response Code: {request.responseCode}");
+            Debug.Log($"Response: {request.downloadHandler.text}");
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                callback?.Invoke(true, request.downloadHandler.text);
+            }
+            else
+            {
+                if (request.responseCode == 409)
+                {
+                    // 409 에러는 정상적인 케이스이므로 로그 출력하지 않음
+                    callback?.Invoke(false, request.error);
+                }
+                else
+                {
+                    Debug.LogError($"POST 요청 실패: {request.error}");
+                    callback?.Invoke(false, request.error);
+                }
+            }
+        }
+    }
+
     [Serializable]
     private class ArrayWrapper<T>
     {
@@ -117,8 +149,16 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Request failed: {request.error}");
-                callback?.Invoke(false, null);
+                if (request.responseCode == 404)
+                {
+                    Debug.Log("Resource not found (404)");
+                    callback?.Invoke(true, new List<T>()); // 404인 경우 빈 리스트 반환
+                }
+                else
+                {
+                    Debug.LogError($"Request failed: {request.error}");
+                    callback?.Invoke(false, null);
+                }
             }
         }
     }
@@ -155,6 +195,31 @@ public class NetworkManager : MonoBehaviour
             {
                 Debug.LogError($"Request failed: {request.error}");
                 callback?.Invoke(false, default(T));
+            }
+        }
+    }
+
+    public IEnumerator GetWithoutBody(string endpoint, Action<bool, string> callback = null)
+    {
+        string url = $"{baseUrl}/{endpoint}";
+        Debug.Log($"Making GET request to: {url}");
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            AddHeaders(request);
+            Debug.Log("Request headers added");
+            yield return request.SendWebRequest();
+            Debug.Log($"Request completed with result: {request.result}");
+            Debug.Log($"Response code: {request.responseCode}");
+            Debug.Log($"Response text: {request.downloadHandler.text}");
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                callback?.Invoke(true, request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError($"Request failed: {request.error}");
+                callback?.Invoke(false, request.error);
             }
         }
     }

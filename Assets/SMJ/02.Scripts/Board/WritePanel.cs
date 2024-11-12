@@ -15,6 +15,8 @@ public class WritePost
 public class WritePanel : MonoBehaviour
 {
     [Header("UI Components")]
+    [SerializeField] private GameObject handler;
+    [SerializeField] private GameObject writeAnswerPartiton;
     [SerializeField] private TMP_InputField titleInput;    // 제목 입력 필드
     [SerializeField] private TMP_InputField contentInput;  // 내용 입력 필드
     [SerializeField] private Button submitButton;          // 글쓰기 완료 버튼
@@ -32,14 +34,16 @@ public class WritePanel : MonoBehaviour
     // 패널 표시
     public void Show()
     {
-        gameObject.SetActive(true);
+        writeAnswerPartiton.SetActive(true);
+        handler.SetActive(true);
         ClearInputs();
     }
 
     // 패널 숨김
     public void Hide()
     {
-        gameObject.SetActive(false);
+        writeAnswerPartiton.SetActive(false);
+        handler.SetActive(false);
     }
 
     // 글쓰기 완료
@@ -58,7 +62,7 @@ public class WritePanel : MonoBehaviour
         string nickName = LoginInfoManager.instance.nickName;
 
         // 게시판에 글 추가
-        board.CreatePost(nickName, titleInput.text, contentInput.text, 0);
+        board.CreatePost(board.lastId + 1, nickName, titleInput.text, contentInput.text, 0);
 
         CreatePostAnswer(PlayerPrefs.GetInt("dailyTopicId"), titleInput.text, contentInput.text);
         Hide();

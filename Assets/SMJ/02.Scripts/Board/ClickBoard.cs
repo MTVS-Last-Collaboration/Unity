@@ -5,6 +5,7 @@ using UnityEngine;
 public class ClickBoard : MonoBehaviour
 {
     [SerializeField] private GameObject boardUIObject;
+    [SerializeField] private GameObject boardPartition;
     [SerializeField] private GameObject playerUIObject;
 
     private UIPopupAnimation uiPopup;
@@ -14,6 +15,7 @@ public class ClickBoard : MonoBehaviour
         playerUIObject = GameObject.Find("HoonLoobyCanvas");
         uiPopup = GetComponent<UIPopupAnimation>();
         uiPopup.SetTarget(boardUIObject.GetComponent<RectTransform>());
+        boardPartition.SetActive(false);
         boardUIObject.SetActive(false);
     }
 
@@ -21,11 +23,13 @@ public class ClickBoard : MonoBehaviour
     {
         playerUIObject.SetActive(false);
         boardUIObject.SetActive(true);
+        boardPartition.SetActive(true);
         uiPopup.PlayPopupAnimation(boardUIObject.GetComponent<RectTransform>());
     }
 
     public void ExitBoard()
     {
+        boardPartition.SetActive(false);
         playerUIObject.SetActive(true);
         uiPopup.Hide(boardUIObject.GetComponent<RectTransform>());
     }

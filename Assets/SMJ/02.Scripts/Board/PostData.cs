@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class PostData
 {
+    public int answerId;
     public string nickName;
     public string title;
     public string content;
@@ -15,8 +16,9 @@ public class PostData
     private DateTime weekStartDate;
     private CommentBoard comment;
 
-    public PostData(string nickName, string title, string content, int likeCount)
+    public PostData(int answerId, string nickName, string title, string content, int likeCount)
     {
+        this.answerId = answerId;
         this.nickName = nickName;
         this.title = title;
         this.content = content;
@@ -30,6 +32,17 @@ public class PostData
     {
         likeCount++;
         weeklyLikeCount++;
+    }
+
+    public void SubLike()
+    {
+        likeCount--;
+        weeklyLikeCount--;
+    }
+
+    public int GetLike()
+    {
+        return likeCount;
     }
 
     public void ResetWeeklyLikes()

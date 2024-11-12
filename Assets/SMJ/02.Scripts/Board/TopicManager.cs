@@ -2,6 +2,9 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class TopicAnswer
@@ -80,6 +83,26 @@ public class TopicManager : MonoBehaviour
     public string currentDate => currentTopic?.date ?? "";
 
     public int currentId => currentTopic?.id ?? Topic.GetSavedTopicId();
+
+    [SerializeField] private GameObject topicBannerPrefab;  // 토픽 배너 프리팹
+    [SerializeField] private ScrollRect scrollView;         // 스크롤뷰 참조
+    [SerializeField] private GameObject topicBannerObj;
+    [SerializeField] private Button topicBannerButton;
+
+    private List<Topic> weeklyTopics = new List<Topic>();  // 주간 토픽 저장 리스트
+
+    private bool isClickTopicBanner = false;
+
+    private void OnEnable()
+    {
+        if (topicBannerButton != null)
+            topicBannerButton.onClick.AddListener(LoadWeeklyTopics);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(GetWeeklyTopics());
+    }
 
     public void GetDailyTopic(string date, Action<bool> onComplete = null)
     {
@@ -161,5 +184,75 @@ public class TopicManager : MonoBehaviour
         {
             await Task.Yield();
         }
+    }
+
+    public void LoadWeeklyTopics()
+    {
+        if (isClickTopicBanner == false)
+        {
+            isClickTopicBanner = true;
+            topicBannerObj.SetActive(true);
+        }
+        else
+        {
+            isClickTopicBanner = false;
+            topicBannerObj.SetActive(false);
+        }
+    }
+
+    public void CloseWeeklyTopics()
+    {
+        isClickTopicBanner = false;
+        topicBannerObj.SetActive(false);
+    }
+
+    private IEnumerator GetWeeklyTopics()
+    {
+        // 기존 배너들 제거
+        foreach (Transform child in scrollView.content)
+        {
+            Destroy(child.gameObject);
+        }
+
+        weeklyTopics.Clear();
+
+        // 오늘부터 7일 전까지의 데이터 가져오기
+        for (int i = 0; i < 7; i++)
+        {
+            DateTime date = DateTime.Now.AddDays(-i);
+            string formattedDate = date.ToString("yyyy-MM-dd");
+
+            bool requestComplete = false;
+            GetDailyTopic(formattedDate, (success) =>
+            {
+                if (success)
+                {
+                    // 현재 토픽의 정보로 새 Topic 객체 생성
+                    Topic topic = new Topic(currentId, currentContent, currentDate);
+                    weeklyTopics.Add(topic);
+
+                    // 토픽 배너 생성
+                    GameObject bannerObj = Instantiate(topicBannerPrefab, scrollView.content);
+                    TopicBanner banner = bannerObj.GetComponent<TopicBanner>();
+                    if (banner != null)
+                    {
+                        banner.Initialize(topic, i);
+                    }
+                }
+                requestComplete = true;
+            });
+
+            // 각 요청이 완료될 때까지 대기
+            yield return new WaitUntil(() => requestComplete);
+
+            // 연속적인 서버 요청 사이에 짧은 딜레이 추가
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (topicBannerButton != null)
+            topicBannerButton.onClick.RemoveListener(LoadWeeklyTopics);
     }
 }

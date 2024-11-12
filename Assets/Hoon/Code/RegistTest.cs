@@ -206,6 +206,7 @@ public class RegistTest : MonoBehaviour
 
         yield return request.SendWebRequest();
 
+        //문제가 있으면 여기
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + request.error);
@@ -241,6 +242,7 @@ public class RegistTest : MonoBehaviour
 
 
         }
+        //문제가 없으면 여기
         else
         {
             string responseText = request.downloadHandler.text;
