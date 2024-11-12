@@ -27,7 +27,7 @@ public class CommentController : MonoBehaviour
     // 댓글쓰기 버튼 클릭
     public void OnWriteButtonClick()
     {
-        writeCommentPanel.OnSubmit();
+        writeCommentPanel.OnSubmitComment();
     }
 
     private void OnDestroy()

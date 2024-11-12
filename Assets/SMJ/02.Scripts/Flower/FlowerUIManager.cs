@@ -389,10 +389,10 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     public void ShowFlowerInfo(Flower targetFlower, int idx)
     {
-        if (click.isFirstClick == true && idx == 0)
+        hoonUI.SetActive(false);
+        if (click.isFirstClick == true)
         {
             Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("Player_CheckFlower"));
-            hoonUI.SetActive(false);
             uiPopup.PlayPopupAnimation(uiPanel.GetComponent<RectTransform>());
         }
         if (targetFlower == null)

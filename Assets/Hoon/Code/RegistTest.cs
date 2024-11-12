@@ -2,20 +2,22 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using File = System.IO.File;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
+using System.Text.RegularExpressions;
+using TMPro;
+using UnityEngine.Networking;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
+using System.IO;
 using Unity.VisualScripting;
 using Newtonsoft.Json.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine.Analytics;
 using System.Reflection;
-using TMPro;
 //using UnityEditor.PackageManager.Requests;
-using UnityEngine.Networking;
-using static System.Net.WebRequestMethods;
-using UnityEngine.UI;
-using static RegistTest;
+//using static System.Net.WebRequestMethods;
+//using static RegistTest;
 
 public class RegistTest : MonoBehaviour
 {
@@ -46,13 +48,20 @@ public class RegistTest : MonoBehaviour
     public TMP_InputField inputNickname;
     public TMP_Dropdown dropgender;
     public TMP_InputField inputCoupleDay;
+    public TextMeshProUGUI textGenderButton;
+    public Image imgMaleButton;
+    public Image imgFemaleButton;
+    public Sprite[] registSprite;
+    public TMP_InputField myCoupleCode;
+    public GameObject registMenu2;
+
+
     TMP_Text dropgenderTextComp;
-
-    public GameObject maleImage;
-    public GameObject womanImage;
-
-
-    // Start is called before the first frame update
+    TextMeshProUGUI textMaleButton;
+    TextMeshProUGUI textFemaleButton;
+    GameObject maleImage;
+    GameObject womanImage;
+    
     void Start()
     {
 
@@ -74,7 +83,7 @@ public class RegistTest : MonoBehaviour
     
 
 
-    public void ResistNewUserInfoJSon() //유저정보를 요청함.
+    public void RegistNewUserInfoJSon() //유저정보를 요청함.
     {
         //데이터를 저장할 경로
         string path = Application.persistentDataPath + "/UserInfo.json";
@@ -97,6 +106,7 @@ public class RegistTest : MonoBehaviour
                 if(UserInfo.email == inputEmail.text) //이메일이 있으면
                 {
                     inputEmail.text = "이메일이 중복됩니다.";
+                    print("이메일이 중복됩니다.");
                     isMatchInfo = true;
                     break;
                 }
@@ -105,6 +115,7 @@ public class RegistTest : MonoBehaviour
 
             if (!isMatchInfo) //일치하는 정보가 없으면
             {
+                print("일치하는 정보가 없습니다.");
                 //저장하자.
 
                 //값을 초기화 하지 않으면 null발생함.
@@ -127,7 +138,7 @@ public class RegistTest : MonoBehaviour
                 print("저장된 문자열" + jsonString);
 
                 StartCoroutine(PostNewUserInfoJSon(jsonString));
-
+                
             }
 
         }
@@ -195,15 +206,18 @@ public class RegistTest : MonoBehaviour
 
         yield return request.SendWebRequest();
 
+        //문제가 있으면 여기
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + request.error);
-            //에러500
+            //에러 500 내가틀림 , 409
 
             // 서버의 응답 내용이 있는 경우, 상세 내용을 로그에 출력
             if (!string.IsNullOrEmpty(request.downloadHandler.text))
             {
                 Debug.LogError("Server Response: " + request.downloadHandler.text);
+
+               
             }
             else
             {
@@ -228,6 +242,7 @@ public class RegistTest : MonoBehaviour
 
 
         }
+        //문제가 없으면 여기
         else
         {
             string responseText = request.downloadHandler.text;
@@ -243,6 +258,13 @@ public class RegistTest : MonoBehaviour
             {
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
             }
+
+            //가입완료 이미지 띄우기
+            registMenu2.SetActive(false);
+
+
+
+
 
         }
 
@@ -566,7 +588,36 @@ public class RegistTest : MonoBehaviour
         }
     }
 
-}
+    public void ChoiceAvatatype(string objName)
+    {
+        if(objName == "Btn_Male") //오브젝트 이름
+        {
+            //버튼 눌렀을때 이미지컴포넌트의 스프라이트를 다른 스프라이트로 변경
+            imgMaleButton.sprite = registSprite[1]; //젠더초이스로
+            imgMaleButton.color = Color.white;
+
+            imgFemaleButton.sprite = registSprite[0]; //아웃라이너로
+            imgFemaleButton.color = Color.black;
+            dropgenderTextComp.text = "MALE";
+            //maleImage.SetActive(true);
+            //womanImage.SetActive(false);
+        }
+        else
+        {
+            //버튼 눌렀을때 이미지컴포넌트의 스프라이트를 다른 스프라이트로 변경
+            imgMaleButton.sprite = registSprite[0]; //젠더초이스로
+            imgMaleButton.color = Color.black;
+
+            imgFemaleButton.sprite = registSprite[1]; //아웃라이너로
+            imgFemaleButton.color = Color.white;
+            dropgenderTextComp.text = "FEMALE";
+            //womanImage.SetActive(true);
+            //maleImage.SetActive(false);
+        }
+
+    }
+
+}//클래스 끝
 
 
 
