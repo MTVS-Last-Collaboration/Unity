@@ -25,7 +25,10 @@ public class DecoMineManager : MonoBehaviourPun, IOnEventCallback
     void Update()
     {
         Floors.GetComponent<MeshRenderer>().material = Floormaterials[floorNum];
-        Walls.GetComponent<MeshRenderer>().material = Wallmaterials[wallNum];
+        for(int i=0; i < 4;i++)
+        {
+            Walls.transform.GetChild(i).GetComponent<MeshRenderer>().material = Wallmaterials[wallNum];
+        }
     }
 
     public void changeFloor(int floorNum)

@@ -71,8 +71,8 @@ public class JSW_CameraControllTest : MonoBehaviour
             // 현재 카메라의 cullingMask에서 지정된 레이어를 제외시킴
             mainCam_Object.GetComponent<Camera>().cullingMask &= ~layerMask;
             playerTransform = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform;
-            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, playerTransform.position + -1*((mong.position - Vector3.up * 0.5f) - playerTransform.position).normalized * 2f + Vector3.up * 1.1f, Time.deltaTime * 5);
-            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward,((mong.position - Vector3.up) - playerTransform.position).normalized,Time.deltaTime * 5);
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, playerTransform.position + -1*((mong.position - Vector3.up * 0.5f) - playerTransform.position).normalized * 3f + Vector3.up * 1.1f, Time.deltaTime * 5);
+            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward,((mong.position - Vector3.up* 0.8f) - playerTransform.position).normalized,Time.deltaTime * 5);
             mong.forward = ((mong.position) - mainCam_Object.transform.position).normalized * -1;
         }
         else if (cameraPos == "Calender")
@@ -82,7 +82,7 @@ public class JSW_CameraControllTest : MonoBehaviour
         }
         else if (cameraPos == "Album")
         {
-            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, AlbumPos.position + Vector3.right, Time.deltaTime * 5);
+            mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, AlbumPos.position + Vector3.forward * -1, Time.deltaTime * 5);
             mainCam_Object.transform.forward = AlbumPos.position - mainCam_Object.transform.position;
         }
         else if (cameraPos == "3D")

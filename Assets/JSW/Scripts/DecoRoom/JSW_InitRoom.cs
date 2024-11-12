@@ -21,15 +21,7 @@ public class JSW_InitRoom : MonoBehaviourPun
     private void Start()
     {
         DRM = GetComponent<JSW_DecorateRoomManager>();
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            GetRoomStatus();
-        }
-        else
-        {
-            //GetRoomStatus();
-        }
+        GetRoomStatus();
         GetShopStatus();
     }
 
@@ -62,17 +54,16 @@ public class JSW_InitRoom : MonoBehaviourPun
                 Debug.Log("Furniture Count: " + roomStatus.data.furnitureLayouts.Length);
 
 
-
-                foreach (FurnitureLayout layout in roomStatus.data.furnitureLayouts)
+                if (PhotonNetwork.IsMasterClient)
                 {
-                    InitSetFuniture(layout.furnitureLayoutId, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, layout.width, layout.height);
+                    foreach (FurnitureLayout layout in roomStatus.data.furnitureLayouts)
+                    {
+                        InitSetFuniture(layout.furnitureLayoutId, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, layout.width, layout.height);
+                    }
                 }
 
                 DMM.floorNum = roomStatus.data.floor.floorNumber-1;
                 DMM.wallNum = roomStatus.data.wallpaper.wallpaperNumber-1;
-
-
-
                 print("처음인데 잘 나왔어요!!!!!!!");
 
             }

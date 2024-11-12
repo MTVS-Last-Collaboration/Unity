@@ -11,7 +11,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using static UnityEditor.PlayerSettings;
 
 public class JSW_ChatManager : MonoBehaviourPun, IOnEventCallback
 {

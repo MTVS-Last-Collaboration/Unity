@@ -612,25 +612,33 @@ public class JSW_DecorateRoomManager : MonoBehaviour
 
     IEnumerator PlayerDecorate()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
 
-        // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
-
-        foreach (GameObject obj in allObjects)
+        while (true)
         {
-            // PhotonView 컴포넌트가 있는지 확인
-            PhotonView photonView = obj.GetComponent<PhotonView>();
+            print("PlayerDecorate Finding");
+            // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
-            // PhotonView가 있고, isMine이 true인 경우
-            if (photonView != null && photonView.IsMine)
+            foreach (GameObject obj in allObjects)
             {
-                playerDecorate = obj.GetComponent<JSW_PlayerDecorate>();
-                //print("내 포톤뷰 찾았다.");
+                // PhotonView 컴포넌트가 있는지 확인
+                PhotonView photonView = obj.GetComponent<PhotonView>();
+
+                // PhotonView가 있고, isMine이 true인 경우
+                if (photonView != null && photonView.IsMine && obj.name.Contains("JSW_Player"))
+                {
+                    playerDecorate = obj.GetComponent<JSW_PlayerDecorate>();
+                    //print("내 포톤뷰 찾았다.");
+                    break;
+                }
+            }
+            if (playerDecorate != null)
+            {
                 break;
             }
+            yield return new WaitForSeconds(0.5f);
         }
     }
-
 }
 

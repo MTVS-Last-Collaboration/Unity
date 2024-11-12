@@ -142,6 +142,7 @@ public class JSW_UIManager : MonoBehaviour
 
     IEnumerator OnClickAlbum_Loading_Back()
     {
+        yield return new WaitForSeconds(3f);
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_To3D);
         float time = 0;
         while (true)
@@ -159,7 +160,7 @@ public class JSW_UIManager : MonoBehaviour
         Album_Loading.GetComponent<CanvasGroup>().alpha = 1f;
         Album_Loading.SetActive(false);
         album_UI.SetActive(true);
-        easingUI(Album2, 1f);
+        //easingUI(Album2, 1f);
     }
 
     //public void OnClickAlbum_Loading_Back()

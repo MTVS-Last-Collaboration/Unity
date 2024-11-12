@@ -122,7 +122,7 @@ public class JSW_CalenderManager : MonoBehaviourPun
         scheduleManager.ResetSchedule(dayString);
 
         DateTime ScheduleDate = new DateTime(nowYear, nowMonth, nowDay);
-        scheduleManager.scheduleNowDay.text = ScheduleDate.ToString("MM岿 dd老 dddd");
+        scheduleManager.scheduleNowDay.text = ScheduleDate.ToString("MM 岿 dd 老 dddd");
 
         changeNowRightCalender();
     }
@@ -271,7 +271,7 @@ public class JSW_CalenderManager : MonoBehaviourPun
         string dayString = "" + nowYear.ToString() + nowMonth.ToString("D2") + nowDay.ToString("D2");
         scheduleManager.ResetSchedule(dayString);
         DateTime ScheduleDate = new DateTime(nowYear, nowMonth, nowDay);
-        scheduleManager.scheduleNowDay.text = ScheduleDate.ToString("MM岿 dd老 dddd");
+        scheduleManager.scheduleNowDay.text = ScheduleDate.ToString("MM 岿 dd 老 dddd");
         changeNowRightCalender();
     }
 
@@ -295,7 +295,7 @@ public class JSW_CalenderManager : MonoBehaviourPun
     {
         int k = 0;
         int nowDayEnd = nowDay + (int)GetDayFirstWeek(nowYear, nowMonth) - 1;
-        rightCalenderTitle.text = (((nowDayEnd) /7 + 1).ToString() + "Weeks");
+        rightCalenderTitle.text = (((nowDayEnd) /7 + 1).ToString() + " Weeks");
         
         for (int i = nowDayEnd - nowDayEnd % 7;i < nowDayEnd - nowDayEnd % 7 + 7;i++)
         {
