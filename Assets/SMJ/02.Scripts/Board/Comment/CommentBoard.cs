@@ -20,9 +20,16 @@ public class ServerCommentData
     public string content;
     public string authorNickname;
     public int likeCount;
-    public string createdDate;
-}
+    [SerializeField]
+    private string createDate;   // JSON 필드명과 정확히 일치시키기
 
+    // 프로퍼티를 통해 createdDate로 접근
+    public string createdDate
+    {
+        get { return createDate; }
+        set { createDate = value; }
+    }
+}
 [System.Serializable]
 public class ServerCommentResponse
 {
@@ -136,7 +143,10 @@ public class CommentBoard : MonoBehaviour
 
     private IEnumerator LoadCommentsCoroutine()
     {
-        yield return NetworkManager.Instance.GetArray<ServerCommentData>($"api/topic/{answerId}/comments",
+        string url = $"api/topic/{answerId}/comments";
+        Debug.Log($"Loading comments from URL: {url}");
+
+        yield return NetworkManager.Instance.GetArray<ServerCommentData>(url,
             (success, commentList) =>
             {
                 if (!gameObject.activeInHierarchy) return;
@@ -145,6 +155,21 @@ public class CommentBoard : MonoBehaviour
                 {
                     try
                     {
+                        // 서버 응답 전체를 JSON으로 출력
+                        var rawResponse = JsonUtility.ToJson(commentList);
+                        Debug.Log($"Raw server response: {rawResponse}");
+
+                        if (commentList.Count > 0)
+                        {
+                            var firstComment = commentList[0];
+                            Debug.Log($"First comment details - id: {firstComment.id}, " +
+                                    $"answerId: {firstComment.answerId}, " +
+                                    $"content: {firstComment.content}, " +
+                                    $"nickname: {firstComment.authorNickname}, " +
+                                    $"date: {firstComment.createdDate}, " +
+                                    $"likes: {firstComment.likeCount}");
+                        }
+
                         comments.Clear();
                         foreach (var serverComment in commentList)
                         {
@@ -158,25 +183,31 @@ public class CommentBoard : MonoBehaviour
                     }
                     catch (Exception e)
                     {
-                        Debug.LogError($"Error processing comments: {e.Message}");
+                        Debug.LogError($"Error processing comments: {e.Message}\nStackTrace: {e.StackTrace}");
                     }
+                }
+                else
+                {
+                    Debug.LogError($"Failed to load comments. Success: {success}, CommentList null: {commentList == null}");
                 }
             });
     }
 
     public void AddComment(ServerCommentData serverComment)
     {
+        // 서버에서 받은 데이터 로깅
+        Debug.Log($"서버 댓글 raw 데이터 - id: {serverComment.id}, nickname: {serverComment.authorNickname}, content: {serverComment.content}, date: {serverComment.createdDate}, likes: {serverComment.likeCount}");
+
         var comment = new CommentData(
             serverComment.id,
             serverComment.authorNickname,
             serverComment.content,
+            serverComment.createdDate,
             serverComment.likeCount
         );
 
-        if (DateTime.TryParse(serverComment.createdDate, out DateTime date))
-        {
-            comment.createDate = date;
-        }
+        // 생성된 CommentData 객체 로깅
+        Debug.Log($"생성된 CommentData - id: {comment.id}, nickname: {comment.nickName}, content: {comment.content}, date: {comment.createdDate}, likes: {comment.likeCount}");
 
         comments.Add(comment);
     }

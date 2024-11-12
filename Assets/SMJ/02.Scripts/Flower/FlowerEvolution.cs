@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlowerEvolution : MonoBehaviourPun
 {
@@ -10,6 +11,9 @@ public class FlowerEvolution : MonoBehaviourPun
     [SerializeField] private const int budEvolCount = 1; //10
     [SerializeField] private const int blossomEvolCount = 1; //30
     private GoodsManager goodsManager;
+
+    [SerializeField] private Image flowerImage;
+    [SerializeField] private Sprite[] flowerSprite;
 
     private void Start()
     {
@@ -37,12 +41,15 @@ public class FlowerEvolution : MonoBehaviourPun
         switch (state)
         {
             case Flower.States.SPROUT:
+                flowerImage.sprite = flowerSprite[0];
                 flowers[0].SetActive(true);
                 break;
             case Flower.States.BUD:
+                flowerImage.sprite = flowerSprite[1];
                 flowers[1].SetActive(true);
                 break;
             case Flower.States.BLOSSOM:
+                flowerImage.sprite = flowerSprite[2];
                 flowers[2].SetActive(true);
                 break;
         }

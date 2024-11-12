@@ -6,28 +6,22 @@ using UnityEngine;
 [System.Serializable]
 public class CommentData
 {
-    public int answerId;
+    public int id;
     public string nickName;
     public string content;
-    public DateTime createDate;
-    public int likeCount;        // UI에 표시될 전체 좋아요
+    public string createdDate;
+    public int likeCount;
+    public int answerId;
 
-    public CommentData(int answerId, string nickName, string content, int likeCount)
+    public CommentData(int id, string nickName, string content, string createdDate, int likeCount)
     {
-        this.answerId = answerId;
+        this.id = id;
         this.nickName = nickName;
         this.content = content;
-        this.createDate = DateTime.Now;
+        this.createdDate = createdDate;  // 날짜 파싱하지 말고 그대로 전달
         this.likeCount = likeCount;
     }
 
-    public void AddLike()
-    {
-        likeCount++;
-    }
-
-    public void SubLike()
-    {
-        likeCount--;
-    }
+    public void AddLike() => likeCount++;
+    public void SubLike() => likeCount--;
 }

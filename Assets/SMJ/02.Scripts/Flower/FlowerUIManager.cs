@@ -500,11 +500,20 @@ public class FlowerUIManager : MonoBehaviourPun
         }
     }
 
+    public void OffPanel()
+    {
+        for (int i = 1; i < recordButtons.Length; i++)
+        {
+            recordButtons[i].SetActive(false);
+        }
+    }
+
     public void OnRecordingButtonClick(float second)
     {
         //if (!click.checkID.IsMine(flower)) return;
 
         exitButton.SetActive(false);
+        OffPanel();
         recordButtons[1].SetActive(true);
         recordingCor = StartCoroutine(RecordingVoice(second));
     }
@@ -513,6 +522,7 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         recorder.StartRecording();
         yield return new WaitForSeconds(second);
+        OffPanel();
         recordButtons[2].SetActive(true);
     }
     public void SubmitRecord()
@@ -521,6 +531,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
         if (testRecord == true)
         {
+            OffPanel();
             recordButtons[2].SetActive(false);
             recordButtons[4].SetActive(true);
 
@@ -536,12 +547,14 @@ public class FlowerUIManager : MonoBehaviourPun
             recordCount++;
             if (recordCount < 3)
             {
+                OffPanel();
                 recordButtons[2].SetActive(false);
                 recordButtons[3].SetActive(true);
                 //photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, isListenComplete);
             }
             else
             {
+                OffPanel();
                 recordButtons[2].SetActive(false);
                 recordButtons[5].SetActive(true);
                 recordCount = 0;
@@ -726,20 +739,14 @@ public class FlowerUIManager : MonoBehaviourPun
         ShowFlowerInfo(flower, 3);
         //SwapButtonUI(3);
         UpdateUI(flower);
-        for (int i = 1; i < recordButtons.Length; i++)
-        {
-            recordButtons[i].SetActive(false);
-        }
+        OffPanel();
     }
 
     public void OnReRecordingClick()
     {
         if (!click.checkID.IsMine(flower)) return;
 
-        for (int i = 1; i < recordButtons.Length; i++)
-        {
-            recordButtons[i].SetActive(false);
-        }
+        OffPanel();
     }
 
     public void OnStopRecordingButtonClick()
@@ -749,6 +756,7 @@ public class FlowerUIManager : MonoBehaviourPun
         StopCoroutine(recordingCor);
         recorder.StopRecording();
         exitButton.SetActive(true);
+        OffPanel();
         recordButtons[2].SetActive(true);
     }
 
