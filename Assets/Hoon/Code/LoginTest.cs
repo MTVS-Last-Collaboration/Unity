@@ -54,6 +54,8 @@ public class LoginTest : MonoBehaviour
     public GameObject coupleMenu;
     public GameObject coupleMenu2to1;
     public GameObject coupleMenu3;
+    public HoonSoundManagerLogin hoonSoundManagerLogin;
+       
     public class UserInfo
     {
         public string email;
@@ -173,8 +175,10 @@ public class LoginTest : MonoBehaviour
 
     }
 
-    public void CheckLoginUserInfo()
+    public void CheckLoginUserInfo() //SeverLogin
     {
+        hoonSoundManagerLogin.PlaySound(0);
+
         UserInfo userInfo = new UserInfo();
         {
             userInfo.email = input_Id.text;
@@ -534,6 +538,7 @@ public class LoginTest : MonoBehaviour
 
     public void Login()
     {
+        hoonSoundManagerLogin.PlaySound(0);
         print("로그인완료, 로비생성하기");
         //SceneManager.LoadScene("");
         connectionManager.StartLobby();

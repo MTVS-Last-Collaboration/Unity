@@ -15,6 +15,7 @@ using Image = UnityEngine.UI.Image;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using System.Net.NetworkInformation;
+using UnityEditor;
 /*using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.LookDev;
@@ -153,6 +154,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public string partner1Mood;
     public string partner2Mood;
 
+    //imgMoodChoiceBlackBg
+    GameObject imgMoodChoiceBlackBg;
+    public HoonSoundManagerLogin hoonSoundManagerLogin;
+
     void Start()
     {
         StartCoroutine(FindPlayer());
@@ -203,9 +208,19 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             mail_IconImage.gameObject.SetActive(false);
         }
 
-        if (mail_ImageObject != null)
+        if (mail_ImageObject != null) //mailUIObject false
         {
-            //mail_ImageObject.SetActive(false); //������Ʈ�� ����.
+            imgMoodChoiceBlackBg = GameObject.Find("Img_MoodChoiceBlackBG");
+            if (imgMoodChoiceBlackBg != null)
+            {
+                imgMoodChoiceBlackBg.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("myobject" + imgMoodChoiceBlackBg);
+            }
+
+            mail_ImageObject.SetActive(false); //offImgMailUIObject
         }
 
         tmp_InputFieldObject.SetActive(false); //��ǲ�ʵ� ������Ʈ ����.
@@ -220,7 +235,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         moodChoice2Object.SetActive(false); //2�����̽�����
         historyBGObject.SetActive(false); //지난답변보기 오브젝트
 
-
+       
 
 
     }
@@ -323,6 +338,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 print("MissionComplite");
                 if(userNumber == "user1")
                 {
+                    print("userNumber" + userNumber);
                     ChangeMoodImage(partner1Mood);
                     Image img2 = moodSwitch2.GetComponent<Image>();
                     if (partner2Mood == "null")
@@ -349,8 +365,29 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 }
                 else
                 {
-                    
-
+                    print("userNumber" + userNumber);
+                    ChangeMoodImage(partner2Mood);
+                    Image img1 = moodSwitch1.GetComponent<Image>();
+                    if (partner1Mood == "null")
+                    {
+                        img1.sprite = moodSprites[0];
+                        textMyMood = "null";
+                    }
+                    else if (partner1Mood == "Good")
+                    {
+                        img1.sprite = moodSprites[1];
+                        textMyMood = "Good";
+                    }
+                    else if (partner1Mood == "Normal")
+                    {
+                        img1.sprite = moodSprites[2];
+                        textMyMood = "Normal";
+                    }
+                    else if (partner1Mood == "Bad")
+                    {
+                        img1.sprite = moodSprites[3];
+                        textMyMood = "Bad";
+                    }
 
 
                 }
@@ -684,7 +721,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void ViewHistoryScrollview()
     {
-
+        hoonSoundManagerLogin.PlaySound(0);
         if (!isHistoryScrollview)
         {
             historyBGObject.SetActive(true);
@@ -1315,6 +1352,15 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (!isButtonSaveComentSever)
         {
+            if(userNumber =="user1")
+            {
+                TouchMoodSwitchButton(1);
+            }
+            else
+            {
+                TouchMoodSwitchButton(2);
+            }
+
             btnText_MailServerComent.text = "저장하기"; //btn text change save
             tmp_InputFieldObject.SetActive(true); //Active inputField
             isButtonSaveComentSever = !isButtonSaveComentSever; //chage true
@@ -1738,6 +1784,16 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void CloseMailUI(GameObject obj)//������Ʈ �ݱ�
     {
         obj.SetActive(false);
+        if (obj.name == "Img_MoodChoice1")
+        {
+            imgMoodChoiceBlackBg.SetActive(false);
+        }
+
+        if (obj.name == "Img_MoodChoice2")
+        {
+            imgMoodChoiceBlackBg.SetActive(false);
+
+        }
     }
 
     public void WithInRangeViewMailImageControll()
@@ -1756,9 +1812,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void TouchMoodSwitchButton(int switchNum)
     {
+        
         if (switchNum == 1 && userNumber == "user1")
         {
-
+            imgMoodChoiceBlackBg.SetActive(true);
             isMoodSwihtch1 = !isMoodSwihtch1;
             OpenMailUI(moodChoice1Object);
             print("maleMoodSwitch");
@@ -1769,6 +1826,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else if (switchNum == 2 && userNumber == "user2")
         {
+            imgMoodChoiceBlackBg.SetActive(true);
             isMoodSwihtch2 = !isMoodSwihtch2;
             OpenMailUI(moodChoice2Object);
             print("femaleMoodSwitch");
@@ -1820,6 +1878,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
+
             print("checkUserNumber" + userNumber);
             //��й迭���ִ¸�� �׸��� �����ϰ� ����.
             for (int i = 1; i < moodChoice2ButtonImageList.Count; i++)
@@ -1831,20 +1890,20 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             if (mood == "Good")
             {
                 textMyMood = "Good";
-                textMyMood = "Normal";
                 img2.sprite = moodSprites[1];
-                moodChoice1ButtonImageList[1].color = new Color(1, 1, 1, 1);
+                moodChoice2ButtonImageList[1].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Normal")
             {
+                textMyMood = "Normal";
                 img2.sprite = moodSprites[2];
-                moodChoice1ButtonImageList[2].color = new Color(1, 1, 1, 1);
+                moodChoice2ButtonImageList[2].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Bad")
             {
                 textMyMood = "Bad";
                 img2.sprite = moodSprites[3];
-                moodChoice1ButtonImageList[3].color = new Color(1, 1, 1, 1);
+                moodChoice2ButtonImageList[3].color = new Color(1, 1, 1, 1);
 
             }
             
@@ -2022,6 +2081,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         GetCheckMission();
         //CheckHistoty();
         NewCheckHistory();
+       
+       
     }
 
     private void SaveStringAsJson(string data) // ���ڿ��� JSON �������� ���� ��ο� �����ϴ� �޼���
