@@ -275,6 +275,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void TodayMissonGetServer()//�������� ���� �̼��� ��������.
     {
+        hoonSoundManagerLogin.PlaySound(0); //buttonSound
         StartCoroutine(GetTodayMission());
         
     }
@@ -425,7 +426,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user1coment
                     if (jsonObj["partner1Answer"].ToString() == "null")
                     {
-                        Coment1.GetComponent<TextMeshProUGUI>().text = "작성하기를 눌러 답변을 작성하고 저장해보세요.";
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "작성하기를 눌러 답변을 작성하고 제출해보세요.";
                     }
                     else
                     {
@@ -724,6 +725,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         hoonSoundManagerLogin.PlaySound(0);
         if (!isHistoryScrollview)
         {
+            hoonSoundManagerLogin.PlaySound(0); //buttonSound
             imgMoodChoiceBlackBg.SetActive(true);
             historyBGObject.SetActive(true);
             historyScrollview.gameObject.SetActive(true);
@@ -731,6 +733,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
+            hoonSoundManagerLogin.PlaySound(1);//buttonSound
             imgMoodChoiceBlackBg.SetActive(false);
             historyBGObject.SetActive(false);
             historyScrollview.gameObject.SetActive(false);
@@ -1354,7 +1357,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (!isButtonSaveComentSever)
         {
-            if(userNumber =="user1")
+            hoonSoundManagerLogin.PlaySound(0);
+            if (userNumber =="user1")
             {
                 TouchMoodSwitchButton(1);
             }
@@ -1363,7 +1367,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 TouchMoodSwitchButton(2);
             }
 
-            btnText_MailServerComent.text = "저장하기"; //btn text change save
+            btnText_MailServerComent.text = "제출하기"; //btn text change save
             tmp_InputFieldObject.SetActive(true); //Active inputField
             isButtonSaveComentSever = !isButtonSaveComentSever; //chage true
             //print("isButtonSaveComentSever" + isButtonSaveComentSever);
@@ -1372,7 +1376,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else
         {
             //string coment1 = tmp_InputFieldObject.GetComponent<TextMeshPro>().text;
-
+            hoonSoundManagerLogin.PlaySound(1);
             if (userNumber == "user1")
             {
                 /* if(Coment1 != null)
@@ -1783,9 +1787,13 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         obj.SetActive(true);
     }
 
-    public void CloseMailUI(GameObject obj)//������Ʈ �ݱ�
+    public void CloseMailUI(GameObject obj)//closeMailUIObject
     {
         obj.SetActive(false);
+       
+        hoonSoundManagerLogin.PlaySound(1); //buttonSound
+        isMailImage = !isMailImage; // mailRangeReset
+
         if (obj.name == "Img_MoodChoice1")
         {
             imgMoodChoiceBlackBg.SetActive(false);
@@ -1804,10 +1812,13 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (!isMailImage)
         {
+            
+            hoonSoundManagerLogin.PlaySound(1); //buttonSound
             mail_ImageObject.SetActive(false);
         }
         else
         {
+            hoonSoundManagerLogin.PlaySound(0); //buttonSound
             mail_ImageObject.SetActive(true);
         }
     }
@@ -1817,6 +1828,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         
         if (switchNum == 1 && userNumber == "user1")
         {
+            hoonSoundManagerLogin.PlaySound(0); //buttonSound
             imgMoodChoiceBlackBg.SetActive(true);
             isMoodSwihtch1 = !isMoodSwihtch1;
             OpenMailUI(moodChoice1Object);
@@ -1828,11 +1840,16 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else if (switchNum == 2 && userNumber == "user2")
         {
+            hoonSoundManagerLogin.PlaySound(0); //buttonSound
             imgMoodChoiceBlackBg.SetActive(true);
             isMoodSwihtch2 = !isMoodSwihtch2;
             OpenMailUI(moodChoice2Object);
             print("femaleMoodSwitch");
             moodSwitch2.GetComponent<Image>().color = Color.white; //chage switch color
+        }
+        else
+        {
+            hoonSoundManagerLogin.PlaySound(1); //buttonSound
         }
 
     }
@@ -1844,7 +1861,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         //print("switch image cashing");
 
-        
+        hoonSoundManagerLogin.PlaySound(0); //buttonSound
         if (userNumber == "user1")
         {
             print("checkUserNumber" + userNumber);
@@ -2001,11 +2018,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }*/
     
     }//함수끝
-
-
-
-
-
 
     IEnumerator FindPlayer()//playerFind afterSpawn
     {
