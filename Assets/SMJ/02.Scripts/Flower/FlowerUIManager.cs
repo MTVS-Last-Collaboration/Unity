@@ -95,14 +95,17 @@ public class FlowerUIManager : MonoBehaviourPun
         string statusMsg = "";
         switch (state)
         {
+            case Flower.States.SEED:
+                statusMsg = "상태: 작은 씨앗";
+                break;
             case Flower.States.SPROUT:
-                statusMsg = "상태: 자라나는 중...";
+                statusMsg = "상태: 아기 새싹";
                 break;
             case Flower.States.BUD:
-                statusMsg = "상태: 피기 직전.";
+                statusMsg = "상태: 꽃봉오리";
                 break;
             case Flower.States.BLOSSOM:
-                statusMsg = "상태: 활짝 피었어요!";
+                statusMsg = "상태: 만개한 꽃";
                 break;
         }
         statusText.text = statusMsg;

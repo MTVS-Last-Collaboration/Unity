@@ -131,8 +131,8 @@ public class PostItem : MonoBehaviour
             nickNameText.text = data.nickName;
             titleText.text = data.title;
             contentText.text = data.content;
-            dateText.text = data.createDate.ToString("yyyy-MM-dd HH:mm");
-            date = data.createDate.ToString("MM/dd HH:mm");
+            dateText.text = data.createdDate;
+            date = data.createdDate;
             UpdateLikeUI();
         }
     }

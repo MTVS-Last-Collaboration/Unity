@@ -62,7 +62,7 @@ public class WritePanel : MonoBehaviour
         string nickName = LoginInfoManager.instance.nickName;
 
         // 게시판에 글 추가
-        board.CreatePost(board.lastId + 1, nickName, titleInput.text, contentInput.text, 0);
+        board.CreatePost(board.lastId + 1, nickName, titleInput.text, contentInput.text, DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 0);
 
         CreatePostAnswer(PlayerPrefs.GetInt("dailyTopicId"), titleInput.text, contentInput.text);
         Hide();

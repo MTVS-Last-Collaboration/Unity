@@ -109,56 +109,42 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    [Serializable]
+    [System.Serializable]
     private class ArrayWrapper<T>
     {
-        public List<T> Items;
+        public List<T> Items = new List<T>();
     }
 
-    public IEnumerator GetArray<T>(string endpoint, Action<bool, List<T>> callback = null)
+    public IEnumerator GetArray<T>(string endpoint, Action<bool, List<T>> callback = null) where T : class
     {
         string url = $"{baseUrl}/{endpoint}";
         Debug.Log($"Making GET request to: {url}");
-
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             AddHeaders(request);
-            Debug.Log("Request headers added");
-
             yield return request.SendWebRequest();
-            Debug.Log($"Request completed with result: {request.result}");
-            Debug.Log($"Response code: {request.responseCode}");
-            Debug.Log($"Response text: {request.downloadHandler.text}");
 
             if (request.result == UnityWebRequest.Result.Success)
             {
                 try
                 {
                     string jsonArray = request.downloadHandler.text;
-                    string wrappedJson = $"{{\"Items\":{jsonArray}}}";
+                    Debug.Log($"Raw JSON response: {jsonArray}");
 
-                    ArrayWrapper<T> wrapper = JsonUtility.FromJson<ArrayWrapper<T>>(wrappedJson);
-                    Debug.Log($"JSON parsed successfully: {wrapper.Items.Count} items");
-                    callback?.Invoke(true, wrapper.Items);
+                    // 배열을 직접 파싱
+                    List<T> items = JsonUtility.FromJson<ArrayWrapper<T>>($"{{\"Items\":{jsonArray}}}").Items;
+                    callback?.Invoke(true, items);
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"JSON parsing failed: {e.Message}");
+                    Debug.LogError($"JSON parsing failed: {e.Message}\nStack trace: {e.StackTrace}");
                     callback?.Invoke(false, null);
                 }
             }
             else
             {
-                if (request.responseCode == 404)
-                {
-                    Debug.Log("Resource not found (404)");
-                    callback?.Invoke(true, new List<T>()); // 404인 경우 빈 리스트 반환
-                }
-                else
-                {
-                    Debug.LogError($"Request failed: {request.error}");
-                    callback?.Invoke(false, null);
-                }
+                Debug.LogError($"Request failed: {request.error}");
+                callback?.Invoke(false, null);
             }
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using Unity.VisualScripting;
+using System.Globalization;
 
 [System.Serializable]
 public class TopicAnswer
@@ -13,9 +14,54 @@ public class TopicAnswer
     public string title;
     public string content;
     public string authorNickname;
-    public int likeCount;
     public string createdDate;
+    public int likeCount;
+
+    private DateTime? _parsedDate;
+    public DateTime CreatedDateTime
+    {
+        get
+        {
+            if (!_parsedDate.HasValue && !string.IsNullOrEmpty(createdDate))
+            {
+                try
+                {
+                    // ISO 8601 형식의 날짜 문자열을 DateTime으로 파싱
+                    _parsedDate = DateTime.Parse(createdDate, null, DateTimeStyles.RoundtripKind);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Date parsing failed for {createdDate}: {e.Message}");
+                    _parsedDate = DateTime.MinValue;
+                }
+            }
+            return _parsedDate ?? DateTime.MinValue;
+        }
+    }
+
+    // 직렬화된 JSON에서 날짜를 올바르게 처리하기 위한 메서드
+    public static TopicAnswer CreateFromJson(string json)
+    {
+        try
+        {
+            var answer = JsonUtility.FromJson<TopicAnswer>(json);
+            // 직렬화 직후 날짜 파싱을 시도하여 유효성 검증
+            var dateTime = answer.CreatedDateTime;
+            return answer;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to create TopicAnswer from JSON: {e.Message}");
+            return null;
+        }
+    }
+
+    public string GetFormattedDate(string format = "MM/dd")
+    {
+        return CreatedDateTime.ToString(format);
+    }
 }
+
 [Serializable]
 public class TopicAnswerResponse
 {
@@ -104,6 +150,12 @@ public class TopicManager : MonoBehaviour
         StartCoroutine(GetWeeklyTopics());
     }
 
+    [Serializable]
+    public class ArrayWrapper<T>
+    {
+        public List<T> Items;
+    }
+
     public void GetDailyTopic(string date, Action<bool> onComplete = null)
     {
         Debug.Log($"GetDailyTopic called with date: {date}");
@@ -147,9 +199,11 @@ public class TopicManager : MonoBehaviour
                     currentAnswers = result;
                     Debug.Log($"Successfully received {currentAnswers.Count} answers");
 
-                    // 각 답변의 댓글을 먼저 모두 로드
                     foreach (var answer in currentAnswers)
                     {
+                        Debug.Log($"Raw createdDate string: {answer.createdDate}");
+                        var dateTime = answer.createdDate;
+                        Debug.Log($"Answer ID: {answer.id}, Created Date: {dateTime:yyyy-MM-dd HH:mm:ss}");
                         await LoadCommentsForAnswer(answer);
                     }
 

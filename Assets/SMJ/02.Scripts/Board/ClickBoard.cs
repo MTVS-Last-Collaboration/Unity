@@ -9,9 +9,10 @@ public class ClickBoard : MonoBehaviour
     [SerializeField] private GameObject playerUIObject;
 
     private UIPopupAnimation uiPopup;
-
+    private HoonSoundManagerLogin sound;
     private void Start()
     {
+        sound = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonSoundManagerLogin>();
         playerUIObject = GameObject.Find("HoonLoobyCanvas");
         uiPopup = GetComponent<UIPopupAnimation>();
         uiPopup.SetTarget(boardUIObject.GetComponent<RectTransform>());
@@ -21,6 +22,7 @@ public class ClickBoard : MonoBehaviour
 
     public void HandleInteraction()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         playerUIObject.SetActive(false);
         boardUIObject.SetActive(true);
         boardPartition.SetActive(true);
