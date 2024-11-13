@@ -31,7 +31,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] private bool testRecord = false;
+    [SerializeField] public bool testRecord = false;
     [SerializeField] private GameObject hoonUI;
 
     private UIPopupAnimation uiPopup;
