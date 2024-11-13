@@ -119,25 +119,32 @@ public class JSW_ButtonInter : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     {
         yield return new WaitForSeconds(1.0f);
 
-        // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
-
-        foreach (GameObject obj in allObjects)
+        while (true)
         {
-            // PhotonView 컴포넌트가 있는지 확인
-            PhotonView photonView = obj.GetComponent<PhotonView>();
+            // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
-            // PhotonView가 있고, isMine이 true인 경우
-            if (photonView != null && photonView.IsMine)
+            foreach (GameObject obj in allObjects)
             {
-                // PlayerDecorate 컴포넌트를 가져옴
-                playerDecorate = obj.GetComponent<JSW_PlayerDecorate>();
-                //print("내 playerMoveControl 찾았다" + obj.name);
+                // PhotonView 컴포넌트가 있는지 확인
+                PhotonView photonView = obj.GetComponent<PhotonView>();
+
+                // PhotonView가 있고, isMine이 true인 경우
+                if (photonView != null && photonView.IsMine && obj.name.Contains("JSW_Player"))
+                {
+                    // PlayerDecorate 컴포넌트를 가져옴
+                    playerDecorate = obj.GetComponent<JSW_PlayerDecorate>();
+                    //print("내 playerMoveControl 찾았다" + obj.name);
+                    break;
+                }
+
+            }
+            if (playerDecorate != null)
+            {
                 break;
             }
-
+            yield return new WaitForSeconds(0.5f);
         }
-
         //playerMoveControl = GameObject.Find("PlayerWoman(Clone)").GetComponent<PlayerMoveTest>();
         //playerMoveControl = LobbyGameManager.instance.player.gameObject.GetComponent<PlayerMoveTest>();
     }
@@ -147,23 +154,31 @@ public class JSW_ButtonInter : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     {
         yield return new WaitForSeconds(1.0f);
 
-        // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
-
-        foreach (GameObject obj in allObjects)
+        while (true)
         {
-            // PhotonView 컴포넌트가 있는지 확인
-            PhotonView photonView = obj.GetComponent<PhotonView>();
 
-            // PhotonView가 있고, isMine이 true인 경우
-            if (photonView != null && photonView.IsMine)
+            // Hierarchy에 있는 모든 활성화된 오브젝트 탐색
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+            foreach (GameObject obj in allObjects)
             {
-                playerPhotonView = obj.GetComponent<PhotonView>();
-                //print("내 포톤뷰 찾았다.");
+                // PhotonView 컴포넌트가 있는지 확인
+                PhotonView photonView = obj.GetComponent<PhotonView>();
+
+                // PhotonView가 있고, isMine이 true인 경우
+                if (photonView != null && photonView.IsMine && obj.name.Contains("JSW_Player"))
+                {
+                    playerPhotonView = obj.GetComponent<PhotonView>();
+                    //print("내 포톤뷰 찾았다.");
+                    break;
+                }
+            }
+            if (playerPhotonView != null)
+            {
                 break;
             }
+            yield return new WaitForSeconds(0.5f);
         }
-
         //playerPhotonView = GameObject.Find("PlayerWoman(Clone)").GetComponent<PhotonView>();
         //playerPhotonView = LobbyGameManager.instance.player.gameObject.GetComponent<PhotonView>();
     }

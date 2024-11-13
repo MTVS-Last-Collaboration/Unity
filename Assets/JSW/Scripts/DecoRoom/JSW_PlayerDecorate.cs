@@ -132,7 +132,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         }
         else
         {
-            PhotonNetwork.Destroy(funitureOb);
+            if (funitureOb.GetComponent<PhotonView>().IsMine) PhotonNetwork.Destroy(funitureOb);
+            else Destroy(funitureOb);
         }
     }
 
