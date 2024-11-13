@@ -268,7 +268,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
         if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
         {
-            sound.PlaySound("hoonAudioClipArray", 1);
+            //sound.PlaySound("hoonAudioClipArray", 1);
             HandleInteraction();
         }
     }

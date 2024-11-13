@@ -50,8 +50,8 @@ public class HoonSoundManagerLogin : MonoBehaviour
 
         if (name == "smjAudioClopAttay")
         {
-            audioSource.clip = smjAudioClopAttay[idx];
-            audioSource.Play();
+            //audioSource.clip = smjAudioClopAttay[idx];
+            //audioSource.Play();
 
         }
 

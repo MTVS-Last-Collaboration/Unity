@@ -778,8 +778,9 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void OnListenVoiceButtonClick()
     {
-        if (click == null || click.checkID == null || flower == null) return;
+        //if (click == null || click.checkID == null || flower == null) return;
         //if (click.checkID.IsMine(flower)) return;
+        if (click == null || flower == null) return;
 
         SwapButtonUI(4);  // Àç»ý Áß UI
         recorder.PlayRecording();
