@@ -65,7 +65,7 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     private void Start()
     {
-        sound = GameObject.Find("HoonLobyCanvas").GetComponent<HoonSoundManagerLogin>();
+        sound = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
         sendOptions.Reliability = true; // 신뢰성 있는 전송
         sendOptions.Channel = 0; // 채널 설정
