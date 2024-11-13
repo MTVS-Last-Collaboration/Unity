@@ -724,12 +724,14 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         hoonSoundManagerLogin.PlaySound(0);
         if (!isHistoryScrollview)
         {
+            imgMoodChoiceBlackBg.SetActive(true);
             historyBGObject.SetActive(true);
             historyScrollview.gameObject.SetActive(true);
             isHistoryScrollview = true;
         }
         else
         {
+            imgMoodChoiceBlackBg.SetActive(false);
             historyBGObject.SetActive(false);
             historyScrollview.gameObject.SetActive(false);
             isHistoryScrollview = false;
