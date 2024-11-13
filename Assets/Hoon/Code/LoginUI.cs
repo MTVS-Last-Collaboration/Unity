@@ -33,7 +33,8 @@ public class LoginUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandle
     {
         
     }*/
-    /*public void OnPointerEnter(PointerEventData eventData)
+    /*
+     * public void OnPointerEnter(PointerEventData eventData)
     {
         //throw new System.NotImplementedException()
         imgStartButton.sprite = loginImageArray[1];
@@ -47,7 +48,9 @@ public class LoginUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandle
         imgStartButton.sprite = loginImageArray[0];
         print(00000);
 
-    }*/
+    }
+
+    */
 
 
 
