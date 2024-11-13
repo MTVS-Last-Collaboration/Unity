@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class HoonChoiceRoom : MonoBehaviour
 {
-    public GameObject roomChoiceMark; //
-    bool isViewChoiveMark = false;
-    // Start is called before the first frame update
+    public GameObject img_CreatingRoom;
+    public GameObject roomChoiceMark;
+    public bool isViewChoiveMark = false;
+    
+
+    
+
     void Start()
     {
+        img_CreatingRoom.SetActive(false);
         roomChoiceMark.SetActive(false); //closeRoomChoiceMark
     }
 
@@ -33,5 +38,11 @@ public class HoonChoiceRoom : MonoBehaviour
         }
 
     }
+
+    public void ViewCreatingUIControll()
+    {
+        img_CreatingRoom.SetActive(true);
+    }
+
 
 }
