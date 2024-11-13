@@ -183,7 +183,7 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     public void OnClickTest()
     {
-        if (!click.checkID.IsMine(flower)) return;
+        //if (!click.checkID.IsMine(flower)) return;
 
         if (testRecord == true)
         {
