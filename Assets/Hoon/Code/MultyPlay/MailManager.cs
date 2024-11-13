@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,9 +8,15 @@ using Newtonsoft.Json;
 using System.Collections;
 using Photon.Pun;
 using Photon.Realtime;
-//claabackÀÌº¥Æ®
+//claabackï¿½Ìºï¿½Æ®
 using ExitGames.Client.Photon;
-using System.Diagnostics.CodeAnalysis;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
+using UnityEngine.Networking;
+using Newtonsoft.Json.Linq;
+using System.Net.NetworkInformation;
+using UnityEditor;
+/*using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.LookDev;
 using System.Net.NetworkInformation;
@@ -18,9 +24,9 @@ using Newtonsoft.Json.Converters;
 using Photon.Pun.Demo.Cockpit;
 using System.Reflection;
 using System.Security.Cryptography;
-using UnityEngine.UIElements;
-using Button = UnityEngine.UI.Button;
-using Image = UnityEngine.UI.Image;
+using UnityEngine.UIElements;*/
+/*using System.Text;
+using static System.Net.WebRequestMethods;*/
 
 [System.Serializable]
 public class DayComentData
@@ -35,59 +41,76 @@ public class DayComentData
     public string user2coment;
 }
 
+[System.Serializable]
+public class SeverMailData
+{
+    public string missionNumber;
+    public int[] missionDate;
+    public string missionContent;
+    public string partner1Mood;
+    public string partner1Answer;
+    public string partner2Mood;
+    public string partner2Answer;
+    public string completed;
+
+}
+
+
 public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
-    public GameObject mail_IconObject; //¸ŞÀÏ¾ÆÀÌÄÜ¿ÀºêÁ§Æ®
-    public GameObject mail_ImageObject; //¸ŞÀÏ¹Ì¼ÇÀÌ¹ÌÁö
-    public Button touchButton; //ÅÍÄ¡¹öÆ°
-    public TextMeshProUGUI currentDay; //³¯Â¥Ç¥½Ã
-    public GameObject moodChoiceObject; //¿À´ÃÀÇ±âºĞ º¯°æ ¿ÀºêÁ§Æ®
-    //public Button moodSwitch; //¹öÆ°±âºĞº¯°æ
-    public Button moodSwitch1;
-    public Button moodSwitch2;
-    public Image moodChice1; // ±âºĞº¯°æ BG
-    public Image moodChice2;
-    public Button moodGood; // ¹öÆ° ±âºĞÁÁÀ½
-    public Button moodNormal; //¹öÆ° ±âºĞÁß°£
-    public Button moodBad; //¹öÆ° ±âºĞ³ª»İ
-    public Sprite[] moodSprites; //±âºĞÀÌ¹ÌÁö ¹è¿­
-    public GameObject tmp_InputFieldObject; //ÄÚ¸àÆ® ÀÎÇ²
-    public Button mailComentButton; //ÄÚ¸àÆ® ÀÎÇ² ¿­±â
-    public GameObject mailComentTestObject; //¸ŞÀÏÄÚ¸àÆ®
-    public GameObject dayMisiionObject;
-    public GameObject Coment1;
-    public GameObject Coment2;
-    public string startDate; //½ÃÀÛÀÏ ÁöÁ¤º¯¼ö
+    public GameObject mail_IconObject; // Img_MailIcon
+    public GameObject mail_ImageObject; //Img_MailBG
+    public Button touchButton; //Btn_TouchEnter
+    public TextMeshProUGUI currentDay; //Text_Day
+    public GameObject moodChoiceObject; //Img_MoodChoice2
+    public GameObject moodSwitch1; //Btn_MoodSwitch1
+    public GameObject moodSwitch2;  //Btn_MoodSwitch2
+    public GameObject moodChoice1Object; //Btn_MoodSwitch1
+    public GameObject moodChoice2Object; //Btn_MoodSwitch2
+    public Image moodChice1; //Img_MoodChoice1
+    public Image moodChice2; // Img_MoodChoice2
+    public Button moodGood; // Btn_Good
+    public Button moodNormal; //Btn_Normal
+    public Button moodBad; //Btn_Bad
+    public Sprite[] moodSprites;
+    public GameObject tmp_InputFieldObject; //Input_DayMission
+    public Button mailComentButton; //Btn_Mail_Coment
+    public GameObject mailComentTestObject; //Text_Mail_Coment
+    public GameObject dayMisiionObject; //Text_Mail_DayMission
+    public GameObject Coment1; //Text_Mail_DayComent1
+    public GameObject Coment2; //Text_Mail_DayComent2
+    TextMeshProUGUI mailComentText1; //
+    TextMeshProUGUI mailComentText2; //
+    public string startDate; //coupleAnivarsary
     public string userNumber;
 
     GameObject player1;
     GameObject player2;
     Image mail_IconImage;
-    bool isMailImage = false;
+    bool isMailImage = false; //
     bool isMoodSwihtch1 = false;
     bool isMoodSwihtch2 = false;
     bool isMailComentButton = false;
     TMP_InputField tmp_InputField;
     TextMeshProUGUI mailComentButtonText;
     bool isMailComentSave = false;
-    TextMeshProUGUI mailComentText1;
-    TextMeshProUGUI mailComentText2;
+
     bool isMailComent1 = false;
     bool isMainComent2 = false;
 
-    string currentDate; //¿À´Ã ³¯Â¥¸¦ ÀúÀåÇÒ º¯¼ö
-    string playerNickName; //´Ğ³×ÀÓ ÀúÀå º¯¼ö
+    string currentDate; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    string playerNickName; //ï¿½Ğ³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    List<DayComentData> loadDayComenList; //·ÎµåÇÑ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏ´Â ¸®½ºÆ®
-    string matchDayComentinfo; //¸®½ºÆ®¿¡¼­ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ¹®ÀÚ¿­
+    List<DayComentData> loadDayComenList; //ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+    string matchDayComentinfo; //ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½
 
     PlayerNicknameManager playerNicknameMgr1;
     PlayerNicknameManager playerNicknameMgr2;
 
-    // Æ÷ÅæÀ» ÅëÇØ¼­ ÀÌº¥Æ®·Ñ º¸³»ÀÚ.
-    // Æ÷Åæ¿¡¼­ ¹ŞÀ» ÀÌº¥Æ® ÄÚµå (¿¹: 100)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    // ï¿½ï¿½ï¿½æ¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½Úµï¿½ (ï¿½ï¿½: 100)
     private const byte DATA_SYNC_EVENT_CODE = 100;
-    // JSON ÆÄÀÏÀÌ ÀúÀåµÉ ·ÎÄÃ °æ·Î
+    // JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     public string jsonSyncPath;
     //public string jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
     public string jsonSyncString;
@@ -96,55 +119,82 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public GameObject moodButton1;
     public GameObject moodButton2;
-    public GameObject historyScrollview; //Ãß¾ïÇÏ±â¹öÆ°À¸·Î ½ºÅ©·Ñºä¸¦ Ä×´Ù ²°´ÙÇÏÀÚ.
-    bool isHistoryScrollview = false; // Ãß¾ï½ºÅ©·Ñºä°¡ º¸ÀÌ´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
-    public Transform historyContent; // Ãß¾ï¹öÆ°ÀÌ ÄÁÅÙÃ÷ÀÇ À§Ä¡
-    public GameObject historyButton; // Ãß¾ï¹öÆ°
-    
+    public GameObject historyScrollview; //ï¿½ß¾ï¿½ï¿½Ï±ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½Ñºä¸¦ ï¿½×´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    bool isHistoryScrollview = false; // ï¿½ß¾ï½ºÅ©ï¿½Ñºä°¡ ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Transform historyContent; // ï¿½ß¾ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
+    public GameObject historyButton; // ï¿½ß¾ï¿½ï¿½Æ°
+
     string moodText1;
     string moodText2;
 
-    List<DayComentData> histrotyList = new List<DayComentData>(); //È÷½ºÅä¸® ´ãÀ» ¸®½ºÆ®
-    List<Button>histroyButtonList = new List<Button>(); //¹öÆ°À» ´ãÀ» ¸®½ºÆ®
+    List<DayComentData> histrotyList = new List<DayComentData>(); //ï¿½ï¿½ï¿½ï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+    List<Button> histroyButtonList = new List<Button>(); //ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
+    public bool isServerComent = false;
+    public TextMeshProUGUI testSeverComentButton;
+
+    public List<Image> moodChoice1ButtonImageList;
+    public List<Image> moodChoice2ButtonImageList;
+    public GameObject historyBGObject; //ì§€ë‚œë‹µë³€ë³´ê¸° ì˜¤ë¸Œì íŠ¸
+
+    public TextMeshProUGUI btnText_MailServerComent; //button save coment server
+    bool isButtonSaveComentSever = false;
+
+    public string textMyMood;
+
+    //Histroty value
+    public TextMeshProUGUI text_HistoryDate;
+    public TextMeshProUGUI text_HistoryUser1NickName;
+    public TextMeshProUGUI text_HistoryUser2NickName;
+    public TextMeshProUGUI text_HistoryUser1Coment;
+    public TextMeshProUGUI text_HistoryUser2Coment;
+    public Image img_HistoryUser1Mood;
+    public Image img_HistoryUser2Mood;
+    //GetMoodServer
+    public string partner1Mood;
+    public string partner2Mood;
+
+    //imgMoodChoiceBlackBg
+    GameObject imgMoodChoiceBlackBg;
+    public HoonSoundManagerLogin hoonSoundManagerLogin;
 
     void Start()
     {
         StartCoroutine(FindPlayer());
 
         jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
-        if (File.Exists(jsonSyncPath))
+        if (System.IO.File.Exists(jsonSyncPath))
         {
-            print("jsonÆÄÀÏÀÖÀ½");
+            print("findLocalJsonFile");
         }
         else
         {
-            print("jsonÆÄÀÏ¾øÀ½");
+            print("jsonfile ì—†ìŒ,Create");
             CreateNewDayComentJsonArray();
 
         }
-        //PhotonNetwork.AddCallbackTarget(this);  // ÀÌº¥Æ® Äİ¹é µî·Ï
+        //PhotonNetwork.AddCallbackTarget(this);  // ï¿½Ìºï¿½Æ® ï¿½İ¹ï¿½ ï¿½ï¿½ï¿½
         //Debug.Log(Application.persistentDataPath);
         //DataPath.text = Application.persistentDataPath;
 
-        //¹İÈ¯°ªÀÌ int
+        //ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ int
 
-        string playerList = "Âü°¡ÇÑ ÇÃ·¹ÀÌ¾î " + PhotonNetwork.PlayerList.Length; //+ "\n" + // + "\n" +
+        string playerList = "playerCount" + PhotonNetwork.PlayerList.Length; //+ "\n" + // + "\n" +
         string roomName = "";
         string nickName = "";
 
         if (PhotonNetwork.CurrentRoom != null)
         {
-            roomName = "¹æÀÌ¸§ " + PhotonNetwork.CurrentRoom.Name;
+            roomName = "roomName" + PhotonNetwork.CurrentRoom.Name;
         }
         else
         {
-            roomName = "¹æÀÌ¸§¾øÀ½";
+            roomName = "Default";
         }
 
         if (PhotonNetwork.LocalPlayer.NickName != null)
         {
-            nickName = "´Ğ³×ÀÓ" + PhotonNetwork.LocalPlayer.NickName;
+            nickName = "myNickName" + PhotonNetwork.LocalPlayer.NickName;
         }
 
         DataPath.text = playerList + "\n" + roomName + "\n" + nickName;
@@ -153,346 +203,656 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (mail_IconObject != null)
         {
-            //print("¿ÀºêÁ§Æ® ÀÖÀ½");
+            //print("mail_IconObject ");
             mail_IconImage = mail_IconObject.GetComponent<Image>();
             mail_IconImage.gameObject.SetActive(false);
         }
 
-        if (mail_ImageObject != null)
+        if (mail_ImageObject != null) //mailUIObject false
         {
-            //mail_ImageObject.SetActive(false); //¿ÀºêÁ§Æ®¸¦ ²ôÀÚ.
+            imgMoodChoiceBlackBg = GameObject.Find("Img_MoodChoiceBlackBG");
+            if (imgMoodChoiceBlackBg != null)
+            {
+                imgMoodChoiceBlackBg.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("myobject" + imgMoodChoiceBlackBg);
+            }
+
+            mail_ImageObject.SetActive(false); //offImgMailUIObject
         }
 
-        tmp_InputFieldObject.SetActive(false); //ÀÎÇ²ÇÊµå ¿ÀºêÁ§Æ® ²ô±â.
-        mailComentButtonText = mailComentTestObject.GetComponent<TextMeshProUGUI>(); //¸ŞÀÏÄÚ¸àÆ®¹öÆ°ÅØ½ºÆ®
+        tmp_InputFieldObject.SetActive(false); //ï¿½ï¿½Ç²ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½.
+        mailComentButtonText = mailComentTestObject.GetComponent<TextMeshProUGUI>(); //ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Æ®ï¿½ï¿½Æ°ï¿½Ø½ï¿½Æ®
 
-
-        DataPath.gameObject.SetActive(false);//µ¥ÀÌÅ¸ ÅØ½ºÆ® ²ô±â
-        //È÷½ºÅä¸® ½ºÅ©·Ñºä ²ô±â
+        DataPath.gameObject.SetActive(false);//ï¿½ï¿½ï¿½ï¿½Å¸ ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ä¸® ï¿½ï¿½Å©ï¿½Ñºï¿½ ï¿½ï¿½ï¿½ï¿½
         historyScrollview.gameObject.SetActive(false);
 
+        //ï¿½ï¿½ï¿½Ï±ï¿½Ğ¼ï¿½ï¿½ï¿½UIï¿½ï¿½ï¿½ï¿½
+        moodChoice1Object.SetActive(false); //1ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½
+        moodChoice2Object.SetActive(false); //2ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½
+        historyBGObject.SetActive(false); //ì§€ë‚œë‹µë³€ë³´ê¸° ì˜¤ë¸Œì íŠ¸
+
+       
 
 
     }
-
 
     void Update()
     {
-        if (isMailImage)//¸ŞÀÏÄÁÅÙÃ÷BG
-        {
-            mail_ImageObject.SetActive(true);
-        }
-        else
-        {
-            mail_ImageObject.SetActive(false); //¸ŞÀÏ ÀÌ¹ÌÁö ¿ÀºêÁ§Æ® ²ô±â
-        }
+        /* if (isMailImage)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½BG
+         {
+             mail_ImageObject.SetActive(true);
 
-        if (isMoodSwihtch1)//°¨Á¤Ç¥Çö¹öÆ°1
-        {
-            moodChice1.gameObject.SetActive(true);
-        }
-        else
-        {
-            moodChice1.gameObject.SetActive(false);
-        }
+         }
+         else
+         {
+             mail_ImageObject.SetActive(false); //ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+             print("ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+         }*/
 
-        if (isMoodSwihtch2)//°¨Á¤Ç¥Çö¹öÆ°2
-        {
-            moodChice2.gameObject.SetActive(true);
-        }
-        else
-        {
-            moodChice2.gameObject.SetActive(false);
-        }
+        /* if (isMoodSwihtch1)//ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½Æ°1
+         {
+             moodChice1.gameObject.SetActive(true);
+         }
+         else
+         {
+             moodChice1.gameObject.SetActive(false);
+         }
 
-    }
-
-    public void HistroyView()
-    {
+         if (isMoodSwihtch2)//ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½Æ°2
+         {
+             moodChice2.gameObject.SetActive(true);
+         }
+         else
+         {
+             moodChice2.gameObject.SetActive(false);
+         }*/
 
     }
-    //int histroyButtonIndex = 0;
-    public void CheckHistoty()
-    {
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
-        if (File.Exists(path))//ÆÄÀÏÀÖ´Ï?
-        {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List·Î ÆÄ½ÌÇÏ±â
 
-            bool isCurrentDate = false;
-            foreach (var ComentData in loadDayComenList) 
+    public void TodayMissonGetServer()//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    {
+        StartCoroutine(GetTodayMission());
+        
+    }
+
+    IEnumerator GetTodayMission() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Get ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    {
+        string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //url 
+
+        UnityWebRequest request = UnityWebRequest.Get(urlTodayMission);
+        request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //get mytoken
+
+        yield return request.SendWebRequest(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)  //error
+        {
+
+            Debug.LogError("Error: " + request.error);
+            //error500
+
+        }
+        else //respose
+        {
+            string responseText = request.downloadHandler.text;
+            print("ì„œë²„ì— ë“±ë¡ëœ ì •ë³´: " + responseText); //ë­ëƒì´ê±° ì™œì´ëŸ¼?
+
+            //json Object convert, require token
+            JObject jsonObj = JObject.Parse(responseText); //jsonParse 
+            string missionNumber = jsonObj["missionNumber"].ToString(); //missionNumber
+            int[] missionDateArray = jsonObj["missionDate"].ToObject<int[]>(); //todayDate 
+            string missionContent = jsonObj["missionContent"].ToString();  // todayMission
+            Debug.Log("Mission Content: " + missionContent);// ë¯¸ì…˜ì„ ì¶œë ¥í•˜ì.
+
+            DateTime missionDate = new DateTime(missionDateArray[0], missionDateArray[1], missionDateArray[2]); //ChangeForm datetime
+
+            // ì›í•˜ëŠ” í˜•ì‹ì˜ ë¬¸ìì—´ë¡œ ë³€í™˜
+            string formattedDate = missionDate.ToString("yyyy-MM-dd");
+
+            string partner1Mood;
+            string partner1Answer;
+            string partner2Mood;
+            string partner2Answer;
+            string completed;
+
+            currentDay.text = "No:" + missionNumber + " " + formattedDate;  // +missionDate //numMisson 
+            dayMisiionObject.GetComponent<TextMeshProUGUI>().text = missionContent; //change dayMission text
+            partner1Mood = jsonObj["partner1Mood"].ToString();
+            partner1Answer = jsonObj["partner1Answer"].ToString();
+            partner2Mood = jsonObj["partner2Mood"].ToString();
+            partner2Answer = jsonObj["partner2Answer"].ToString();
+            completed = jsonObj["completed"].ToString();
+
+            print("partner1Mood" + partner1Mood);
+            print("partner1Answer" + partner1Answer);
+            print("partner2Mood" + partner2Mood);
+            print("partner2Answer" + partner2Answer);
+            print("completed" + completed);
+
+            // isComplete
+            if (completed =="True") //uppdercase true
             {
-                
-                //³¯Â¥°¡ ÀÏÄ¡
-                if (ComentData.date != null && ComentData.dateMission != null)
+                print("MissionComplite");
+                if(userNumber == "user1")
                 {
-                    histrotyList.Add(ComentData); //ºÒ·¯¿ÂÁ¤º¸ historyList ´ã±â
-
-                    string historyDate = ComentData.date; //³¯Â¥
-                    string historyDateMission = ComentData.dateMission; //¹Ì¼Ç
-
-                    // ¹öÆ° »ı¼º ¹× ¼³Á¤
-                    GameObject newButtonObj = Instantiate(historyButton, historyContent); // ÇÁ¸®ÆÕÀ» ContentÀÇ ÀÚ½ÄÀ¸·Î »ı¼º
-                    Button newButton = newButtonObj.GetComponent<Button>(); //»ı¼ºµÈ ¹öÆ°ÀÇ ÄÄÆ÷³ÍÆ® °¡Á®¿À±â  
-                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>(); // Button ÀÚ½ÄÄÄÆ÷³ÍÆ® TextMeshProUGUI °¡Á®¿À±â
-
-                    histroyButtonList.Add(newButton); //È÷½ºÅä¸® ¹öÆ° ¸®½ºÆ®¿¡ ½Å±Ô »ı¼ºÇÑ ¹öÆ°À» ´ã±â
-
-                    int buttonIndex = histroyButtonList.Count - 1; // °íÀ¯ ÀÎµ¦½º ¼³Á¤ (ÇöÀç ¸®½ºÆ®ÀÇ ¸¶Áö¸· ÀÎµ¦½º)
-
-                    // ¹öÆ° Å¬¸¯ ÀÌº¥Æ® ¼³Á¤
-                    newButton.onClick.AddListener(() =>
+                    print("userNumber" + userNumber);
+                    ChangeMoodImage(partner1Mood);
+                    Image img2 = moodSwitch2.GetComponent<Image>();
+                    if (partner2Mood == "null")
                     {
-                        newButton.GetComponent<MailHistoryManager>().buttonNumber = buttonIndex;
-                        Instantiate(histroyButtonList[buttonIndex], historyContent);
-
-                    });
-
-                    if (buttonText != null)
+                        img2.sprite = moodSprites[0];
+                        textMyMood = "null";
+                    }
+                    else if (partner2Mood == "Good")
                     {
-                        buttonText.text = "Day" + (histroyButtonList.Count) + ":" + historyDateMission + "\n" + historyDate; // ¹öÆ° ÅØ½ºÆ® ¼³Á¤
-                        
+                        img2.sprite = moodSprites[1];
+                        textMyMood = "Good";
+                    }
+                    else if (partner2Mood == "Normal")
+                    {
+                        img2.sprite = moodSprites[2];
+                        textMyMood = "Normal";
+                    }
+                    else if (partner2Mood == "Bad")
+                    {
+                        img2.sprite = moodSprites[3];
+                        textMyMood = "Bad";
+                    }
+
+                }
+                else
+                {
+                    print("userNumber" + userNumber);
+                    ChangeMoodImage(partner2Mood);
+                    Image img1 = moodSwitch1.GetComponent<Image>();
+                    if (partner1Mood == "null")
+                    {
+                        img1.sprite = moodSprites[0];
+                        textMyMood = "null";
+                    }
+                    else if (partner1Mood == "Good")
+                    {
+                        img1.sprite = moodSprites[1];
+                        textMyMood = "Good";
+                    }
+                    else if (partner1Mood == "Normal")
+                    {
+                        img1.sprite = moodSprites[2];
+                        textMyMood = "Normal";
+                    }
+                    else if (partner1Mood == "Bad")
+                    {
+                        img1.sprite = moodSprites[3];
+                        textMyMood = "Bad";
+                    }
+
+
+                }
+                
+                Coment1.GetComponent<TextMeshProUGUI>().text = jsonObj["partner1Answer"].ToString();
+                Coment2.GetComponent<TextMeshProUGUI>().text = jsonObj["partner2Answer"].ToString();
+                moodSwitch1.GetComponent<Image>().color = Color.white; //chage switch color
+                moodSwitch2.GetComponent<Image>().color = Color.white; //chage switch color
+            }
+            else
+            {
+                print("MissionInProgress");
+
+                if(userNumber == "user1") //user1
+                {
+                    // user1Mood
+                    if (partner1Mood == "null")
+                    {
+                        Debug.LogError("1111");
+                        partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood);
+                        print("partner1Mood" + partner1Mood);
+                        //moodSwitch1.GetComponent<Image>().color = Color.white;
+
+                    }
+                    else
+                    {
+                        Debug.LogError("2222");
+                        //partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood); //user1 showMyMood
+                        moodSwitch1.GetComponent<Image>().color = Color.white;
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+                    }
+                    // user1coment
+                    if (jsonObj["partner1Answer"].ToString() == "null")
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "ì‘ì„±í•˜ê¸°ë¥¼ ëˆŒëŸ¬ ë‹µë³€ì„ ì‘ì„±í•˜ê³  ì €ì¥í•´ë³´ì„¸ìš”.";
+                    }
+                    else
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = jsonObj["partner1Answer"].ToString(); //user1 showMyComent
+                    }
+
+                    // user2Mood
+                    if (jsonObj["partner2Mood"].ToString() == "null")
+                    {
+                        partner2Mood = "null";
+                    }
+                    else
+                    {
+                        partner2Mood = "null";
+                        ChangeMoodImage(partner2Mood);
+                        moodSwitch2.GetComponent<Image>().color = Color.white; // hideUser2Mood
+
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+
+                    }
+                    // user2coment.
+                    if (jsonObj["partner2Answer"].ToString() == "null")
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = "ì—°ì¸ì´ ë‹µë³€ì„ ê¸°ë‹¤ë¦¬ê³ ìˆìŠµë‹ˆë‹¤.";
+                    }
+                    else
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = "ì—°ì¸ì˜ ë‹µë³€ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤. ë‹µë°˜ì„ ì‘ì„±í•˜ê³  ì €ì¥í•˜ë©´ ê³µê°œë©ë‹ˆë‹¤."; //hideUser2Mood
+                    }
+                
+                }
+                else //user2
+                {
+                    // user1Mood
+                    if (partner1Mood == "null")
+                    {
+                        Debug.LogError("1111");
+                        partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood);
+                        print("partner1Mood" + partner1Mood);
+                        //moodSwitch1.GetComponent<Image>().color = Color.white;
+
+                    }
+                    else
+                    {
+                        Debug.LogError("2222");
+                        partner1Mood = "null";
+                        ChangeMoodImage(partner1Mood);
+                        moodSwitch1.GetComponent<Image>().color = Color.white; //hideUser1Mood
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+                    }
+                    // user1coment
+                    if (jsonObj["partner1Answer"].ToString() == "null")
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "ì•„ì§ ì—°ì¸ì˜ ë‹µë³€ì´ ì…ë ¥ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.";
+                    }
+                    else
+                    {
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "ì—°ì¸ì˜ ë‹µë³€ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤. ë‹µë°˜ì„ ì‘ì„±í•˜ê³  ì €ì¥í•˜ë©´ ê³µê°œë©ë‹ˆë‹¤.";  //hideUser1Coment
+                    }
+
+                    // user2Mood
+                    if (jsonObj["partner2Mood"].ToString() == "null")
+                    {
+                        partner2Mood = "null";
+                    }
+                    else
+                    {
+                        //partner2Mood = "null";
+                        ChangeMoodImage(partner2Mood);
+                        moodSwitch2.GetComponent<Image>().color = Color.white;
+                        //btn_moodswitch1.GetComponent<Image>.color = Color.white;//colorChange
+                        //Debug.LogError("ChangeMoodColor" + moodSwitch1.GetComponent<Image>().color.ToString());
+
+                    }
+                    // user2coment.
+                    if (jsonObj["partner2Answer"].ToString() == "null")
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = "ì‘ì„±í•˜ê¸°ë¥¼ ëˆŒëŸ¬ ë‹µë³€ì„ ì‘ì„±í•˜ê³  ì €ì¥í•´ë³´ì„¸ìš”.";
+                    }
+                    else
+                    {
+                        Coment2.GetComponent<TextMeshProUGUI>().text = jsonObj["partner2Answer"].ToString();  // showUser2coment
                     }
                 }
-               
+                
             }
 
         }
 
     }
 
-    public void ViewHistoryScrollview()
+    public void ViewComentInputField()//ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ ï¿½Ô·ï¿½ï¿½Êµå¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    {
+        string nickName;
+        if (LobbyGameManager.instance.playerNickName != null)
+        {
+            nickName = LobbyGameManager.instance.playerNickName;
+        }
+        else
+        {
+            nickName = "ï¿½×½ï¿½Æ®ï¿½Ğ³ï¿½ï¿½ï¿½";
+        }
+
+        print("ï¿½ï¿½ï¿½ï¿½ï¿½äº¯ï¿½Ï±ï¿½");
+        isServerComent = true; //ï¿½ï¿½ï¿½ï¿½ï¿½äº¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½.
+        testSeverComentButton.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½";
+
+
+
+
+        if (isMailComentButton) //ï¿½äº¯ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        {
+            mailComentButtonText.text = "ï¿½äº¯ï¿½Ï±ï¿½"; //ï¿½Ú¸ï¿½Æ®ï¿½ï¿½Æ° ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½Ï±ï¿½
+
+            if (userNumber == "user1")
+            {
+                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½Æ®ï¿½ï¿½ Ã¹ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                //print("1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½");
+                mailComentText1.text = nickName + "ï¿½äº¯" + ":" + tmp_InputField.text;
+            }
+            else
+            {
+                mailComentText2.text = nickName + "ï¿½äº¯" + ":" + tmp_InputField.text; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½Æ®ï¿½ï¿½ Ã¹ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                //print("2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½");
+            }
+        }
+        else
+        {
+
+
+        }
+
+
+
+    }
+
+    public void HistroyView() //int histroyButtonIndex = 0;
     {
 
-        if(!isHistoryScrollview)
+    }
+
+    public void CheckHistoty()
+    {
+        print("Check LocalHistory");
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ï¿½
+        if (System.IO.File.Exists(path))//ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½?
         {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //Listï¿½ï¿½ ï¿½Ä½ï¿½ï¿½Ï±ï¿½
+
+            bool isCurrentDate = false;
+            foreach (var ComentData in loadDayComenList)
+            {
+
+                //ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡
+                if (ComentData.date != null && ComentData.dateMission != null)
+                {
+                    histrotyList.Add(ComentData); //ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ historyList ï¿½ï¿½ï¿½
+
+                    string historyDate = ComentData.date; //ï¿½ï¿½Â¥
+                    string historyDateMission = ComentData.dateMission; //ï¿½Ì¼ï¿½
+
+                    // ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                    GameObject newButtonObj = Instantiate(historyButton, historyContent); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Contentï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                    Button newButton = newButtonObj.GetComponent<Button>(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
+                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>(); // Button ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® TextMeshProUGUI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+                    histroyButtonList.Add(newButton); //ï¿½ï¿½ï¿½ï¿½ï¿½ä¸® ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Å±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½
+
+                    int buttonIndex = histroyButtonList.Count - 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½)
+
+                    //Create newButton onClick Button
+                    /*newButton.onClick.AddListener(() =>
+                    {
+                        newButton.GetComponent<MailHistoryManager>().buttonNumber = buttonIndex;
+                        Instantiate(histroyButtonList[buttonIndex], historyContent);
+
+                    });*/
+
+                    newButton.onClick.AddListener(() =>
+                    {
+                       
+                    });
+
+                    if (buttonText != null)
+                    {
+                        buttonText.text = "ì§ˆë¬¸" + (histroyButtonList.Count) + ":" + " "+ historyDateMission;//+ "\n" + historyDate; // ï¿½ï¿½Æ° ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+    public void NewCheckHistory()
+    {
+        print("Check LocalHistory");
+        string path = Application.persistentDataPath + "/DayComentTest.json"; // JSON íŒŒì¼ ê²½ë¡œ
+
+        if (System.IO.File.Exists(path))
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); // JSON íŒŒì¼ ì½ê¸°
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); // JSON ë°ì´í„°ë¥¼ ë¦¬ìŠ¤íŠ¸ë¡œ ë³€í™˜
+
+            foreach (var comentData in loadDayComenList)
+            {
+                if (comentData.date != null && comentData.dateMission != null)
+                {
+                    // ë²„íŠ¼ ìƒì„± ë° ì„¤ì •
+                    GameObject newButtonObj = Instantiate(historyButton, historyContent);
+                    Button newButton = newButtonObj.GetComponent<Button>();
+                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>();
+
+                    histroyButtonList.Add(newButton); // ìƒì„±ëœ ë²„íŠ¼ì„ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
+                    int buttonIndex = histroyButtonList.Count - 1; // ë²„íŠ¼ ì¸ë±ìŠ¤
+
+                    // ë²„íŠ¼ í´ë¦­ ì‹œ í•´ë‹¹ ì¸ë±ìŠ¤ì˜ ë°ì´í„°ë¥¼ ë°˜í™˜í•˜ë„ë¡ ì„¤ì •
+                    newButton.onClick.AddListener(() =>
+                    {
+                        DisplayHistory(buttonIndex); // ë²„íŠ¼ í´ë¦­ ì‹œ DisplayHistory í˜¸ì¶œ
+                    });
+
+                    // ë²„íŠ¼ í…ìŠ¤íŠ¸ ì„¤ì •
+                    if (buttonText != null)
+                    {
+                        buttonText.text = "ì§ˆë¬¸ " + (buttonIndex + 1) + ": " + comentData.dateMission;
+                    }
+                }
+            }
+        }
+    }
+
+    public void DisplayHistory(int index)
+    {
+        if (index >= 0 && index < loadDayComenList.Count)
+        {
+            DayComentData data = loadDayComenList[index];
+            // ë°ì´í„°ë¥¼ ë°˜í™˜í•˜ê±°ë‚˜ ì›í•˜ëŠ” ë°©ì‹ìœ¼ë¡œ ì‚¬ìš©
+            Debug.Log("ë‚ ì§œ: " + data.date + ", ë¯¸ì…˜: " + data.dateMission +", ë‹‰ë„¤ì„1: " + data.user1name + ", ê¸°ë¶„1: " + data.user1mood + ", ë‹µë³€1: " + data.user1coment + ", ë‹‰ë„¤ì„2: " + data.user2name + ", ê¸°ë¶„2: " + data.user2mood + ", ë‹µë³€2: " + data.user2coment);
+
+            text_HistoryDate.text = data.date;
+            text_HistoryUser1NickName.text = data.user1name;
+            text_HistoryUser2NickName.text = data.user2name;
+            text_HistoryUser1Coment.text = data.user1coment;
+            text_HistoryUser2Coment.text = data.user2coment;
+
+            if(data.user1mood == "null")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[0];
+            }
+            else if(data.user1mood == "Good")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[1];
+            }
+            else if (data.user1mood == "Normal")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[2];
+            }
+            else if (data.user1mood == "Bad")
+            {
+                img_HistoryUser1Mood.sprite = moodSprites[3];
+            }
+
+            if (data.user2mood == "null")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[0];
+            }
+            else if (data.user1mood == "Good")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[1];
+            }
+            else if (data.user2mood == "Normal")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[2];
+            }
+            else if (data.user2mood == "Bad")
+            {
+                img_HistoryUser2Mood.sprite = moodSprites[3];
+            }
+
+
+        }
+    }
+
+
+    public void ViewHistoryScrollview()
+    {
+        hoonSoundManagerLogin.PlaySound(0);
+        if (!isHistoryScrollview)
+        {
+            imgMoodChoiceBlackBg.SetActive(true);
+            historyBGObject.SetActive(true);
             historyScrollview.gameObject.SetActive(true);
             isHistoryScrollview = true;
         }
         else
         {
+            imgMoodChoiceBlackBg.SetActive(false);
+            historyBGObject.SetActive(false);
             historyScrollview.gameObject.SetActive(false);
             isHistoryScrollview = false;
         }
-        
+
     }
 
-    public void CheckComent() //ÀúÁ¤µÈ ³»¿ëÀÌ ÀÖÀ¸¸é ·ÎµåÇØÁÖ±â.
+    public void CheckMission()//ï¿½ï¿½ï¿½Ã¹Ì¼ï¿½È®ï¿½ï¿½
     {
-        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ÄÚ¸àÆ® ÀÎÇ²ÇÊµå ÄÄÆ÷³ÍÆ®
-        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //ÄÚ¸àÆ®1 ÀÇ ÅØ½ºÆ®
-        mailComentText2 = Coment2.GetComponent<TextMeshProUGUI>(); //ÄÚ¸àÆ®2ÀÇ ÅØ½ºÆ®
-
-        //ÀúÀåµÈ µ¥ÀÌÅÍ°¡ ÀÖ´ÂÁö È®ÀÎÇÏ±â
-        //ÆÄÀÏÀÌ ÀÖÀ¸¸é °¢ ÇÊµå¿¡ ÀúÀåµÈ °ªÀ» ¼¼ÆÃÇÏ±â
-        //°æ·ÎÆÄÀÏÀ» ºÒ·¯¿É´Ï´Ù.
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
-
-        string fakeDate = "2010-10-22";//°¡Â¥³¯Â¥µ¥ÀÌÅÍ
-        if (File.Exists(path))//ÆÄÀÏÀÖ´Ï?
-        {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List·Î ÆÄ½ÌÇÏ±â
-
-            bool isCurrentDate = false;
-            foreach (var ComentData in loadDayComenList)
-            {
-                if (ComentData.date == currentDate) //³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
-                //f(ComentData.date == fakeDate) //°¡Â¥³¯Â¥·Î ÀÏÄ¡È®ÀÎ
-                {
-                    print("CheckComent, ³¯Â¥ÀÏÄ¡");
-                    //mailComentText1.text = "´Ğ³×ÀÓ" + ":" + ComentData.user1name + "," + "±âºĞ" + ":" + ComentData.user1mood + "," + "´äº¯" + ":" + ComentData.user1coment;
-                    //mailComentText2.text = "´Ğ³×ÀÓ" + ":" + ComentData.user2name + "," + "±âºĞ" + ":" + ComentData.user2mood + "," + "´äº¯" + ":" + ComentData.user2coment;
-                    //mailComentText1.text = ComentData.user1name + "´äº¯" + ":" + ComentData.user1coment;
-                    //mailComentText2.text = ComentData.user2name + "´äº¯" + ":" + ComentData.user2coment;
-                    
-                    
-                    if(userNumber == "user1" && mailComentText1.text == null) //À¯Àú1, ÅØ½ºÆ®1µ¥ÀÌÅÍ¾øÀ½.
-                    {
-                        mailComentText1.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                        //print("111");
-                    } 
-                    else if (userNumber == "user1" && ComentData.user1coment == "null") //À¯Àú1, ÅØ½ºÆ®1null
-                    {
-                        mailComentText1.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                        //print("112");
-                    }
-                    else if(userNumber == "user1" && ComentData.user1coment != "null") //À¯Àú1, ÅØ½ºÆ®1!null
-                    {
-                        mailComentText1.text = ComentData.user1coment;
-                        //print("113" + ComentData.user1coment);
-                    }
-
-                    if(userNumber == "user1" && mailComentText2.text == null)
-                    {
-                        mailComentText2.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä"; //À¯Àú1, ÅØ½ºÆ®2µ¥ÀÌÅÍ¾øÀ½.
-                        //print("121");
-                    }
-                    else if (userNumber =="user1"&& ComentData.user2coment == "null")//À¯Àú1, ÅØ½ºÆ®2null
-                    {
-                        mailComentText2.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä";
-                        //print("122");
-                    }
-                    else if(userNumber == "user1" && ComentData.user2coment != "null") //À¯Àú1, ÅØ½ºÆ®2!null
-                    {
-                        mailComentText2.text = ComentData.user2coment;
-                        //print("123" + ComentData.user2coment);
-                    }
-
-                    //À¯Àú2ÀÏ¶§
-                    if (userNumber == "user2" && mailComentText1.text == null) //À¯Àú1, ÅØ½ºÆ®1µ¥ÀÌÅÍ¾øÀ½
-                    {
-                        mailComentText1.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä."; 
-                    }
-                    else if (userNumber == "user2" && ComentData.user1coment == "null") //ÅØ½ºÆ®°¡ ¾øÀ¸¸é
-                    {
-                        mailComentText1.text = "¾ÆÁ÷ »ó´ë¹æÀÌ ´äº¯ÇÏÁö ¾Ê¾Ò¾î¿ä.";
-                    }
-                    else if(userNumber == "user2" && ComentData.user1coment != "null")
-                    {
-                        mailComentText1.text = ComentData.user1coment;
-                    }
-
-                    if(userNumber == "user2" && mailComentText2.text == null)
-                    {
-                        mailComentText2.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                    }
-                    else if(userNumber == "user2" && ComentData.user2coment == "null")
-                    {
-                        mailComentText2.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                    }
-                    else if (userNumber == "user2" && ComentData.user2coment != "null") //À¯Àú1, ÅØ½ºÆ®2!null
-                    {
-                        mailComentText2.text = ComentData.user2coment;
-                        //print("123" + ComentData.user2coment);
-                    }
-
-                    isCurrentDate = true;
-                    break;
-
-                }
-                
-            }
-            if(!isCurrentDate) //ÀÏÄ¡ÇÏ´Â°Å ¾øÀ¸¸é
-            {
-                print("³¯Â¥ºÒÀÏÄ¡, ÀúÀå±â·Ï¾øÀ½");
-
-                if(userNumber =="user1")
-                {
-                    print("user1 ³¯Â¥¾øÀ½");
-                    mailComentText1.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                    mailComentText2.text = "»ó´ë¹æÀÌ ´äº¯À» ÀÔ·ÂÇÏÁö ¾Ê¾Ò¾î¿ä";
-                }
-                else if(userNumber == "user2")
-                {
-                    print("user2 ³¯Â¥¾øÀ½");
-                    mailComentText2.text = "³ªÀÇ ´äº¯À» ÀÔ·ÂÇØÁÖ¼¼¿ä";
-                    mailComentText1.text = "»ó´ë¹æÀÌ ´äº¯À» ÀÔ·ÂÇÏÁö ¾Ê¾Ò¾î¿ä";
-                }
-         
-            }
-        }   
-    }
-  
-    public void CheckMission()
-    {
-        // ³¯Â¥ ¹®ÀÚ¿­À» DateTimeÀ¸·Î º¯È¯
+        // ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ DateTimeï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         DateTime dateTime = DateTime.Parse(currentDate);
-        
-        // ¿¬µµ, ¿ù, ÀÏÀ» °¢°¢ int·Î º¯È¯
+
+        // ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ intï¿½ï¿½ ï¿½ï¿½È¯
         int year = dateTime.Year;
         int month = dateTime.Month;
         int day = dateTime.Day;
 
-       /*  // °á°ú Ãâ·Â
-         Console.WriteLine("Year: " + year);
-         Console.WriteLine("Month: " + month);*/
-         Console.WriteLine("Day: " + day);
+        /*  // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+          Console.WriteLine("Year: " + year);
+          Console.WriteLine("Month: " + month);*/
+        Console.WriteLine("Day: " + day);
 
-        // ÀÏ(Day) ºÎºĞÀ» ¹®ÀÚ¿­·Î º¯È¯
-        string dayString = dateTime.Day.ToString("D2"); // "25" (µÎ ÀÚ¸® ¼ıÀÚ Çü½ÄÀ¸·Î º¯È¯)
-        // Ã¹ ¹øÂ° ÀÚ¸®¿Í µÎ ¹øÂ° ÀÚ¸®¸¦ °¢°¢ int·Î º¯È¯ÇÏ¿© ÀúÀå
-        int firstDigit = int.Parse(dayString[0].ToString()); // Ã¹ ¹øÂ° ÀÚ¸® ¹®ÀÚ¿­·Î ÀúÀå
-        int secondDigit = int.Parse(dayString[1].ToString()); // µÎ ¹øÂ° ÀÚ¸® ¹®ÀÚ¿­·Î ÀúÀå
+        // ï¿½ï¿½(Day) ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+        string dayString = dateTime.Day.ToString("D2"); // "25" (ï¿½ï¿½ ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯)
+        // Ã¹ ï¿½ï¿½Â° ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Â° ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ intï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½
+        int firstDigit = int.Parse(dayString[0].ToString()); // Ã¹ ï¿½ï¿½Â° ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        int secondDigit = int.Parse(dayString[1].ToString()); // ï¿½ï¿½ ï¿½ï¿½Â° ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int dayCheck = firstDigit + secondDigit;
-        int value = UnityEngine.Random.Range(0, 10); //·£´ı»Ì±â
-        
-        //¹Ì¼Ç¼³Á¤ÇÏ±â
-        if (day == 04)
+        int value = UnityEngine.Random.Range(0, 10); //ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½
+
+        //ï¿½Ì¼Ç¼ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+        if (day == 01 || day == 11 || day == 21)
         {
-            todayMission = "¼­·ÎÀÇ Ã¹ÀÎ»óÀ» ¾Ë·ÁÁÖ¼¼¿ä";
+            todayMission = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¹ï¿½Î»ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
         }
-        else if(day == 05)
+        else if (day == 02 || day == 12 || day == 22)
         {
-            todayMission = "¿À´Ã Á¡½É¿¡ ¹«¾ùÀ» ¸Ô¾ú´ÂÁö ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½É¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
         }
-        else if (day == 06)
+        else if (day == 03 || day == 13 || day == 23)
         {
-            todayMission = "°¡Àå ¼ÒÁßÇÑ »ç¶÷Àº ´©±¸ÀÎÁö ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
         }
-        else if (day == 07)
+        else if (day == 04 || day == 14 || day == 24)
         {
-            todayMission = "¿À´Ã ³¯¾¾¿¡ ´ëÇÑ ´À³¦À» ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
         }
-        else if (day == 08)
+        else if (day == 05 || day == 15 || day == 25)
         {
-            todayMission = "µÑÀÌ ÇÔ²² °¡º¸°í ½ÍÀº°÷À» ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "ï¿½ï¿½ï¿½ï¿½ ï¿½Ô²ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½.";
         }
-        else if (day == 09)
+        else if (day == 06 || day == 16 || day == 26)
         {
-            todayMission = "Â¥Àå vs Â«»Í ´õ ¼±È£ÇÏ´Â À½½ÄÀ» ¾Ë·ÁÁÖ¼¼¿ä.";
+            todayMission = "Â¥ï¿½ï¿½ vs Â«ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È£ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
         }
-        else if (day == 10)
+        else if (day == 07 || day == 17 || day == 27)
         {
-            todayMission = "¿äÁò Áñ°Üµè´Â ³ë·¡¸¦ ¾Ë·ÁÁÖ¼¼¿ä";
+            todayMission = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Üµï¿½ï¿½ ï¿½ë·¡ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+        }
+        else if (day == 08 || day == 18 || day == 28)
+        {
+            todayMission = "ï¿½ï¿½ï¿½Î°ï¿½ ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+        }
+        else if (day == 09 || day == 19 || day == 29)
+        {
+            todayMission = "ï¿½ï¿½ï¿½Î°ï¿½ ï¿½Ô²ï¿½ ï¿½Ô°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+        }
+        else if (day == 10 || day == 20 || day == 30)
+        {
+            todayMission = "ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½á¸¦ ï¿½Ë·ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
+        }
+        else
+        {
+            todayMission = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½è°¡ ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½.";
+
         }
 
-        //¹Ì¼ÇÀúÀåÇÏ±â
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
-       
-        if (File.Exists(path))  // ÆÄÀÏÀÌ Á¸ÀçÇÏ¸é
+        //ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ï¿½
+
+        if (System.IO.File.Exists(path))  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
         {
             string loadDayComentInfo = System.IO.File.ReadAllText(path);
             bool isMatchDate = false;
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //¹®ÀÚ¿­À» Json ¹è¿­·Î º¯°æ
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ Json ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-            for (int i = 0; i < loadDayComenList.Count; i++) //for¹®À¸·Î µ¥ÀÌÆ® idx·Î ¼³Á¤ÇÏ±â.
+            for (int i = 0; i < loadDayComenList.Count; i++) //forï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® idxï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½.
             {
 
 
                 var ComentData = loadDayComenList[i];
-                if (ComentData.date == currentDate) // ³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
+                if (ComentData.date == currentDate) // ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¸ï¿½
                 {
-                    // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ ÀúÀå.
+                    // ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
                     matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                    //Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
-                    //±âÁ¸µ¥ÀÌÅÍ ¼öÁ¤
+                    //Debug.Log("ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + matchDayComentinfo);
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     ComentData.dateMission = todayMission;
-                    // ¼öÁ¤µÈ µ¥ÀÌÅÍ¸¦ ¸®½ºÆ®¿¡ ¹İ¿µ
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½İ¿ï¿½
                     loadDayComenList[i] = ComentData;
-                    // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                    // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
                     string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
-                    //Json ÇüÅÂ·Î ÆÄÀÏÀ» º¸³»ÀÚ.
+                    //Json ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
                     jsonSyncString = jsonString;
 
                     PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
-                    Debug.Log("Photon ÀÌº¥Æ®°¡ ¹ß»ıÇß½À´Ï´Ù.");
+                    Debug.Log("Photon ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
 
                     TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
                     dayMissionText.text = todayMission;
                     isMatchDate = true;
                     break;
-            
+
                 }
-                
-            }        
-            if(!isMatchDate) //ÀÏÄ¡ÇÏ´Â ³¯Â¥ ¾øÀ¸¸é ¹Ì¼Ç»ı¼ºÇÏ±â
+
+            }
+            if (!isMatchDate) //ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¼Ç»ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
             {
-                DayComentData  dayComentData = new DayComentData //Å¬·¡½º Á¤º¸ ÀçÁ¤ÀÇ
+                DayComentData dayComentData = new DayComentData //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                     dateMission = todayMission,
                     user1name = "null",
                     user1mood = "null",
@@ -502,18 +862,18 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     user2coment = "null"
                 };
 
-                loadDayComenList.Add(dayComentData); //±âÁ¸¿¡ ºÒ·¯¿Â List¿¡ dayComentData ¿¡ usertype ¿¡ ¸Â´Â Á¤º¸¸¦ ÀúÀåÇÏ±â
+                loadDayComenList.Add(dayComentData); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ Listï¿½ï¿½ dayComentData ï¿½ï¿½ usertype ï¿½ï¿½ ï¿½Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 
-                // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
                 string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
-                // JSON ÆÄÀÏ·Î ÀúÀå
-                File.WriteAllText(path, jsonString);
-                //Debug.Log("ÆÄÀÏ »ı¼º ¿Ï·á: " + path);
-                //Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+                // JSON ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
+                System.IO.File.WriteAllText(path, jsonString);
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½: " + path);
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + jsonString);
 
-                //UIÀÇ ¹Ì¼ÇÅØ½ºÆ® °»½Å
+                //UIï¿½ï¿½ ï¿½Ì¼ï¿½ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
                 TextMeshProUGUI dayMissionText = dayMisiionObject.GetComponent<TextMeshProUGUI>();
-                dayMissionText.text = todayMission; 
+                dayMissionText.text = todayMission;
 
 
             }
@@ -521,198 +881,406 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-            DataPath.text = "ÆÄÀÏÀÌ ¾ø½À´Ï´Ù";
-            //³¯Â¥°¡ ¾øÀ¸´Ï±î »õ·Î ¸¸µé¾îÁÖ°í °»½ÅÇÏÀÚ.
+            DataPath.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½";
+            //ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 
 
         }
     }
 
-    public void CheckDate()
+    public void CheckDate()//ï¿½ï¿½ï¿½Ã³ï¿½Â¥È®ï¿½ï¿½
     {
-        // ÇöÀç ³¯Â¥¸¦ yyyy-MM-dd Çü½ÄÀÇ ¹®ÀÚ¿­·Î º¯È¯
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ yyyy-MM-dd ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         startDate = "2024-10-28";
-        Debug.Log("½ÃÀÛ ³¯Â¥: " + startDate);
+        Debug.Log("coupleAnivarsary: " + startDate);
 
         currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-        Debug.Log("ÇöÀç ³¯Â¥: " + currentDate);
-        // ¹®ÀÚ¿­À» DateTime Çü½ÄÀ¸·Î º¯È¯
+        Debug.Log("todayDate: " + currentDate);
+        // ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ DateTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         DateTime startDay = DateTime.Parse(startDate);
-        // ¿À´Ã ³¯Â¥ °¡Á®¿À±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         DateTime currDay = DateTime.Now;
 
-        // ³¯Â¥ Â÷ÀÌ °è»ê
+        // ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         TimeSpan difference = currDay - startDay;
-        //³¯Â¥º¸Á¤
+        //ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½
         int totalDays = difference.Days + 1;
-        // Â÷ÀÌÀÇ ÀÏ¼ö¸¦ ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© sumDay¿¡ ÀúÀå
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï¿ï¿½ sumDayï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         string sumDay = totalDays.ToString();
 
         string today = "Day" + sumDay + ":" + currentDate;
-        currentDay.text = today; //¿À´Ã³¯Â¥¸¦ Ç¥½ÃÇØÁÖÀÚ.
+        //currentDay.text = today; //ï¿½ï¿½ï¿½Ã³ï¿½Â¥ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+
+        string path = Application.persistentDataPath + "/DayComentTest.json";
+        if (System.IO.File.Exists(path))  // findFile
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //filePath
+                                                                         //print("loadDayComentInfo" + loadDayComentInfo); //ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
+
+            bool isCurrentDateMatch = false;
+            for (int i = 0; i < loadDayComenList.Count; i++) //
+            {
+                var ComentData = loadDayComenList[i];
+
+                if (ComentData.date == currentDate) //find MatchDate
+                {
+                    print("Find Match Date");
+                    isCurrentDateMatch = true;
+                    break;
+                }
+
+            }
+
+            if (!isCurrentDateMatch) //UnMatchDate
+            {
+                print("not Find Match Date");
+                DayComentData dayComentData = new DayComentData();
+                {
+                    dayComentData.date = currentDate;
+                    dayComentData.dateMission = "null";
+                    dayComentData.user1name = "null";
+                    dayComentData.user1mood = "null";
+                    dayComentData.user1coment = "null";
+                    dayComentData.user2name = "null";
+                    dayComentData.user2mood = "null";
+                    dayComentData.user2coment = "null";
+
+                }
+
+                loadDayComenList.Add(dayComentData);
+
+                // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+                string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
+
+                // JSON ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
+                System.IO.File.WriteAllText(path, jsonString);
+                Debug.Log("SaveResult" + jsonString);
+               
+            }
+
+        }
     }
 
-    public void CheckMood() //º¯°æÇÑ ¹«µå ºÒ·¯¿À±â
+    public void CheckComent() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½Ö±ï¿½.
+    {
+        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ï¿½Ú¸ï¿½Æ® ï¿½ï¿½Ç²ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //ï¿½Ú¸ï¿½Æ®1 ï¿½ï¿½ ï¿½Ø½ï¿½Æ®
+        mailComentText2 = Coment2.GetComponent<TextMeshProUGUI>(); //ï¿½Ú¸ï¿½Æ®2ï¿½ï¿½ ï¿½Ø½ï¿½Æ®
+
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï±ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Êµå¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½É´Ï´ï¿½.
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //ï¿½ï¿½ï¿½Ã°ï¿½ï¿½
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ï¿½
+
+        string fakeDate = "2010-10-22";//ï¿½ï¿½Â¥ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (System.IO.File.Exists(path))//ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½?
+        {
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //Listï¿½ï¿½ ï¿½Ä½ï¿½ï¿½Ï±ï¿½
+
+            bool isCurrentDate = false;
+            foreach (var ComentData in loadDayComenList)
+            {
+                print("ï¿½ï¿½ï¿½ï¿½È³ï¿½Â¥" + ComentData.date + "ï¿½ï¿½ï¿½Ò³ï¿½Â¥" + currentDate);
+                if (ComentData.date == currentDate) //ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¸ï¿½
+                //f(ComentData.date == fakeDate) //ï¿½ï¿½Â¥ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡È®ï¿½ï¿½
+                {
+                    print("CheckComent, ï¿½ï¿½Â¥ï¿½ï¿½Ä¡");
+                    //mailComentText1.text = "ï¿½Ğ³ï¿½ï¿½ï¿½" + ":" + ComentData.user1name + "," + "ï¿½ï¿½ï¿½" + ":" + ComentData.user1mood + "," + "ï¿½äº¯" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = "ï¿½Ğ³ï¿½ï¿½ï¿½" + ":" + ComentData.user2name + "," + "ï¿½ï¿½ï¿½" + ":" + ComentData.user2mood + "," + "ï¿½äº¯" + ":" + ComentData.user2coment;
+                    //mailComentText1.text = ComentData.user1name + "ï¿½äº¯" + ":" + ComentData.user1coment;
+                    //mailComentText2.text = ComentData.user2name + "ï¿½äº¯" + ":" + ComentData.user2coment;
+
+                    //ï¿½Ñ´Ù´äº¯ï¿½ï¿½ ï¿½ï¿½ï¿½
+                    if (ComentData.user1coment != "null" && ComentData.user2coment != "null")
+                    {
+                        //ï¿½Ñ´ï¿½ ï¿½äº¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
+                        mailComentText1.text = ComentData.user1coment;
+                        mailComentText2.text = ComentData.user2coment;
+                        print("ï¿½Ş½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½~");
+                        isCurrentDate = true;
+                        break;
+                    }
+
+
+                    if (userNumber == "user1" && mailComentText1.text == null) //ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®1ï¿½ï¿½ï¿½ï¿½ï¿½Í¾ï¿½ï¿½ï¿½.
+                    {
+                        mailComentText1.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+                        //print("111");
+                    }
+                    else if (userNumber == "user1" && ComentData.user1coment == "null") //ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®1null
+                    {
+                        mailComentText1.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+                        //print("112");
+                    }
+                    else if (userNumber == "user1" && ComentData.user1coment != "null") //ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®1!null
+                    {
+                        //ï¿½ï¿½ ï¿½äº¯ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+                        mailComentText1.text = mailComentText1.text = ComentData.user1coment; ;
+                        //print("113" + ComentData.user1coment);
+                    }
+
+                    if (userNumber == "user1" && mailComentText2.text == null)
+                    {
+                        mailComentText2.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½"; //ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®2ï¿½ï¿½ï¿½ï¿½ï¿½Í¾ï¿½ï¿½ï¿½.
+                        //print("121");
+                    }
+                    else if (userNumber == "user1" && ComentData.user2coment == "null")//ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®2null
+                    {
+                        mailComentText2.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½";
+                        //print("122");
+                    }
+                    else if (userNumber == "user1" && ComentData.user2coment != "null") //ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®2!null
+                    {
+                        mailComentText2.text = mailComentText2.text = ComentData.user2coment;
+                        //print("123" + ComentData.user2coment);
+                    }
+
+                    //ï¿½ï¿½ï¿½ï¿½2ï¿½Ï¶ï¿½
+                    if (userNumber == "user2" && mailComentText1.text == null) //ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®1ï¿½ï¿½ï¿½ï¿½ï¿½Í¾ï¿½ï¿½ï¿½
+                    {
+                        mailComentText1.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½.";
+                    }
+                    else if (userNumber == "user2" && ComentData.user1coment == "null") //ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                    {
+                        mailComentText1.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½.";
+                    }
+                    else if (userNumber == "user2" && ComentData.user1coment != "null")
+                    {
+                        mailComentText1.text = "ï¿½äº¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½Ï°ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.";
+                    }
+
+                    if (userNumber == "user2" && mailComentText2.text == null)
+                    {
+                        mailComentText2.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+                    }
+                    else if (userNumber == "user2" && ComentData.user2coment == "null")
+                    {
+                        mailComentText2.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+                    }
+                    else if (userNumber == "user2" && ComentData.user2coment != "null") //ï¿½ï¿½ï¿½ï¿½1, ï¿½Ø½ï¿½Æ®2!null
+                    {
+                        mailComentText2.text = "ï¿½äº¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½Ï°ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.";
+                        //print("123" + ComentData.user2coment);
+                    }
+
+                    isCurrentDate = true;
+                    break;
+
+                }
+
+            }
+            if (!isCurrentDate) //ï¿½ï¿½Ä¡ï¿½Ï´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            {
+                print("ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½Ä¡, ï¿½ï¿½ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½");
+
+                if (userNumber == "user1")
+                {
+                    print("user1 ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½");
+                    mailComentText1.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+                    mailComentText2.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½";
+                }
+                else if (userNumber == "user2")
+                {
+                    print("user2 ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½");
+                    mailComentText2.text = "ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½";
+                    mailComentText1.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò¾ï¿½ï¿½";
+                }
+
+            }
+        }
+    }
+
+
+    public void CheckMood() //ï¿½ï¿½Ğ»ï¿½ï¿½ï¿½È®ï¿½ï¿½
     {
 
-        //ÀÌ¹ÌÁö¸¦ °ñ¶ú´ÂÁö È®ÀÎÇÏ±â
+        //ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï±ï¿½
         foreach (var ComentData in loadDayComenList)
         {
-            if (ComentData.date == currentDate) //³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
-            //if(ComentData.date == fakeDate) //°¡Â¥³¯Â¥·Î ÀÏÄ¡È®ÀÎ
+            if (ComentData.date == currentDate) //ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¸ï¿½
+            //if(ComentData.date == fakeDate) //ï¿½ï¿½Â¥ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡È®ï¿½ï¿½
             {
-                print("³¯Â¥ÀÏÄ¡, ÀúÀå±â·ÏÀÖÀ½");
+                print("ï¿½ï¿½Â¥ï¿½ï¿½Ä¡, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
                 Image img1 = moodSwitch1.GetComponent<Image>();
                 Image img2 = moodSwitch2.GetComponent<Image>();
+
+                if (ComentData.user1coment != "null" && ComentData.user2coment != "null")
+                {
+                    print("ë‘˜ë‹¤ê°’ì´ ìˆìœ¼ë‹ˆ ë³´ì—¬ì£¼ì.");
+     
+                }
 
                 if (ComentData.user1mood == "null")
                 {
                     img1.sprite = moodSprites[0];
+                    textMyMood = "null";
+                    print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Good")
                 {
+                    //chage switch mood
                     img1.sprite = moodSprites[1];
+                    textMyMood = "Good";
+                    print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Normal")
                 {
                     img1.sprite = moodSprites[2];
+                    textMyMood = "Normal";
+                    print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Bad")
                 {
                     img1.sprite = moodSprites[3];
+                    textMyMood = "Bad";
+                    print("textMyMood" + textMyMood);
                 }
-                
-                print("1¹ø ÀÌ¹ÌÁö º¯°æ»çÇ× È®ÀÎÇÏ±â" + ComentData.user1mood);
+
+                print("1ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï±ï¿½" + ComentData.user1mood);
 
 
                 if (ComentData.user2mood == "null")
                 {
                     img2.sprite = moodSprites[0];
+                    textMyMood = "null";
                 }
                 else if (ComentData.user2mood == "Good")
                 {
                     img2.sprite = moodSprites[1];
+                    textMyMood = "Good";
                 }
                 else if (ComentData.user2mood == "Normal")
                 {
                     img2.sprite = moodSprites[2];
+                    textMyMood = "Normal";
                 }
                 else if (ComentData.user2mood == "Bad")
                 {
                     img2.sprite = moodSprites[3];
+                    textMyMood = "Bad";
                 }
-             
-                print("user2 ÀÌ¹ÌÁö º¯°æ»çÇ× È®ÀÎÇÏ±â");
+
+                print("user2 ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï±ï¿½");
                 break;
 
             }
             else
             {
-                print("CheckMood, ÀÏÄ¡ÇÏ´Â ³¯Â¥ ¾øÀ½, ÀÏÄ¡ÇÏ´Â ÀÌ¹ÌÁö°¡ ¾øÀ½.");
+                print("CheckMood, ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.");
             }
         }
     }
 
-    public void CheckMail()
+    public void CheckMail()//ï¿½Ì¼ï¿½, ï¿½ï¿½ï¿½, ï¿½äº¯ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     {
         CheckMission();
         CheckMood();
         CheckComent();
     }
 
+    public void GetCheckMission() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Ş¾Æ¿ï¿½ï¿½ï¿½. 
+    {
+        //findplayer
+        StartCoroutine(GetTodayMission());
+
+    }
+    
     public void SaveDayComentJsonTest()
     {
-        string nickName = LobbyGameManager.instance.playerNickName; //´Ğ³×ÀÓ Ä³½Ì
+        string nickName = LobbyGameManager.instance.playerNickName; //ï¿½Ğ³ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½
         string jsonString;
-        DayComentData dayComentData; //Å¬·¡½º º¯¼ö ¼±¾ğ
+        DayComentData dayComentData; //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        if (isMailComentButton) //´äº¯ÇÏ±â ´©¸¥ÈÄ ÀúÀåÇÏ±â ´©¸£¸é
+        if (isMailComentButton) //ï¿½äº¯ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            mailComentButtonText.text = "´äº¯ÇÏ±â"; //ÄÚ¸àÆ®¹öÆ° ÅØ½ºÆ® º¯°æ ´äº¯ÇÏ±â
+            mailComentButtonText.text = "ì €ì¥í•˜ê¸°"; //ï¿½Ú¸ï¿½Æ®ï¿½ï¿½Æ° ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ï¿½Ï±ï¿½
 
             if (userNumber == "user1")
             {
-                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-                //print("1¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
-                 mailComentText1.text = nickName + "´äº¯" + ":"  + tmp_InputField.text;
+                //mailComentText1.text = nickName + ":" + tmp_InputField.text; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½Æ®ï¿½ï¿½ Ã¹ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                //print("1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½");
+                mailComentText1.text = nickName + "ï¿½äº¯" + ":" + tmp_InputField.text;
             }
             else
             {
-                mailComentText2.text = nickName + "´äº¯" + ":" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-                //print("2¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
+                mailComentText2.text = nickName + "ï¿½äº¯" + ":" + tmp_InputField.text; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½Æ®ï¿½ï¿½ Ã¹ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                //print("2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½");
             }
 
-            //´äº¯À» ÀúÀåÇÏÀÚ.
-            //°æ·Î ÆÄÀÏÀ» ºÒ·¯¿ÀÀÚ.
-            //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //·ÎÄÃ°æ·Î
-            string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
-            if (File.Exists(path))  // ÆÄÀÏÀÌ Á¸ÀçÇÏ¸é
+            //ï¿½äº¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+            //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½.
+            //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //ï¿½ï¿½ï¿½Ã°ï¿½ï¿½
+            string path = Application.persistentDataPath + "/DayComentTest.json"; //ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ï¿½
+            if (System.IO.File.Exists(path))  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
             {
-                string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-                //print("loadDayComentInfo" + loadDayComentInfo); //¹®ÀÚ¿­ Ãâ·ÂÇÏ±â
+                string loadDayComentInfo = System.IO.File.ReadAllText(path); //ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                //print("loadDayComentInfo" + loadDayComentInfo); //ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
                 loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
                 //Debug.Log("loadedDataList" + loadDayComenList);
 
-                bool isMatched = false; // À¯È¿¼º°Ë»ç º¯¼ö
+                bool isMatched = false; // ï¿½ï¿½È¿ï¿½ï¿½ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-                for (int i = 0; i < loadDayComenList.Count; i++) //for¹®À¸·Î µ¥ÀÌÆ® idx·Î ¼³Á¤ÇÏ±â.
+                for (int i = 0; i < loadDayComenList.Count; i++) //forï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® idxï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½.
                 {
                     var ComentData = loadDayComenList[i];
 
-                    if (ComentData.date == currentDate) // ³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
+                    if (ComentData.date == currentDate) // ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¸ï¿½
                     {
-                        // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ ÀúÀå.
+                        // ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
                         matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                        //Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
-                        isMatched = true; //À¯È¿¼º°Ë»ç
+                        //Debug.Log("ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + matchDayComentinfo);
+                        isMatched = true; //ï¿½ï¿½È¿ï¿½ï¿½ï¿½Ë»ï¿½
 
-                        // ±âÁ¸ µ¥ÀÌÅÍ¸¦ ¼öÁ¤
+                        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                         if (userNumber == "user1")
                         {
-                            //Debug.Log("ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ÀÖÀ½, user1 Á¤º¸ ¾÷µ¥ÀÌÆ®");
+                            //Debug.Log("ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, user1 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®");
                             ComentData.user1name = playerNicknameMgr1.nickNameComp.text;
                             ComentData.user1mood = moodText1;
                             ComentData.user1coment = mailComentText1.text;
                         }
                         else
                         {
-                            //Debug.Log("ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ÀÖÀ½, user2 Á¤º¸ ¾÷µ¥ÀÌÆ®");
+                            //Debug.Log("ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, user2 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®");
                             ComentData.user2name = playerNicknameMgr2.nickNameComp.text;
                             ComentData.user2mood = moodText2;
                             ComentData.user2coment = mailComentText2.text;
                         }
 
-                        // ¼öÁ¤µÈ µ¥ÀÌÅÍ¸¦ ¸®½ºÆ®¿¡ ¹İ¿µ
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½İ¿ï¿½
                         loadDayComenList[i] = ComentData;
 
-                        // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                        // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
                         jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
 
-                        //Json ÇüÅÂ·Î ÆÄÀÏÀ» º¸³»ÀÚ.
+                        //Json ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
                         jsonSyncString = jsonString;
 
-                        // JSON ÆÄÀÏ·Î ÀúÀå
-                        //File.WriteAllText(path, jsonString); //·ÎÄÃÀúÀå
-                        //Debug.Log("ÆÄÀÏ ÀúÀå ¿Ï·á: " + path);
-                        //Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+                        // JSON ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
+                        //File.WriteAllText(path, jsonString); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                        //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½: " + path);
+                        //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + jsonString);
 
                         PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
-                        Debug.Log("Photon ÀÌº¥Æ®°¡ ¹ß»ıÇß½À´Ï´Ù.");
-                        break; //for¹® ÁßÁö
+                        Debug.Log("Photon ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
+                        break; //forï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
                     }
 
 
                 }
 
-                if (!isMatched) //ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é »õ·Î »ı¼ºÇØ¼­ ³Ö±â
+                if (!isMatched) //ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ö±ï¿½
                 {
 
-                    if (userNumber == "user1") //À¯Àú1 ÀÌ¸é
+                    if (userNumber == "user1") //ï¿½ï¿½ï¿½ï¿½1 ï¿½Ì¸ï¿½
                     {
-                        dayComentData = new DayComentData //Å¬·¡½º Á¤º¸ ÀçÁ¤ÀÇ
+                        dayComentData = new DayComentData //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         {
-                            date = currentDate, // ÇöÀç ³¯Â¥
+                            date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                             dateMission = todayMission,
                             user1name = playerNicknameMgr1.nickNameComp.text,
                             user1mood = "Good",
@@ -723,11 +1291,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         };
 
                     }
-                    else //À¯Àú2 ÀÌ¸é
+                    else //ï¿½ï¿½ï¿½ï¿½2 ï¿½Ì¸ï¿½
                     {
-                        dayComentData = new DayComentData //Å¬·¡½º Á¤º¸ ÀçÁ¤ÀÇ
+                        dayComentData = new DayComentData //Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         {
-                            date = currentDate, // ÇöÀç ³¯Â¥
+                            date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                             dateMission = todayMission,
                             user1name = "null",
                             user1mood = "null",
@@ -737,69 +1305,221 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                             user2coment = mailComentText2.text,
                         };
                     }
-                    loadDayComenList.Add(dayComentData); //±âÁ¸¿¡ ºÒ·¯¿Â List¿¡ dayComentData ¿¡ usertype ¿¡ ¸Â´Â Á¤º¸¸¦ ÀúÀåÇÏ±â
+                    loadDayComenList.Add(dayComentData); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ Listï¿½ï¿½ dayComentData ï¿½ï¿½ usertype ï¿½ï¿½ ï¿½Â´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 
-                    // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
+                    // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
                     jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
-                    
-                    // JSON ÆÄÀÏ·Î ÀúÀå
-                    File.WriteAllText(path, jsonString);
-                    Debug.Log("ÆÄÀÏ »ı¼º ¿Ï·á: " + path);
-                    Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
-                  
+
+                    // JSON ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
+                    System.IO.File.WriteAllText(path, jsonString);
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½: " + path);
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + jsonString);
+
                 }
 
             }
 
-            tmp_InputFieldObject.SetActive(false);  //ÀÎÇ²ÇÊµå ²ôÀÚ
+            tmp_InputFieldObject.SetActive(false);  //ï¿½ï¿½Ç²ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½
             isMailComentButton = false;
-           
+
 
         }
-        else //´äº¯ÇÏ±â¸¦ ´©¸£¸é
+        else //ï¿½äº¯ï¿½Ï±â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
 
-            tmp_InputFieldObject.SetActive(true); //ÀÎÇ²ÇÊµå ÄÑÀÚ.
+            tmp_InputFieldObject.SetActive(true); //ï¿½ï¿½Ç²ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½.
             if (userNumber == "user1")
             {
-                mailComentText1.text = nickName + ":" + "´äº¯";
-                print("1¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
+                mailComentText1.text = nickName + ":" + "ï¿½äº¯";
+                print("1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½");
             }
             else
             {
-                mailComentText2.text = nickName + ":" + "´äº¯";
-                print("2¹øÀ¯Àú À§Ä¡¿¡ ´äº¯ÀúÀå");
+                mailComentText2.text = nickName + ":" + "ï¿½äº¯";
+                print("2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½äº¯ï¿½ï¿½ï¿½ï¿½");
             }
 
-            mailComentButtonText.text = "ÀúÀåÇÏ±â"; //ÄÚ¸àÆ®¹öÆ° ÅØ½ºÆ®¸¦ ÀúÀåÇÏ±â·Î º¯°æ
+            mailComentButtonText.text = "ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½"; //ï¿½Ú¸ï¿½Æ®ï¿½ï¿½Æ° ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             isMailComentButton = true;
 
         }
     }
 
+    public void SaveServerDayComentQuaryParameter()
+    {
+        // jsonData
+        //string jsonData = "{\"missionNumber\":1,\"missionDate\":[2024,11,11],\"missionContent\":\"ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½? ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½?\",\"partner1Mood\":\"Good\",\"partner1Answer\":\"ï¿½ï¿½ï¿½ï¿½\",\"partner2Mood\":\"Good\",\"partner2Answer\":\"Å­\",\"completed\":true}";
+        // jsonObjectParse
+        //JObject jsonObject = JObject.Parse(jsonData);
+
+        if (!isButtonSaveComentSever)
+        {
+            if(userNumber =="user1")
+            {
+                TouchMoodSwitchButton(1);
+            }
+            else
+            {
+                TouchMoodSwitchButton(2);
+            }
+
+            btnText_MailServerComent.text = "ì €ì¥í•˜ê¸°"; //btn text change save
+            tmp_InputFieldObject.SetActive(true); //Active inputField
+            isButtonSaveComentSever = !isButtonSaveComentSever; //chage true
+            //print("isButtonSaveComentSever" + isButtonSaveComentSever);
+
+        }
+        else
+        {
+            //string coment1 = tmp_InputFieldObject.GetComponent<TextMeshPro>().text;
+
+            if (userNumber == "user1")
+            {
+                /* if(Coment1 != null)
+                 {
+                     print("coment" + Coment1.GetComponent<TextMeshProUGUI>().text);
+                     print("playerNickName" + LoginInfoManager.instance.nickName);
+                     print("ë‹µë³€" + tmp_InputFieldObject.GetComponent<TextMeshPro>().text);
+                 }*/
+
+                Coment1.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "ë‹µë³€" + ":" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
+
+            }
+            else
+            {
+                /* print("coment" + Coment2.GetComponent<TextMeshProUGUI>().text);
+                 //print("playerNickName" + LoginInfoManager.instance.nickName);
+                 if(tmp_InputFieldObject != null)
+                 {
+                     print("ë‹µë³€" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text);
+                 }*/
+
+                Coment2.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "ë‹µë³€" + ":" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
+
+            }
+
+
+            btnText_MailServerComent.text = "ë‹µë³€í•˜ê¸°"; //btn text change Coment
+            tmp_InputFieldObject.SetActive(false); //Active inputField
+            isButtonSaveComentSever = !isButtonSaveComentSever; //chage false
+            //print("isButtonSaveComentSever" + isButtonSaveComentSever);
+
+            //PostSever
+            string myMood = "null";
+            string myComent = "null";
+            if (userNumber =="user1")
+            {
+                 myComent = Coment1.GetComponent<TextMeshProUGUI>().text; //user1coment
+            }
+            else
+            {
+                myComent = Coment2.GetComponent<TextMeshProUGUI>().text; //user2coment
+            }
+            
+            if (textMyMood != "null")
+            {
+                myMood = textMyMood;
+                print("myComent" + myComent + "myMood" + myMood);
+                if(myMood == "")
+                {
+                    myMood = "null";
+                }
+
+                if(myMood != "null")
+                {
+                    // ì¿¼ë¦¬ íŒŒë¼ë¯¸í„°ë¥¼ í¬í•¨í•œ URL ìƒì„±
+                    string baseUrl = "http://125.132.216.190:12223/api/missions/answer";
+                    string url = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(myMood)}&answer={UnityWebRequest.EscapeURL(myComent)}";
+                    string url1 = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(myMood)}&answer={UnityWebRequest.EscapeURL(myComent)}";
+                    StartCoroutine(PostDayComentQuaryParameter(url1));
+                }
+                else
+                {
+                    print("ê°ì •í‘œí˜„ì„ ì„ íƒí•´ì£¼ì„¸ìš”.");
+                    if(userNumber == "user1")
+                    {
+                        //Img_MoodChoice1 ì˜¤ë¸Œì íŠ¸ë¥¼ ë³´ì—¬ì£¼ì.
+                        moodChoice1Object.SetActive(true);
+                    }
+                    else
+                    {
+                        //Img_MoodChoice2 ì˜¤ë¸Œì íŠ¸ë¥¼ ë³´ì—¬ì£¼ì.
+                        moodChoice2Object.SetActive(true);
+                    }
+
+
+                    return;
+                }
+                
+
+                
+            }
+            else 
+            {
+                print("ê°ì •í‘œí˜„ì„ ì„ íƒí•´ì£¼ì„¸ìš”.");
+                return;
+
+            }
+           
+        }
+
+    }
+
+    IEnumerator PostDayComentQuaryParameter(string url)
+    {
+        print("ì„œë²„ì— ìš”ì²­ì‹œì‘");
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //Bearerì— ê³µë°± ìˆì–´ì•¼í•¨. ì„œë²„ë¡œ í† í° ë°œì‚¬
+        //print("ë‚´í† í°" + LoginInfoManager.instance.myToken);
+        print("ì„œë²„ì— ìš”ì²­ì¤‘");
+
+        yield return request.SendWebRequest();
+
+        // ìš”ì²­ ê²°ê³¼ ì²˜ë¦¬
+        if (request.result == UnityWebRequest.Result.Success) //ì„±ê³µì´ë‹ˆ?
+        {
+            Debug.Log("Response: " + request.downloadHandler.text);
+            Debug.Log("Response Code: " + request.responseCode);
+            Debug.Log("Response Body: " + request.downloadHandler.text);
+        }
+        else //ì‘ ì•„ë‹ˆì•¼~
+        {
+            Debug.LogError("Error: " + request.error);
+            Debug.LogError("Response Code: " + request.responseCode);
+            Debug.LogError("Response Body: " + request.downloadHandler.text);
+
+            if (request.responseCode == 409)
+            {
+                //putí•˜ëŠ” 
+            }
+
+        }
+    }
+
+
     public void LoadDayComentJson()
     {
-        //°æ·Î ÆÄÀÏÀ» ºÒ·¯¿ÀÀÚ.
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½.
         string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";
 
-        if (File.Exists(path))  // ÆÄÀÏÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+        if (System.IO.File.Exists(path))  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-            print("·ÎµåÁ¦ÀÌ½¼" + loadDayComentInfo);
-            print("¿À´Ã³¯Â¥" + currentDate);
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            print("ï¿½Îµï¿½ï¿½ï¿½ï¿½Ì½ï¿½" + loadDayComentInfo);
+            print("ï¿½ï¿½ï¿½Ã³ï¿½Â¥" + currentDate);
 
-            // JSON ¹®ÀÚ¿­À» DayCommentData °´Ã¼ÀÇ ¸®½ºÆ®·Î ÆÄ½Ì
+            // JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ DayCommentData ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ä½ï¿½
             //List<DayComentData> loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             Debug.Log("loadedDataList" + loadDayComenList);
 
-            CheckDayComentJsonDate(); //³¯Â¥Á¤º¸°¡ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎÇÏ°í ¾øÀ¸¸é »ı¼ºÇØ¼­ Á¤º¸¸¦ °»½Å
+            CheckDayComentJsonDate(); //ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         }
 
         else
         {
-            CreateNewDayComentJsonArray(); //ÆÄÀÏ¾øÀ¸¸é »õ·Î »ı¼º
+            CreateNewDayComentJsonArray(); //ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         }
 
@@ -807,25 +1527,25 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void CheckDayComentJsonDate()
     {
-        // ³¯Â¥ È®ÀÎ ¹× ·Î±× Ãâ·Â
+        // ï¿½ï¿½Â¥ È®ï¿½ï¿½ ï¿½ï¿½ ï¿½Î±ï¿½ ï¿½ï¿½ï¿½
         foreach (var ComentData in loadDayComenList)
         {
-            if (ComentData.date == currentDate) //³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
+            if (ComentData.date == currentDate) //ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¸ï¿½
             {
-                // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ÀúÀå.
+                // ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
                 //string matchDayComentinfo = JsonConvert.SerializeObject(dayComentData, Formatting.Indented);
                 matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
+                Debug.Log("ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + matchDayComentinfo);
                 break;
 
             }
-            else //ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é »õ·Î »ı¼ºÇØ¼­ ³Ö±â
+            else //ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ö±ï¿½
             {
 
 
                 DayComentData dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                     user1name = "null",
                     user1mood = "null",
                     user1coment = "null",
@@ -839,15 +1559,15 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    public void CreateNewDayComentJsonArray() //Á¦ÀÌ½¼ ¹è¿­·Î ÀúÀåÇÏ±â
+    public void CreateNewDayComentJsonArray() //ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
     {
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//ï¿½ï¿½ï¿½Ã°ï¿½ï¿½
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ï¿½
 
-        // DayComentData °´Ã¼ »ı¼º
+        // DayComentData ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
         DayComentData dayComentData = new DayComentData
         {
-            date = currentDate, // ÇöÀç ³¯Â¥
+            date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
             dateMission = "null",
             user1name = "null",
             user1mood = "null",
@@ -857,29 +1577,29 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             user2coment = "null"
         };
 
-        // DayComentData¸¦ JSON ¹®ÀÚ¿­ ¹è¿­·Î º¯¼ö¿¡ÀúÀå
+        // DayComentDataï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         string jsonString = JsonConvert.SerializeObject(new[] { dayComentData }, Formatting.Indented);
 
-        // JSON ÆÄÀÏ·Î ÀúÀå
-        File.WriteAllText(path, jsonString);
-        Debug.Log("ÆÄÀÏ »ı¼º ¿Ï·á: " + path);
-        Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+        // JSON ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
+        System.IO.File.WriteAllText(path, jsonString);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½: " + path);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + jsonString);
 
 
     }
 
-    public void CreateNewDayComentJsonArray(string mood) //Á¦ÀÌ½¼ ¹è¿­·Î ÀúÀåÇÏ±â
+    public void CreateNewDayComentJsonArray(string mood) //ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
     {
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //µ¿±âÈ­°æ·Î
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";//ï¿½ï¿½ï¿½Ã°ï¿½ï¿½
+        string path = Application.persistentDataPath + "/DayComentTest.json"; //ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ï¿½
 
         string jsonString = "";
-        if (File.Exists(path)) //ÆÄÀÏ ÀÖ´Ï?
+        if (System.IO.File.Exists(path)) //ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½?
         {
-            //ÆÄÀÏÀÖÀ¸¸é ±âÁ¸°Å ºÒ·¯¿À·Å.
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //¹®ÀÚ¿­·Î °¡Á®¿À±â
-           
-            // JSON ¹®ÀÚ¿­À» DayCommentData °´Ã¼ÀÇ ¸®½ºÆ®·Î ÆÄ½Ì
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½.
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); //ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+            // JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ DayCommentData ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ä½ï¿½
             //List<DayComentData> loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo);
             Debug.Log("loadedDataList" + loadDayComenList);
@@ -887,11 +1607,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             DayComentData dayComentData;
             if (userNumber == "user1")
             {
-                print("ChangeMoodImage À¯Àú³Ñ¹ö1" + userNumber);
-                // DayComentData °´Ã¼ »ı¼º
+                print("ChangeMoodImage userNumber" + userNumber);
+                // DayComentData ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                     dateMission = "null",
                     user1name = "null",
                     user1mood = mood,
@@ -903,11 +1623,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
             else
             {
-                print("ChangeMoodImage À¯Àú³Ñ¹ö2" + userNumber);
-                // DayComentData °´Ã¼ »ı¼º
+                print("ChangeMoodImage ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½2" + userNumber);
+                // DayComentData ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                     dateMission = "null",
                     user1name = "null",
                     user1mood = "null",
@@ -917,23 +1637,23 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     user2coment = mood
                 };
             }
-            //±âÁ¸¹è¿­¿¡ ½Å±Ô ¹è¿­Ãß°¡ÇÏ¿© ÀúÀå
+            //ï¿½ï¿½ï¿½ï¿½ï¿½è¿­ï¿½ï¿½ ï¿½Å±ï¿½ ï¿½è¿­ï¿½ß°ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½
             loadDayComenList.Add(dayComentData);
 
-            // DayComentData¸¦ JSON ¹®ÀÚ¿­ ¹è¿­·Î º¯¼ö¿¡ÀúÀå
+            // DayComentDataï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented);
 
 
         }
-        else //ÆÄÀÏ¾ø´Ï
+        else //ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½
         {
             DayComentData dayComentData;
             if (userNumber == "user1")
             {
-                // DayComentData °´Ã¼ »ı¼º
+                // DayComentData ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                     dateMission = "null",
                     user1name = "null",
                     user1mood = mood,
@@ -945,10 +1665,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
             else
             {
-                // DayComentData °´Ã¼ »ı¼º
+                // DayComentData ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
                 dayComentData = new DayComentData
                 {
-                    date = currentDate, // ÇöÀç ³¯Â¥
+                    date = currentDate, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
                     dateMission = "null",
                     user1name = "null",
                     user1mood = mood,
@@ -958,19 +1678,19 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     user2coment = mood
                 };
 
-                // DayComentData¸¦ JSON ¹®ÀÚ¿­ ¹è¿­·Î º¯¼ö¿¡ÀúÀå
+                // DayComentDataï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 jsonString = JsonConvert.SerializeObject(new[] { dayComentData }, Formatting.Indented);
 
             }
         }
 
 
-       
 
-        // JSON ÆÄÀÏ·Î ÀúÀå
-        File.WriteAllText(path, jsonString);
-        Debug.Log("ÆÄÀÏ »ı¼º ¿Ï·á: " + path);
-        Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
+
+        // JSON ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
+        System.IO.File.WriteAllText(path, jsonString);
+        Debug.Log("SavePath: " + path);
+        Debug.Log("SaveJsonString: " + jsonString);
 
 
     }
@@ -979,13 +1699,13 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         string path = Application.dataPath + "/StreamingAssets/Hoon/DayComent.json";
 
-        // ÆÄÀÏÀÌ ¾øÀ¸¸é »õ ÆÄÀÏ »ı¼º
-        Debug.Log("ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê¾Æ »õ·Î »ı¼ºÇÕ´Ï´Ù.");
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.");
 
-        // ÇöÀç ³¯Â¥¸¦ yyyy-MM - dd Çü½ÄÀ¸·Î °¡Á®¿À±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ yyyy-MM - dd ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         currentDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-        // ±âº» ±¸Á¶ÀÇ °´Ã¼ »ı¼º
+        // ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
         DayComentData dayComent = new DayComentData
         {
             date = "null",
@@ -997,49 +1717,50 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             user2coment = "null"
         };
 
-        // Å¬·¡½º¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯ (Á÷·ÄÈ­)
+        // Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ (ï¿½ï¿½ï¿½ï¿½È­)
         string jsonString = JsonUtility.ToJson(dayComent, true);
 
-        // ÆÄÀÏ »ı¼º ¹× ±âº» ³»¿ë ¾²±â
-        File.WriteAllText(path, jsonString);
-        Debug.Log("ÆÄÀÏ »ı¼º ¿Ï·á: " + path);
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½âº» ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        System.IO.File.WriteAllText(path, jsonString);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½: " + path);
     }
 
     public void ViewInputMailComent()
     {
+
         //print("ViewInputMailComent");
-        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ÄÚ¸àÆ® ÀÎÇ²ÇÊµå ÄÄÆ÷³ÍÆ®
-        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //ÄÚ¸àÆ®1 ÀÇ ÅØ½ºÆ®
-        if (isMailComentButton) //´äº¯ÇÏ±â ´©¸¥ÈÄ ÀúÀåÈ÷±â ´©¸£¸é
+        tmp_InputField = tmp_InputFieldObject.GetComponent<TMP_InputField>(); // ï¿½Ú¸ï¿½Æ® ï¿½ï¿½Ç²ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+        mailComentText1 = Coment1.GetComponent<TextMeshProUGUI>(); //ï¿½Ú¸ï¿½Æ®1 ï¿½ï¿½ ï¿½Ø½ï¿½Æ®
+        if (isMailComentButton) //ï¿½äº¯ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            mailComentButtonText.text = "´äº¯ÇÏ±â"; //ÄÚ¸àÆ®¹öÆ° ÅØ½ºÆ®¸¦ º¯°æ
-            //print("ÀÔ·Â¸¸ ÄÚ¸àÆ®" +tmp_InputField.text); //ÅØ½ºÆ® Ãâ·ÂÇØº¸±â
-            mailComentText1.text = currentDate + "\n" + "³ªÀÇ´äº¯:" + tmp_InputField.text; //¾²¿©Áø ÄÚ¸àÆ®¸¦ Ã¹¹øÂ°·Î º¯°æ
-            tmp_InputFieldObject.SetActive(false);  //ÀÎÇ²ÇÊµå ²ôÀÚ
+            mailComentButtonText.text = "ï¿½äº¯ï¿½Ï±ï¿½"; //ï¿½Ú¸ï¿½Æ®ï¿½ï¿½Æ° ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            //print("ï¿½Ô·Â¸ï¿½ ï¿½Ú¸ï¿½Æ®" +tmp_InputField.text); //ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Øºï¿½ï¿½ï¿½
+            mailComentText1.text = currentDate + "\n" + "ï¿½ï¿½ï¿½Ç´äº¯:" + tmp_InputField.text; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½Æ®ï¿½ï¿½ Ã¹ï¿½ï¿½Â°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            tmp_InputFieldObject.SetActive(false);  //ï¿½ï¿½Ç²ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½
             isMailComentButton = false;
 
         }
-        else //´äº¯ÇÏ±â¸¦ ´©¸£¸é
+        else //ï¿½äº¯ï¿½Ï±â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            tmp_InputFieldObject.SetActive(true); //ÀÎÇ²ÇÊµå ÄÑÀÚ.
-            mailComentText1.text = "³ªÀÇ´äº¯:";
-            mailComentButtonText.text = "ÀúÀåÇÏ±â"; //ÀúÀåÇÏ±â ¹öÆ°À¸·Î º¯°æ
+            tmp_InputFieldObject.SetActive(true); //ï¿½ï¿½Ç²ï¿½Êµï¿½ ï¿½ï¿½ï¿½ï¿½.
+            mailComentText1.text = "ï¿½ï¿½ï¿½Ç´äº¯:";
+            mailComentButtonText.text = "ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½"; //ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             isMailComentButton = true;
 
         }
 
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
-        print("ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖÀ½");
-        if (other.gameObject.name.Contains("Player")) //°ÔÀÓ¿ÀºêÁ§Æ®°¡ ÇÃ·¹ÀÌ¾î¸¦ Æ÷ÇÔÇÏ°í ÀÖ´Ù¸é
+        print("ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+        if (other.gameObject.name.Contains("Player")) //ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´Ù¸ï¿½
         {
-            print("ÀÌ¹ÌÁö º¸¿©ÁÖ±â");
+            print("ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½");
             mail_IconImage.gameObject.SetActive(enabled);
-            
-            //¹öÆ°À» ´­·¶À»¶§ ÇÔ¼ö È£Ãâ, ÇÑ¹ø¸¸ È£ÃâÇÏ°Ô ÇÏÀÚ.
-            touchButton.onClick.AddListener(MailImageControll);
+
+            //ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½, ï¿½Ñ¹ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½.
+            touchButton.onClick.AddListener(WithInRangeViewMailImageControll);
 
         }
     }
@@ -1048,15 +1769,36 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
 
     }*/
+
     private void OnTriggerExit(Collider other)
     {
-        //¹öÆ°À» ´­·¶À»¶§ ÇÔ¼ö È£Ãâ 
-        touchButton.onClick.RemoveListener(MailImageControll);
+        //ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½ 
+        touchButton.onClick.RemoveListener(WithInRangeViewMailImageControll);
         mail_IconImage.gameObject.SetActive(false);
-        print("ÀÌ¹ÌÁö ²ô±â");
+        print("ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
     }
 
-    public void MailImageControll()
+    public void OpenMailUI(GameObject obj)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+    {
+        obj.SetActive(true);
+    }
+
+    public void CloseMailUI(GameObject obj)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½İ±ï¿½
+    {
+        obj.SetActive(false);
+        if (obj.name == "Img_MoodChoice1")
+        {
+            imgMoodChoiceBlackBg.SetActive(false);
+        }
+
+        if (obj.name == "Img_MoodChoice2")
+        {
+            imgMoodChoiceBlackBg.SetActive(false);
+
+        }
+    }
+
+    public void WithInRangeViewMailImageControll()
     {
         isMailImage = !isMailImage;
 
@@ -1064,104 +1806,159 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             mail_ImageObject.SetActive(false);
         }
+        else
+        {
+            mail_ImageObject.SetActive(true);
+        }
     }
 
-    public void MoodSwitch(int switchNum)
-
+    public void TouchMoodSwitchButton(int switchNum)
     {
+        
         if (switchNum == 1 && userNumber == "user1")
         {
-           
+            imgMoodChoiceBlackBg.SetActive(true);
             isMoodSwihtch1 = !isMoodSwihtch1;
-            print("³²ÀÚ½ºÀ§Ä¡");
+            OpenMailUI(moodChoice1Object);
+            print("maleMoodSwitch");
+            moodSwitch1.GetComponent<Image>().color = Color.white; //chage switch color
+
+
 
         }
         else if (switchNum == 2 && userNumber == "user2")
         {
+            imgMoodChoiceBlackBg.SetActive(true);
             isMoodSwihtch2 = !isMoodSwihtch2;
-            print("¿©ÀÚ½ºÀ§Ä¡");
+            OpenMailUI(moodChoice2Object);
+            print("femaleMoodSwitch");
+            moodSwitch2.GetComponent<Image>().color = Color.white; //chage switch color
         }
 
     }
 
-    public void ChangeMoodImage(string mood)
+    public void ChangeMoodImage(string mood) // when choice moodBtoon change moodImage
     {
         Image img1 = moodSwitch1.GetComponent<Image>();
         Image img2 = moodSwitch2.GetComponent<Image>();
 
-        print("ÀÌ¹ÌÁö¸¦ ¹Ù²Ù¸é ±× °ªÀ» jsonÆÄÀÏ¿¡ ÀúÀåÇÕ´Ï´Ù.");
+        //print("switch image cashing");
+
         
-        if(userNumber =="user1")
+        if (userNumber == "user1")
         {
-            //1¹øÀÌ¹ÌÁö º¯°æ
+            print("checkUserNumber" + userNumber);
+            //ï¿½ï¿½Ğ¹è¿­ï¿½ï¿½ï¿½Ö´Â¸ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½.
+            for (int i = 1; i < moodChoice1ButtonImageList.Count; i++)
+            {
+                moodChoice1ButtonImageList[i].color = new Color(1, 1, 1, 0.4f);
+            }
+
+            //1ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (mood == "Good")
             {
                 img1.sprite = moodSprites[1];
+                moodChoice1ButtonImageList[1].color = new Color(1, 1, 1, 1);
+                textMyMood = "Good";
+                print("textMyMood" + textMyMood);
             }
             else if (mood == "Normal")
             {
                 img1.sprite = moodSprites[2];
+                moodChoice1ButtonImageList[2].color = new Color(1, 1, 1, 1);
+                textMyMood = "Normal";
+                print("textMyMood" + textMyMood);
             }
             else if (mood == "Bad")
             {
                 img1.sprite = moodSprites[3];
+                moodChoice1ButtonImageList[3].color = new Color(1, 1, 1, 1);
+                textMyMood = "Bad";
+                print("textMyMood" + textMyMood);
             }
+
         }
         else
         {
-            //2¹øÀÌ¹ÌÁö º¯°æ
+
+            print("checkUserNumber" + userNumber);
+            //ï¿½ï¿½Ğ¹è¿­ï¿½ï¿½ï¿½Ö´Â¸ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½.
+            for (int i = 1; i < moodChoice2ButtonImageList.Count; i++)
+            {
+                moodChoice2ButtonImageList[i].color = new Color(1, 1, 1, 0.4f);
+            }
+
+            //2ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (mood == "Good")
             {
+                textMyMood = "Good";
                 img2.sprite = moodSprites[1];
+                moodChoice2ButtonImageList[1].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Normal")
             {
+                textMyMood = "Normal";
                 img2.sprite = moodSprites[2];
+                moodChoice2ButtonImageList[2].color = new Color(1, 1, 1, 1);
             }
             else if (mood == "Bad")
             {
+                textMyMood = "Bad";
                 img2.sprite = moodSprites[3];
+                moodChoice2ButtonImageList[3].color = new Color(1, 1, 1, 1);
+
             }
+            
         }
-       
-        //°æ·Î ÆÄÀÏÀ» ºÒ·¯¿ÀÀÚ.
-        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //·ÎÄÃ°æ·Î
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //½ÌÅ©°æ·Î
+        print("myChoiceMood" + mood);
+
+        //ë‚´ê»„ë¨¼ì € ì„¤ì •í•˜ê³  ìƒëŒ€ë°©ê¸°ë¶„ì„ ì„¤ì •í•˜ê¸°
+        
+        
+        
+        
+        
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½.
+        //string path = Application.dataPath + "/StreamingAssets/Hoon/DayComentTest.json"; //ï¿½ï¿½ï¿½Ã°ï¿½ï¿½
+       /* string path = Application.persistentDataPath + "/DayComentTest.json"; //ï¿½ï¿½Å©ï¿½ï¿½ï¿½
         bool isCurrentDate = false;
-        for (int i = 0; i < loadDayComenList.Count; i++) // ³¯Â¥ È®ÀÎ ¹× ·Î±× Ãâ·Â
+        for (int i = 0; i < loadDayComenList.Count; i++) // ï¿½ï¿½Â¥ È®ï¿½ï¿½ ï¿½ï¿½ ï¿½Î±ï¿½ ï¿½ï¿½ï¿½
         {
             var ComentData = loadDayComenList[i];
 
-           
-            if (ComentData.date == currentDate) // ³¯Â¥°¡ ÀÏÄ¡ÇÏ¸é
-            {
-                // ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ ·Î±×¸¦ º¯¼ö¿¡ ÀúÀå.
-                matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
-                Debug.Log("³¯Â¥°¡ ÀÏÄ¡ÇÏ´Â µ¥ÀÌÅÍ: " + matchDayComentinfo);
 
-                if(userNumber == "user1")
+            if (ComentData.date == currentDate) // ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¸ï¿½
+            {
+                // check match date.
+                matchDayComentinfo = JsonConvert.SerializeObject(ComentData, Formatting.Indented);
+                Debug.Log("checkMatchDay: " + matchDayComentinfo);
+
+                if (userNumber == "user1")
                 {
-                    print("ChangeMoodImage À¯Àú³Ñ¹ö1" + userNumber);
-                    //1¹øÀÌ¹ÌÁöº¯°æ
+                    print("ChangeMoodImage user1" + userNumber);
+                    //1ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     if (mood == "Good")
                     {
                         ComentData.user1mood = "Good";
+                        textMyMood = "Good";
                     }
                     else if (mood == "Normal")
                     {
                         ComentData.user1mood = "Normal";
+                        textMyMood = "Normal";
                     }
                     else if (mood == "Bad")
                     {
                         ComentData.user1mood = "Bad";
+                        textMyMood = "Bad";
                     }
-                    moodText1 = mood;
 
+                    moodText1 = mood;
                 }
                 else
                 {
-                    print("ChangeMoodImage À¯Àú³Ñ¹ö2" + userNumber);
-                    //2¹øÀÌ¹ÌÁö º¯°æ
+                    print("ChangeMoodImage userNumer" + userNumber);
+                    //2ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     if (mood == "Good")
                     {
                         ComentData.user2mood = "Good";
@@ -1176,149 +1973,159 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     }
                     moodText2 = mood;
                 }
-              
-                // ¼öÁ¤µÈ µ¥ÀÌÅÍ¸¦ ¸®½ºÆ®¿¡ ¹İ¿µ
-                loadDayComenList[i] = ComentData;
 
-                // ¸®½ºÆ®¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
-                //string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); ·ÎÄÃÀúÀå
-                // JSON ÆÄÀÏ·Î ÀúÀå
-                //File.WriteAllText(path, jsonString); //·ÎÄÃÀúÀå
-                //Debug.Log("ÆÄÀÏ ÀúÀå ¿Ï·á: " + path);
-                //Debug.Log("ÀúÀåµÈ JSON µ¥ÀÌÅÍ: " + jsonString);
-
-                jsonSyncString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); //½ÌÅ©ÀúÀå
-                PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
-                Debug.Log("Photon ÀÌº¥Æ®°¡ ¹ß»ıÇß½À´Ï´Ù.");
-                isCurrentDate = true;
-                break;
             }
-            
+
+
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½İ¿ï¿½
+            loadDayComenList[i] = ComentData;
+
+            // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ JSON ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+            //string jsonString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            // JSON ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
+            //File.WriteAllText(path, jsonString); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½: " + path);
+            //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + jsonString);
+
+            jsonSyncString = JsonConvert.SerializeObject(loadDayComenList, Formatting.Indented); //ï¿½ï¿½Å©ï¿½ï¿½ï¿½ï¿½
+            PhotonNetwork.RaiseEvent(DATA_SYNC_EVENT_CODE, jsonSyncString, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
+            //Debug.Log("Photon ?");
+            isCurrentDate = true;
+            break;
         }
         if (!isCurrentDate)
         {
-            print("ÀÏÄ¡ÇÏ´Â ³¯Â¥°¡ ¾øÀ½");
+            print("noneMatchDate");
             CreateNewDayComentJsonArray(mood);
-            
-        }
 
-    }
-    //·¹º§¿¡ ÀÖ´Â ÇÃ·¹ÀÌ¾î Ã£±â
-    IEnumerator FindPlayer()
+        }*/
+    
+    }//í•¨ìˆ˜ë
+
+
+
+
+
+
+    IEnumerator FindPlayer()//playerFind afterSpawn
     {
         yield return new WaitForSeconds(0.1f);
 
-        player1 = GameObject.Find("PlayerMale(Clone)"); //ÇÃ·¹ÀÌ¾î´Â ³²ÀÚ¾Æ¹ÙÅ¸
-        player2 = GameObject.Find("PlayerWoman(Clone)"); //ÇÃ·¹ÀÌ¾î´Â ¿©ÀÚ¾Æ¹ÙÅ¸
+        player1 = GameObject.Find("PlayerMale(Clone)"); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¾Æ¹ï¿½Å¸
+        player2 = GameObject.Find("PlayerWoman(Clone)"); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¾Æ¹ï¿½Å¸
 
-        // ³²ÀÚ°¡ ¸ÕÀú ÀÔÀåÇÑ °æ¿ì user1, ¿©ÀÚ°¡ ³ªÁß¿¡ ÀÔÀåÇÏ¸é user2, ´Ğ³×ÀÓ ÀúÀå
-       if(player1 != null)
+        //only user1, only user2,
+        if (player1 != null)
         {
             playerNicknameMgr1 = player1.GetComponent<PlayerNicknameManager>();
         }
-            
-        if(player2 != null)
+
+        if (player2 != null)
         {
             playerNicknameMgr2 = player2.GetComponent<PlayerNicknameManager>();
         }
-     
-        if (player1 != null && player2 == null) // ³²ÀÚ È¥ÀÚ ÀÔÀå
+
+        if (player1 != null && player2 == null) // user1
         {
             playerNicknameMgr1 = player1.GetComponent<PlayerNicknameManager>();
-            userNumber = "user1";  // ³²ÀÚ´Â user1
-            print("FindPlayer ³²ÀÚ È¥ÀÚ ÀÔÀå, À¯Àú¹øÈ£: " + userNumber);
-            
+            userNumber = "user1";  // male user1
+            print("FindPlayer male: " + userNumber);
+
         }
-        else if (player2 != null && player1 == null) // ¿©ÀÚ È¥ÀÚ ÀÔÀå
+        else if (player2 != null && player1 == null) // user2
         {
             playerNicknameMgr2 = player2.GetComponent<PlayerNicknameManager>();
-            userNumber = "user2";  // ¿©ÀÚ´Â user2
-            print("FindPlayer ¿©ÀÚ È¥ÀÚ ÀÔÀå, À¯Àú¹øÈ£: " + userNumber);
-            
+            userNumber = "user2";  // female user2
+            print("FindPlayer female " + userNumber);
+
         }
-        else if (player1 != null && player2 != null) // ³²ÀÚ¿Í ¿©ÀÚ°¡ ¸ğµÎ ÀÔÀåÇÑ °æ¿ì
+        else if (player1 != null && player2 != null) // both user1 user2
         {
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == player1.GetComponent<PhotonView>().Owner.ActorNumber)
             {
-                // ³²ÀÚ°¡ ÇöÀç ·ÎÄÃ ÇÃ·¹ÀÌ¾îÀÏ ¶§
-                userNumber = "user1";  // ³²ÀÚ´Â Ç×»ó user1
-                print("FindPlayer ³²ÀÚ À¯Àú ÀÔÀå, À¯Àú¹øÈ£: user1");
+                // ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½
+                userNumber = "user1";  // ï¿½ï¿½ï¿½Ú´ï¿½ ï¿½×»ï¿½ user1
+                print("FindPlayer ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£: user1");
             }
             else if (PhotonNetwork.LocalPlayer.ActorNumber == player2.GetComponent<PhotonView>().Owner.ActorNumber)
             {
-                // ¿©ÀÚ°¡ ÇöÀç ·ÎÄÃ ÇÃ·¹ÀÌ¾îÀÏ ¶§
-                userNumber = "user2";  // ¿©ÀÚ´Â Ç×»ó user2
-                print("FindPlayer ¿©ÀÚ À¯Àú ÀÔÀå, À¯Àú¹øÈ£: user2");
+                // ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½
+                userNumber = "user2";  // ï¿½ï¿½ï¿½Ú´ï¿½ ï¿½×»ï¿½ user2
+                print("FindPlayer ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£: user2");
             }
 
         }
 
-        if (!player1 && !player2)//³²ÀÚ¿©ÀÚ µÑ´Ù¾øÀ½
+        if (!player1 && !player2)//ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ñ´Ù¾ï¿½ï¿½ï¿½
         {
-            //Debug.LogError("ÇÃ·¹ÀÌ¾î ¾øÀ½");
-            print("ÇÃ·¹ÀÌ¾î ¾øÀ½");
+            //Debug.LogError("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½");
+            print("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
 
-        //¹«µå¹öÆ°²ô±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½
         /* if (userNumber == "user1")
          {
              moodButton2.SetActive(false);
-             print("À¯Àú³Ñ¹ö1 2¹ø¹«µå¹öÆ°²ôÀÚ");
+             print("ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½1 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½");
          }
          else
          {
              moodButton1.SetActive(false);
-             print("À¯Àú³Ñ¹ö2 1¹ø¹«µå¹öÆ°²ôÀÚ");
+             print("ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½2 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½");
          }*/
 
-        CheckDate(); //³¯Â¥¸¦ °è»êÇØÁİ´Ï´Ù.
-        CheckMission(); //³¯Â¥¿¡ ¸Â´Â ¹Ì¼ÇÀ» »ı¼ºÇÕ´Ï´Ù.
-        CheckComent(); //ÄÚ¸Çµå°¡ ÀÖ´ÂÁö °è»êÇÕ´Ï´Ù.
-        CheckMood(); //¹«µå¸¦ ¹Ù²ÙÀÚ. FindPlayer ¸¦ ÁÜ.
-        CheckHistoty();
+        //local only
+        CheckDate(); //load date local
+        //CheckMission(); //load mission local
+        //CheckComent(); //load coment local
+        //CheckMood(); //load mood local
+        GetCheckMission();
+        //CheckHistoty();
+        NewCheckHistory();
+       
+       
     }
 
-    // ¹®ÀÚ¿­À» JSON Çü½ÄÀ¸·Î ·ÎÄÃ °æ·Î¿¡ ÀúÀåÇÏ´Â ¸Ş¼­µå
-    private void SaveStringAsJson(string data)
+    private void SaveStringAsJson(string data) // ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½
     {
-        // JSON Á÷·ÄÈ­ (´Ü¼ø stringÀ» JSON ±¸Á¶·Î º¯È¯ÇÏ´Â °æ¿ì)
+        // JSON ï¿½ï¿½ï¿½ï¿½È­ (ï¿½Ü¼ï¿½ stringï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½)
         //var jsonData = new { syncedData = data };
 
-        // Á÷·ÄÈ­µÈ JSON µ¥ÀÌÅÍ¸¦ ¹®ÀÚ¿­·Î º¯È¯
+        // ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         //string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
 
-        // ·ÎÄÃ ÆÄÀÏ¿¡ ÀúÀå
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½
         //File.WriteAllText(jsonSyncPath, jsonString);
-        File.WriteAllText(jsonSyncPath, data);
+        System.IO.File.WriteAllText(jsonSyncPath, data);
 
-        Debug.Log("Data saved as JSON at: " + jsonSyncPath);
+        //Debug.Log("Data saved as JSON at: " + jsonSyncPath);
     }
-    private void OnEnable()
+
+    private void OnEnable()  // ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½Ş´ï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½
     {
         PhotonNetwork.AddCallbackTarget(this);
     }
-    // ÀÌº¥Æ®¸¦ ¹Ş´Â ¸Ş¼­µå
-    public void OnEvent(EventData photonEvent)
+
+    public void OnEvent(EventData photonEvent)  // Photon ï¿½ï¿½Æ®ï¿½ï¿½Å©ï¿½ï¿½ï¿½ï¿½ ï¿½İ¹ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½
     {
-        // ¿ì¸®°¡ Á¤ÀÇÇÑ ÀÌº¥Æ®ÀÎÁö È®ÀÎ
+        // ï¿½ì¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (photonEvent.Code == DATA_SYNC_EVENT_CODE)
         {
-            // ÀÌº¥Æ® µ¥ÀÌÅÍ ¹Ş±â (string ÇüÅÂ¶ó°í °¡Á¤)
+            // ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ş±ï¿½ (string ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
             string jsonString = (string)photonEvent.CustomData;
 
-            Debug.Log("Received data: " + jsonString);
+            //Debug.Log("Received data: " + jsonString);
 
-            // ¹ŞÀº µ¥ÀÌÅÍ¸¦ JSONÀ¸·Î ÀúÀå
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ JSONï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             SaveStringAsJson(jsonString);
         }
     }
-    // Photon ³×Æ®¿öÅ©¿¡¼­ Äİ¹é Å¸°Ù µî·Ï
-   
 
     private void OnDestroy()
     {
-        PhotonNetwork.RemoveCallbackTarget(this);  // ÀÌº¥Æ® Äİ¹é ÇØÁ¦
+        PhotonNetwork.RemoveCallbackTarget(this);  // ï¿½Ìºï¿½Æ® ï¿½İ¹ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
-}//Å¬·¡½º ³¡
+
+}//Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½

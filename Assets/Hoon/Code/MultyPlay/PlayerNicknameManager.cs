@@ -44,6 +44,7 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
             //print("다른아바타 닉네임" + nickNameComp.text);
 
         }
+    
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -59,6 +60,7 @@ public class PlayerNicknameManager : MonoBehaviourPun, IPunObservable
 
         }
     }
+
     // Update is called once per frame
     /*void Update()
       {

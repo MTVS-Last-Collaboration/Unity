@@ -201,7 +201,11 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         if (roomList.Count > 0) //방개수가 0보다 크면                         
         {
              print("방개수" + roomList.Count);
+            print("joinRoomName" + joinRoomName);
+            joinRoomName = LoginInfoManager.instance.coupleCode;
+            createRoomName = LoginInfoManager.instance.coupleCode;
             avataText.text = "방개수" + roomList.Count;
+
             //방을 모두 검색해서 방이 있는지 찾자.
             foreach (RoomInfo roomInfo in roomList)
             {
@@ -210,18 +214,15 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
                 if (roomInfo.Name.Contains(joinRoomName))
                 {
                     print("방이있으니까 참가해야지~");
-                    isCreataeRoom = false;
+                    isCreataeRoom = true;
                     avataText.text = "방참여중...";
                     JoinRoom();
                     break;
                 }
-                else
-                {
-                    isCreataeRoom = true;
-                }
+               
             }
             
-            if(isCreataeRoom)
+            if(!isCreataeRoom)
             {
                 print("원하는 방이 없으니 만들자");
                 avataText.text = "방생성중...";

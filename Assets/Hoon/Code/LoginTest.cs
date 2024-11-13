@@ -54,6 +54,8 @@ public class LoginTest : MonoBehaviour
     public GameObject coupleMenu;
     public GameObject coupleMenu2to1;
     public GameObject coupleMenu3;
+    public HoonSoundManagerLogin hoonSoundManagerLogin;
+       
     public class UserInfo
     {
         public string email;
@@ -173,8 +175,10 @@ public class LoginTest : MonoBehaviour
 
     }
 
-    public void CheckLoginUserInfo()
+    public void CheckLoginUserInfo() //SeverLogin
     {
+        hoonSoundManagerLogin.PlaySound(0);
+
         UserInfo userInfo = new UserInfo();
         {
             userInfo.email = input_Id.text;
@@ -216,32 +220,32 @@ public class LoginTest : MonoBehaviour
             string responseText = request.downloadHandler.text;
             //print("서버 응답: " + responseText);
             myCoupleCodeJson = responseText;
-            print("커플코드json" + myCoupleCodeJson);
+            //print("커플코드json" + myCoupleCodeJson);
             CoupleCode  cc = JsonConvert.DeserializeObject<CoupleCode>(responseText); //json을 문자열로 파싱하기.
             myCoupleCode = cc.coupleCode; //정보 넣기
             print("커플코드 " + myCoupleCode); //커플코드출력
             LoginInfoManager.instance.coupleCode = myCoupleCode;
-            print("로그인인포 매니저 커플코드 " + LoginInfoManager.instance.coupleCode);
+            //print("로그인인포 매니저 커플코드 " + LoginInfoManager.instance.coupleCode);
 
             string authHeader = request.GetResponseHeader("authorization");
             string accessToken = authHeader.Substring("Bearer ".Length).Trim();
-            Debug.Log("Access Token: " + accessToken);
+            //Debug.Log("Access Token: " + accessToken);
             myToken = accessToken; //토큰저장변수
-            print("내토큰보기" + myToken);
+            //print("내토큰보기" + myToken);
             PlayerPrefs.SetString("token", myToken); //플레이어 프리펩에 토큰저장
             LoginInfoManager.instance.myToken = myToken; ; //로그인인포에 토큰저장
-            print("플레이어 프리팹 내토큰" + PlayerPrefs.GetString("token"));
+            //print("플레이어 프리팹 내토큰" + PlayerPrefs.GetString("token"));
             //Access Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjvE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
 
             // 서버 응답과 newUser가 같은지 확인
-            if (responseText == input_Id.text)
+           /* if (responseText == input_Id.text)
             {
                 Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
             }
             else
             {
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
-            }
+            }*/
 
             CheckUserInfo(); //내정보가져오기
 
@@ -276,9 +280,11 @@ public class LoginTest : MonoBehaviour
     IEnumerator GetUserInfo()
     {
         string urlMyInfo = "http://125.132.216.190:12223/api/auth/my-info";
-        
+        //string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //테스트용
+
         //Get 서버요청
         UnityWebRequest request = UnityWebRequest.Get(urlMyInfo); //Get url
+        //UnityWebRequest request = UnityWebRequest.Get(urlTodayMission); //Get url 미션가져오기테스트용
         request.SetRequestHeader("Authorization", "Bearer " + myToken);
 
         
@@ -296,7 +302,7 @@ public class LoginTest : MonoBehaviour
         else
         {
             string responseText = request.downloadHandler.text;
-            print("서버 응답: " + responseText); // 내가 받은 정보
+            //print("서버 응답: " + responseText); // 내가 받은 정보
 
             //responseText 응답결과
             /*{
@@ -327,20 +333,20 @@ public class LoginTest : MonoBehaviour
               print("내커플코드" + LoginInfoManager.instance.coupleCode);*/
 
             // 서버 응답과 newUser가 같은지 확인
-            if (responseText == input_Id.text)
+           /* if (responseText == input_Id.text)
             {
                 Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
             }
             else
             {
                 Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
-            }
+            }*/
 
             //여기에서 회원가입 이미지를 꺼야 합니다.
             allRegistObject.SetActive(false);
             //커플코드입력필드에 내코드를 넣어주기
             viewMyCoupleCode.text = myInfo.coupleCode;
-            print(viewMyCoupleCode.text);
+            //print(viewMyCoupleCode.text);
             //viewMyCoupleCode.GetComponent<TextMeshPro>().text = myInfo.coupleCode;
             //뭐하는거냐고
             
@@ -468,6 +474,7 @@ public class LoginTest : MonoBehaviour
             // 유저 정보가 있는지 확인하는 변수
             bool isUserFound = false;
 
+            print("유저리스트 있음, 유저검색시작");
             //리스트파일을 순차검사
             foreach (var userInfo in userInfoList)
             {
@@ -531,6 +538,7 @@ public class LoginTest : MonoBehaviour
 
     public void Login()
     {
+        hoonSoundManagerLogin.PlaySound(0);
         print("로그인완료, 로비생성하기");
         //SceneManager.LoadScene("");
         connectionManager.StartLobby();

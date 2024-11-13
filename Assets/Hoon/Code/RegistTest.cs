@@ -87,17 +87,17 @@ public class RegistTest : MonoBehaviour
     {
         //데이터를 저장할 경로
         string path = Application.persistentDataPath + "/UserInfo.json";
-        print("dataPath" + Application.persistentDataPath);
+        //print("dataPath" + Application.persistentDataPath);
 
         // 유저 정보를 저장할 리스트 선언
         List<UserInfo> userInfoList = new List<UserInfo>();
 
        if (File.Exists(path)) //파일있으면
         {
-            print("파일있어영");
+            //print("파일있어영");
             //path의 모든 텍스트를 가져옴.
             loadUserInfo = System.IO.File.ReadAllText(path);
-            print("JSON 파일 읽기 완료" + loadUserInfo);
+            //print("JSON 파일 읽기 완료" + loadUserInfo);
             List<UserInfo> loadUserInfoList = JsonConvert.DeserializeObject<List<UserInfo>>(loadUserInfo); //List로 파싱하기
 
             bool isMatchInfo = false;
@@ -135,7 +135,7 @@ public class RegistTest : MonoBehaviour
                 string jsonString = JsonConvert.SerializeObject(newUserInfo, Formatting.Indented);
 
                 //File.WriteAllText(path, jsonString); //로컬저장
-                print("저장된 문자열" + jsonString);
+                //print("저장된 문자열" + jsonString);
 
                 StartCoroutine(PostNewUserInfoJSon(jsonString));
                 

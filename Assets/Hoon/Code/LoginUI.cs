@@ -16,11 +16,11 @@ public class LoginUI : MonoBehaviour
     public GameObject registMenu2;
     public GameObject registMenu3;
     public GameObject registMenuAll;
-
-
+    GameObject imgMoodChoiceBlackBg;
+    public HoonSoundManagerLogin hoonSoundManagerLogin;
     void Start()
     {
-        
+        imgMoodChoiceBlackBg = GameObject.Find("Img_MoodChoiceBlackBG");
     }
 
     /*void Update()
@@ -35,6 +35,7 @@ public class LoginUI : MonoBehaviour
 
     public void OpenUI(GameObject obj)
     {
+        hoonSoundManagerLogin.PlaySound(1);
         obj.SetActive(true);
         
         if(obj.name == "Img_NewRegistMenu1")
@@ -50,11 +51,13 @@ public class LoginUI : MonoBehaviour
 
     public void CloseUI(GameObject objecName)
     {
+        hoonSoundManagerLogin.PlaySound(0);
         objecName.SetActive(false);
+        print("ObjectName" + objecName.name);
+
+        
+
 
     }
-
-    
-  
         
 }
