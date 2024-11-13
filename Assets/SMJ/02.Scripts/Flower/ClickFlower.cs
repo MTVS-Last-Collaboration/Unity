@@ -32,6 +32,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
     bool isFirst = false;
     public bool isFirstClick = false;
 
+    private HoonSoundManagerLogin sound;
+
     private void Awake()
     {
         targetFlower = GetComponent<Flower>();
@@ -42,6 +44,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        sound = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonSoundManagerLogin>();
         cameraTr = Camera.main.transform;
 
         // 로컬 플레이어의 카메라 컨트롤러 찾기
@@ -141,7 +144,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
                 cameraControll = hitCollider.GetComponent<CameraControllTest>();
                 if (cameraControll == null) continue;
 
-                float distance = Vector3.Distance(gameObject.transform.position, hitCollider.transform.position);
+                float distance = Vector3.Distance(gameObject.transform.position, hitCollider.GetComponent<PlayerInteraction>().playerModel.transform.position + new Vector3(0, 1, 0));
                 if (distance < detectionDistance)
                 {
                     isNearby = true;
@@ -197,6 +200,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         // 로컬 플레이어의 상호작용만 처리
         if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null && isFirstClick == false)
         {
+
             isFirstClick = true;
 
             if (isFirst == false)
@@ -264,6 +268,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
         if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
         {
+            sound.PlaySound("hoonAudioClipArray", 1);
             HandleInteraction();
         }
     }

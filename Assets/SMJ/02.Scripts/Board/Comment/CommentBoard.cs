@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Collections;
+using System.Globalization;
 
 [System.Serializable]
 public class ServerCommentPost
@@ -20,14 +21,33 @@ public class ServerCommentData
     public string content;
     public string authorNickname;
     public int likeCount;
-    [SerializeField]
-    private string createDate;   // JSON 필드명과 정확히 일치시키기
+    public string createdDate;
 
-    // 프로퍼티를 통해 createdDate로 접근
-    public string createdDate
+    private DateTime? _parsedDate;
+    public DateTime CreatedDateTime
     {
-        get { return createDate; }
-        set { createDate = value; }
+        get
+        {
+            if (!_parsedDate.HasValue && !string.IsNullOrEmpty(createdDate))
+            {
+                try
+                {
+                    // ISO 8601 형식의 날짜 문자열을 DateTime으로 파싱
+                    _parsedDate = DateTime.Parse(createdDate, null, DateTimeStyles.RoundtripKind);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Date parsing failed for {createdDate}: {e.Message}");
+                    _parsedDate = DateTime.MinValue;
+                }
+            }
+            return _parsedDate ?? DateTime.MinValue;
+        }
+    }
+
+    public string GetFormattedDate(string format = "MM/dd")
+    {
+        return CreatedDateTime.ToString(format);
     }
 }
 [System.Serializable]
@@ -162,12 +182,6 @@ public class CommentBoard : MonoBehaviour
                         if (commentList.Count > 0)
                         {
                             var firstComment = commentList[0];
-                            Debug.Log($"First comment details - id: {firstComment.id}, " +
-                                    $"answerId: {firstComment.answerId}, " +
-                                    $"content: {firstComment.content}, " +
-                                    $"nickname: {firstComment.authorNickname}, " +
-                                    $"date: {firstComment.createdDate}, " +
-                                    $"likes: {firstComment.likeCount}");
                         }
 
                         comments.Clear();
@@ -188,7 +202,7 @@ public class CommentBoard : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError($"Failed to load comments. Success: {success}, CommentList null: {commentList == null}");
+                    //Debug.LogError($"Failed to load comments. Success: {success}, CommentList null: {commentList == null}");
                 }
             });
     }
@@ -202,7 +216,7 @@ public class CommentBoard : MonoBehaviour
             serverComment.id,
             serverComment.authorNickname,
             serverComment.content,
-            serverComment.createdDate,
+            serverComment.GetFormattedDate("MM/dd HH:mm"),
             serverComment.likeCount
         );
 
