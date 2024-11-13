@@ -65,7 +65,7 @@ public class CommentItem : MonoBehaviour
         if (likeButton != null)
             likeButton.interactable = false;
 
-        StartCoroutine(CommentLike(data.answerId, () => {
+        StartCoroutine(CommentLike(data.id, () => {
             data.AddLike();
             isClickLike = true;
             UpdateLikeUI();

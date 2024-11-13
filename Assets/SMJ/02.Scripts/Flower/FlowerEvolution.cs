@@ -8,7 +8,8 @@ public class FlowerEvolution : MonoBehaviourPun
 {
     private Flower flower;
     public GameObject[] flowers = new GameObject[3];
-    [SerializeField] private const int budEvolCount = 1; //10
+    [SerializeField] private const int sproutEvolCount = 1; //10
+    [SerializeField] private const int budEvolCount = 1; //20
     [SerializeField] private const int blossomEvolCount = 1; //30
     private GoodsManager goodsManager;
 
@@ -40,17 +41,21 @@ public class FlowerEvolution : MonoBehaviourPun
         // 현재 상태에 맞는 꽃 오브젝트만 활성화
         switch (state)
         {
-            case Flower.States.SPROUT:
+            case Flower.States.SEED:
                 flowerImage.sprite = flowerSprite[0];
                 flowers[0].SetActive(true);
                 break;
-            case Flower.States.BUD:
+            case Flower.States.SPROUT:
                 flowerImage.sprite = flowerSprite[1];
                 flowers[1].SetActive(true);
                 break;
-            case Flower.States.BLOSSOM:
+            case Flower.States.BUD:
                 flowerImage.sprite = flowerSprite[2];
                 flowers[2].SetActive(true);
+                break;
+            case Flower.States.BLOSSOM:
+                flowerImage.sprite = flowerSprite[3];
+                flowers[3].SetActive(true);
                 break;
         }
     }
@@ -70,6 +75,11 @@ public class FlowerEvolution : MonoBehaviourPun
             newState = Flower.States.BUD;
             StartEvolution(newState);
         }
+        else if (flower.evolutionCount >= sproutEvolCount)
+        {
+            newState = Flower.States.SPROUT;
+            StartEvolution(newState);
+        }
     }
 
     private void StartEvolution(Flower.States newState)
@@ -81,7 +91,7 @@ public class FlowerEvolution : MonoBehaviourPun
 
     public void NewFlower()
     {
-        StartEvolution(Flower.States.SPROUT);
+        StartEvolution(Flower.States.SEED);
         goodsManager.IncreaseCoin(flower.harvestCoins);
     }
 

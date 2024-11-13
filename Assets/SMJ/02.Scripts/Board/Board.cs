@@ -70,7 +70,7 @@ public class Board : MonoBehaviour
         {
             isLoading = true;
             currentLoadingTask = new TaskCompletionSource<bool>();
-            Debug.Log($"[Board] Loading topic for date: {_date:yyyy-MM-dd}");
+            Debug.Log($"크아악 Loading topic for date: {_date:yyyy-MM-dd}");
 
             // 보드 초기화는 한 번만 수행
             ClearBoard();
@@ -200,9 +200,9 @@ public class Board : MonoBehaviour
         });
     }
 
-    public void CreatePost(int answerId, string nickName, string title, string content, int likeCount)
+    public void CreatePost(int answerId, string nickName, string title, string content, string date, int likeCount)
     {
-        var post = new PostData(answerId, nickName, title, content, likeCount);
+        var post = new PostData(answerId, nickName, title, content, date, likeCount);
         posts.Add(post);
         GameObject postObj = Instantiate(postPrefab, postListContent);
         postObj.GetComponent<PostItem>().Initialize(post);
@@ -214,12 +214,12 @@ public class Board : MonoBehaviour
         {
             return;
         }
-
         var post = new PostData(
             answer.id,
             answer.authorNickname,
             answer.title,
             answer.content,
+            answer.GetFormattedDate("MM/dd"),  // 변환된 DateTime 사용
             answer.likeCount
         );
 
@@ -309,7 +309,7 @@ public class Board : MonoBehaviour
     public void SortByDate()
     {
         isPopularSortActive = false;
-        posts.Sort((a, b) => b.createDate.CompareTo(a.createDate));
+        posts.Sort((a, b) => b.createdDate.CompareTo(a.createdDate));
         //RefreshPostList();
     }
 

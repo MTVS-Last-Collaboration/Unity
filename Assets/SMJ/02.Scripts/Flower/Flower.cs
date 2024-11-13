@@ -22,7 +22,7 @@ public class Flower : MonoBehaviour
     //public bool isTouchAble = true;   // 꽃 터치시 조이스틱 등 비활성화 > ui끄면 다시 활성화
     public FlowerUIManager uiManager;
     public int evolutionCount = 0;
-    public int harvestCoins = 300;
+    public int harvestCoins = 10;
     public States curState;
 
     private const string ENDPOINT = "/scores";
@@ -34,9 +34,10 @@ public class Flower : MonoBehaviour
 
     public enum States
     {
-        SPROUT = 0,
-        BUD = 1,
-        BLOSSOM = 2
+        SEED = 0,
+        SPROUT = 1,
+        BUD = 2,
+        BLOSSOM = 3
     }
 
     public static IEnumerator PostFlowerData(FlowerData flowerData, Action<bool, string> callback = null)
@@ -55,6 +56,6 @@ public class Flower : MonoBehaviour
         //nickName = string.Empty;
         voiceClip = null;
         evolutionCount = 0;
-        curState = States.SPROUT;
+        curState = States.SEED;
     }
 }

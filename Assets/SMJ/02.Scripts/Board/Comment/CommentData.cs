@@ -18,7 +18,7 @@ public class CommentData
         this.id = id;
         this.nickName = nickName;
         this.content = content;
-        this.createdDate = createdDate;  // 날짜 파싱하지 말고 그대로 전달
+        this.createdDate = createdDate;
         this.likeCount = likeCount;
     }
 

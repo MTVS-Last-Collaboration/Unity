@@ -9,7 +9,7 @@ public class PlayerInteraction : MonoBehaviourPun
     [SerializeField] private float detectionDistance = 2f; // 감지 거리
     [SerializeField] private LayerMask detectLayer; // 감지할 레이어
     [SerializeField] private Button detectionButton; // UI 버튼
-    [SerializeField] private GameObject playerModel; // 플레이어 모델
+    [SerializeField] public GameObject playerModel; // 플레이어 모델
 
     private void Start()
     {
@@ -40,5 +40,10 @@ public class PlayerInteraction : MonoBehaviourPun
                 Debug.Log("감지된 오브젝트가 없습니다.");
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        detectionButton.onClick.RemoveListener(DetectForwardObject);
     }
 }
