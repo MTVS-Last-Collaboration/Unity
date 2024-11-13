@@ -202,7 +202,7 @@ public class CommentBoard : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError($"Failed to load comments. Success: {success}, CommentList null: {commentList == null}");
+                    //Debug.LogError($"Failed to load comments. Success: {success}, CommentList null: {commentList == null}");
                 }
             });
     }

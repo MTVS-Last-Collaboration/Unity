@@ -143,7 +143,10 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Request failed: {request.error}");
+                if (request.error != "HTTP/1.1 404 Not Found")
+                {
+                    Debug.LogError($"Request failed: {request.error}");
+                }
                 callback?.Invoke(false, null);
             }
         }
