@@ -9,6 +9,7 @@ using ExitGames.Client.Photon;
 using System;
 using System.Linq;
 using static UnityEngine.CullingGroup;
+using Unity.VisualScripting;
 
 public class FlowerUIManager : MonoBehaviourPun
 {
@@ -50,6 +51,8 @@ public class FlowerUIManager : MonoBehaviourPun
     private const int CHUNK_SIZE = 5000;
     private List<byte[]> voiceDataChunks = new List<byte[]>();
 
+    private HoonSoundManagerLogin sound;
+
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -62,6 +65,7 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     private void Start()
     {
+        sound = GameObject.Find("HoonLobyCanvas").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
         sendOptions.Reliability = true; // 신뢰성 있는 전송
         sendOptions.Channel = 0; // 채널 설정
@@ -210,14 +214,17 @@ public class FlowerUIManager : MonoBehaviourPun
             string statusMsg = "";
             switch (flower.curState)
             {
+                case Flower.States.SEED:
+                    statusMsg = "상태: 작은 씨앗";
+                    break;
                 case Flower.States.SPROUT:
-                    statusMsg = "상태: 자라나는 중...";
+                    statusMsg = "상태: 아기 새싹";
                     break;
                 case Flower.States.BUD:
-                    statusMsg = "상태: 피기 직전.";
+                    statusMsg = "상태: 꽃봉오리";
                     break;
                 case Flower.States.BLOSSOM:
-                    statusMsg = "상태: 활짝 피었어요!";
+                    statusMsg = "상태: 만개한 꽃";
                     break;
             }
             photonView.RPC("RPC_UpdateStatusText", RpcTarget.All, statusMsg);
@@ -413,6 +420,7 @@ public class FlowerUIManager : MonoBehaviourPun
         // 먼저 진화 상태와 녹음 상태를 확인
         if (isMyFlower && targetFlower.curState == Flower.States.BLOSSOM && isRecordComplete)
         {
+            sound.PlaySound("smjAudioClopAttay", 1);
             SwapButtonUI(5);  // 새 꽃 심기 버튼
             return;  // 여기서 종료
         }
@@ -422,10 +430,12 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             if (isRecordComplete == false || isListenComplete == true)
             {
+                sound.PlaySound("smjAudioClopAttay", 1);
                 SwapButtonUI(idx);
             }
             else
             {
+                sound.PlaySound("smjAudioClopAttay", 1);
                 SwapButtonUI(3);
             }
         }
@@ -433,10 +443,12 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             if (targetFlower.voiceClip != null && !isListenComplete)
             {
+                sound.PlaySound("smjAudioClopAttay", 1);
                 SwapButtonUI(2);
             }
             else
             {
+                sound.PlaySound("smjAudioClopAttay", 1);
                 SwapButtonUI(idx);
             }
         }
@@ -491,6 +503,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void OnCloseButtonClick()
     {
+        sound.PlaySound("smjAudioClopAttay", 2);
         HideFlowerInfo();
         click.ReturnCamera();
     }
