@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -35,7 +36,7 @@ public class JSW_ClickMong : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             isPlayerInRange = true;
             //checkID = other.GetComponent<CheckID>();
@@ -44,7 +45,7 @@ public class JSW_ClickMong : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             isPlayerInRange = false;
             oneClick = false;

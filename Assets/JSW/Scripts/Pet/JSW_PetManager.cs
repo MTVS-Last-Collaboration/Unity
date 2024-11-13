@@ -24,10 +24,14 @@ public class JSW_PetManager : MonoBehaviour
     bool isOpenMongUI;
 
     public TMP_Text mainMongText;
+    public GameObject GifticonImage;
+
+
     void Start()
     {
         mongExp = 0;
         MongLevelUpGet();
+        MongNickname("동글");
         nickName_text.text = "어른이 된 " + MongName + "이";
     }
 
@@ -46,14 +50,15 @@ public class JSW_PetManager : MonoBehaviour
                 mongExp = mongExpTarget;
             }
 
-            if (mongLevel >= 20)
+            if (mongLevel >= 20 && mongExpTarget!= 100)
             {
+                OpenGifticon();
                 mongExpTarget = 100;
                 return;
             }
 
 
-            if (mongExp >= 100)
+            if (mongLevel != 20 && mongExp >= 100)
             {
                 mongExp = 0;
                 mongExpTarget -= 100;
@@ -246,13 +251,31 @@ public class JSW_PetManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             // 성공 응답 처리
-            Debug.Log("경험치 추가 성공: " + request.downloadHandler);
+            Debug.Log("이름 변경 성공: " + request.downloadHandler);
         }
         else
         {
             // 실패 응답 처리
-            Debug.LogError("경험치 추가 실패: " + request.error);
+            Debug.LogError("이름 변경 실패: " + request.error);
         }
+    }
+
+    public void OpenGifticon()
+    {
+        GifticonImage.SetActive(true);
+
+        Vector3 size = GifticonImage.transform.localScale;
+        GifticonImage.transform.localScale = Vector3.one * 0.2f;
+        iTween.ScaleTo(GifticonImage, iTween.Hash(
+        "scale", size, // 최종 크기
+        "time", 1.5f,         // 애니메이션 시간
+        "easetype", iTween.EaseType.easeOutElastic // 애니메이션 타입
+        ));
+    }
+    public void CloseGifticon()
+    {
+        GifticonImage.SetActive(false);
+
     }
 
 }

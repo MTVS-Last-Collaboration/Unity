@@ -230,6 +230,7 @@ public class JSW_UIManager : MonoBehaviour
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         Mong_1.SetActive(false);
         Mong_Chat_2.SetActive(true);
+        easingUI(Mong_Chat_2, 2.0f);
         //Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 1;
     }
     public void OnClickMongChat_Back()
