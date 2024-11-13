@@ -55,7 +55,11 @@ public class LoginTest : MonoBehaviour
     public GameObject coupleMenu2to1;
     public GameObject coupleMenu3;
     public HoonSoundManagerLogin hoonSoundManagerLogin;
-       
+    public HoonChoiceRoom hoonChoiceRoom;
+    public GameObject Img_ChoiceRoomError;
+    public GameObject Img_CreatingRoom;
+
+
     public class UserInfo
     {
         public string email;
@@ -84,6 +88,7 @@ public class LoginTest : MonoBehaviour
         placeHole_Id_Text = placeHold_Id_Object.GetComponent<TextMeshProUGUI>();
         placeHole_Pass_Text = placeHold_Psss_Object.GetComponent <TextMeshProUGUI>();
         loginUI = transform.GetComponent<LoginUI>();
+        Img_ChoiceRoomError.SetActive(false);
 
     }
 
@@ -538,6 +543,21 @@ public class LoginTest : MonoBehaviour
 
     public void Login()
     {
+        hoonChoiceRoom = transform.GetComponent<HoonChoiceRoom>();
+  
+        if (hoonChoiceRoom.isViewChoiveMark)
+        {
+            print("방을선택했습니다");
+            Img_CreatingRoom.SetActive(true);
+        }
+        else
+        {
+            print("방을선택해야합니다.");
+            Img_ChoiceRoomError.SetActive(true);
+            return;
+        }
+
+
         hoonSoundManagerLogin.PlaySound(0);
         print("로그인완료, 로비생성하기");
         //SceneManager.LoadScene("");

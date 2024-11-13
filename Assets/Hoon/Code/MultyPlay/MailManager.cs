@@ -1757,10 +1757,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     private void OnTriggerEnter(Collider other)
     {
-        print("�÷��̾ ��ó�� ����");
+        print("FindplayertoRange");
         if (other.gameObject.name.Contains("Player")) //���ӿ�����Ʈ�� �÷��̾ �����ϰ� �ִٸ�
         {
-            print("�̹��� �����ֱ�");
+            print("showMailImage");
             mail_IconImage.gameObject.SetActive(enabled);
 
             //��ư�� �������� �Լ� ȣ��, �ѹ��� ȣ���ϰ� ����.
