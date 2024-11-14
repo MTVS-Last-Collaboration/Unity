@@ -1450,13 +1450,9 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         //Img_MoodChoice2 오브젝트를 보여주자.
                         moodChoice2Object.SetActive(true);
                     }
-
-
                     return;
                 }
-                
-
-                
+                              
             }
             else 
             {
@@ -1469,6 +1465,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     }
 
+   
     IEnumerator PostDayComentQuaryParameter(string url)
     {
         print("서버에 요청시작");
@@ -1499,6 +1496,20 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         }
     }
+
+    public void DayComentRest()
+    {
+        string myMood = "null";
+        string myComent = "null";
+        // 쿼리 파라미터를 포함한 URL 생성
+        string baseUrl = "http://125.132.216.190:12223/api/missions/answer";
+        string url = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(myMood)}&answer={UnityWebRequest.EscapeURL(myComent)}";
+        string url1 = $"{baseUrl}?mood={UnityWebRequest.EscapeURL(myMood)}&answer={UnityWebRequest.EscapeURL(myComent)}";
+        StartCoroutine(PostDayComentQuaryParameter(url));
+        StartCoroutine(PostDayComentQuaryParameter(url1));
+
+    }
+
 
 
     public void LoadDayComentJson()
