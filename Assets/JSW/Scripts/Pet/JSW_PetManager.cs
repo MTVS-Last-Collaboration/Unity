@@ -120,11 +120,15 @@ public class JSW_PetManager : MonoBehaviour
         mongExpTarget += 10;
     }
 
+    public void MongLevelUpnineteen()
+    {
+        mongLevel = 19;
+    }
+
     public void MongLevelUpGet()
     {
         StartCoroutine(GetPetStatus());
     }
-
     private string url2 = "http://125.132.216.190:12223/api/pet";
 
 
