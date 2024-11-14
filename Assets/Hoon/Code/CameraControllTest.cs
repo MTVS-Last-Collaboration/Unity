@@ -14,13 +14,14 @@ public class CameraControllTest : MonoBehaviour
     public PhotonView playerPhotonview;
 
     public bool isMoveAble = true;
-   
+    Transform mainCameraFocus;
 
     void Start()
     {
         //메인카메라 캐싱
         mainCam_Object = GameObject.Find("MainCameraSoo");
         playerPhotonview = transform.GetComponent<PhotonView>();
+        mainCameraFocus = transform.Find("MainCameraFocus");
     }
 
     //void LateUpdate()
@@ -30,7 +31,7 @@ public class CameraControllTest : MonoBehaviour
 
         if(transform != null && playerPhotonview.IsMine && isMoveAble == true)
         {
-            Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
+            Vector3 playerDir = mainCameraFocus.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
             float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
             mainCam_Object.transform.position = new Vector3(mainCamPosX, mainCamY, mainCamPosZ); //플레이어의 움직임 따라가기

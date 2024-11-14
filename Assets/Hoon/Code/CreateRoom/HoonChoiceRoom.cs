@@ -8,6 +8,7 @@ public class HoonChoiceRoom : MonoBehaviour
     public GameObject img_CreatingRoom;
     public GameObject roomChoiceMark;
     public bool isViewChoiveMark = false;
+    HoonSoundManagerLogin hoonSoundManager;
     
 
     
@@ -26,13 +27,17 @@ public class HoonChoiceRoom : MonoBehaviour
 
     public void ViewRoomChoiceMarkControll()
     {
-        if(!isViewChoiveMark)
+        hoonSoundManager = transform.GetComponent<HoonSoundManagerLogin>();
+
+        if (!isViewChoiveMark)
         {
+            hoonSoundManager.PlaySound(0);
             roomChoiceMark.SetActive(true);
             isViewChoiveMark = true;
         }
         else
         {
+            hoonSoundManager.PlaySound(1);
             roomChoiceMark.SetActive(false);
             isViewChoiveMark = false;
         }
