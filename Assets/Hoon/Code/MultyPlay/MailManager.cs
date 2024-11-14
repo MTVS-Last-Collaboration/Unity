@@ -1497,7 +1497,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    public void DayComentRest()
+    public void RestDayComent()
     {
         string myMood = "null";
         string myComent = "null";
@@ -1509,8 +1509,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         StartCoroutine(PostDayComentQuaryParameter(url1));
 
     }
-
-
 
     public void LoadDayComentJson()
     {
