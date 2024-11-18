@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class FlowerEvolution : MonoBehaviourPun
 {
@@ -91,8 +92,28 @@ public class FlowerEvolution : MonoBehaviourPun
 
     public void NewFlower()
     {
-        StartEvolution(Flower.States.SEED);
-        goodsManager.IncreaseCoin(flower.harvestCoins);
+        StartCoroutine(PostNewSeed(() => {
+            StartEvolution(Flower.States.SEED);
+            goodsManager.IncreaseCoin(flower.harvestCoins);
+        }));
+    }
+    private IEnumerator PostNewSeed(Action onComplete)
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+
+        yield return NetworkManager.Instance.PostWithoutBody($"/api/flower/new-seed",
+            (success, response) =>
+            {
+                if (success)
+                {
+                    Debug.Log("New seed successfully updated");
+                    onComplete?.Invoke();
+                }
+                else
+                {
+                    Debug.LogError($"Failed to new seed: {response}");
+                }
+            });
     }
 
     IEnumerator EvolutionAnimation(Flower.States state)
