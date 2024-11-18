@@ -852,11 +852,40 @@ public class FlowerUIManager : MonoBehaviourPun
         buttons[4].SetActive(false);
     }
 
+    [System.Serializable]
+    public class NickNamePost
+    {
+        public string name;
+    }
+    private IEnumerator PostNickName(NickNamePost name, Action onComplete)
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+
+        yield return NetworkManager.Instance.Post($"/api/flower/set-name", name,
+            (success, response) =>
+            {
+                if (success)
+                {
+                    Debug.Log("NickName fix successfully");
+                    onComplete?.Invoke();
+                }
+                else
+                {
+                    Debug.LogError($"Failed to fix NickName: {response}");
+                }
+            });
+    }
+
     public void UpdateName(Flower flower)
     {
         if (!click.checkID.IsMine(flower)) return;
 
+        var newName = new NickNamePost
+        {
+            name = nameInput.text
+        };
         photonView.RPC("RPC_UpdateFlowerName", RpcTarget.All, nameInput.text);
+        StartCoroutine(PostNickName(newName, null));
     }
 
     public void OnClickNewFlower()

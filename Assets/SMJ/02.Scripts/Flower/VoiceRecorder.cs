@@ -269,6 +269,65 @@ public class VoiceRecorder : MonoBehaviourPun
                 Debug.Log("AudioSource.clip is null");
         }
     }
+
+    public string GetBase64Recording()
+    {
+        if (recordedClip == null) return null;
+
+        try
+        {
+            // AudioClip의 raw 데이터를 가져옵니다
+            float[] samples = new float[recordedClip.samples * recordedClip.channels];
+            recordedClip.GetData(samples, 0);
+
+            // float 배열을 byte 배열로 변환
+            byte[] bytesData = new byte[samples.Length * 4]; // float는 4바이트
+            Buffer.BlockCopy(samples, 0, bytesData, 0, bytesData.Length);
+
+            // Base64로 변환
+            return Convert.ToBase64String(bytesData);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error converting to Base64: {e.Message}");
+            return null;
+        }
+    }
+
+    public bool SetBase64Recording(string base64String)
+    {
+        if (string.IsNullOrEmpty(base64String))
+        {
+            Debug.LogError("Base64 string is null or empty");
+            return false;
+        }
+
+        try
+        {
+            // Base64를 byte 배열로 변환
+            byte[] bytesData = Convert.FromBase64String(base64String);
+
+            // byte 배열을 float 배열로 변환
+            float[] samples = new float[bytesData.Length / 4];
+            Buffer.BlockCopy(bytesData, 0, samples, 0, bytesData.Length);
+
+            // 새로운 AudioClip 생성
+            recordedClip = AudioClip.Create("ReceivedAudio", samples.Length / recordedClip.channels,
+                recordedClip.channels, recordingFrequency, false);
+            recordedClip.SetData(samples, 0);
+
+            // AudioSource와 Flower에 설정
+            audioSource.clip = recordedClip;
+            flower.voiceClip = recordedClip;
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error converting from Base64: {e.Message}");
+            return false;
+        }
+    }
 }
 
 public static class SavWav
