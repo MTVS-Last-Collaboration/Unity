@@ -595,193 +595,173 @@ public class FlowerUIManager : MonoBehaviourPun
 
         StartCoroutine(SendVoiceDataInChunks(voiceData));
     }
+    [SerializeField] private TMP_Text progressText;
     private IEnumerator SendVoiceDataInChunks(byte[] voiceData)
     {
-        // 청크 크기를 더 작게 조정
-        const int CHUNK_SIZE = 1024; // 1KB로 감소
+        // 1. 기본 설정
+        const int CHUNK_SIZE = 16384; // 16KB
+        int maxRetries = 3;
 
-        // 최대 재시도 횟수 증가
-        int maxRetries = 5;
-        int currentRetry = 0;
-
-        // 초기 연결 대기 시간 증가
-        float connectionTimeout = 10f;  // 10초로 증가
+        // 2. 연결 상태 확인 및 대기
+        float connectionTimeout = 10f;
         float timer = 0f;
-
         while (!PhotonNetwork.IsConnectedAndReady && timer < connectionTimeout)
         {
             timer += Time.deltaTime;
             yield return null;
         }
 
-        if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.InRoom)
+        if (!PhotonNetwork.IsConnectedAndReady)
         {
-            Debug.LogError("Failed to connect to network!");
+            Debug.LogError("연결 실패!");
             yield break;
         }
 
+        // 3. 청크 준비
         int chunks = Mathf.CeilToInt(voiceData.Length / (float)CHUNK_SIZE);
-
-        // 초기화 RPC에 재시도 로직 추가
         bool initSuccess = false;
-        currentRetry = 0;
-        while (!initSuccess && currentRetry < maxRetries)
+        int initRetry = 0;
+
+        // 4. 초기화 RPC 전송
+        while (!initSuccess && initRetry < maxRetries)
         {
-            bool tryInit = true;
-            try
+            if (PhotonNetwork.IsConnectedAndReady)
             {
                 photonView.RPC("RPC_InitializeVoiceTransfer", RpcTarget.All, chunks);
                 initSuccess = true;
             }
-            catch (Exception e)
+            else
             {
-                tryInit = false;
-                currentRetry++;
-                Debug.LogWarning($"Initialization retry {currentRetry}/{maxRetries}: {e.Message}");
-            }
-
-            if (!tryInit && currentRetry < maxRetries)
-            {
+                initRetry++;
                 yield return new WaitForSeconds(1f);
             }
         }
 
         if (!initSuccess)
         {
-            Debug.LogError("Failed to initialize voice transfer after all retries");
+            Debug.LogError("초기화 실패!");
             yield break;
         }
 
         yield return new WaitForSeconds(0.5f);
 
-        // 각 청크에 대한 전송 시도
+        // 5. 청크 전송
         for (int i = 0; i < chunks; i++)
         {
             if (!PhotonNetwork.IsConnectedAndReady)
             {
-                Debug.LogError("Lost connection during transfer!");
+                Debug.LogError("전송 중 연결 끊김!");
                 yield break;
             }
 
+            // 청크 데이터 준비
             int size = Mathf.Min(CHUNK_SIZE, voiceData.Length - i * CHUNK_SIZE);
             byte[] chunk = new byte[size];
             Array.Copy(voiceData, i * CHUNK_SIZE, chunk, 0, size);
 
+            // 재시도 로직
             bool chunkSent = false;
-            currentRetry = 0;
+            int chunkRetry = 0;
 
-            while (!chunkSent && currentRetry < maxRetries)
+            while (!chunkSent && chunkRetry < maxRetries)
             {
-                bool tryChunk = true;
-                try
+                if (PhotonNetwork.IsConnectedAndReady)
                 {
                     photonView.RPC("RPC_ReceiveVoiceChunk", RpcTarget.All, chunk, i);
                     chunkSent = true;
-                }
-                catch (Exception e)
-                {
-                    tryChunk = false;
-                    currentRetry++;
-                    Debug.LogWarning($"Retry {currentRetry}/{maxRetries} for chunk {i}: {e.Message}");
-                }
 
-                if (!tryChunk && currentRetry < maxRetries)
+                    // 진행률 표시 (UI가 있는 경우)
+                    if (progressText != null)
+                    {
+                        float progress = ((float)i / chunks) * 100f;
+                        progressText.text = $"전송중... {progress:F1}%";
+                    }
+                }
+                else
                 {
+                    chunkRetry++;
                     yield return new WaitForSeconds(1f);
                 }
             }
 
             if (!chunkSent)
             {
-                Debug.LogError($"Failed to send chunk {i} after {maxRetries} retries");
+                Debug.LogError($"청크 {i} 전송 실패");
                 yield break;
             }
 
-            // 청크 간 대기 시간을 네트워크 상태에 따라 동적으로 조정
-            float waitTime = Mathf.Max(0.5f, PhotonNetwork.GetPing() / 1000f);
+            // 네트워크 상태에 따른 동적 대기
+            float pingTime = PhotonNetwork.GetPing() / 1000f;
+            float waitTime = Mathf.Clamp(pingTime * 2f, 0.1f, 1f);
             yield return new WaitForSeconds(waitTime);
-
-            // 진행률 표시 (선택사항)
-            float progress = (i + 1f) / chunks;
-            Debug.Log($"Transfer progress: {progress:P}");
         }
 
-        // 전송 완료 처리에도 재시도 로직 추가
-        currentRetry = 0;
-        bool finalizeSuccess = false;
-
-        while (!finalizeSuccess && currentRetry < maxRetries)
+        // 6. 전송 완료 처리
+        if (progressText != null)
         {
-            bool tryFinalize = true;
-            try
-            {
-                photonView.RPC("RPC_FinalizeVoiceTransfer", RpcTarget.All);
-                finalizeSuccess = true;
-            }
-            catch (Exception e)
-            {
-                tryFinalize = false;
-                currentRetry++;
-                Debug.LogWarning($"Finalization retry {currentRetry}/{maxRetries}: {e.Message}");
-            }
-
-            if (!tryFinalize && currentRetry < maxRetries)
-            {
-                yield return new WaitForSeconds(1f);
-            }
+            progressText.text = "전송 완료!";
         }
 
-        if (!finalizeSuccess)
-        {
-            Debug.LogError("Failed to finalize voice transfer");
-        }
+        photonView.RPC("RPC_FinalizeVoiceTransfer", RpcTarget.All);
     }
 
     [PunRPC]
     private void RPC_InitializeVoiceTransfer(int totalChunks)
     {
-        // 새로운 보이스 데이터를 받기 위한 초기화
         voiceDataChunks = new List<byte[]>(totalChunks);
+        for (int i = 0; i < totalChunks; i++)
+        {
+            voiceDataChunks.Add(null);
+        }
     }
 
     [PunRPC]
     private void RPC_ReceiveVoiceChunk(byte[] chunk, int index)
     {
-        // 청크를 순서대로 저장
-        while (voiceDataChunks.Count <= index)
+        if (index < voiceDataChunks.Count)
         {
-            voiceDataChunks.Add(null);
+            voiceDataChunks[index] = chunk;
         }
-        voiceDataChunks[index] = chunk;
     }
 
     [PunRPC]
     private void RPC_FinalizeVoiceTransfer()
     {
-        // 모든 청크를 하나의 배열로 합치기
-        int totalSize = voiceDataChunks.Sum(chunk => chunk.Length);
-        byte[] completeVoiceData = new byte[totalSize];
-
-        int currentPosition = 0;
-        foreach (byte[] chunk in voiceDataChunks)
+        try
         {
-            Array.Copy(chunk, 0, completeVoiceData, currentPosition, chunk.Length);
-            currentPosition += chunk.Length;
-        }
+            // 전체 데이터 크기 계산
+            int totalSize = voiceDataChunks.Sum(chunk => chunk?.Length ?? 0);
+            byte[] completeVoiceData = new byte[totalSize];
 
-        // 완성된 음성 데이터 처리
-        recorder.SetRecordedData(completeVoiceData);
-        flower.voiceClip = recorder.GetAudioClip();
-
-        if (!click.checkID.IsMine(flower))
-        {
-            if (flower.curState == Flower.States.BLOSSOM)
+            // 데이터 합치기
+            int offset = 0;
+            foreach (byte[] chunk in voiceDataChunks.Where(c => c != null))
             {
-                SwapButtonUI(2);
+                Buffer.BlockCopy(chunk, 0, completeVoiceData, offset, chunk.Length);
+                offset += chunk.Length;
             }
-            isRecordComplete = true;
-            UpdateUIText();
-            UpdateAlertEmoji();
+
+            // 녹음 데이터 설정
+            recorder.SetRecordedData(completeVoiceData);
+            flower.voiceClip = recorder.GetAudioClip();
+
+            // UI 업데이트
+            if (!click.checkID.IsMine(flower))
+            {
+                if (flower.curState == Flower.States.BLOSSOM)
+                {
+                    SwapButtonUI(2);
+                }
+                isRecordComplete = true;
+                UpdateUIText();
+                UpdateAlertEmoji();
+            }
+        }
+        finally
+        {
+            // 메모리 정리
+            voiceDataChunks.Clear();
+            voiceDataChunks = null;
         }
     }
 

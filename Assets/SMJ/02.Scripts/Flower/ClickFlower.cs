@@ -122,6 +122,16 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    private void RPC_SyncFlowerClickId(int viewID) // CheckID 대신 ViewID 사용
+    {
+        PhotonView pv = PhotonView.Find(viewID);
+        if (pv != null)
+        {
+            checkID = pv.GetComponent<CheckID>();
+        }
+    }
+
     private void CheckForPlayer()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, idHandlingRadius);
@@ -131,7 +141,6 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         foreach (var hitCollider in hitColliders)
         {
             if (!hitCollider.CompareTag("Player")) continue;
-
             CheckID playerCheckID = hitCollider.GetComponent<CheckID>();
             if (playerCheckID == null) continue;
 
@@ -152,7 +161,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
                 if (targetFlower.managerId == playerIDHandler.ID)
                 {
-                    checkID = playerCheckID;
+                    photonView.RPC("RPC_SyncFlowerClickId", RpcTarget.All, playerCheckID.photonView.ViewID);
+                    //checkID = playerCheckID;
                     foundPlayer = true;
                 }
                 else if (string.IsNullOrEmpty(targetFlower.managerId))
