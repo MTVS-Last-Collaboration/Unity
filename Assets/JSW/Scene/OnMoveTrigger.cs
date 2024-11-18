@@ -25,6 +25,7 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
             }
             else
             {
+                
                 GoOtherRoom();
             }
         }
