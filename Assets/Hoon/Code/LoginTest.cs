@@ -544,7 +544,9 @@ public class LoginTest : MonoBehaviour
     public void Login()
     {
         hoonChoiceRoom = transform.GetComponent<HoonChoiceRoom>();
-  
+
+        //방을 선택한것으로 간주하기
+        hoonChoiceRoom.isViewChoiveMark = true;
         if (hoonChoiceRoom.isViewChoiveMark)
         {
             print("방을선택했습니다");

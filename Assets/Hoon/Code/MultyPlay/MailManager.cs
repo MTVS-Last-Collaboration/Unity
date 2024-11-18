@@ -293,6 +293,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
 
             Debug.LogError("Error: " + request.error);
+            
             //error500
 
         }
@@ -2101,8 +2102,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //CheckMission(); //load mission local
         //CheckComent(); //load coment local
         //CheckMood(); //load mood local
-        GetCheckMission();
         //CheckHistoty();
+        GetCheckMission();
         NewCheckHistory();
        
        
