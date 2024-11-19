@@ -87,7 +87,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        string roomName = createRoomName;
+        string roomName = LoginInfoManager.instance.coupleCode;
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -122,7 +122,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         //string roomName = "JSW_LoobyTest";
-        string roomName = joinRoomName;
+        string roomName = LoginInfoManager.instance.coupleCode;
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
@@ -194,6 +194,9 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
         // 로비에 들어갔으면 방을 생성
         //JoinRoom();
 
+        joinRoomName = LoginInfoManager.instance.coupleCode;
+        createRoomName = LoginInfoManager.instance.coupleCode;
+
         if (roomList.Count == 0)
         {
 
@@ -202,6 +205,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            
             print("방개수" + roomList.Count);
             foreach (RoomInfo roomInfo in roomList)
             {

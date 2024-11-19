@@ -10596,6 +10596,7 @@ MonoBehaviour:
   funiturePos: {fileID: 0}
   lobbyGameManager: {fileID: 0}
   byeUI: {fileID: 0}
+  soundManager: {fileID: 0}
 --- !u!65 &1151646545
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16102,8 +16103,10 @@ MonoBehaviour:
   touchButton: {fileID: 1208583315}
   currentDay: {fileID: 2046910675}
   moodChoiceObject: {fileID: 1046413528}
-  moodSwitch1: {fileID: 1211014940}
-  moodSwitch2: {fileID: 900743341}
+  moodSwitch1: {fileID: 0}
+  moodSwitch2: {fileID: 0}
+  moodChoice1Object: {fileID: 0}
+  moodChoice2Object: {fileID: 0}
   moodChice1: {fileID: 654194125}
   moodChice2: {fileID: 1046413530}
   moodGood: {fileID: 894195155}
@@ -16132,6 +16135,23 @@ MonoBehaviour:
   historyContent: {fileID: 1968268375}
   historyButton: {fileID: 4626698236281983321, guid: 4e349d49e3557eb459dbc3d25b61354c,
     type: 3}
+  isServerComent: 0
+  testSeverComentButton: {fileID: 0}
+  moodChoice1ButtonImageList: []
+  moodChoice2ButtonImageList: []
+  historyBGObject: {fileID: 0}
+  btnText_MailServerComent: {fileID: 0}
+  textMyMood: 
+  text_HistoryDate: {fileID: 0}
+  text_HistoryUser1NickName: {fileID: 0}
+  text_HistoryUser2NickName: {fileID: 0}
+  text_HistoryUser1Coment: {fileID: 0}
+  text_HistoryUser2Coment: {fileID: 0}
+  img_HistoryUser1Mood: {fileID: 0}
+  img_HistoryUser2Mood: {fileID: 0}
+  partner1Mood: 
+  partner2Mood: 
+  hoonSoundManagerLogin: {fileID: 0}
 --- !u!1001 &1624942500
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18389,6 +18409,7 @@ MonoBehaviour:
   funiturePos: {fileID: 0}
   lobbyGameManager: {fileID: 0}
   byeUI: {fileID: 0}
+  soundManager: {fileID: 0}
 --- !u!65 &1906997996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18936,7 +18957,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 660}
+  m_AnchoredPosition: {x: 0, y: 659.9994}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1968268376
