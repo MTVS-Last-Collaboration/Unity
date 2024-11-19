@@ -158,6 +158,9 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     GameObject imgMoodChoiceBlackBg;
     public HoonSoundManagerLogin hoonSoundManagerLogin;
 
+    //메일캔버스
+    public Canvas hoonMailCanvasObject;
+
     void Start()
     {
         StartCoroutine(FindPlayer());
@@ -1768,12 +1771,12 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     private void OnTriggerEnter(Collider other)
     {
         print("FindplayertoRange");
-        if (other.gameObject.name.Contains("Player")) //���ӿ�����Ʈ�� �÷��̾ �����ϰ� �ִٸ�
+        if (other.gameObject.name.Contains("Player")) //플레이어라면
         {
             print("showMailImage");
-            mail_IconImage.gameObject.SetActive(enabled);
+            mail_IconImage.gameObject.SetActive(enabled); //메일표시 오브젝트를 보여주자.
 
-            //��ư�� �������� �Լ� ȣ��, �ѹ��� ȣ���ϰ� ����.
+            //터치이벤트가 들어왔다면 이벤트 실행
             touchButton.onClick.AddListener(WithInRangeViewMailImageControll);
 
         }
@@ -1789,7 +1792,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //��ư�� �������� �Լ� ȣ�� 
         touchButton.onClick.RemoveListener(WithInRangeViewMailImageControll);
         mail_IconImage.gameObject.SetActive(false);
-        print("�̹��� ����");
+        print("영역 밖으로 움직이면 이미지가 꺼집니다");
     }
 
     public void OpenMailUI(GameObject obj)//������Ʈ ����
@@ -1822,15 +1825,112 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (!isMailImage)
         {
-            
             hoonSoundManagerLogin.PlaySound(1); //buttonSound
             mail_ImageObject.SetActive(false);
+            print("메일끄자");
         }
         else
         {
             hoonSoundManagerLogin.PlaySound(0); //buttonSound
-            mail_ImageObject.SetActive(true);
+            //어떻게 보여줄건데?
+            mail_ImageObject.SetActive(true); //켠다
+            hoonMailCanvasObject.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+            hoonMailCanvasObject.transform.position = new Vector3(-17.9f, 3.3f, -5f);
+            hoonMailCanvasObject.transform.localScale = new Vector3(0.0003f, 0.0003f, 0.0003f);
+
+            StartCoroutine(MoveUPMailUI());
+           
+
+            //StartCoroutine(ChangeUPScaleMailUI());
+            print("메일보자");
+           
+
+
         }
+    }
+
+    IEnumerator ChangeUPScaleMailUI()
+    {
+        Vector3 startScale = Vector3.zero;
+        Vector3 targetScale = Vector3.one;
+        float duration = 1f; // 애니메이션 지속 시간 (초)
+        float elapsedTime = 0f; // 경과 시간
+
+        // RectTransform 가져오기
+        RectTransform rectTransform = mail_ImageObject.GetComponent<RectTransform>();
+        print("메일크게크게");
+        while (elapsedTime < duration)
+        {
+           
+            //시간에따라 크기증가
+            rectTransform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
+            // 경과 시간 증가
+            elapsedTime += Time.deltaTime;
+
+
+            yield return null; //다음프레임까지 대기
+        }
+
+        // 최종 스케일 설정 (정확하게 목표값으로 맞추기)
+        rectTransform.transform.localScale = targetScale;
+
+    }
+
+    IEnumerator MoveUPMailUI()
+    {
+        Vector3 startPos = new Vector3(-17.9f, 3.3f, -5);
+        Vector3 endPos = new Vector3(-17.9f, 20f, -5);
+        float duration = 1f;
+        float currTime = 0f;
+        while (currTime < duration)
+        {
+            hoonMailCanvasObject.transform.position = Vector3.Lerp(startPos, endPos, currTime / duration);
+            currTime += Time.deltaTime;
+            yield return null;
+        }
+
+        hoonMailCanvasObject.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        mail_ImageObject.GetComponent<RectTransform>().transform.localPosition = new Vector3(0, 1500, 0);
+
+        StartCoroutine(MoveDownMainUI());
+
+    }
+
+    IEnumerator MoveDownMainUI()
+    {
+        print("메일UIDown");
+        Vector3 startPos = new Vector3(0f, 1500, 0);
+        Vector3 endPos = new Vector3(0,0,0);
+        float duration = 0.5f;
+        float currTime = 0f;
+
+        while (currTime < duration)
+        {
+            mail_ImageObject.GetComponent<RectTransform>().transform.localPosition = Vector3.Lerp(startPos, endPos, currTime / duration);
+            currTime += Time.deltaTime;
+            yield return null;
+        }
+
+        mail_ImageObject.GetComponent<RectTransform>().transform.localPosition = endPos;
+        // 위로 튀기기 애니메이션
+        iTween.MoveBy(mail_ImageObject, iTween.Hash(
+            "y", 50f, // 50 유닛 위로 이동
+            "time", 0.2f, // 위로 이동 시간
+            "easeType", iTween.EaseType.easeOutQuad, // 부드러운 상승
+            "oncomplete", "BounceBack", // 이동 후 콜백 함수 호출
+            "oncompletetarget", gameObject // 콜백 함수가 위치한 대상
+        ));
+
+    }
+    // 위로 튄 후 다시 제자리로 이동
+    void BounceBack()
+    {
+        iTween.MoveTo(mail_ImageObject, iTween.Hash(
+            "position", new Vector3(0f, 0f, 0f), // 원래 위치로 돌아옴
+            "islocal", true, // localPosition 사용
+            "time", 0.2f, // 돌아오는 시간
+            "easeType", iTween.EaseType.easeInQuad // 부드럽게 내려오기
+        ));
     }
 
     public void TouchMoodSwitchButton(int switchNum)

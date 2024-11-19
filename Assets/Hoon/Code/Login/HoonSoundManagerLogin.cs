@@ -15,7 +15,7 @@ public class HoonSoundManagerLogin : MonoBehaviour
         audioSource = transform.GetComponent<AudioSource>();
         if (audioSource != null)
         {
-            print("findAudioSource");
+            //print("findAudioSource");
         }
 
     }
