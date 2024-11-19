@@ -37,8 +37,10 @@ public class JSW_CameraControllTest : MonoBehaviour
 
     void LateUpdate()
     {
+        
         if (cameraPos == "Original")
         {
+            mong.forward = (lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform.position + Vector3.up * 0.5f - (mong.position)).normalized;
             Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             if (lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player == null)
             {

@@ -137,63 +137,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         }
     }
 
-    //public void SetFuniture2()
-    //{
-    //    int dir = 0;
-
-    //    GameObject funitureOb = Instantiate(funitureObject2);
-
-    //    if (Mathf.Abs(playerDir.x) == Mathf.Abs(playerDir.z))
-    //    {
-    //        if (Mathf.Abs(transform.forward.x) >= Mathf.Abs(transform.forward.z))
-    //        {
-    //            funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 1);
-    //            playerDir.z = 0;
-    //        }
-    //        else
-    //        {
-    //            funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 1, 1, playerPos.z + playerDir.z * 2);
-    //            playerDir.x = 0;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        funitureOb.transform.position = new Vector3(playerPos.x + playerDir.x * 2, 1, playerPos.z + playerDir.z * 2);
-    //    }
-
-    //    funitureOb.transform.forward = playerDir;
-
-    //    if (playerDir.z == 1)
-    //    {
-    //        dir = 0;
-    //    }
-    //    else if (playerDir.x == 1)
-    //    {
-    //        dir = 1;
-    //    }
-    //    else if (playerDir.z == -1)
-    //    {
-    //        dir = 2;
-    //    }
-    //    else if (playerDir.x == -1)
-    //    {
-    //        dir = 3;
-    //    }
-
-    //    JSW_DecoObject jd = funitureOb.GetComponent<JSW_DecoObject>();
-
-    //    if (DRM.IsCanAddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir))
-    //    {
-    //        DRM.AddNewFuniture((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
-    //        funitureOb.GetComponent<JSW_DecoObject>().SetpositionInfo((int)funitureOb.transform.position.x, (int)funitureOb.transform.position.z, jd.decoObjectLengthX, jd.decoObjectLengthZ, dir);
-    //        DRM.FunitureList.Add(funitureOb);
-    //    }
-    //    else
-    //    {
-    //        Destroy(funitureOb);
-    //        print("no");
-    //    }
-    //}
 
 
     public void isPushorPull(int num)

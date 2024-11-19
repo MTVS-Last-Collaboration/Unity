@@ -10,6 +10,11 @@ using ExitGames.Client.Photon;
 using Photon.Pun.Demo.Cockpit;
 using static JSW_InitRoom;
 using UnityEditor.VersionControl;
+using static JSW_ServerDeco;
+using System.Text;
+using UnityEngine.Networking;
+using System.IO;
+using System;
 
 public class AlbumManager : MonoBehaviourPun, IOnEventCallback
 {
@@ -31,10 +36,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     public bool clickRightLeft;
     public float TimeLerp=0;
 
+    private string apiUrl = "http://125.132.216.190:12223/api/photo-album"; // Replace with the actual API endpoint
+    private string apiUrl2 = "http://125.132.216.190:12223/api/photo-album/convert/11"; // Replace with the actual API endpoint
+
     private void Start()
     {
         ResetList();
-        SetImageIntoUI();
     }
 
     private void Update()
@@ -43,11 +50,11 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         {
             if (clickRightLeft)
             {
-                AlbumPos123[0].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(AlbumPos123[0].GetComponent<CanvasGroup>().alpha, 0, Time.deltaTime * 5);
-                AlbumPos123[1].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(AlbumPos123[1].GetComponent<CanvasGroup>().alpha, 0, Time.deltaTime * 5);
-                AlbumPos123[2].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(AlbumPos123[2].GetComponent<CanvasGroup>().alpha, 0, Time.deltaTime * 5);
+                AlbumPos123[0].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(AlbumPos123[0].GetComponent<CanvasGroup>().alpha, 0, Time.deltaTime * 30);
+                AlbumPos123[1].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(AlbumPos123[1].GetComponent<CanvasGroup>().alpha, 0, Time.deltaTime * 30);
+                AlbumPos123[2].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(AlbumPos123[2].GetComponent<CanvasGroup>().alpha, 0, Time.deltaTime * 30);
                 TimeLerp += Time.deltaTime;
-                if (TimeLerp > 0.4f)
+                if (TimeLerp > 0.2f)
                 {
                     TimeLerp = 0;
                     clickRightLeft = false;
@@ -75,11 +82,22 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     [System.Serializable]
     public class AlbumPicClass
     {
+        public int id;
         public Texture2D sprite;
         public string title;
         public string day;
         public string content;
     }
+
+    [System.Serializable]
+    public class PostPhoto_album
+    {
+        public string title;
+        public string content;
+        public string photoDate;
+        public byte[] photo;
+    }
+
 
     // Start is called before the first frame update
     void Awake()
@@ -95,38 +113,34 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
 
         RaiseEventOptions eventOptions = new RaiseEventOptions();
         eventOptions.Receivers = ReceiverGroup.All;
-        //eventOptions.CachingOption = EventCaching.DoNotCache;
 
-        // 이벤트 송신 시작
         PhotonNetwork.RaiseEvent(2,null, eventOptions, SendOptions.SendUnreliable);
 
-        print("Send!");
         EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void OnEnable()
     {
-
         //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
         PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
-
     }
 
     public void OnEvent(EventData photonEvent)
     {
         if (photonEvent.Code == 2)
         {
-            //GameObject newPic = Instantiate(PicFactory, trContent);
-            //string title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
-            //string content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;
-            //Texture2D newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
-            //string day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
-            //newPic.GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
-
+            print("Dfadsa");
             string title;
             string content;
             Texture2D newImage;
             string day;
+            byte[] imageBytes;
+            PostPhoto_album postpic;
+
+            if (picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture == null)
+            {
+                return;
+            }
 
             if (Albumlist.Count >3 && nowIndex  != 0)
             {
@@ -138,6 +152,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
             }
 
+
             if (Albumlist.Count < 1)
             {
                 title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
@@ -145,9 +160,18 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                 newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
                 day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+
+                imageBytes = newImage.EncodeToPNG();
+
+                postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
+
+
+                StartCoroutine(PostPhotoEvent(apiUrl, postpic));
+
                 Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
                 return;
             }
+
             title = Albumlist[nowIndex + 0].title;
             content = Albumlist[nowIndex + 0].content;
             day = Albumlist[nowIndex + 0].day;
@@ -162,6 +186,17 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                 newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
                 day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+
+
+                imageBytes = newImage.EncodeToPNG();
+                
+
+
+                postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
+
+
+                StartCoroutine(PostPhotoEvent(apiUrl, postpic));
+
                 Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
                 return;
             }
@@ -178,6 +213,18 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
             day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
             AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+
+
+
+            imageBytes = newImage.EncodeToPNG();
+            
+
+            postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
+
+
+            StartCoroutine(PostPhotoEvent(apiUrl, postpic));
+
+
             Albumlist.Insert(0,new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
         }
     }
@@ -185,6 +232,47 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     {
         //PhotonNetwork.NetworkingClient.RemoveCallbackTarget(this); // 델리게이트 방식
         PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
+
+
+    IEnumerator PostPhotoEvent(string url, PostPhoto_album photoAlbum)
+    {
+        // JWT 토큰 가져오기
+        string jwtToken = LoginInfoManager.instance.myToken;
+
+        WWWForm form = new WWWForm();
+        form.AddField("title", photoAlbum.title);           // 제목
+        form.AddField("content", photoAlbum.content);       // 내용
+        form.AddField("photoDate", photoAlbum.photoDate);   // 날짜
+        form.AddBinaryData("photo", photoAlbum.photo, "photo.png", "image/png");
+
+        //WWWForm form = new WWWForm();
+        //form.AddField("photoId",11);           // 제목
+        //form.AddField("positionX", 470);       // 내용
+        //form.AddField("positionY", 546);   // 날짜
+
+        // UnityWebRequest 생성
+        UnityWebRequest request = UnityWebRequest.Post(url, form);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+        Debug.Log("Send!");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            print("사진 잘 올라가지 않은");
+            Debug.LogError("Error: " + request.error);
+            print(request.downloadHandler.text);
+        }
+        else
+        {
+            print("사진 잘 올라감");
+            AlbumStatus0 wrapper = JsonUtility.FromJson<AlbumStatus0>(request.downloadHandler.text);
+            Albumlist[0].id = wrapper.data.id;
+            Debug.Log("Response: " + request.downloadHandler.text);
+        }
     }
 
     public void testObject()
@@ -199,43 +287,77 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     public TMP_InputField AlbumInputField;
     public void FindAlbumPicTitle()
     {
-        for (int i = 0; i < Content.transform.childCount;i++)
+        string title;
+        string content;
+        string day;
+        Texture2D newImage;
+        for (int i = nowIndex; i < Albumlist.Count; i++)
         {
-            if (Content.transform.GetChild(i).GetChild(1).GetComponent<TMP_Text>().text.Contains(AlbumInputField.text))
+            if (Albumlist[i].content.Contains(AlbumInputField.text))
             {
-                CenterTextHorizontally(Content.transform.GetChild(i).gameObject.GetComponent<RectTransform>());
+               if(i % 3 == 0)
+               {
+                    nowIndex = i;
+                    for (int j = 0; j <3;j++)
+                    {
+                        if(i + j >= Albumlist.Count )
+                        {
+                            AlbumPos123[j].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                            continue;
+                        }
+                        title = Albumlist[i + j].title;
+                        content = Albumlist[i + j].content;
+                        day = Albumlist[i+j].day;
+                        newImage = Albumlist[i+j].sprite;
+                        AlbumPos123[j].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                    }
+               }
+               else if (i % 3 == 1)
+                {
+                    nowIndex = i - 1;
+                    int l = 1;
+                    for (int j = -1; j < 2; j++)
+                    {
+                        if (i + j >= Albumlist.Count)
+                        {
+                            AlbumPos123[j+l].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                            l += 1;
+                            continue;
+                        }
+                        title = Albumlist[i + j].title;
+                        content = Albumlist[i + j].content;
+                        day = Albumlist[i + j].day;
+                        newImage = Albumlist[i + j].sprite;
+                        AlbumPos123[j + l].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                        l += 1;
+                    }
+                }
+                else if (i % 3 == 2)
+                {
+                    nowIndex = i - 2;
+                    int l = 1;
+                    for (int j = -2; j < 1; j++)
+                    {
+                        if (i + j >= Albumlist.Count)
+                        {
+                            AlbumPos123[j+ l].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                            l += 1;
+                            continue;
+                        }
+                        title = Albumlist[i + j].title;
+                        content = Albumlist[i + j].content;
+                        day = Albumlist[i + j].day;
+                        newImage = Albumlist[i + j].sprite;
+                        AlbumPos123[j+ l].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                        l += 1;
+                    }
+                }
+                clickRightLeft = true;
                 break;
             }
         }
     }
 
-
-    public void CenterTextHorizontally(RectTransform textTransform)
-    {
-        float contentWidth = scrollRect.content.rect.width;
-        float viewportWidth = scrollRect.viewport.rect.width;
-
-        // 텍스트 요소의 World 좌표를 Content 좌표계로 변환
-        Vector3 worldPosition = textTransform.position;
-        Vector3 localPosition = scrollRect.content.InverseTransformPoint(worldPosition);
-
-        float textXPosition = localPosition.x;
-        float textWidth = textTransform.rect.width;
-
-        // 중앙 정렬 계산
-        float targetPosition = (textXPosition + (textWidth / 2)) / (contentWidth * 2 - viewportWidth);
-
-        // 비율이 0~1 범위를 벗어나지 않도록 클램프
-        targetPosition = Mathf.Clamp(targetPosition, 0f, 1f);
-
-        iTween.ValueTo(gameObject, iTween.Hash(
-            "from", scrollRect.horizontalNormalizedPosition,
-            "to", targetPosition,
-            "time", 1.0f,  // 애니메이션 시간 (초)
-            "easetype", iTween.EaseType.easeInOutSine,
-            "onupdate", "UpdateScrollPosition"
-        ));
-    }
     private void UpdateScrollPosition(float newValue)
     {
         scrollRect.horizontalNormalizedPosition = newValue;
@@ -255,7 +377,8 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         //Destroy(DestroyPic);
         DeleteUIPic.SetActive(false);
         if (DestroyPic == AlbumPos123[0])
-        {   
+        {
+            DeletePicEvent(Albumlist[nowIndex].id);
             if (Albumlist.Count < nowIndex + 2)
             {
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(null, null, null, null);
@@ -301,9 +424,9 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         }
         else if (DestroyPic == AlbumPos123[1])
         {
+            DeletePicEvent(Albumlist[nowIndex + 1].id);
             if (Albumlist.Count < nowIndex + 3)
             {
-
                 AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
                 Albumlist.RemoveAt(nowIndex + 1);
                 return;
@@ -333,6 +456,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         }
         else
         {
+            DeletePicEvent(Albumlist[nowIndex + 2].id);
             if (Albumlist.Count < nowIndex + 4)
             {
                 AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
@@ -410,13 +534,6 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
     }
 
-    public void ResetList()
-    {
-        for (int i = 0; i < albumPicClass.Length;i++)
-        {
-            Albumlist.Add(albumPicClass[i]);
-        }
-    }
 
     public void RightMoveButton()
     {
@@ -437,6 +554,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         {
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            clickRightLeft = true;
             return;
         }
         title = Albumlist[nowIndex + 1].title;
@@ -449,6 +567,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         if (nowIndex + 2 >= Albumlist.Count)
         {
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            clickRightLeft = true;
             return;
         }
         title = Albumlist[nowIndex + 2].title;
@@ -482,6 +601,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         {
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            clickRightLeft = true;
             return;
         }
         title = Albumlist[nowIndex + 1].title;
@@ -494,6 +614,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         if (nowIndex + 2 >= Albumlist.Count)
         {
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            clickRightLeft = true;
             return;
         }
         title = Albumlist[nowIndex + 2].title;
@@ -506,4 +627,159 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         TimeLerp = 0;
     }
 
+
+    public void ResetList()
+    {
+        //for (int i = 0; i < albumPicClass.Length; i++)
+        //{
+        //    Albumlist.Add(albumPicClass[i]);
+        //}
+        StartCoroutine(GetPhotoStatusCoroutine());
+    }
+
+    public void GetRoomStatus()
+    {
+        StartCoroutine(GetPhotoStatusCoroutine());
+        print("dsadsa");
+    }
+
+    private IEnumerator GetPhotoStatusCoroutine()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(apiUrl))
+        {
+
+            //request.SetRequestHeader("Accept", "application/json");
+            string jwtToken = LoginInfoManager.instance.myToken;
+            request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Response: " + request.downloadHandler.text);
+                AlbumStatus wrapper = JsonUtility.FromJson<AlbumStatus>(request.downloadHandler.text);
+                for (int i=0; i < wrapper.data.Length;i++)
+                {
+                    Texture2D texture2 = new Texture2D(2, 2);
+                    yield return StartCoroutine(DownloadImageFromURL(wrapper.data[i].imageUrl, downloadedTexture =>
+                    {
+                        texture2 = downloadedTexture;
+                    }));
+                    //texture2.LoadImage(wrapper.data[i].)
+                    AlbumPicClass albumPicClass = new AlbumPicClass
+                    {
+                        id = wrapper.data[i].id,
+                        title = wrapper.data[i].title,
+                        day = wrapper.data[i].photoDate[0].ToString() + '-' + wrapper.data[i].photoDate[1].ToString() + '-' + wrapper.data[i].photoDate[2].ToString(),
+                        content = wrapper.data[i].content,
+                        sprite = texture2
+                    };
+                    Albumlist.Add(albumPicClass);
+                }
+                SetImageIntoUI();
+            }
+            else
+            {
+                print("안나왓어요!!!!!!!!!!");
+            }
+        }
+    }
+
+
+    private IEnumerator DownloadImageFromURL(string url, System.Action<Texture2D> callback)
+    {
+        using (UnityWebRequest textureRequest = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return textureRequest.SendWebRequest();
+
+            if (textureRequest.result == UnityWebRequest.Result.Success)
+            {
+                Texture2D texture = DownloadHandlerTexture.GetContent(textureRequest);
+                callback(texture); // 다운로드 성공 시 Texture2D 반환
+            }
+            else
+            {
+                Debug.LogError($"이미지 다운로드 실패: {textureRequest.error}");
+                callback(null);
+            }
+        }
+    }
+
+    private string deleteApiUrl = "http://125.132.216.190:12223/api/photo-album/";
+
+    public void DeletePicEvent(int Id)
+    {
+        StartCoroutine(DeletePic_CO(Id));
+    }
+
+    IEnumerator DeletePic_CO(int Id)
+    {
+        // UnityWebRequest를 사용하여 GET 요청 전송
+        using (UnityWebRequest request = UnityWebRequest.Delete(deleteApiUrl + Id.ToString()))
+        {
+            // 헤더 설정
+            request.SetRequestHeader("Accept", "application/json");
+            string jwtToken = LoginInfoManager.instance.myToken;
+            request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+            // 요청을 보내고 응답을 기다림
+            yield return request.SendWebRequest();
+
+            // 응답 코드 확인
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                // 성공적으로 데이터를 받아온 경우
+                Debug.Log("삭제");
+
+            }
+            else
+            {
+                print("삭제시도2");
+                print(Id);
+                Debug.LogError("에러 발생: " + request.error);
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class AlbumStatus
+    {
+        public string message;
+        public AlbumPic[] data;
+    }
+
+    [System.Serializable]
+    public class AlbumPic
+    {
+        public int id;
+        public string title;
+        public string content;
+        public int[] photoDate;
+        public string imageUrl;
+        public string objectUrl;
+        public string pngUrl;
+        public string materialUrl;
+        public int positionX;
+        public int positionY;
+    }
+
+    [System.Serializable]
+    public class AlbumStatus0
+    {
+        public string message;
+        public AlbumPic data;
+    }
+
+    [System.Serializable]
+    public class AlbumPic0
+    {
+        public int id;
+        public string title;
+        public string content;
+        public int[] photoDate;
+        public string imageUrl;
+        public string objectUrl;
+        public string pngUrl;
+        public string materialUrl;
+        public int positionX;
+        public int positionY;
+    }
 }
