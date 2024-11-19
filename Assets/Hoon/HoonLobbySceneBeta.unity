@@ -347,7 +347,7 @@ RectTransform:
   m_Father: {fileID: 1687794912}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1501,6 +1501,7 @@ GameObject:
   - component: {fileID: 62636646}
   - component: {fileID: 62636647}
   - component: {fileID: 62636648}
+  - component: {fileID: 62636649}
   m_Layer: 5
   m_Name: HoonLoobyCanvas
   m_TagString: Untagged
@@ -1729,6 +1730,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e84c15c3ab0d334478ea96373a170671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMyMarkObject: 0
+  isGetMarkObject: 0
+  isShareMarkObejct: 0
+--- !u!114 &62636649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62636641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f9af1bdb6a0f2749861b8a071f48d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imgMyStorageMenuObject: {fileID: 970691215}
+  imgGetRoomObject: {fileID: 1076873742}
+  imgShowRoomListObject: {fileID: 345459880}
+  hoonUIController: {fileID: 62636648}
+  choiceRoomErr: {fileID: 217479269}
+  choiceRoomOk: {fileID: 1151646541}
+  onMoveTrigger: {fileID: 1151646544}
 --- !u!1 &64102236
 GameObject:
   m_ObjectHideFlags: 0
@@ -4609,9 +4632,9 @@ RectTransform:
   m_Father: {fileID: 549915124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &164723548
 MonoBehaviour:
@@ -8805,9 +8828,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LoginTest, Assembly-CSharp
-        m_MethodName: Login
+      - m_Target: {fileID: 62636649}
+        m_TargetAssemblyTypeName: HoonCreateRoom, Assembly-CSharp
+        m_MethodName: MoveRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9360,7 +9383,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1150, y: 300}
+  m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &314009895
 MonoBehaviour:
@@ -9875,7 +9898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &345459881
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9889,11 +9912,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 549915124}
-  m_Father: {fileID: 1691929443}
+  m_Father: {fileID: 1032953498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00011444092, y: -69.00003}
+  m_AnchoredPosition: {x: -0.00011444092, y: -0.000022888184}
   m_SizeDelta: {x: 1550, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &345459882
@@ -9946,12 +9969,12 @@ GameObject:
   - component: {fileID: 347433094}
   - component: {fileID: 347433093}
   m_Layer: 5
-  m_Name: RoomChoiceMark
+  m_Name: MyStorageMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &347433092
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11558,7 +11581,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 425297550}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 62636649}
+        m_TargetAssemblyTypeName: HoonCreateRoom, Assembly-CSharp
+        m_MethodName: VeiwRoomStorage
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 425297547}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &425297550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19037,7 +19072,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549915123}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -19048,7 +19083,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -50}
+  m_AnchoredPosition: {x: -5, y: -50}
   m_SizeDelta: {x: 1550, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &549915125
@@ -27862,7 +27897,7 @@ GameObject:
   - component: {fileID: 970691218}
   - component: {fileID: 970691217}
   m_Layer: 5
-  m_Name: MyStorageMenu
+  m_Name: Img_MyStorage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27875,17 +27910,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970691215}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1236260533}
-  m_Father: {fileID: 1691929443}
+  m_Father: {fileID: 1032953498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -69}
+  m_AnchoredPosition: {x: 0, y: -0.000015258789}
   m_SizeDelta: {x: 1550, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &970691217
@@ -29247,6 +29282,44 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030068724}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1032953497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1032953498}
+  m_Layer: 5
+  m_Name: All_Img_RoomStorage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1032953498
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032953497}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 345459881}
+  - {fileID: 1076873743}
+  - {fileID: 970691216}
+  m_Father: {fileID: 1691929443}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -69.00001}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1037051072
 GameObject:
   m_ObjectHideFlags: 0
@@ -29954,7 +30027,7 @@ GameObject:
   - component: {fileID: 1055393388}
   - component: {fileID: 1055393387}
   m_Layer: 5
-  m_Name: Btn_MyRoom
+  m_Name: Btn_GetRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30025,13 +30098,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HoonChoiceRoom, Assembly-CSharp
-        m_MethodName: ViewRoomChoiceMarkControll
-        m_Mode: 1
+      - m_Target: {fileID: 62636648}
+        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
+        m_MethodName: ViewMarkObejct
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1745569703}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -30741,7 +30814,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1076873743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30749,17 +30822,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1076873742}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1055393386}
-  m_Father: {fileID: 1691929443}
+  m_Father: {fileID: 1032953498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -69}
+  m_AnchoredPosition: {x: 0, y: -0.000015258789}
   m_SizeDelta: {x: 1550, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1076873744
@@ -32947,6 +33020,8 @@ MonoBehaviour:
   lobbyGameManager: {fileID: 0}
   byeUI: {fileID: 0}
   soundManager: {fileID: 0}
+  imgCreateRoomBG: {fileID: 2047140648}
+  hoonCreateRoom: {fileID: 62636649}
 --- !u!65 &1151646545
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -35241,13 +35316,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HoonChoiceRoom, Assembly-CSharp
-        m_MethodName: ViewRoomChoiceMarkControll
-        m_Mode: 1
+      - m_Target: {fileID: 62636648}
+        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
+        m_MethodName: ViewMarkObejct
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 347433091}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -38643,7 +38718,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1375914342}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 62636649}
+        m_TargetAssemblyTypeName: HoonCreateRoom, Assembly-CSharp
+        m_MethodName: VeiwRoomStorage
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1375914339}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1375914342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42672,7 +42759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 140.5, y: -3.0000162}
+  m_AnchoredPosition: {x: -61, y: -3.0000162}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1496818162
@@ -44117,7 +44204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1550629652}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 62636649}
+        m_TargetAssemblyTypeName: HoonCreateRoom, Assembly-CSharp
+        m_MethodName: VeiwRoomStorage
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1550629649}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1550629652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47408,9 +47507,7 @@ RectTransform:
   m_Children:
   - {fileID: 2142705698}
   - {fileID: 569383060}
-  - {fileID: 345459881}
-  - {fileID: 1076873743}
-  - {fileID: 970691216}
+  - {fileID: 1032953498}
   - {fileID: 2040676889}
   - {fileID: 291864148}
   - {fileID: 217479270}
@@ -48401,7 +48498,7 @@ GameObject:
   - component: {fileID: 1745569706}
   - component: {fileID: 1745569705}
   m_Layer: 5
-  m_Name: RoomChoiceMark
+  m_Name: GetRoomMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50298,8 +50395,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LoginUI, Assembly-CSharp
+      - m_Target: {fileID: 62636648}
+        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
         m_MethodName: CloseUI
         m_Mode: 2
         m_Arguments:
@@ -51570,6 +51667,8 @@ MonoBehaviour:
   lobbyGameManager: {fileID: 0}
   byeUI: {fileID: 764028971}
   soundManager: {fileID: 0}
+  imgCreateRoomBG: {fileID: 2047140648}
+  hoonCreateRoom: {fileID: 0}
 --- !u!65 &1906997996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54631,9 +54730,9 @@ RectTransform:
   - {fileID: 561635097}
   m_Father: {fileID: 314009894}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2015854236
@@ -55222,9 +55321,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1375914340}
-  - {fileID: 1550629650}
   - {fileID: 425297548}
+  - {fileID: 1550629650}
+  - {fileID: 1375914340}
   m_Father: {fileID: 1691929443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
