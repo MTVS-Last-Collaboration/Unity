@@ -5465,7 +5465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &528458595
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7065,7 +7065,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -7093,7 +7093,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 20, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -10112,7 +10112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 861170944}
   m_Layer: 0
-  m_Name: Img_TestOnj
+  m_Name: Img_TestObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10597,7 +10597,7 @@ GameObject:
   - component: {fileID: 921871191}
   - component: {fileID: 921871190}
   m_Layer: 5
-  m_Name: Img_StartLogo
+  m_Name: Img_StartButtonLogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14688,9 +14688,9 @@ GameObject:
   - component: {fileID: 1297325616}
   - component: {fileID: 1297325615}
   - component: {fileID: 1297325614}
+  - component: {fileID: 1297325620}
   - component: {fileID: 1297325618}
   - component: {fileID: 1297325619}
-  - component: {fileID: 1297325620}
   - component: {fileID: 1297325622}
   - component: {fileID: 1297325621}
   - component: {fileID: 1297325624}
@@ -14869,6 +14869,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startImg: {fileID: 917947428}
+  imgStartLogo: {fileID: 1726392085}
+  imgStartBG: {fileID: 917947430}
+  imgStartButton: {fileID: 712892180}
+  imgStartButtonLogo: {fileID: 921871190}
   loginImg: {fileID: 1797861609}
   noticeConnect: {fileID: 0}
   registMenu: {fileID: 1819691563}
@@ -14881,7 +14885,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e9dd6be1d2c36cd4d8c7dc954a154b3f, type: 3}
   - {fileID: 21300000, guid: c8a61018de9b2574ba49a30c8202c7a7, type: 3}
   btnStartButton: {fileID: 712892179}
-  imgStartButton: {fileID: 712892180}
+  scaleSpeed: 0.1
+  minScale: 1
+  maxScale: 0.2
 --- !u!82 &1297325621
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16950,12 +16956,12 @@ GameObject:
   - component: {fileID: 1444203421}
   - component: {fileID: 1444203420}
   m_Layer: 5
-  m_Name: Btn_Login
+  m_Name: Btn_LocalLogin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1444203419
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16970,11 +16976,11 @@ RectTransform:
   m_Children:
   - {fileID: 493492778}
   - {fileID: 194129483}
-  m_Father: {fileID: 1797861610}
+  m_Father: {fileID: 1568854709}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 32, y: -462}
+  m_AnchoredPosition: {x: 32, y: -592}
   m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1444203420
@@ -17461,7 +17467,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1474878064
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17962,6 +17968,7 @@ RectTransform:
   m_Children:
   - {fileID: 528458595}
   - {fileID: 1474878064}
+  - {fileID: 1444203419}
   - {fileID: 622966540}
   - {fileID: 1797861610}
   m_Father: {fileID: 1297325617}
@@ -17984,7 +17991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -21117,7 +21124,6 @@ RectTransform:
   - {fileID: 175917703}
   - {fileID: 1636844695}
   - {fileID: 1470582406}
-  - {fileID: 1444203419}
   - {fileID: 1301795584}
   - {fileID: 414848656}
   m_Father: {fileID: 1568854709}
