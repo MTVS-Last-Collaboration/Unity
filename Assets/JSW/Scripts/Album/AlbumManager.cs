@@ -7,9 +7,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using ExitGames.Client.Photon;
-using Photon.Pun.Demo.Cockpit;
-using static JSW_InitRoom;
-using UnityEditor.VersionControl;
+//using Photon.Pun.Demo.Cockpit;
+//using static JSW_InitRoom;
+//using UnityEditor.VersionControl;
+
 
 public class AlbumManager : MonoBehaviourPun, IOnEventCallback
 {

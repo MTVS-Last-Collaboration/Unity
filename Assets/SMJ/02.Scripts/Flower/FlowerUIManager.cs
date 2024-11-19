@@ -8,8 +8,8 @@ using Photon.Realtime;
 using ExitGames.Client.Photon;
 using System;
 using System.Linq;
-using static UnityEngine.CullingGroup;
-using Unity.VisualScripting;
+using System.IO;
+using UnityEngine.Networking;
 
 public class FlowerUIManager : MonoBehaviourPun
 {
@@ -31,7 +31,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] public bool testRecord = false;
+    //[SerializeField] public bool testRecord = false;
     [SerializeField] private GameObject hoonUI;
 
     private UIPopupAnimation uiPopup;
@@ -65,6 +65,7 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     private void Start()
     {
+        StartCoroutine(GetVoiceStatus());
         sound = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
         sendOptions.Reliability = true; // 신뢰성 있는 전송
@@ -179,21 +180,6 @@ public class FlowerUIManager : MonoBehaviourPun
         else
         {
             alertEmoji.SetActive(false);
-        }
-    }
-    public void OnClickTest()
-    {
-        //if (!click.checkID.IsMine(flower)) return;
-
-        if (testRecord == true)
-        {
-            testRecord = false;
-            print("실패!");
-        }
-        else
-        {
-            testRecord = true;
-            print("성공!");
         }
     }
 
@@ -428,20 +414,27 @@ public class FlowerUIManager : MonoBehaviourPun
         // 다른 상태들 처리
         if (isMyFlower)
         {
-            if (isRecordComplete == false || isListenComplete == true)
+            if (isRecordComplete == true)
+            {
+                print("녹음완! 3번!");
+                sound.PlaySound("smjAudioClopAttay", 1);
+                SwapButtonUI(3);
+            }
+            else if (isRecordComplete == false || isListenComplete == true)
             {
                 sound.PlaySound("smjAudioClopAttay", 1);
                 SwapButtonUI(idx);
             }
             else
             {
+                print("녹음완X! 3번!");
                 sound.PlaySound("smjAudioClopAttay", 1);
                 SwapButtonUI(3);
             }
         }
         else
         {
-            if (targetFlower.voiceClip != null && !isListenComplete)
+            if (!isListenComplete)
             {
                 sound.PlaySound("smjAudioClopAttay", 1);
                 SwapButtonUI(2);
@@ -541,49 +534,44 @@ public class FlowerUIManager : MonoBehaviourPun
         OffPanel();
         recordButtons[2].SetActive(true);
     }
+    //public void SubmitRecord()
+    //{
+    //    if (!click.checkID.IsMine(flower)) return;
+
+    //    // 기존의 테스트 모드일 경우
+    //    if (testRecord == true)
+    //    {
+    //        OffPanel();
+    //        recordButtons[2].SetActive(false);
+
+    //        // 서버 검증 시작
+    //        StartCoroutine(ValidateAndTransferVoice());
+    //    }
+    //    else
+    //    {
+    //        recordCount++;
+    //        if (recordCount < 3)
+    //        {
+    //            OffPanel();
+    //            recordButtons[2].SetActive(false);
+    //            recordButtons[3].SetActive(true);
+    //        }
+    //        else
+    //        {
+    //            OffPanel();
+    //            recordButtons[2].SetActive(false);
+    //            recordButtons[5].SetActive(true);
+    //            recordCount = 0;
+    //        }
+    //    }
+    //}
     public void SubmitRecord()
     {
         if (!click.checkID.IsMine(flower)) return;
 
-        if (testRecord == true)
-        {
-            OffPanel();
-            recordButtons[2].SetActive(false);
-            recordButtons[4].SetActive(true);
-
-            flower.evolutionCount++;
-            photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
-
-            // 음성 데이터를 청크로 나눠서 전송
-            byte[] voiceData = recorder.GetRecordedData();
-            StartCoroutine(WaitForConnectionAndSendVoice(voiceData));
-        }
-        else
-        {
-            recordCount++;
-            if (recordCount < 3)
-            {
-                OffPanel();
-                recordButtons[2].SetActive(false);
-                recordButtons[3].SetActive(true);
-                //photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, isListenComplete);
-            }
-            else
-            {
-                OffPanel();
-                recordButtons[2].SetActive(false);
-                recordButtons[5].SetActive(true);
-                recordCount = 0;
-
-                //// 진화 카운트 증가
-                //flower.evolutionCount++;
-                //photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
-
-                //// 음성 데이터를 청크로 나눠서 전송
-                //byte[] voiceData = recorder.GetRecordedData();
-                //StartCoroutine(SendVoiceDataInChunks(voiceData));
-            }
-        }
+        OffPanel();
+        recordButtons[2].SetActive(false);
+        StartCoroutine(ValidateAndTransferVoice());
     }
     private IEnumerator WaitForConnectionAndSendVoice(byte[] voiceData)
     {
@@ -595,111 +583,118 @@ public class FlowerUIManager : MonoBehaviourPun
 
         StartCoroutine(SendVoiceDataInChunks(voiceData));
     }
+
+    [System.Serializable]
+    private class VoiceValidationResponse
+    {
+        public string mood;      // "긍정", "중립", "부정" 중 하나
+        public string nickname;
+    }
+
+    private IEnumerator ValidateAndTransferVoice()
+    {
+        // 1. 오디오 데이터 가져오기
+        byte[] audioData = recorder.GetRecordedData();
+        if (audioData == null)
+        {
+            Debug.LogError("Failed to get audio data");
+            recordButtons[5].SetActive(true);
+            yield break;
+        }
+
+        // 2. 임시 WAV 파일로 저장하고 다시 읽기
+        string tempPath = Path.Combine(Application.temporaryCachePath, "temp_voice.wav");
+        try
+        {
+            File.WriteAllBytes(tempPath, audioData);
+            byte[] fileData = File.ReadAllBytes(tempPath);
+
+            List<IMultipartFormSection> formData = new List<IMultipartFormSection>
+            {
+                new MultipartFormFileSection("voice", audioData, "audio.wav", "audio/wav")
+            };
+
+            NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+            yield return NetworkManager.Instance.PostMultipartData("/api/flower/analyze-mood", formData,
+                (success, response) =>
+                {
+                    if (success)
+                    {
+                        try
+                        {
+                            var validationResponse = JsonUtility.FromJson<VoiceValidationResponse>(response);
+                            if (validationResponse.mood != null)
+                            {
+                                if (validationResponse.mood == "부정")
+                                {
+                                    recordCount++;
+                                    if (recordCount < 3)
+                                    {
+                                        OffPanel();
+                                        recordButtons[3].SetActive(true); // 재녹음 버튼
+                                    }
+                                    else
+                                    {
+                                        OffPanel();
+                                        recordButtons[5].SetActive(true); // 최종 실패 UI
+                                        recordCount = 0;
+                                    }
+                                }
+                                else // "긍정" 또는 "중립"
+                                {
+                                    recordButtons[4].SetActive(true); // 성공 UI
+                                    flower.evolutionCount++;
+                                    photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
+                                    StartCoroutine(WaitForConnectionAndSendVoice(audioData));
+                                    // 녹음 성공 시 상태 업데이트
+                                    StartCoroutine(GetVoiceStatus());
+                                }
+                            }
+                            else
+                            {
+                                print("답변 없음!");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"Error parsing response: {e.Message}");
+                            recordButtons[5].SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"Server request failed: {response}");
+                        //recordButtons[5].SetActive(true);
+                    }
+                });
+        }
+        finally
+        {
+            // 임시 파일 삭제
+            if (File.Exists(tempPath))
+            {
+                File.Delete(tempPath);
+            }
+        }
+    }
+
     [SerializeField] private TMP_Text progressText;
     private IEnumerator SendVoiceDataInChunks(byte[] voiceData)
     {
-        // 1. 기본 설정
         const int CHUNK_SIZE = 16384; // 16KB
-        int maxRetries = 3;
-
-        // 2. 연결 상태 확인 및 대기
-        float connectionTimeout = 10f;
-        float timer = 0f;
-        while (!PhotonNetwork.IsConnectedAndReady && timer < connectionTimeout)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        if (!PhotonNetwork.IsConnectedAndReady)
-        {
-            Debug.LogError("연결 실패!");
-            yield break;
-        }
-
-        // 3. 청크 준비
         int chunks = Mathf.CeilToInt(voiceData.Length / (float)CHUNK_SIZE);
-        bool initSuccess = false;
-        int initRetry = 0;
 
-        // 4. 초기화 RPC 전송
-        while (!initSuccess && initRetry < maxRetries)
-        {
-            if (PhotonNetwork.IsConnectedAndReady)
-            {
-                photonView.RPC("RPC_InitializeVoiceTransfer", RpcTarget.All, chunks);
-                initSuccess = true;
-            }
-            else
-            {
-                initRetry++;
-                yield return new WaitForSeconds(1f);
-            }
-        }
+        photonView.RPC("RPC_InitializeVoiceTransfer", RpcTarget.All, chunks);
 
-        if (!initSuccess)
-        {
-            Debug.LogError("초기화 실패!");
-            yield break;
-        }
-
-        yield return new WaitForSeconds(0.5f);
-
-        // 5. 청크 전송
         for (int i = 0; i < chunks; i++)
         {
-            if (!PhotonNetwork.IsConnectedAndReady)
-            {
-                Debug.LogError("전송 중 연결 끊김!");
-                yield break;
-            }
-
-            // 청크 데이터 준비
             int size = Mathf.Min(CHUNK_SIZE, voiceData.Length - i * CHUNK_SIZE);
             byte[] chunk = new byte[size];
             Array.Copy(voiceData, i * CHUNK_SIZE, chunk, 0, size);
 
-            // 재시도 로직
-            bool chunkSent = false;
-            int chunkRetry = 0;
+            photonView.RPC("RPC_ReceiveVoiceChunk", RpcTarget.All, chunk, i);
 
-            while (!chunkSent && chunkRetry < maxRetries)
-            {
-                if (PhotonNetwork.IsConnectedAndReady)
-                {
-                    photonView.RPC("RPC_ReceiveVoiceChunk", RpcTarget.All, chunk, i);
-                    chunkSent = true;
-
-                    // 진행률 표시 (UI가 있는 경우)
-                    if (progressText != null)
-                    {
-                        float progress = ((float)i / chunks) * 100f;
-                        progressText.text = $"전송중... {progress:F1}%";
-                    }
-                }
-                else
-                {
-                    chunkRetry++;
-                    yield return new WaitForSeconds(1f);
-                }
-            }
-
-            if (!chunkSent)
-            {
-                Debug.LogError($"청크 {i} 전송 실패");
-                yield break;
-            }
-
-            // 네트워크 상태에 따른 동적 대기
-            float pingTime = PhotonNetwork.GetPing() / 1000f;
-            float waitTime = Mathf.Clamp(pingTime * 2f, 0.1f, 1f);
-            yield return new WaitForSeconds(waitTime);
-        }
-
-        // 6. 전송 완료 처리
-        if (progressText != null)
-        {
-            progressText.text = "전송 완료!";
+            yield return new WaitForSeconds(0.1f);
         }
 
         photonView.RPC("RPC_FinalizeVoiceTransfer", RpcTarget.All);
@@ -729,38 +724,53 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         try
         {
+            if (voiceDataChunks == null || voiceDataChunks.Count == 0)
+            {
+                Debug.LogError("No voice data chunks available");
+                return;
+            }
+
             // 전체 데이터 크기 계산
             int totalSize = voiceDataChunks.Sum(chunk => chunk?.Length ?? 0);
-            byte[] completeVoiceData = new byte[totalSize];
+            if (totalSize == 0)
+            {
+                Debug.LogError("Total voice data size is 0");
+                return;
+            }
 
-            // 데이터 합치기
+            byte[] completeVoiceData = new byte[totalSize];
             int offset = 0;
+
             foreach (byte[] chunk in voiceDataChunks.Where(c => c != null))
             {
-                Buffer.BlockCopy(chunk, 0, completeVoiceData, offset, chunk.Length);
-                offset += chunk.Length;
-            }
-
-            // 녹음 데이터 설정
-            recorder.SetRecordedData(completeVoiceData);
-            flower.voiceClip = recorder.GetAudioClip();
-
-            // UI 업데이트
-            if (!click.checkID.IsMine(flower))
-            {
-                if (flower.curState == Flower.States.BLOSSOM)
+                if (offset + chunk.Length <= completeVoiceData.Length)
                 {
-                    SwapButtonUI(2);
+                    Buffer.BlockCopy(chunk, 0, completeVoiceData, offset, chunk.Length);
+                    offset += chunk.Length;
                 }
-                isRecordComplete = true;
-                UpdateUIText();
-                UpdateAlertEmoji();
             }
+
+            if (recorder.SetRawAudioData(completeVoiceData))
+            {
+                if (!click.checkID.IsMine(flower))
+                {
+                    if (flower.curState == Flower.States.BLOSSOM)
+                    {
+                        SwapButtonUI(2);
+                    }
+                    isRecordComplete = true;
+                    UpdateUIText();
+                    UpdateAlertEmoji();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error in RPC_FinalizeVoiceTransfer: {e.Message}");
         }
         finally
         {
-            // 메모리 정리
-            voiceDataChunks.Clear();
+            voiceDataChunks?.Clear();
             voiceDataChunks = null;
         }
     }
@@ -799,15 +809,99 @@ public class FlowerUIManager : MonoBehaviourPun
         recordButtons[2].SetActive(true);
     }
 
+    //public void OnListenVoiceButtonClick()
+    //{
+    //    //if (click == null || click.checkID == null || flower == null) return;
+    //    //if (click.checkID.IsMine(flower)) return;
+    //    if (click == null || flower == null) return;
+
+    //    SwapButtonUI(4);  // 재생 중 UI
+    //    recorder.PlayRecording();
+    //    StartCoroutine(CheckAudioCompletion());
+    //}
     public void OnListenVoiceButtonClick()
     {
-        //if (click == null || click.checkID == null || flower == null) return;
-        //if (click.checkID.IsMine(flower)) return;
         if (click == null || flower == null) return;
 
         SwapButtonUI(4);  // 재생 중 UI
-        recorder.PlayRecording();
-        StartCoroutine(CheckAudioCompletion());
+
+        // 제출 전이라면 로컬 녹음 재생
+        if (!isRecordComplete)
+        {
+            recorder.PlayRecording();
+            StartCoroutine(CheckAudioCompletion());
+        }
+        // 제출된 상태라면 서버에서 받아와서 재생
+        else
+        {
+            StartCoroutine(GetAndPlayVoiceMessage());
+        }
+    }
+
+    [System.Serializable]
+    private class VoiceStatus
+    {
+        public bool recordComplete;
+        public bool listenComplete;
+    }
+
+    private IEnumerator GetVoiceStatus()
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+
+        yield return NetworkManager.Instance.Get<VoiceStatus>("api/flower/voice/status",
+            (success, response) =>
+            {
+                if (success && response != null)
+                {
+                    isRecordComplete = response.recordComplete;
+                    isListenComplete = response.listenComplete;
+                    UpdateUI(flower);
+                    UpdateUIText();
+                }
+            });
+    }
+
+    private IEnumerator GetAndPlayVoiceMessage()
+    {
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+
+        bool isPlaying = false;
+
+        yield return NetworkManager.Instance.GetWithoutBody("api/flower/voice",
+            (success, response) =>
+            {
+                if (success)
+                {
+                    try
+                    {
+                        // response는 URL 문자열이므로 JsonUtility.FromJson 필요없이 바로 사용
+                        recorder.PlayStreamingAudio(response);
+                        isPlaying = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Error playing voice: {e.Message}");
+                        buttons[4].SetActive(false);
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"Failed to get voice URL: {response}");
+                    buttons[4].SetActive(false);
+                }
+            });
+
+        if (isPlaying)
+        {
+            StartCoroutine(CheckAudioCompletion());
+        }
+    }
+
+    [System.Serializable]
+    private class VoiceUrlResponse
+    {
+        public string url;
     }
 
     private IEnumerator CheckAudioCompletion()
@@ -828,6 +922,9 @@ public class FlowerUIManager : MonoBehaviourPun
             SwapButtonUI(2);  // 상대방 꽃은 항상 듣기 버튼으로
             UpdateUIText();
             photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, isRecordComplete, true);
+
+            // 듣기 완료 시 상태 업데이트
+            StartCoroutine(GetVoiceStatus());
         }
         buttons[4].SetActive(false);
     }
@@ -872,7 +969,6 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         if (!click.checkID.IsMine(flower)) return;
 
-        testRecord = false;
         photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, false);
         click.checkID.ResetFirst();
 

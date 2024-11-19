@@ -4,6 +4,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -208,6 +209,31 @@ public class NetworkManager : MonoBehaviour
             else
             {
                 Debug.LogError($"Request failed: {request.error}");
+                callback?.Invoke(false, request.error);
+            }
+        }
+    }
+
+    public IEnumerator PostMultipartData(string endpoint, List<IMultipartFormSection> formData, Action<bool, string> callback)
+    {
+        string url = baseUrl + endpoint;
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url, formData))
+        {
+            request.SetRequestHeader("accept", "application/json");
+            request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                callback?.Invoke(true, request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError($"[Response] Error: {request.error}");
+                Debug.LogError($"[Response] ResponseCode: {request.responseCode}");
+                Debug.LogError($"[Response] Body: {request.downloadHandler.text}");
                 callback?.Invoke(false, request.error);
             }
         }

@@ -224,30 +224,38 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
             if (checkID != null)
             {
-                if (checkID.IsMine(targetFlower) == true)
+                if (targetFlower.uiManager.isRecordComplete == false && checkID.IsMine(targetFlower) == true)
                 {
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
                 }
-                else
+                else if(targetFlower.uiManager.isRecordComplete == true && checkID.IsMine(targetFlower) == false)
                 {
-                    if (targetFlower.voiceClip == null)
+                    if (targetFlower.uiManager.isRecordComplete == false)
                     {
+                        print("³ìÀ½¿ÏX! 1¹ø!");
                         targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
                     }
                     else
                     {
+                        print("³ìÀ½¿Ï! 2¹ø!");
                         targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
                     }
+                }
+                else
+                {
+                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
                 }
             }
             else
             {
-                if (targetFlower.voiceClip == null)
+                if (targetFlower.uiManager.isRecordComplete == false)
                 {
+                    print("else ³ìÀ½ ¿ÏX 1¹ø!");
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
                 }
                 else
                 {
+                    print("else 2¹ø!");
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
                 }
             }
