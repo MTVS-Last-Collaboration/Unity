@@ -135,7 +135,7 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         if (dateChanger.UseFeature() == false && isListenComplete == true)
         {
-            listenCompleteText.text = "연인의 말한마디 듣기\n" + restTime;
+            listenCompleteText.text = "연인의 말\n한마디 듣기\n" + restTime;
             if (buttons != null && buttons.Length > 2 && buttons[2] != null)
             {
                 buttons[2].GetComponent<Button>().interactable = false;
@@ -150,6 +150,11 @@ public class FlowerUIManager : MonoBehaviourPun
             }
             listenCompleteText.text = "연인의 말한마디 듣기";
             isListenComplete = false;
+        }
+        if (isListenComplete == false)
+        {
+            listenCompleteText.text = "연인의 말한마디 듣기";
+            buttons[2].GetComponent<Button>().interactable = true;
         }
     }
 
@@ -356,7 +361,8 @@ public class FlowerUIManager : MonoBehaviourPun
         statusText.text = statusMsg;
 
         bool isMyFlower = false;
-        if (click.checkID != null) {
+        if (click.checkID != null)
+        {
             isMyFlower = click.checkID.IsMine(flower);
         }
 
@@ -410,7 +416,7 @@ public class FlowerUIManager : MonoBehaviourPun
             SwapButtonUI(5);  // 새 꽃 심기 버튼
             return;  // 여기서 종료
         }
-        
+
         // 다른 상태들 처리
         if (isMyFlower)
         {
@@ -434,7 +440,7 @@ public class FlowerUIManager : MonoBehaviourPun
         }
         else
         {
-            if (!isListenComplete)
+            if (isListenComplete == true && isRecordComplete == true)
             {
                 sound.PlaySound("smjAudioClopAttay", 0);
                 SwapButtonUI(2);
@@ -843,6 +849,8 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         public bool recordComplete;
         public bool listenComplete;
+        public int moodCount;
+        public string flowerName;
     }
 
     private IEnumerator GetVoiceStatus()
@@ -856,6 +864,8 @@ public class FlowerUIManager : MonoBehaviourPun
                 {
                     isRecordComplete = response.recordComplete;
                     isListenComplete = response.listenComplete;
+                    flower.evolutionCount = response.moodCount;
+                    flower.nickName = response.flowerName;
                     UpdateUI(flower);
                     UpdateUIText();
                 }
