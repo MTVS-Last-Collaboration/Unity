@@ -1,62 +1,120 @@
+using Dummiesman;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using WebSocketSharp;
 
 
 public class ChatTest : MonoBehaviour
 {
-    private WebSocket ws;
-
-    // 웹소켓 서버의 주소
-    private string serverUrl = "http://125.132.216.190:8080/api/chat/send";
+    public string objUrl = "https://loveforest.s3.ap-northeast-2.amazonaws.com/14c26e19-8d91-4e7b-a3a3-10078d668cd6.obj";
+    public string mtlUrl = "https://loveforest.s3.ap-northeast-2.amazonaws.com/609e4fbe-2d08-4575-ac01-4b576b3dfbd8.mtl";
+    public string textureBaseUrl = "https://loveforest.s3.ap-northeast-2.amazonaws.com/44f8ff9f-189f-4893-bbf9-a9795f7d3b10.png"; // 텍스처 파일의 경로
 
     void Start()
     {
-        // 웹소켓 연결
-        ws = new WebSocket(serverUrl);
-
-        // 웹소켓 이벤트 핸들러 등록
-        ws.OnMessage += (sender, e) => {
-            Debug.Log("Received: " + e.Data);
-            // 여기서 AI 서버의 응답을 처리할 수 있습니다.
-        };
-
-        ws.OnOpen += (sender, e) => {
-            Debug.Log("WebSocket opened.");
-        };
-
-        ws.OnError += (sender, e) => {
-            Debug.LogError("WebSocket error: " + e.Message);
-        };
-
-        ws.OnClose += (sender, e) => {
-            Debug.Log("WebSocket closed.");
-        };
-
-        // 웹소켓 연결 시작
-        ws.Connect();
+        StartCoroutine(DownloadAndLoadOBJWithMTL());
     }
 
-    // 메시지 전송 메소드
-    public void SendMessage(string message)
+    IEnumerator DownloadAndLoadOBJWithMTL()
     {
-        if (ws != null && ws.ReadyState == WebSocketState.Open)
+        // Step 1: Download OBJ file
+        UnityWebRequest objRequest = UnityWebRequest.Get(objUrl);
+        yield return objRequest.SendWebRequest();
+
+        if (objRequest.result != UnityWebRequest.Result.Success)
         {
-            ws.Send(message); // 메시지를 웹소켓으로 전송
-            Debug.Log("Sent: " + message);
+            Debug.LogError("Failed to download OBJ: " + objRequest.error);
+            yield break;
         }
-        else
+
+        string objData = objRequest.downloadHandler.text;
+
+        // Step 2: Download MTL file
+        UnityWebRequest mtlRequest = UnityWebRequest.Get(mtlUrl);
+        yield return mtlRequest.SendWebRequest();
+
+        if (mtlRequest.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogWarning("WebSocket is not open.");
+            Debug.LogError("Failed to download MTL: " + mtlRequest.error);
+            yield break;
         }
+
+        string mtlData = mtlRequest.downloadHandler.text;
+
+        // Step 3: Parse OBJ and MTL
+
+        var mesh = OBJLoaderHelper.FastFloatParse(objData); // OBJ 파싱 라이브러리 필요
+        Dictionary<string, Material> materials = ParseMTL(mtlData);
+
+        // Step 4: Create GameObject and apply materials
+        GameObject objObject = new GameObject("Loaded OBJ");
+        MeshRenderer renderer = objObject.AddComponent<MeshRenderer>();
+        MeshFilter filter = objObject.AddComponent<MeshFilter>();
+
+       // filter.mesh = mesh;
+
+        // Set materials (assuming 1 material for simplicity)
+        if (materials.Count > 0)
+        {
+            renderer.material = materials["default"]; // MTL에서 기본 머티리얼 이름을 지정하세요
+        }
+
+        objObject.transform.position = Vector3.zero;
+
+        Debug.Log("OBJ with MTL loaded successfully!");
     }
 
-    void OnDestroy()
+    Dictionary<string, Material> ParseMTL(string mtlData)
     {
-        if (ws != null)
+        Dictionary<string, Material> materials = new Dictionary<string, Material>();
+
+        string[] lines = mtlData.Split('\n');
+        Material currentMaterial = null;
+        string materialName = "";
+
+        foreach (string line in lines)
         {
-            ws.Close(); // 웹소켓 연결 종료
+            string trimmedLine = line.Trim();
+            if (trimmedLine.StartsWith("newmtl"))
+            {
+                if (currentMaterial != null && !string.IsNullOrEmpty(materialName))
+                {
+                    materials.Add(materialName, currentMaterial);
+                }
+
+                materialName = trimmedLine.Split(' ')[1];
+                currentMaterial = new Material(Shader.Find("Standard"));
+            }
+            else if (trimmedLine.StartsWith("map_Kd"))
+            {
+                string textureFileName = trimmedLine.Split(' ')[1];
+                string textureUrl = textureBaseUrl + textureFileName;
+                StartCoroutine(DownloadTexture(textureUrl, currentMaterial));
+            }
         }
+
+        if (currentMaterial != null && !string.IsNullOrEmpty(materialName))
+        {
+            materials.Add(materialName, currentMaterial);
+        }
+
+        return materials;
+    }
+
+    IEnumerator DownloadTexture(string url, Material material)
+    {
+        UnityWebRequest textureRequest = UnityWebRequestTexture.GetTexture(url);
+        yield return textureRequest.SendWebRequest();
+
+        if (textureRequest.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to download texture: " + textureRequest.error);
+            yield break;
+        }
+
+        Texture2D texture = DownloadHandlerTexture.GetContent(textureRequest);
+        material.mainTexture = texture;
     }
 }

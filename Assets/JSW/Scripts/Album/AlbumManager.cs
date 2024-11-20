@@ -28,8 +28,11 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     public GameObject DeleteUIPic;
 
     public GameObject[] AlbumPos123;
+    public GameObject[] AlbumPos123Button;
+
     public AlbumPicClass[] albumPicClass;
     public int nowIndex;
+    public GameObject picWriteUI;
 
     public List<AlbumPicClass> Albumlist = new List<AlbumPicClass>();
 
@@ -38,6 +41,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
 
     private string apiUrl = "http://125.132.216.190:12223/api/photo-album"; // Replace with the actual API endpoint
     private string apiUrl2 = "http://125.132.216.190:12223/api/photo-album/convert/11"; // Replace with the actual API endpoint
+
 
     private void Start()
     {
@@ -87,6 +91,8 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         public string title;
         public string day;
         public string content;
+        public string ObjURL;
+        public string TextureURL;
     }
 
     [System.Serializable]
@@ -150,6 +156,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                 newImage = Albumlist[nowIndex - 1].sprite;
 
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                AlbumPos123Button[0].SetActive(true);
             }
 
 
@@ -160,6 +167,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                 newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
                 day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                AlbumPos123Button[0].SetActive(true);
 
                 imageBytes = newImage.EncodeToPNG();
 
@@ -178,6 +186,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex + 0].sprite;
 
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[1].SetActive(true);
 
             if (Albumlist.Count < 2)
             {
@@ -186,7 +195,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                 newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
                 day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
-
+                AlbumPos123Button[0].SetActive(true);
 
                 imageBytes = newImage.EncodeToPNG();
                 
@@ -207,12 +216,14 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex + 1].sprite;
 
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[2].SetActive(true);
 
             title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
             content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;
             newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
             day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
             AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[0].SetActive(true);
 
 
 
@@ -303,6 +314,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         if(i + j >= Albumlist.Count )
                         {
                             AlbumPos123[j].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                            AlbumPos123Button[j].SetActive(false);
                             continue;
                         }
                         title = Albumlist[i + j].title;
@@ -310,6 +322,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         day = Albumlist[i+j].day;
                         newImage = Albumlist[i+j].sprite;
                         AlbumPos123[j].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                        AlbumPos123Button[j].SetActive(true);
                     }
                }
                else if (i % 3 == 1)
@@ -321,6 +334,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         if (i + j >= Albumlist.Count)
                         {
                             AlbumPos123[j+l].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                            AlbumPos123Button[j + l].SetActive(false);
                             l += 1;
                             continue;
                         }
@@ -329,6 +343,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         day = Albumlist[i + j].day;
                         newImage = Albumlist[i + j].sprite;
                         AlbumPos123[j + l].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                        AlbumPos123Button[j + l].SetActive(true);
                         l += 1;
                     }
                 }
@@ -341,6 +356,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         if (i + j >= Albumlist.Count)
                         {
                             AlbumPos123[j+ l].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                            AlbumPos123Button[j + l].SetActive(false);
                             l += 1;
                             continue;
                         }
@@ -349,6 +365,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         day = Albumlist[i + j].day;
                         newImage = Albumlist[i + j].sprite;
                         AlbumPos123[j+ l].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+                        AlbumPos123Button[j + l].SetActive(true);
                         l += 1;
                     }
                 }
@@ -382,6 +399,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             if (Albumlist.Count < nowIndex + 2)
             {
                 AlbumPos123[0].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                AlbumPos123Button[0].SetActive(false);
                 Albumlist.RemoveAt(nowIndex + 0);
                 return;
             }
@@ -391,10 +409,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex + 1].sprite;
 
             AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[0].SetActive(true);
 
             if (Albumlist.Count < nowIndex + 3)
             {
                 AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                AlbumPos123Button[1].SetActive(false);
                 Albumlist.RemoveAt(nowIndex + 0);
                 return;
             }
@@ -405,10 +425,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex + 2].sprite;
 
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[1].SetActive(true);
 
             if (Albumlist.Count < nowIndex + 4)
             {
                 AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                AlbumPos123Button[2].SetActive(false);
                 Albumlist.RemoveAt(nowIndex + 0);
                 return;
             }
@@ -419,6 +441,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex + 3].sprite;
 
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[2].SetActive(false);
 
             Albumlist.RemoveAt(nowIndex + 0);
         }
@@ -428,6 +451,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             if (Albumlist.Count < nowIndex + 3)
             {
                 AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                AlbumPos123Button[1].SetActive(false);
                 Albumlist.RemoveAt(nowIndex + 1);
                 return;
             }
@@ -438,10 +462,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex + 2].sprite;
 
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[1].SetActive(true);
 
             if (Albumlist.Count < nowIndex + 4)
             {
                 AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                AlbumPos123Button[2].SetActive(false);
                 Albumlist.RemoveAt(nowIndex + 1);
                 return;
             }
@@ -452,6 +478,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex + 3].sprite;
 
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[2].SetActive(true);
             Albumlist.RemoveAt(nowIndex + 1);
         }
         else
@@ -460,6 +487,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             if (Albumlist.Count < nowIndex + 4)
             {
                 AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+                AlbumPos123Button[2].SetActive(false);
                 Albumlist.RemoveAt(nowIndex + 2);
                 return;
             }
@@ -470,6 +498,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             newImage = Albumlist[nowIndex+ 3].sprite;
 
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[2].SetActive(true);
             Albumlist.RemoveAt(nowIndex + 2);
         }
     }
@@ -496,6 +525,9 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             AlbumPos123[0].GetComponent<AlbumItem>().SetContents(null, null, null, null);
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            AlbumPos123Button[0].SetActive(false);
+            AlbumPos123Button[1].SetActive(false);
+            AlbumPos123Button[2].SetActive(false);
             return;
         }
 
@@ -505,11 +537,14 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         newImage = Albumlist[nowIndex + 0].sprite;
 
         AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[0].SetActive(true);
 
         if (Albumlist.Count < 2)
         {
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            AlbumPos123Button[1].SetActive(false);
+            AlbumPos123Button[2].SetActive(false);
             return;
         }
 
@@ -519,10 +554,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         newImage = Albumlist[nowIndex + 1].sprite;
 
         AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[1].SetActive(true);
 
         if (Albumlist.Count < 3)
         {
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            AlbumPos123Button[2].SetActive(false);
             return;
         }
 
@@ -532,6 +569,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         newImage = Albumlist[nowIndex + 2].sprite;
 
         AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[2].SetActive(true);
     }
 
 
@@ -554,6 +592,8 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         {
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            AlbumPos123Button[1].SetActive(false);
+            AlbumPos123Button[2].SetActive(false);
             clickRightLeft = true;
             return;
         }
@@ -563,10 +603,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         newImage = Albumlist[nowIndex + 1].sprite;
 
         AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[1].SetActive(true);
 
         if (nowIndex + 2 >= Albumlist.Count)
         {
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            AlbumPos123Button[2].SetActive(false);
             clickRightLeft = true;
             return;
         }
@@ -576,6 +618,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         newImage = Albumlist[nowIndex + 2].sprite;
 
         AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[2].SetActive(true);
         clickRightLeft = true;
         TimeLerp = 0;
 
@@ -601,6 +644,8 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         {
             AlbumPos123[1].GetComponent<AlbumItem>().SetContents(null, null, null, null);
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            AlbumPos123Button[1].SetActive(false);
+            AlbumPos123Button[2].SetActive(false);
             clickRightLeft = true;
             return;
         }
@@ -610,10 +655,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         newImage = Albumlist[nowIndex + 1].sprite;
 
         AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[1].SetActive(true);
 
         if (nowIndex + 2 >= Albumlist.Count)
         {
             AlbumPos123[2].GetComponent<AlbumItem>().SetContents(null, null, null, null);
+            AlbumPos123Button[2].SetActive(false);
             clickRightLeft = true;
             return;
         }
@@ -623,6 +670,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         newImage = Albumlist[nowIndex + 2].sprite;
 
         AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[2].SetActive(true);
         clickRightLeft = true;
         TimeLerp = 0;
     }
@@ -670,9 +718,20 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         title = wrapper.data[i].title,
                         day = wrapper.data[i].photoDate[0].ToString() + '-' + wrapper.data[i].photoDate[1].ToString() + '-' + wrapper.data[i].photoDate[2].ToString(),
                         content = wrapper.data[i].content,
-                        sprite = texture2
+                        sprite = texture2,
+                        ObjURL = wrapper.data[i].pngUrl,
+                        TextureURL = wrapper.data[i].imageUrl
                     };
                     Albumlist.Add(albumPicClass);
+                }
+
+                for (int i =0; i < Albumlist.Count;i++)
+                {
+                    if (Albumlist[i].ObjURL != null)
+                    {
+                        GetComponent<Making3DObject>().make3DObjectInit(Albumlist[i].ObjURL, Albumlist[i].TextureURL);
+                        break;
+                    }
                 }
                 SetImageIntoUI();
             }
@@ -680,6 +739,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             {
                 print("¾È³ª¿Ó¾î¿ä!!!!!!!!!!");
             }
+
         }
     }
 
@@ -753,9 +813,9 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         public string title;
         public string content;
         public int[] photoDate;
-        public string imageUrl;
+        public string imageUrl;     // obj
         public string objectUrl;
-        public string pngUrl;
+        public string pngUrl;       // texture
         public string materialUrl;
         public int positionX;
         public int positionY;

@@ -35,6 +35,7 @@ public class JSW_DecoMineFloor : JSW_DecoMineObject
         {
             isPurchased = false;
             transform.GetChild(2).GetComponent<TMP_Text>().text = "";
+            transform.gameObject.SetActive(false);
         }
 
     }
