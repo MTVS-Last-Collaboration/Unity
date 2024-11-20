@@ -406,7 +406,7 @@ public class FlowerUIManager : MonoBehaviourPun
         // 먼저 진화 상태와 녹음 상태를 확인
         if (isMyFlower && targetFlower.curState == Flower.States.BLOSSOM && isRecordComplete)
         {
-            sound.PlaySound("smjAudioClopAttay", 1);
+            sound.PlaySound("smjAudioClopAttay", 0);
             SwapButtonUI(5);  // 새 꽃 심기 버튼
             return;  // 여기서 종료
         }
@@ -417,18 +417,18 @@ public class FlowerUIManager : MonoBehaviourPun
             if (isRecordComplete == true)
             {
                 print("녹음완! 3번!");
-                sound.PlaySound("smjAudioClopAttay", 1);
+                sound.PlaySound("smjAudioClopAttay", 0);
                 SwapButtonUI(3);
             }
             else if (isRecordComplete == false || isListenComplete == true)
             {
-                sound.PlaySound("smjAudioClopAttay", 1);
+                sound.PlaySound("smjAudioClopAttay", 0);
                 SwapButtonUI(idx);
             }
             else
             {
                 print("녹음완X! 3번!");
-                sound.PlaySound("smjAudioClopAttay", 1);
+                sound.PlaySound("smjAudioClopAttay", 0);
                 SwapButtonUI(3);
             }
         }
@@ -436,12 +436,12 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             if (!isListenComplete)
             {
-                sound.PlaySound("smjAudioClopAttay", 1);
+                sound.PlaySound("smjAudioClopAttay", 0);
                 SwapButtonUI(2);
             }
             else
             {
-                sound.PlaySound("smjAudioClopAttay", 1);
+                sound.PlaySound("smjAudioClopAttay", 0);
                 SwapButtonUI(idx);
             }
         }
@@ -496,7 +496,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void OnCloseButtonClick()
     {
-        sound.PlaySound("smjAudioClopAttay", 2);
+        sound.PlaySound("smjAudioClopAttay", 1);
         HideFlowerInfo();
         click.ReturnCamera();
     }
