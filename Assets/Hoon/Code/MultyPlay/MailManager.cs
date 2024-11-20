@@ -161,6 +161,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     //메일캔버스
     public Canvas hoonMailCanvasObject;
 
+    //펫정보
+    public HoonPetInfo hoonPetInfo;
+    //포인트정보
+    public HoonPointInfo hoonPointInfo;
+
     void Start()
     {
         StartCoroutine(FindPlayer());
@@ -176,7 +181,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             CreateNewDayComentJsonArray();
 
         }
-        //PhotonNetwork.AddCallbackTarget(this);  // �̺�Ʈ �ݹ� ���
+        //PhotonNetwork.AddCallbackTarget(this);
         //Debug.Log(Application.persistentDataPath);
         //DataPath.text = Application.persistentDataPath;
 
@@ -2205,8 +2210,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //CheckHistoty();
         GetCheckMission();
         NewCheckHistory();
-       
-       
+        hoonPetInfo.MongLevelUpGet();
+        hoonPointInfo.GetCalenderEvent();
+
+
     }
 
     private void SaveStringAsJson(string data) // ���ڿ��� JSON �������� ���� ��ο� �����ϴ� �޼���
