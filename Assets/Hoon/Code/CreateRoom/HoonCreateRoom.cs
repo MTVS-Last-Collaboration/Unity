@@ -19,9 +19,9 @@ public class HoonCreateRoom : MonoBehaviour
     }
 
     // Update is called once per frame
-   /* void Update()
-    {
-        
+    /* void Update()
+    {       
+    
     }*/
     
     public void VeiwRoomStorage(GameObject obj)
@@ -84,4 +84,5 @@ public class HoonCreateRoom : MonoBehaviour
 
 
     }
+
 }//클래스끝

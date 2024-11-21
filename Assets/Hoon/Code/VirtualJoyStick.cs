@@ -1,25 +1,25 @@
-using ExitGames.Client.Photon;
-// PhotonView¸¦ »ç¿ëÇÏ±â À§ÇØ Ãß°¡
+ï»¿using ExitGames.Client.Photon;
+// PhotonViewë¥¼ ì‚¬ìš©í•˜ê¸° ìœ„í•´ ì¶”ê°€
 using Photon.Pun;
 using Photon.Pun.Demo.SlotRacer;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems; //Å°º¸µå, ¸¶¿ì½º , ÅÍÄ¡¸¦ ÀÌº¥Æ®·Î ¿ÀºêÁ§Æ®¿¡ º¸³¾ ¼ö ÀÖ´Â ±â´É Áö¿ø
+using UnityEngine.EventSystems; //í‚¤ë³´ë“œ, ë§ˆìš°ìŠ¤ , í„°ì¹˜ë¥¼ ì´ë²¤íŠ¸ë¡œ ì˜¤ë¸Œì íŠ¸ì— ë³´ë‚¼ ìˆ˜ ìˆëŠ” ê¸°ëŠ¥ ì§€ì›
 
 public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public static VirtualJoyStick instance;
 
-    [SerializeField] //private ¶óµµ ¿¡µğÅÍÀÇ ÀÎ½ºÆåÅÍ ºä¿¡¼­ ·¹¹ö¸¦ ³Ö¾îÁÙ¼ö ÀÖ°Ô Á÷¿­È­
+    [SerializeField] //private ë¼ë„ ì—ë””í„°ì˜ ì¸ìŠ¤í™í„° ë·°ì—ì„œ ë ˆë²„ë¥¼ ë„£ì–´ì¤„ìˆ˜ ìˆê²Œ ì§ì—´í™”
     private RectTransform lever;
     private RectTransform rectTransform;
 
-    [SerializeField, Range(10,150)] //·¹¹ö°¡ ¿òÁ÷ÀÏ¼ö ÀÖ´Â ¹üÀ§¸¦ ÁöÁ¤, ÀÎ½ºÆåÅÍ¿¡ °ø°³
+    [SerializeField, Range(10,150)] //ë ˆë²„ê°€ ì›€ì§ì¼ìˆ˜ ìˆëŠ” ë²”ìœ„ë¥¼ ì§€ì •, ì¸ìŠ¤í™í„°ì— ê³µê°œ
     private float leverRange = 0f;
 
-    //ÀÎÇ² µğ·º¼Ç º¯¼ö
+    //ì¸í’‹ ë””ë ‰ì…˜ ë³€ìˆ˜
     public Vector3 inputDirection;
     private bool isInput;
 
@@ -31,11 +31,11 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private void Awake()
     {
         instance = this;
-        //Á¶ÀÌ½ºÆ½ ¸öÃ¼¸¦ Ä³½Ì
+        //ì¡°ì´ìŠ¤í‹± ëª¸ì²´ë¥¼ ìºì‹±
         rectTransform = GetComponent<RectTransform>();
 
     }
-    //¸¶¿ì½º Å¬¸¯µÇ¸é È£ÃâµÇ´Â ÇÔ¼ö
+    //ë§ˆìš°ìŠ¤ í´ë¦­ë˜ë©´ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     public void OnBeginDrag(PointerEventData eventData)
     {
 
@@ -44,46 +44,46 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         isInput = true;
     
     }
-    //¸¶¿ì½º µå·¡±×µÇ¸é È£ÃâµÇ´Â ÇÔ¼ö
-    //¿ÀºêÁ§Æ®¸¦ Å¬¸¯ÇØ¼­ µå·¡±× ÇÏ´Â µµÁß¿¡ µé¾î¿À´Â ÀÌº¥Æ®
-    //ÇÏÁö¸¸ Å¬¸¯À» À¯ÁöÇÑ »óÅÂ·Î ¸¶¿ì½º¸¦ ¸ØÃß¸é ÀÌº¥Æ®°¡ µé¾î¿ÀÁö ¾ÊÀ½.
-    //µû¶ó¼­ ÀÎÇ²·ÎÁ÷À» ¹Ş¾Æ¼­ ¿òÁ÷ÀÌ´Â ÄÚµå´Â update ¿¡¼­ ±¸Çö
+    //ë§ˆìš°ìŠ¤ ë“œë˜ê·¸ë˜ë©´ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
+    //ì˜¤ë¸Œì íŠ¸ë¥¼ í´ë¦­í•´ì„œ ë“œë˜ê·¸ í•˜ëŠ” ë„ì¤‘ì— ë“¤ì–´ì˜¤ëŠ” ì´ë²¤íŠ¸
+    //í•˜ì§€ë§Œ í´ë¦­ì„ ìœ ì§€í•œ ìƒíƒœë¡œ ë§ˆìš°ìŠ¤ë¥¼ ë©ˆì¶”ë©´ ì´ë²¤íŠ¸ê°€ ë“¤ì–´ì˜¤ì§€ ì•ŠìŒ.
+    //ë”°ë¼ì„œ ì¸í’‹ë¡œì§ì„ ë°›ì•„ì„œ ì›€ì§ì´ëŠ” ì½”ë“œëŠ” update ì—ì„œ êµ¬í˜„
     public void OnDrag(PointerEventData eventData)
     {
         ControllJoyStickLever(eventData);
         //Debug.Log("Drag");
     
     }
-    //¸¶¿ì½º ÀÔ·ÂÀÌ ³¡³ª¸é È£ÃâµÇ´Â ÇÔ¼ö
+    //ë§ˆìš°ìŠ¤ ì…ë ¥ì´ ëë‚˜ë©´ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     public void OnEndDrag(PointerEventData eventData)
     {
-        lever.anchoredPosition = Vector3.zero; //lever ¿øÀ§Ä¡·Î ÀÌµ¿ÇÏ°Ô º¯°æ
+        lever.anchoredPosition = Vector3.zero; //lever ì›ìœ„ì¹˜ë¡œ ì´ë™í•˜ê²Œ ë³€ê²½
         //Debug.Log("End");
         isInput = false;
-        //ÄÁÆ®·Ñ·¯ ÀÔ·Â°ª »èÁ¦ÇÏ±â
+        //ì»¨íŠ¸ë¡¤ëŸ¬ ì…ë ¥ê°’ ì‚­ì œí•˜ê¸°
         if(playerMoveControl != null)
         {
             playerMoveControl.PlayerMoveJoyStick(Vector3.zero);
         }
        
     }
-    //Áßº¹µÇ´Â ÀÎÇ² ÄÚµå¸¦ ÇÔ¼öÈ­ÇÏ±â.
+    //ì¤‘ë³µë˜ëŠ” ì¸í’‹ ì½”ë“œë¥¼ í•¨ìˆ˜í™”í•˜ê¸°.
     private void ControllJoyStickLever(PointerEventData eventData)
     {
-        var inputPos = eventData.position - rectTransform.anchoredPosition; //·¹¹öÀÇ À§Ä¡¸¦ ±¸ÇÏ´Â ÄÚµå
-        //ÀÎÇ²Æ÷½ºÀÇ ±æÀÌ¿Í ·¹ÆÛ·¹ÀÎÁö¸¦ ºñ±³ÇÏ°í ·¹¹ö·¹ÀÎÁö°¡ ÂªÀ¸¸é ¹Ù·ÎÀû¿ë, ±æ¸é ÀÎÇ²Æ÷½º¸¦ Á¤±ÔÈ­ ÇÏ°í ÀÎÇ² Æ÷½º¸¦ °öÇÏÀÚ.
+        var inputPos = eventData.position - rectTransform.anchoredPosition; //ë ˆë²„ì˜ ìœ„ì¹˜ë¥¼ êµ¬í•˜ëŠ” ì½”ë“œ
+        //ì¸í’‹í¬ìŠ¤ì˜ ê¸¸ì´ì™€ ë ˆí¼ë ˆì¸ì§€ë¥¼ ë¹„êµí•˜ê³  ë ˆë²„ë ˆì¸ì§€ê°€ ì§§ìœ¼ë©´ ë°”ë¡œì ìš©, ê¸¸ë©´ ì¸í’‹í¬ìŠ¤ë¥¼ ì •ê·œí™” í•˜ê³  ì¸í’‹ í¬ìŠ¤ë¥¼ ê³±í•˜ì.
         var inputVector = inputPos.magnitude < leverRange ? inputPos : inputPos.normalized * leverRange;
-        lever.anchoredPosition = inputVector; //Á¶°Ç¿¡ µû¶ó ·¹¹ö¸¦ ¿òÁ÷ÀÌ°ÔÇÏÀÚ.
-        //inputVector´Â ÇØ»óµµ·Î ¸¸µé¾îÁø°ªÀ¸·Î Ä³¸¯ÅÍ ÀÌµ¿¼Óµµ¿¡ ÀûÇÕÇÏÁö¾ÊÀ½. leverRange·Î ³ª´©¾î 0~1 °ªÀ¸·Î Á¤±ÔÈ­ ÇÏ¿© ÀÌ¿ëÇÏÀÚ.
-        //Ä³¸¯ÅÍ Á¤±ÔÈ­µÈ ÀÌµ¿ º¤ÅÍ¿¡ ÀÌµ¿¼Óµµ, ½Ã°£À» °öÇØ¼­ ÀÌµ¿ÇÏ°Ô ÇÏÀÚ.
+        lever.anchoredPosition = inputVector; //ì¡°ê±´ì— ë”°ë¼ ë ˆë²„ë¥¼ ì›€ì§ì´ê²Œí•˜ì.
+        //inputVectorëŠ” í•´ìƒë„ë¡œ ë§Œë“¤ì–´ì§„ê°’ìœ¼ë¡œ ìºë¦­í„° ì´ë™ì†ë„ì— ì í•©í•˜ì§€ì•ŠìŒ. leverRangeë¡œ ë‚˜ëˆ„ì–´ 0~1 ê°’ìœ¼ë¡œ ì •ê·œí™” í•˜ì—¬ ì´ìš©í•˜ì.
+        //ìºë¦­í„° ì •ê·œí™”ëœ ì´ë™ ë²¡í„°ì— ì´ë™ì†ë„, ì‹œê°„ì„ ê³±í•´ì„œ ì´ë™í•˜ê²Œ í•˜ì.
         inputDirection = inputVector / leverRange; 
     }
     
     private void IntputControllVector()
     {
-        //Ä³¸¯ÅÍ¿¡°Ô ÀÔ·Â ¹éÅÍ¸¦ Àü´Ş
+        //ìºë¦­í„°ì—ê²Œ ì…ë ¥ ë°±í„°ë¥¼ ì „ë‹¬
         //Debug.Log(inputDirection.x + "/" + inputDirection.y);
-        //¹«ºêÂÊÀ¸·Î º¸³»ÀÚ.
+        //ë¬´ë¸Œìª½ìœ¼ë¡œ ë³´ë‚´ì.
         if(playerMoveControl != null)
         {
             playerMoveControl.PlayerMoveJoyStick(inputDirection);
@@ -97,13 +97,13 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         if (playerMoveControl == null)
         {
-            //print("ÇÃ·¹ÀÌ¾î ¹«ºê ¾øÀ½, ÄÚ·çÆ¾ Ã£´ÂÁß");
+            //print("í”Œë ˆì´ì–´ ë¬´ë¸Œ ì—†ìŒ, ì½”ë£¨í‹´ ì°¾ëŠ”ì¤‘");
             StartCoroutine(PlayerMoveControll());
         }
        
         if(playerPhotonView == null)
         {
-            //print("ÇÃ·¹ÀÌ¾î Æ÷Åæºä ¾øÀ½, ÄÚ·çÆ¾ Ã£´ÂÁß");
+            //print("í”Œë ˆì´ì–´ í¬í†¤ë·° ì—†ìŒ, ì½”ë£¨í‹´ ì°¾ëŠ”ì¤‘");
             StartCoroutine(PlayerPhotionView());
         }
         
@@ -115,7 +115,7 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         
         if(playerPhotonView != null && playerPhotonView.IsMine && isInput)
         {
-            //print("ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÌ°Ô ÇÏÀÚ.");
+            //print("í”Œë ˆì´ì–´ ì›€ì§ì´ê²Œ í•˜ì.");
             IntputControllVector();
             
         }
@@ -127,20 +127,20 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         yield return new WaitForSeconds(1.0f);
 
-        // Hierarchy¿¡ ÀÖ´Â ¸ğµç È°¼ºÈ­µÈ ¿ÀºêÁ§Æ® Å½»ö
+        // Hierarchyì— ìˆëŠ” ëª¨ë“  í™œì„±í™”ëœ ì˜¤ë¸Œì íŠ¸ íƒìƒ‰
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
         foreach (GameObject obj in allObjects)
         {
-            // PhotonView ÄÄÆ÷³ÍÆ®°¡ ÀÖ´ÂÁö È®ÀÎ
+            // PhotonView ì»´í¬ë„ŒíŠ¸ê°€ ìˆëŠ”ì§€ í™•ì¸
             PhotonView photonView = obj.GetComponent<PhotonView>();
 
-            // PhotonView°¡ ÀÖ°í, isMineÀÌ trueÀÎ °æ¿ì
+            // PhotonViewê°€ ìˆê³ , isMineì´ trueì¸ ê²½ìš°
             if (photonView != null && photonView.IsMine)
             {
-                // PlayerMove ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿È
+                // PlayerMove ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜´
                 playerMoveControl = obj.GetComponent<PlayerMoveTest>();
-                //print("³» playerMoveControl Ã£¾Ò´Ù" + obj.name);
+                //print("ë‚´ playerMoveControl ì°¾ì•˜ë‹¤" + obj.name);
                 break;
             }
            
@@ -154,19 +154,19 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         yield return new WaitForSeconds(1.0f);
 
-        // Hierarchy¿¡ ÀÖ´Â ¸ğµç È°¼ºÈ­µÈ ¿ÀºêÁ§Æ® Å½»ö
+        // Hierarchyì— ìˆëŠ” ëª¨ë“  í™œì„±í™”ëœ ì˜¤ë¸Œì íŠ¸ íƒìƒ‰
          GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
          foreach (GameObject obj in allObjects)
          {
-             // PhotonView ÄÄÆ÷³ÍÆ®°¡ ÀÖ´ÂÁö È®ÀÎ
+             // PhotonView ì»´í¬ë„ŒíŠ¸ê°€ ìˆëŠ”ì§€ í™•ì¸
              PhotonView photonView = obj.GetComponent<PhotonView>();
 
-             // PhotonView°¡ ÀÖ°í, isMineÀÌ trueÀÎ °æ¿ì
+             // PhotonViewê°€ ìˆê³ , isMineì´ trueì¸ ê²½ìš°
              if (photonView != null && photonView.IsMine)
              {
                  playerPhotonView = obj.GetComponent<PhotonView>();
-                 //print("³» Æ÷Åæºä Ã£¾Ò´Ù.");
+                 //print("ë‚´ í¬í†¤ë·° ì°¾ì•˜ë‹¤.");
                  break;
              }
          }
@@ -176,4 +176,4 @@ public class VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     }
     
 
-}//Å¬·¡½º ³¡
+}//í´ë˜ìŠ¤ ë
