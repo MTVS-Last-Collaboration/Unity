@@ -14,7 +14,7 @@ public class LatestAudioLoader : MonoBehaviour
     {
         flower = GetComponent<Flower>();
         audioSource = GetComponent<AudioSource>();
-        LoadLatestAudioClip();
+        //LoadLatestAudioClip();
     }
 
     //제출버튼 눌렀을때 Post방식으로 보내기
