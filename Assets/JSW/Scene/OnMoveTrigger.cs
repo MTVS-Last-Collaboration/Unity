@@ -18,9 +18,8 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        //imgCreateRoomBG.SetActive(false);//시작할때 BG를 끈다.
-        
-              
+        imgCreateRoomBG.SetActive(false);//시작할때 BG를 끈다.
+               
     }
 
 

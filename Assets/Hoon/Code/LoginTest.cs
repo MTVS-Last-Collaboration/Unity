@@ -362,18 +362,6 @@ public class LoginTest : MonoBehaviour
         }
 
     }
-
-    public void CloseLoginUI()
-    {
-        //로그인 창을 안으로 닫히게 하자.
-        //StartCoroutine(ChangeDownScaleLoglinUI()); //창의 크기를 줄이기
-        //창을 밑으로 내리기
-        //allRegistObject.SetActive(false);
-        //loginImage.SetActive(false);
-
-
-    }
-
    
     IEnumerator ChangeDownScaleLoglinUI()
     {
@@ -382,15 +370,14 @@ public class LoginTest : MonoBehaviour
         Vector3 min = Vector3.zero;
         float durationTime = 1f; //변하는시간
         float currentTime = 0f; //시작시간
-        
+
+        print("줄어들게하자");
         while (currentTime < durationTime)
         {
             currentTime += Time.deltaTime; //시간누적
             float t = currentTime / durationTime;
 
             loginImage.transform.localScale = Vector3.Lerp(max, min, t);
-            
-            print("줄어들게하자");
             yield return null;
         }
 
