@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 using ExitGames.Client.Photon;
 using Photon.Pun.Demo.Cockpit;
 using static JSW_InitRoom;
-using UnityEditor.VersionControl;
 using static JSW_ServerDeco;
 using System.Text;
 using UnityEngine.Networking;

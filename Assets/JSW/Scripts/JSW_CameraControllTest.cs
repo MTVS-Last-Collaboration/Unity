@@ -44,7 +44,6 @@ public class JSW_CameraControllTest : MonoBehaviour
         }
         if (cameraPos == "Original")
         {
-            
             mong.forward = (lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform.position + Vector3.up * 0.5f - (mong.position)).normalized;
             Vector3 playerDir = transform.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             if (lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player == null)
@@ -84,16 +83,25 @@ public class JSW_CameraControllTest : MonoBehaviour
         }
         else if (cameraPos == "Calender")
         {
+            int layerMask = 1 << LayerMask.NameToLayer("Player");
+            // 현재 카메라의 cullingMask에서 지정된 레이어를 제외시킴
+            mainCam_Object.GetComponent<Camera>().cullingMask &= ~layerMask;
             mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, CalenderPos.position + Vector3.left, Time.deltaTime * 5);
             mainCam_Object.transform.forward = CalenderPos.position - mainCam_Object.transform.position;
         }
         else if (cameraPos == "Album")
         {
+            int layerMask = 1 << LayerMask.NameToLayer("Player");
+            // 현재 카메라의 cullingMask에서 지정된 레이어를 제외시킴
+            mainCam_Object.GetComponent<Camera>().cullingMask &= ~layerMask;
             mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, AlbumPos.position + Vector3.forward * -1, Time.deltaTime * 5);
             mainCam_Object.transform.forward = AlbumPos.position - mainCam_Object.transform.position;
         }
         else if (cameraPos == "3D")
         {
+            int layerMask = 1 << LayerMask.NameToLayer("Player");
+            // 현재 카메라의 cullingMask에서 지정된 레이어를 제외시킴
+            mainCam_Object.GetComponent<Camera>().cullingMask &= ~layerMask;
             mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, CamPos_3D.position, Time.deltaTime*5);
             mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward,CamPos_3D.forward,Time.deltaTime*5);
         }

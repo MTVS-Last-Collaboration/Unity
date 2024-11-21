@@ -326,7 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 4135582792872272948}
   playerMoveSpeed: 3
-  animator: {fileID: 688370004689736511}
+  animator: {fileID: 5540386819875300419}
   model: {fileID: 6063649016319398911}
   myPos: {x: 0, y: 0, z: 0}
 --- !u!114 &5011634901700845772
@@ -347,7 +347,7 @@ MonoBehaviour:
   funitureObject2: {fileID: 0}
   DRM: {fileID: 0}
   IsCharacterMoving: 0
-  playerAnimator: {fileID: 688370004689736511}
+  playerAnimator: {fileID: 5540386819875300419}
   funiturePos: {fileID: 0}
   SmokeEffect: {fileID: 104829970813648393, guid: d3015b7eea383f64d8b81f965cc466e7,
     type: 3}
@@ -760,6 +760,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2709972542199079371}
     m_Modifications:
+    - target: {fileID: 2777936706081587618, guid: 7e59bdfdd48523c408d2629fa0d2f18c,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: a09524badf8ceb942ab139dacadd5f1b, type: 3}
+    - target: {fileID: 2777936706081587618, guid: 7e59bdfdd48523c408d2629fa0d2f18c,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: fb2d3a0df21888844b265a7ca5326a29, type: 2}
     - target: {fileID: 3820150663468444836, guid: 7e59bdfdd48523c408d2629fa0d2f18c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -830,9 +840,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e59bdfdd48523c408d2629fa0d2f18c, type: 3}
---- !u!95 &688370004689736511 stripped
+--- !u!95 &5540386819875300419 stripped
 Animator:
-  m_CorrespondingSourceObject: {fileID: 7197818856746759902, guid: 7e59bdfdd48523c408d2629fa0d2f18c,
+  m_CorrespondingSourceObject: {fileID: 2777936706081587618, guid: 7e59bdfdd48523c408d2629fa0d2f18c,
     type: 3}
   m_PrefabInstance: {fileID: 7669171403084490209}
   m_PrefabAsset: {fileID: 0}
