@@ -34,11 +34,15 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
                 byeUI.SetActive(true);
                 //print(2222);
             }
-            else
+            else if (imgCreateRoomBG != null)
             {
                 imgCreateRoomBG.SetActive(true); //이타이밍에 BG를 켜준다. 나중에 UI컨트롤로 변경할수 있음.
                 //GoOtherRoom();
                 //print(3333);
+            }
+            else
+            {
+                GoOtherRoom();
             }
         }
     }

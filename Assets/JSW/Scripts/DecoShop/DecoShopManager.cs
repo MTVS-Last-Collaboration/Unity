@@ -36,10 +36,10 @@ public class DecoShopManager : MonoBehaviour
 
         if (point >= nowPrice)
         {
+            JDMO.transform.gameObject.SetActive(true);
             DecoUIPurchase.SetActive(false);
             DecoUIOkay.SetActive(true);
             point = point - nowPrice;
-            //StartCoroutine(PurchaseCo(point, targetPoint));
             nowOwner.text = "소유중";
             JDMO.isMineText.text = "소유중";
             JDMO.isPurchased = true;

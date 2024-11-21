@@ -16,11 +16,23 @@ public class HoonUIController : MonoBehaviour
     public RectTransform imgOptionPanelObject; //옵션패널
     public Image Img_OptionButton;
     public Sprite[] LobbySprites;
-    
+    public RectTransform Img_SoundSwitchObject;
+    public RectTransform Img_BgmSwitchObejct;
+    bool isSoundSwitch = true;
+    bool isBGMSwitch = true;
+    public Image btnSound_ImageComp;
+    public Image btnBgm_ImageComp;
+    public AudioSource lobbyAudioSourceBGM;
+    public AudioSource lobbyAudioSourceSoundEffect;
+    public HoonSoundManagerLogin hoonSoundManager;
+    public GameObject Img_OptionMenuObject;
+    public GameObject img_PlayEnd;
+
 
     void Start()
     {
-        
+        Img_OptionMenuObject.SetActive(false);
+        img_PlayEnd.SetActive(false);
     }
 
     // Update is called once per frame
@@ -31,12 +43,14 @@ public class HoonUIController : MonoBehaviour
 
     public void OpenUI(GameObject obj)
     {
+        hoonSoundManager.PlaySound(0);
         obj.SetActive(true);
 
     }
 
     public void CloseUI(GameObject obj)
     {
+        hoonSoundManager.PlaySound(1);
         obj.SetActive(false);
     }
     public void ViewMarkObejct(GameObject obj)
@@ -91,12 +105,14 @@ public class HoonUIController : MonoBehaviour
 
         if (isOptionButton)
         {
-            Img_OptionButton.sprite = LobbySprites[0];
+            hoonSoundManager.PlaySound(0);
+            Img_OptionButton.sprite = LobbySprites[0];//이미지변경
             StartCoroutine(OpenOptionPanel());           
         }
         else
         {
-            Img_OptionButton.sprite = LobbySprites[1];
+            hoonSoundManager.PlaySound(1);
+            Img_OptionButton.sprite = LobbySprites[1];//이미지변경
             StartCoroutine(CloseOptionPanel());
         }
     }
@@ -104,7 +120,7 @@ public class HoonUIController : MonoBehaviour
     IEnumerator OpenOptionPanel()
     {
         Vector3 startPos;
-        Vector3 targetPos = new Vector3(975, 165, 0);
+        Vector3 targetPos = new Vector3(1005, 165, 0);
         float duration = 1f;
         float currentTime = 0f;
 
@@ -123,7 +139,7 @@ public class HoonUIController : MonoBehaviour
     IEnumerator CloseOptionPanel()
     {
         Vector3 startPos;
-        Vector3 targetPos = new Vector3(1305, 165, 0);
+        Vector3 targetPos = new Vector3(1350, 165, 0);
         float duration = 1f;
         float currentTime = 0f;
 
@@ -139,5 +155,55 @@ public class HoonUIController : MonoBehaviour
 
     }
 
+    public void MoveSoundSwitch()
+    {
+        isSoundSwitch = !isSoundSwitch; //참거짓교환
+
+        if (isSoundSwitch)
+        {
+            lobbyAudioSourceSoundEffect.enabled = true;
+            hoonSoundManager.PlaySound(0);
+            Img_SoundSwitchObject.anchoredPosition = new Vector3(20,0,0); //스위치이동
+            btnSound_ImageComp.sprite = LobbySprites[2]; //이미지변경
+        }
+        else
+        {
+
+            hoonSoundManager.PlaySound(1);
+            Img_SoundSwitchObject.anchoredPosition = new Vector3(-20, 0, 0); //스위치이동
+            btnSound_ImageComp.sprite = LobbySprites[3]; //이미지변경
+            lobbyAudioSourceSoundEffect.enabled = false;
+        }
+
+    }
+
+    public void MoveBgmSwitch()
+    {
+        isBGMSwitch = !isBGMSwitch;
+
+        if (isBGMSwitch)
+        {
+            hoonSoundManager.PlaySound(0);
+            lobbyAudioSourceBGM.enabled = true; //사운드켜기
+            Img_BgmSwitchObejct.anchoredPosition = new Vector3(20, 0, 0); //스위치이동
+            btnBgm_ImageComp.sprite = LobbySprites[2]; //이미지변경
+        }
+        else
+        {
+            hoonSoundManager.PlaySound(1);
+            lobbyAudioSourceBGM.enabled = false; //사운드끄기
+            Img_BgmSwitchObejct.anchoredPosition = new Vector3(-20, 0, 0); //스위치이동
+            btnBgm_ImageComp.sprite = LobbySprites[3]; //이미지변경
+
+        }
+
+    }
+    
+    bool isButtonSound = false;
+    public void ButtonSoundTest()
+    {
+        hoonSoundManager.PlaySound("hoonAudioClipArray", 0);//버튼테스트
+
+    }
 
 }// 클래스끝 

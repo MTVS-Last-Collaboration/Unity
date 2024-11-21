@@ -29,7 +29,6 @@ public class JSW_DecoShopItem : MonoBehaviour
         if (initRoom.initShopId[shopid])
         {
             isPurchase = true;
-            //transform.GetChild(1).GetComponent<TMP_Text>().text = "소유중";
             transform.GetChild(2).GetComponent<TMP_Text>().text = "소유중";
         }
         else

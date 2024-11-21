@@ -18,7 +18,7 @@ public class ChatTestHttp : MonoBehaviour
             itemId = 3
         };
 
-        StartCoroutine(PostAddPoints(3000));
+        StartCoroutine(PostAddPoints(points));
     }
 
     public class ItemIDs

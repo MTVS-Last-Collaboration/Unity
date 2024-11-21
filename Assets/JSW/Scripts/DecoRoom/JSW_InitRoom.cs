@@ -95,8 +95,8 @@ public class JSW_InitRoom : MonoBehaviourPun
         public FurnitureLayout[] furnitureLayouts;
         public Floor floor;
         public Wallpaper wallpaper;
-
     }
+
     [System.Serializable]
     public class Floor
     {

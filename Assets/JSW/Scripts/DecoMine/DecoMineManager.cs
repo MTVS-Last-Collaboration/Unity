@@ -24,6 +24,12 @@ public class DecoMineManager : MonoBehaviourPun, IOnEventCallback
 
     void Update()
     {
+        if (floorNum == -1 || wallNum == -1)
+        {
+            floorNum = 0;
+            wallNum = 0;
+        }
+        
         Floors.GetComponent<MeshRenderer>().material = Floormaterials[floorNum];
         for(int i=0; i < 4;i++)
         {

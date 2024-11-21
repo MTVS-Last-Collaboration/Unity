@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Item2DTo3D : MonoBehaviour
 {
     public Making3DObject making3dObject;
+    public int id;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,6 @@ public class Item2DTo3D : MonoBehaviour
 
     public void OnClickButtonMe()
     {
-        making3dObject.ClickPic((GetComponent<RawImage>().texture));
+        making3dObject.ClickPic(GetComponent<RawImage>().texture, id);
     }
 }

@@ -84,8 +84,6 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
         public int height;
     }
 
-
-
     public void InitSetFuniture(int id, string name, int posX, int posZ, int rot, int width, int height)
     {
         string finalFuni;

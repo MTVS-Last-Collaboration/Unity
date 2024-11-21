@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using WebSocketSharp;
 public class GalleryAccess : MonoBehaviour
 {
     public AspectRatioFitter aspectRatioFitter;
     public Texture2D texture;
+    public RawImage raw;
+
     // 갤러리에서 이미지를 선택하는 메서드
     public void PickImageFromGallery()
     {
@@ -20,8 +23,17 @@ public class GalleryAccess : MonoBehaviour
             {
                 if (path != null)
                 {
+                   
+                    Texture2D texture2 = new Texture2D(2, 2);
                     // 이미지 경로를 통해 Texture2D로 로드
-                    texture = NativeGallery.LoadImageAtPath(path);
+                    texture = NativeGallery.LoadImageAtPath(path,-1,false);
+                    Texture2D readableTexture = new Texture2D(texture.width, texture.height);
+                    readableTexture.SetPixels(texture.GetPixels());
+                    readableTexture.Apply();
+
+                    byte[] pngData = readableTexture.EncodeToPNG();
+                    texture2.LoadImage(pngData);
+                    raw.texture = texture2;
                     if (texture != null)
                     {
                         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));

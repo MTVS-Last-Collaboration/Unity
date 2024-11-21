@@ -1,11 +1,14 @@
+ï»¿using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using static JSW_ServerDeco;
+using static UnityEngine.Rendering.DebugUI;
 
 public class JSW_PetManager : MonoBehaviour
 {
@@ -26,13 +29,23 @@ public class JSW_PetManager : MonoBehaviour
     public TMP_Text mainMongText;
     public GameObject GifticonImage;
 
+    public TMP_Text MongName_TMP;
+    public GameObject MongName_InputField;
+
+    public GameObject completeAnswer;
+    public GameObject NOcompleteAnswer;
 
     void Start()
     {
         mongExp = 0;
         MongLevelUpGet();
-        MongNickname("µ¿±Û");
-        nickName_text.text = "¾î¸¥ÀÌ µÈ " + MongName + "ÀÌ";
+        //MongNickname("ë™ê¸€ì´");
+        if (MongName_InputField != null)
+        {
+            MongName_InputField.GetComponent<TMP_InputField>().onEndEdit.AddListener(MongNickname);
+        }
+
+        //nickName_text.text = "ì–´ë¥¸ì´ ëœ " + MongName;
     }
 
     private void Update()
@@ -92,10 +105,10 @@ public class JSW_PetManager : MonoBehaviour
 
     IEnumerator AddPetExperience()
     {
-        // ¿äÃ»À» »ı¼ºÇÕ´Ï´Ù.
+        // ìš”ì²­ì„ ìƒì„±í•©ë‹ˆë‹¤.
         UnityWebRequest request = new UnityWebRequest(url, "POST");
 
-        // ÀÎÁõ ÅäÅ«ÀÌ ÇÊ¿äÇÑ °æ¿ì Çì´õ¿¡ Ãß°¡ÇÕ´Ï´Ù.
+        // ì¸ì¦ í† í°ì´ í•„ìš”í•œ ê²½ìš° í—¤ë”ì— ì¶”ê°€í•©ë‹ˆë‹¤.
         // request.SetRequestHeader("Authorization", "Bearer YOUR_TOKEN");
         string jwtToken = LoginInfoManager.instance.myToken;
 
@@ -103,19 +116,19 @@ public class JSW_PetManager : MonoBehaviour
         //request.SetRequestHeader("accept", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
-        // ¿äÃ»À» ¼­¹ö·Î Àü¼ÛÇÏ°í ÀÀ´äÀ» ±â´Ù¸³´Ï´Ù.
+        // ìš”ì²­ì„ ì„œë²„ë¡œ ì „ì†¡í•˜ê³  ì‘ë‹µì„ ê¸°ë‹¤ë¦½ë‹ˆë‹¤.
         yield return request.SendWebRequest();
 
-        // ¼­¹öÀÇ ÀÀ´äÀ» È®ÀÎÇÕ´Ï´Ù.
+        // ì„œë²„ì˜ ì‘ë‹µì„ í™•ì¸í•©ë‹ˆë‹¤.
         if (request.result == UnityWebRequest.Result.Success)
         {
-            // ¼º°ø ÀÀ´ä Ã³¸®
-            Debug.Log("°æÇèÄ¡ Ãß°¡ ¼º°ø: " + request.downloadHandler);
+            // ì„±ê³µ ì‘ë‹µ ì²˜ë¦¬
+            Debug.Log("ê²½í—˜ì¹˜ ì¶”ê°€ ì„±ê³µ: " + request.downloadHandler);
         }
         else
         {
-            // ½ÇÆĞ ÀÀ´ä Ã³¸®
-            Debug.LogError("°æÇèÄ¡ Ãß°¡ ½ÇÆĞ: " + request.error);
+            // ì‹¤íŒ¨ ì‘ë‹µ ì²˜ë¦¬
+            Debug.LogError("ê²½í—˜ì¹˜ ì¶”ê°€ ì‹¤íŒ¨: " + request.error);
         }
         mongExpTarget += 10;
     }
@@ -143,23 +156,23 @@ public class JSW_PetManager : MonoBehaviour
 
     IEnumerator GetPetStatus()
     {
-        // GET ¿äÃ»À» »ı¼ºÇÕ´Ï´Ù.
+        // GET ìš”ì²­ì„ ìƒì„±í•©ë‹ˆë‹¤.
         UnityWebRequest request = UnityWebRequest.Get(url2);
 
         string jwtToken = LoginInfoManager.instance.myToken;
         request.SetRequestHeader("Accept", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
-        // ¿äÃ»À» ¼­¹ö·Î Àü¼ÛÇÏ°í ÀÀ´äÀ» ±â´Ù¸³´Ï´Ù.
+        // ìš”ì²­ì„ ì„œë²„ë¡œ ì „ì†¡í•˜ê³  ì‘ë‹µì„ ê¸°ë‹¤ë¦½ë‹ˆë‹¤.
         yield return request.SendWebRequest();
 
-        // ¼­¹öÀÇ ÀÀ´äÀ» È®ÀÎÇÕ´Ï´Ù.
+        // ì„œë²„ì˜ ì‘ë‹µì„ í™•ì¸í•©ë‹ˆë‹¤.
         if (request.result == UnityWebRequest.Result.Success)
         {
-            //// ¼º°ø ÀÀ´ä Ã³¸®
-            //Debug.Log("Æê »óÅÂ Á¶È¸ ¼º°ø: " + request.downloadHandler.text);
+            //// ì„±ê³µ ì‘ë‹µ ì²˜ë¦¬
+            //Debug.Log("í« ìƒíƒœ ì¡°íšŒ ì„±ê³µ: " + request.downloadHandler.text);
             PetStatus petStatus = JsonUtility.FromJson<PetStatus>(request.downloadHandler.text);
-            Debug.Log("Æê »óÅÂ Á¶È¸ ¼º°ø: ·¹º§ = " + petStatus.level + ", °æÇèÄ¡ = " + petStatus.experience);
+            Debug.Log("í« ìƒíƒœ ì¡°íšŒ ì„±ê³µ: ë ˆë²¨ = " + petStatus.level + ", ê²½í—˜ì¹˜ = " + petStatus.experience);
             MongName = petStatus.name;
             mongLevel = petStatus.level;
             mongExpTarget = petStatus.experience;
@@ -167,39 +180,36 @@ public class JSW_PetManager : MonoBehaviour
         }
         else
         {
-            // ½ÇÆĞ ÀÀ´ä Ã³¸®
-            Debug.LogError("Æê »óÅÂ Á¶È¸ ½ÇÆĞ: " + request.error);
+            // ì‹¤íŒ¨ ì‘ë‹µ ì²˜ë¦¬
+            Debug.LogError("í« ìƒíƒœ ì¡°íšŒ ì‹¤íŒ¨: " + request.error);
         }
-
-
-
     }
 
     void SetNickNameMong()
     {
-        mongLevel_text.text = "·¹º§ " + mongLevel.ToString();
+        mongLevel_text.text = "ë ˆë²¨ " + mongLevel.ToString();
         if (1 <= mongLevel && mongLevel <= 5)
         {
-            nickName_text.text = "°« ÅÂÀÌ³­ " + MongName + "ÀÌ";
+            nickName_text.text = "ê°“ íƒœì´ë‚œ " + MongName;
             Mong.transform.GetChild(0).gameObject.SetActive(true);
 
         }
         else if (6 <= mongLevel && mongLevel <= 10)
         {
             Mong.transform.GetChild(0).gameObject.SetActive(false);
-            nickName_text.text = "»çÃá±âÀÇ " + MongName + "ÀÌ";
+            nickName_text.text = "ì‚¬ì¶˜ê¸°ì˜ " + MongName;
             Mong.transform.GetChild(1).gameObject.SetActive(true);
         }
         else if (11 <= mongLevel && mongLevel <= 15)
         {
             Mong.transform.GetChild(1).gameObject.SetActive(false);
-            nickName_text.text = "ÀÇÁ£ÇÑ " + MongName + "ÀÌ";
+            nickName_text.text = "ì˜ì “í•œ " + MongName;
             Mong.transform.GetChild(2).gameObject.SetActive(true);
         }
         else if (16 <= mongLevel && mongLevel <= 20)
         {
             Mong.transform.GetChild(2).gameObject.SetActive(false);
-            nickName_text.text = "¾î¸¥ÀÌ µÈ " + MongName + "ÀÌ";
+            nickName_text.text = "ì–´ë¥¸ì´ ëœ " + MongName;
             Mong.transform.GetChild(3).gameObject.SetActive(true);
         }
     }
@@ -207,16 +217,20 @@ public class JSW_PetManager : MonoBehaviour
 
     public void MongNickname(string nickName)
     {
-        //if (mongLevel < 3)
-        //{
-        //    transform.GetChild(mongLevel++).gameObject.SetActive(false);
-        //    transform.GetChild(mongLevel).gameObject.SetActive(true);
-        //}
+        //string nickName = MongName_InputField.GetComponent<TMP_InputField>().text;
+        if (nickName == "" || nickName == null) return;
+        MongName = nickName;
+        MongName_TMP.text = nickName;
         StartCoroutine(ChangeNickname(nickName));
+        MongName_InputField.SetActive(false);
+        SetNickNameMong();
+    }
+    public void ClickMongName()
+    {
+        MongName_InputField.SetActive(true);
     }
 
     private string Nickurl = "http://125.132.216.190:12223/api/pet/name";
-
 
     public class Namess
     {
@@ -226,7 +240,7 @@ public class JSW_PetManager : MonoBehaviour
 
     IEnumerator ChangeNickname(string nickName)
     {
-        // ¿äÃ»À» »ı¼ºÇÕ´Ï´Ù.
+        // ìš”ì²­ì„ ìƒì„±í•©ë‹ˆë‹¤.
         UnityWebRequest request = new UnityWebRequest(Nickurl, "PUT");
 
         Namess data = new Namess
@@ -237,7 +251,7 @@ public class JSW_PetManager : MonoBehaviour
         string json = JsonUtility.ToJson(data);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
 
-        // ÀÎÁõ ÅäÅ«ÀÌ ÇÊ¿äÇÑ °æ¿ì Çì´õ¿¡ Ãß°¡ÇÕ´Ï´Ù.
+        // ì¸ì¦ í† í°ì´ í•„ìš”í•œ ê²½ìš° í—¤ë”ì— ì¶”ê°€í•©ë‹ˆë‹¤.
         // request.SetRequestHeader("Authorization", "Bearer YOUR_TOKEN");
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -248,19 +262,19 @@ public class JSW_PetManager : MonoBehaviour
         //request.SetRequestHeader("accept", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
-        // ¿äÃ»À» ¼­¹ö·Î Àü¼ÛÇÏ°í ÀÀ´äÀ» ±â´Ù¸³´Ï´Ù.
+        // ìš”ì²­ì„ ì„œë²„ë¡œ ì „ì†¡í•˜ê³  ì‘ë‹µì„ ê¸°ë‹¤ë¦½ë‹ˆë‹¤.
         yield return request.SendWebRequest();
 
-        // ¼­¹öÀÇ ÀÀ´äÀ» È®ÀÎÇÕ´Ï´Ù.
+        // ì„œë²„ì˜ ì‘ë‹µì„ í™•ì¸í•©ë‹ˆë‹¤.
         if (request.result == UnityWebRequest.Result.Success)
         {
-            // ¼º°ø ÀÀ´ä Ã³¸®
-            Debug.Log("ÀÌ¸§ º¯°æ ¼º°ø: " + request.downloadHandler);
+            // ì„±ê³µ ì‘ë‹µ ì²˜ë¦¬
+            Debug.Log("ì´ë¦„ ë³€ê²½ ì„±ê³µ: " + request.downloadHandler);
         }
         else
         {
-            // ½ÇÆĞ ÀÀ´ä Ã³¸®
-            Debug.LogError("ÀÌ¸§ º¯°æ ½ÇÆĞ: " + request.error);
+            // ì‹¤íŒ¨ ì‘ë‹µ ì²˜ë¦¬
+            Debug.LogError("ì´ë¦„ ë³€ê²½ ì‹¤íŒ¨: " + request.error);
         }
     }
 
@@ -271,9 +285,9 @@ public class JSW_PetManager : MonoBehaviour
         Vector3 size = GifticonImage.transform.localScale;
         GifticonImage.transform.localScale = Vector3.one * 0.2f;
         iTween.ScaleTo(GifticonImage, iTween.Hash(
-        "scale", size, // ÃÖÁ¾ Å©±â
-        "time", 1.5f,         // ¾Ö´Ï¸ŞÀÌ¼Ç ½Ã°£
-        "easetype", iTween.EaseType.easeOutElastic // ¾Ö´Ï¸ŞÀÌ¼Ç Å¸ÀÔ
+        "scale", size, // ìµœì¢… í¬ê¸°
+        "time", 1.5f,         // ì• ë‹ˆë©”ì´ì…˜ ì‹œê°„
+        "easetype", iTween.EaseType.easeOutElastic // ì• ë‹ˆë©”ì´ì…˜ íƒ€ì…
         ));
     }
     public void CloseGifticon()
@@ -282,4 +296,60 @@ public class JSW_PetManager : MonoBehaviour
 
     }
 
-}
+
+    public void TodayMissonGetServer()//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    {
+        StartCoroutine(GetTodayMission());
+    }
+
+    IEnumerator GetTodayMission() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Get ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    {
+        string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //url 
+
+        UnityWebRequest request = UnityWebRequest.Get(urlTodayMission);
+        request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //get mytoken
+
+        yield return request.SendWebRequest(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)  //error
+        {
+
+            Debug.LogError("Error: " + request.error);
+            //error500
+
+        }
+        else //respose
+        {
+            string responseText = request.downloadHandler.text;
+            print("ì„œë²„ì— ë“±ë¡ëœ ì •ë³´: " + responseText); //ë­ëƒì´ê±° ì™œì´ëŸ¼?
+
+            //json Object convert, require token
+            JObject jsonObj = JObject.Parse(responseText); //jsonParse 
+            string missionNumber = jsonObj["missionNumber"].ToString(); //missionNumber
+            int[] missionDateArray = jsonObj["missionDate"].ToObject<int[]>(); //todayDate 
+            string missionContent = jsonObj["missionContent"].ToString();  // todayMission
+            Debug.Log("Mission Content: " + missionContent);// ë¯¸ì…˜ì„ ì¶œë ¥í•˜ì.
+
+            // ì›í•˜ëŠ” í˜•ì‹ì˜ ë¬¸ìì—´ë¡œ ë³€í™˜
+          
+            string completed;
+
+            completed = jsonObj["completed"].ToString();
+
+            if (completed == "True")
+            {
+                completeAnswer.SetActive(true);
+                NOcompleteAnswer.SetActive(false);
+                print("ë‹µë³€ Trueë˜");
+            }
+            else
+            {
+                completeAnswer.SetActive(false);
+                NOcompleteAnswer.SetActive(true);
+                print("ë‹µë³€ Falseë˜");
+            }
+        }
+    }
+
+
+ }
