@@ -4,6 +4,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OnMoveTrigger : MonoBehaviourPunCallbacks
 {
@@ -11,26 +12,39 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
     public JSW_LobbyGameManager lobbyGameManager;
     public GameObject byeUI;
     public JSW_SoundManager soundManager;
+    public GameObject imgCreateRoomBG;
+    public HoonCreateRoom hoonCreateRoom;
+    
 
+    void Start()
+    {
+        //imgCreateRoomBG.SetActive(false);//시작할때 BG를 끈다.
+        
+              
+    }
 
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            //print(1111);
             if (!other.transform.GetComponent<PhotonView>().IsMine) return;
             if (byeUI != null)
             {
                 byeUI.SetActive(true);
+                //print(2222);
             }
             else
             {
-                
-                GoOtherRoom();
+                imgCreateRoomBG.SetActive(true); //이타이밍에 BG를 켜준다. 나중에 UI컨트롤로 변경할수 있음.
+                //GoOtherRoom();
+                //print(3333);
             }
         }
     }
 
+    //룸으로 입장하는 함수
     public void GoOtherRoom()
     {
         if (soundManager != null)

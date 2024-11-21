@@ -254,9 +254,8 @@ public class LoginTest : MonoBehaviour
 
             CheckUserInfo(); //내정보가져오기
 
-            //UI 닫기
-            allRegistObject.SetActive(false);
-            loginImage.SetActive(false);
+            /*allRegistObject.SetActive(false);
+            loginImage.SetActive(false);*/
 
         }
     
@@ -354,12 +353,77 @@ public class LoginTest : MonoBehaviour
             //print(viewMyCoupleCode.text);
             //viewMyCoupleCode.GetComponent<TextMeshPro>().text = myInfo.coupleCode;
             //뭐하는거냐고
-            
 
+            //UI 닫음.
+            //CloseLoginUI();
+            StartCoroutine(ChangeDownPositionLoginUI(loginImage));
+            print("로그인UI닫기");
 
         }
 
     }
+
+    public void CloseLoginUI()
+    {
+        //로그인 창을 안으로 닫히게 하자.
+        //StartCoroutine(ChangeDownScaleLoglinUI()); //창의 크기를 줄이기
+        //창을 밑으로 내리기
+        //allRegistObject.SetActive(false);
+        //loginImage.SetActive(false);
+
+
+    }
+
+   
+    IEnumerator ChangeDownScaleLoglinUI()
+    {
+        //창의 크기를 줄이자.
+        Vector3 max = Vector3.one;
+        Vector3 min = Vector3.zero;
+        float durationTime = 1f; //변하는시간
+        float currentTime = 0f; //시작시간
+        
+        while (currentTime < durationTime)
+        {
+            currentTime += Time.deltaTime; //시간누적
+            float t = currentTime / durationTime;
+
+            loginImage.transform.localScale = Vector3.Lerp(max, min, t);
+            
+            print("줄어들게하자");
+            yield return null;
+        }
+
+        allRegistObject.SetActive(false);
+        loginImage.SetActive(false);
+
+    }
+
+    IEnumerator ChangeDownPositionLoginUI(GameObject obj)
+    {
+        
+        //창의 위치를 내리자.
+        Vector3 max = Vector3.zero; 
+        Vector3 min = new Vector3(0,-800,0);
+        float durationTime = 0.3f; //변하는시간
+        float currentTime = 0f; //시작시간
+
+        print("UI를내리자");
+        while (currentTime < durationTime)
+        {
+            currentTime += Time.deltaTime; //시간누적
+            float t = currentTime / durationTime;
+
+            obj.transform.localPosition = Vector3.Lerp(max, min, t);
+
+            
+            yield return null;
+        }
+        allRegistObject.SetActive(false);
+        loginImage.SetActive(false);
+
+    }
+
 
     public void LocalRegistJson()
     {
@@ -544,7 +608,9 @@ public class LoginTest : MonoBehaviour
     public void Login()
     {
         hoonChoiceRoom = transform.GetComponent<HoonChoiceRoom>();
-  
+
+        //방을 선택한것으로 간주하기
+        hoonChoiceRoom.isViewChoiveMark = true;
         if (hoonChoiceRoom.isViewChoiveMark)
         {
             print("방을선택했습니다");

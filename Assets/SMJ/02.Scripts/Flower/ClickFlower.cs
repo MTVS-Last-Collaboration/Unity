@@ -122,6 +122,16 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    private void RPC_SyncFlowerClickId(int viewID) // CheckID 대신 ViewID 사용
+    {
+        PhotonView pv = PhotonView.Find(viewID);
+        if (pv != null)
+        {
+            checkID = pv.GetComponent<CheckID>();
+        }
+    }
+
     private void CheckForPlayer()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, idHandlingRadius);
@@ -131,7 +141,6 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         foreach (var hitCollider in hitColliders)
         {
             if (!hitCollider.CompareTag("Player")) continue;
-
             CheckID playerCheckID = hitCollider.GetComponent<CheckID>();
             if (playerCheckID == null) continue;
 
@@ -152,7 +161,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
                 if (targetFlower.managerId == playerIDHandler.ID)
                 {
-                    checkID = playerCheckID;
+                    photonView.RPC("RPC_SyncFlowerClickId", RpcTarget.All, playerCheckID.photonView.ViewID);
+                    //checkID = playerCheckID;
                     foundPlayer = true;
                 }
                 else if (string.IsNullOrEmpty(targetFlower.managerId))
@@ -214,30 +224,38 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
             if (checkID != null)
             {
-                if (checkID.IsMine(targetFlower) == true)
+                if (targetFlower.uiManager.isRecordComplete == false && checkID.IsMine(targetFlower) == true)
                 {
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
                 }
-                else
+                else if(targetFlower.uiManager.isRecordComplete == true && checkID.IsMine(targetFlower) == false)
                 {
-                    if (targetFlower.voiceClip == null)
+                    if (targetFlower.uiManager.isRecordComplete == false)
                     {
+                        print("녹음완X! 1번!");
                         targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
                     }
                     else
                     {
+                        print("녹음완! 2번!");
                         targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
                     }
+                }
+                else
+                {
+                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
                 }
             }
             else
             {
-                if (targetFlower.voiceClip == null)
+                if (targetFlower.uiManager.isRecordComplete == false)
                 {
+                    print("else 녹음 완X 1번!");
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
                 }
                 else
                 {
+                    print("else 2번!");
                     targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
                 }
             }
