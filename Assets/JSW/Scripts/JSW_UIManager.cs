@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
 
 public class JSW_UIManager : MonoBehaviour
@@ -286,4 +287,124 @@ public class JSW_UIManager : MonoBehaviour
     {
         this.time = time;
     }
+
+
+
+    public bool isOptionButton = false;
+    public RectTransform imgOptionPanelObject; //옵션패널
+    public Image Img_OptionButton;
+    public Sprite[] LobbySprites;
+    public RectTransform Img_SoundSwitchObject;
+    public RectTransform Img_BgmSwitchObejct;
+
+
+    public void OptionPanelControll()
+    {
+        isOptionButton = !isOptionButton;
+
+        if (isOptionButton)
+        {
+            //hoonSoundManager.PlaySound(0);
+            Img_OptionButton.sprite = LobbySprites[0];//이미지변경
+            StartCoroutine(OpenOptionPanel());
+        }
+        else
+        {
+            //hoonSoundManager.PlaySound(1);
+            Img_OptionButton.sprite = LobbySprites[1];//이미지변경
+            StartCoroutine(CloseOptionPanel());
+        }
+    }
+
+    IEnumerator OpenOptionPanel()
+    {
+        Vector3 targetPos = new Vector3(1824, -265, 0);
+        float duration = 1f;
+        float currentTime = 0f;
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            //패널열기
+            imgOptionPanelObject.anchoredPosition = Vector3.Lerp(imgOptionPanelObject.anchoredPosition, targetPos, currentTime / duration);
+            yield return null;
+
+        }
+        imgOptionPanelObject.anchoredPosition = targetPos;
+
+    }
+
+    IEnumerator CloseOptionPanel()
+    {
+        Vector3 targetPos = new Vector3(2105, -265, 0);
+        float duration = 1f;
+        float currentTime = 0f;
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            //패널열기
+            imgOptionPanelObject.anchoredPosition = Vector3.Lerp(imgOptionPanelObject.anchoredPosition, targetPos, currentTime / duration);
+            yield return null;
+
+        }
+        imgOptionPanelObject.anchoredPosition = targetPos;
+
+    }
+
+    bool isSoundSwitch = true;
+    bool isBGMSwitch = true;
+    public AudioSource lobbyAudioSourceBGM;
+    public AudioSource lobbyAudioSourceSoundEffect;
+    public GameObject Img_OptionMenuObject;
+    public GameObject img_PlayEnd;
+    public Image btnSound_ImageComp;
+    public Image btnBgm_ImageComp;
+
+    public void MoveSoundSwitch()
+    {
+        isSoundSwitch = !isSoundSwitch; //참거짓교환
+
+        if (isSoundSwitch)
+        {
+            lobbyAudioSourceSoundEffect.enabled = true;
+            //hoonSoundManager.PlaySound(0);
+            Img_SoundSwitchObject.anchoredPosition = new Vector3(20, 0, 0); //스위치이동
+            btnSound_ImageComp.sprite = LobbySprites[2]; //이미지변경
+        }
+        else
+        {
+
+            //hoonSoundManager.PlaySound(1);
+            Img_SoundSwitchObject.anchoredPosition = new Vector3(-20, 0, 0); //스위치이동
+            btnSound_ImageComp.sprite = LobbySprites[3]; //이미지변경
+            lobbyAudioSourceSoundEffect.enabled = false;
+        }
+
+    }
+
+    public void MoveBgmSwitch()
+    {
+        isBGMSwitch = !isBGMSwitch;
+
+        if (isBGMSwitch)
+        {
+            //hoonSoundManager.PlaySound(0);
+            lobbyAudioSourceBGM.enabled = true; //사운드켜기
+            Img_BgmSwitchObejct.anchoredPosition = new Vector3(20, 0, 0); //스위치이동
+            btnBgm_ImageComp.sprite = LobbySprites[2]; //이미지변경
+        }
+        else
+        {
+            //hoonSoundManager.PlaySound(1);
+            lobbyAudioSourceBGM.enabled = false; //사운드끄기
+            Img_BgmSwitchObejct.anchoredPosition = new Vector3(-20, 0, 0); //스위치이동
+            btnBgm_ImageComp.sprite = LobbySprites[3]; //이미지변경
+
+        }
+
+    }
+
+
 }
+
