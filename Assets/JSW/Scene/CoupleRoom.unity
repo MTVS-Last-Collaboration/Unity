@@ -5610,7 +5610,9 @@ MonoBehaviour:
     type: 3}
   DRM: {fileID: 604980091}
   IsCharacterMoving: 0
+  playerAnimator: {fileID: 0}
   funiturePos: {fileID: 0}
+  SmokeEffect: {fileID: 0}
 --- !u!114 &112246692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79111,46 +79113,64 @@ MonoBehaviour:
     title: 00
     day: 00
     content: 00
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: 5cf46ad0fae38994caa0bf14f18c11c1, type: 3}
     title: 11
     day: 11
     content: 11
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
     title: 22
     day: 22
     content: 22
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
     title: 33
     day: 33
     content: 33
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
     title: 44
     day: 44
     content: 44
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
     title: 5
     day: 5
     content: 5
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
     title: 6
     day: 6
     content: 6
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
     title: 7
     day: 7
     content: 7
+    ObjURL: 
+    TextureURL: 
   - id: 0
     sprite: {fileID: 2800000, guid: f7c98d5fdeacbe1418290635ee0be92f, type: 3}
     title: 8
     day: 8
     content: 8
+    ObjURL: 
+    TextureURL: 
   nowIndex: 0
   picWriteUI: {fileID: 0}
   Albumlist: []
@@ -82769,6 +82789,8 @@ MonoBehaviour:
   lobbyGameManager: {fileID: 1801501398}
   byeUI: {fileID: 0}
   soundManager: {fileID: 1498648683}
+  imgCreateRoomBG: {fileID: 0}
+  hoonCreateRoom: {fileID: 0}
 --- !u!65 &1906997996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89083,7 +89105,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 300
+          m_IntArgument: 3000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

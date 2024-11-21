@@ -16,9 +16,11 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     public GameObject funitureObject2;
     public JSW_DecorateRoomManager DRM;
     public bool IsCharacterMoving;
+    public Animator playerAnimator;
     public GameObject funiturePos;
     int dir = 0;
     JSW_ServerDeco serverDeco;
+    public GameObject SmokeEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +35,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     {
         playerDir = new Vector3(Mathf.Round(transform.forward.x), Mathf.Round(transform.forward.y), Mathf.Round(transform.forward.z));
         playerPos = new Vector3(Mathf.Round(transform.position.x), 0, Mathf.Round(transform.position.z));
-        
     }
 
 
@@ -127,6 +128,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             {
                 JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_FuniSound);
                 // 여따가 통신 넣기
+                GameObject smoke = Instantiate(SmokeEffect, funitureOb.transform.position, funitureOb.transform.rotation);
+                Destroy(smoke, 2f);
                 GetComponent<JSW_ServerDeco>().PostforBackSchedule(funitureOb.GetComponent<JSW_DecoObject>());
             }
         }
@@ -196,9 +199,11 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     //{
     //    photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
     //}
-    //[PunRPC]
+    [PunRPC]
     public void PushFunitureSetting()
     {
+        playerAnimator.SetBool("Setting", true);
+        
         GameObject funitureOb = null;
 
         // 플레이어의 위치와 방향 설정 (정면 방향)
@@ -266,8 +271,16 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 dir = 3;
                 transform.position = Vector3.Lerp(transform.position, new Vector3(num.x + 1, transform.position.y, num.z), Time.deltaTime * 10f);
             }
-
+            playerAnimator.speed = 1;
+            
         }
+        StartCoroutine(setAnimSetting());
+    }
+
+    IEnumerator setAnimSetting()
+    {
+        yield return new WaitForSeconds(0.2f);
+        playerAnimator.speed = 0;
     }
 
     public void PushFuniture()
@@ -277,7 +290,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     [PunRPC]
     public void PushFuniture_RPC()
     {
-
+        playerAnimator.speed = 1;
         GameObject funitureOb = null;
 
 
@@ -331,6 +344,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn0");
+                    playerAnimator.speed = 0;
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0);
@@ -342,6 +356,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 if ( !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn1");
+                    playerAnimator.speed = 0;
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1);
@@ -353,6 +368,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn2");
+                    playerAnimator.speed = 0;
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2);
@@ -364,6 +380,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
                     print("NOAndReturn3");
+                    playerAnimator.speed = 0;
                     return;
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3);
@@ -387,7 +404,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     {
         GameObject funitureOb = null;
 
-
+        playerAnimator.speed = 1;
+        playerAnimator.SetTrigger("Pull");
         // 플레이어의 위치와 방향 설정 (정면 방향)
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
@@ -430,10 +448,12 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
 
                 if ( !DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 2) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
+                    playerAnimator.speed = 0;
                     return;
                 }
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 2))
                 {
+                    playerAnimator.speed = 0;
                     print("NOAndReturn02222");
                     return;
                 }
@@ -445,10 +465,12 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             {
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 3) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
+                    playerAnimator.speed = 0;
                     return;
                 }
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 3))
                 {
+                    playerAnimator.speed = 0;
                     print("NOAndReturn12222");
                     return;
                 }
@@ -461,10 +483,12 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             {
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 0) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
+                    playerAnimator.speed = 0;
                     return;
                 }
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 0))
                 {
+                    playerAnimator.speed = 0;
                     print("NOAndReturn22222");
                     return;
                 }
@@ -477,12 +501,15 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             {
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isPushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1) || funitureOb.GetComponent<JSW_DecoObject>().isMovingFuniture)
                 {
+                    playerAnimator.speed = 0;
                     return;
                 }
                 if (!DRM.GetComponent<JSW_DecorateRoomManager>().isDrawFuniture((int)transform.position.x, (int)transform.position.z, 1, 1, funitureInfo[4], 1))
                 {
+                    playerAnimator.speed = 0;
                     print("NOAndReturn32222");
                     return;
+
                 }
                 DRM.GetComponent<JSW_DecorateRoomManager>().PushFuniture(funitureInfo[0], funitureInfo[1], funitureInfo[2], funitureInfo[3], funitureInfo[4], 1);
                 //transform.position = new Vector3(num.x + 1, 1.49f, num.z);
@@ -494,7 +521,6 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             {
                 GetComponent<JSW_ServerDeco>().PutCalenderEvent(funitureOb.GetComponent<JSW_DecoObject>().funitureLayoutId, funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionX, funitureOb.GetComponent<JSW_DecoObject>().decoObjectPositionZ, funitureOb.GetComponent<JSW_DecoObject>().decoObjectRotation);
             }
-            
         }
     }
 
@@ -519,6 +545,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             }
             yield return new WaitForFixedUpdate(); ;
         }
+        playerAnimator.speed = 0;
         funiture.transform.position = funiTargetPosition;
         transform.position = playerTargetPosition;
         funiture.GetComponent<JSW_DecoObject>().isMovingFuniture = false;
