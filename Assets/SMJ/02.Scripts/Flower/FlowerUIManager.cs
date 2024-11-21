@@ -391,7 +391,10 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     public void ShowFlowerInfo(Flower targetFlower, int idx)
     {
-        hoonUI.SetActive(false);
+        if (hoonUI.activeInHierarchy == true)
+        {
+            hoonUI.SetActive(false);
+        }
         if (click.isFirstClick == true)
         {
             Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("Player_CheckFlower"));
@@ -954,6 +957,7 @@ public class FlowerUIManager : MonoBehaviourPun
                 if (success)
                 {
                     Debug.Log("NickName fix successfully");
+                    nameInput.text = name.name;
                     onComplete?.Invoke();
                 }
                 else
@@ -971,6 +975,7 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             name = nameInput.text
         };
+        flower.nickName = name;
         photonView.RPC("RPC_UpdateFlowerName", RpcTarget.All, nameInput.text);
         StartCoroutine(PostNickName(newName, null));
     }

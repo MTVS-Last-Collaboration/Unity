@@ -293,6 +293,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     IEnumerator LerpCamera()
     {
+        Camera.main.targetDisplay = 0;
         if (cameraControll != null)
         {
             cameraControll.isMoveAble = false;
@@ -334,6 +335,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     IEnumerator ReturnCameraTransform()
     {
+        Camera.main.targetDisplay = 1;
         if (cameraControll != null)
         {
             curtime = 0f;
