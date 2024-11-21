@@ -82,7 +82,7 @@ public class FlowerUIManager : MonoBehaviourPun
         // 초기 상태 텍스트 설정
         UpdateStateText(flower.curState);
         StartCoroutine(InitialStateSync());
-
+        
         PhotonNetwork.NetworkingClient.StateChanged += OnStateChanged;
     }
 
@@ -852,6 +852,8 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         public bool recordComplete;
         public bool listenComplete;
+        public DateTime savedAt;
+        public DateTime listenedAt;
         public int moodCount;
         public string flowerName;
     }
@@ -869,6 +871,7 @@ public class FlowerUIManager : MonoBehaviourPun
                     isListenComplete = response.listenComplete;
                     flower.evolutionCount = response.moodCount;
                     flower.nickName = response.flowerName;
+                    nameInput.text = response.flowerName; ;
                     UpdateUI(flower);
                     UpdateUIText();
                 }
@@ -957,7 +960,8 @@ public class FlowerUIManager : MonoBehaviourPun
                 if (success)
                 {
                     Debug.Log("NickName fix successfully");
-                    nameInput.text = name.name;
+                    //nameInput.text = name.name;
+                    flower.nickName = name.name;
                     onComplete?.Invoke();
                 }
                 else
@@ -975,7 +979,7 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             name = nameInput.text
         };
-        flower.nickName = name;
+        flower.nickName = newName.name;
         photonView.RPC("RPC_UpdateFlowerName", RpcTarget.All, nameInput.text);
         StartCoroutine(PostNickName(newName, null));
     }
