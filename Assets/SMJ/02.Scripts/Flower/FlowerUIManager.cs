@@ -53,6 +53,8 @@ public class FlowerUIManager : MonoBehaviourPun
 
     private HoonSoundManagerLogin sound;
 
+    private string flowerId;
+
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -65,6 +67,7 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     private void Start()
     {
+        flowerId = photonView.ViewID.ToString();
         StartCoroutine(GetVoiceStatus());
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
@@ -81,7 +84,10 @@ public class FlowerUIManager : MonoBehaviourPun
 
         // 초기 상태 텍스트 설정
         UpdateStateText(flower.curState);
-        StartCoroutine(InitialStateSync());
+        if (photonView.IsMine)
+        {
+            StartCoroutine(InitialStateSync());
+        }
 
         PhotonNetwork.NetworkingClient.StateChanged += OnStateChanged;
     }
@@ -199,7 +205,8 @@ public class FlowerUIManager : MonoBehaviourPun
                 isRecordComplete,
                 isListenComplete,
                 flower.evolutionCount,
-                flower.voiceClip != null);
+                flower.voiceClip != null,
+                photonView.ViewID);
 
             // 상태 텍스트도 동기화
             string statusMsg = "";
@@ -242,28 +249,32 @@ public class FlowerUIManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void RPC_SyncFlowerState(Flower.States state, string name, bool recordComplete, bool listenComplete, int evolutionCount, bool hasRecording)
+    private void RPC_SyncFlowerState(Flower.States state, string name, bool recordComplete,
+        bool listenComplete, int evolutionCount, bool hasRecording, int targetViewId)
     {
-        if (flower == null || flowerEvol == null) return;
-
-        flower.curState = state;
-        flower.nickName = name;
-        isRecordComplete = recordComplete;
-        isListenComplete = listenComplete;
-        flower.evolutionCount = evolutionCount;
-
-        if (click.checkID != null)
+        // 현재 오브젝트의 ViewID와 일치할 때만 상태 업데이트
+        if (photonView.ViewID == targetViewId)
         {
-            // 상태 동기화 후 UI 업데이트
-            if (flower.curState == Flower.States.BLOSSOM && isRecordComplete && click.checkID.IsMine(flower))
-            {
-                SwapButtonUI(5);
-            }
-        }
+            if (flower == null || flowerEvol == null) return;
 
-        flowerEvol.CheckEvolutionCount();
-        UpdateUI(flower);
-        UpdateUIText();
+            flower.curState = state;
+            flower.nickName = name;
+            isRecordComplete = recordComplete;
+            isListenComplete = listenComplete;
+            flower.evolutionCount = evolutionCount;
+
+            if (click.checkID != null)
+            {
+                if (flower.curState == Flower.States.BLOSSOM && isRecordComplete && click.checkID.IsMine(flower))
+                {
+                    SwapButtonUI(5);
+                }
+            }
+
+            flowerEvol.CheckEvolutionCount();
+            UpdateUI(flower);
+            UpdateUIText();
+        }
     }
 
     private IEnumerator DelayedUIUpdate()
@@ -304,10 +315,14 @@ public class FlowerUIManager : MonoBehaviourPun
 
 
     [PunRPC]
-    private void RPC_UpdateFlowerName(string newName)
+    private void RPC_UpdateFlowerName(string newName, int targetViewId)
     {
-        flower.nickName = newName;
-        nameInput.text = newName;
+        // 현재 오브젝트의 ViewID와 일치할 때만 이름 업데이트
+        if (photonView.ViewID == targetViewId)
+        {
+            flower.nickName = newName;
+            nameInput.text = newName;
+        }
     }
 
     [PunRPC]
@@ -395,6 +410,10 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             hoonUI.SetActive(false);
         }
+        
+        // 현재 선택된 flower를 저장
+        flower = targetFlower;
+        
         if (click.isFirstClick == true)
         {
             Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("Player_CheckFlower"));
@@ -476,6 +495,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void SwapButtonUI(int onIdx)
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].SetActive(false);
@@ -512,6 +532,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void OnTalkButtonClick()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         if (click.checkID.IsMine(flower))
         {
             recordPanel.SetActive(true);
@@ -529,7 +550,7 @@ public class FlowerUIManager : MonoBehaviourPun
     public void OnRecordingButtonClick(float second)
     {
         //if (!click.checkID.IsMine(flower)) return;
-
+        sound.PlaySound("smjAudioClopAttay", 0);
         exitButton.SetActive(false);
         OffPanel();
         recordButtons[1].SetActive(true);
@@ -576,6 +597,7 @@ public class FlowerUIManager : MonoBehaviourPun
     //}
     public void SubmitRecord()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         if (!click.checkID.IsMine(flower)) return;
 
         OffPanel();
@@ -802,6 +824,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void OnReRecordingClick()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         if (!click.checkID.IsMine(flower)) return;
 
         OffPanel();
@@ -809,6 +832,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     public void OnStopRecordingButtonClick()
     {
+        sound.PlaySound("smjAudioClopAttay", 1);
         if (!click.checkID.IsMine(flower)) return;
 
         StopCoroutine(recordingCor);
@@ -830,6 +854,7 @@ public class FlowerUIManager : MonoBehaviourPun
     //}
     public void OnListenVoiceButtonClick()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         if (click == null || flower == null) return;
 
         SwapButtonUI(4);  // 재생 중 UI
@@ -852,6 +877,8 @@ public class FlowerUIManager : MonoBehaviourPun
     {
         public bool recordComplete;
         public bool listenComplete;
+        public DateTime savedAt;
+        public DateTime listenedAt;
         public int moodCount;
         public string flowerName;
     }
@@ -869,6 +896,7 @@ public class FlowerUIManager : MonoBehaviourPun
                     isListenComplete = response.listenComplete;
                     flower.evolutionCount = response.moodCount;
                     flower.nickName = response.flowerName;
+                    nameInput.text = response.flowerName; ;
                     UpdateUI(flower);
                     UpdateUIText();
                 }
@@ -957,7 +985,8 @@ public class FlowerUIManager : MonoBehaviourPun
                 if (success)
                 {
                     Debug.Log("NickName fix successfully");
-                    nameInput.text = name.name;
+                    //nameInput.text = name.name;
+                    flower.nickName = name.name;
                     onComplete?.Invoke();
                 }
                 else
@@ -975,13 +1004,14 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             name = nameInput.text
         };
-        flower.nickName = name;
-        photonView.RPC("RPC_UpdateFlowerName", RpcTarget.All, nameInput.text);
+
+        photonView.RPC("RPC_UpdateFlowerName", RpcTarget.All, nameInput.text, photonView.ViewID);
         StartCoroutine(PostNickName(newName, null));
     }
 
     public void OnClickNewFlower()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         if (!click.checkID.IsMine(flower)) return;
 
         photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, false);
@@ -1013,11 +1043,6 @@ public class FlowerUIManager : MonoBehaviourPun
 
         UpdateUI(flower);
         UpdateUIText();
-    }
-
-    public void JigglingUI()
-    {
-        //iTween.mo
     }
 
     private void OnDestroy()

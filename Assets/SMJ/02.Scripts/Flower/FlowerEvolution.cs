@@ -12,7 +12,7 @@ public class FlowerEvolution : MonoBehaviourPun
     [SerializeField] private const int sproutEvolCount = 1; //10
     [SerializeField] private const int budEvolCount = 1; //20
     [SerializeField] private const int blossomEvolCount = 1; //30
-    private GoodsManager goodsManager;
+    private ChatTestHttp points;
 
     [SerializeField] private Image flowerImage;
     [SerializeField] private Sprite[] flowerSprite;
@@ -20,7 +20,7 @@ public class FlowerEvolution : MonoBehaviourPun
     private void Start()
     {
         flower = GetComponent<Flower>();
-        goodsManager = GoodsManager.Instance;
+        points = GameObject.Find("PointsManager").GetComponent<ChatTestHttp>();
         SyncFlowerState(flower.curState);
     }
 
@@ -94,7 +94,8 @@ public class FlowerEvolution : MonoBehaviourPun
     {
         StartCoroutine(PostNewSeed(() => {
             StartEvolution(Flower.States.SEED);
-            goodsManager.IncreaseCoin(flower.harvestCoins);
+            points.AddPoints(10);
+            //추후 코인 연출
         }));
     }
     private IEnumerator PostNewSeed(Action onComplete)
