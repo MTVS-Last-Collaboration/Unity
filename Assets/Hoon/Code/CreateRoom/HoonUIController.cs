@@ -16,11 +16,21 @@ public class HoonUIController : MonoBehaviour
     public RectTransform imgOptionPanelObject; //옵션패널
     public Image Img_OptionButton;
     public Sprite[] LobbySprites;
-    
+    public RectTransform Img_SoundSwitchObject;
+    public RectTransform Img_BgmSwitchObejct;
+    bool isSoundSwitch = true;
+    bool isBGMSwitch = true;
+    public Image btnSound_ImageComp;
+    public Image btnBgm_ImageComp;
+    public AudioSource lobbyAudioSourceBGM;
+    public AudioSource lobbyAudioSourceSoundEffect;
+    public HoonSoundManagerLogin hoonSoundManager;
+    public GameObject Img_OptionMenuObject;
+
 
     void Start()
     {
-        
+        Img_OptionMenuObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -139,5 +149,50 @@ public class HoonUIController : MonoBehaviour
 
     }
 
+    public void MoveSoundSwitch()
+    {
+        isSoundSwitch = !isSoundSwitch; //참거짓교환
+
+        if (isSoundSwitch)
+        {
+            lobbyAudioSourceSoundEffect.enabled = true;
+            Img_SoundSwitchObject.anchoredPosition = new Vector3(20,0,0); //스위치이동
+            btnSound_ImageComp.sprite = LobbySprites[2]; //이미지변경
+        }
+        else
+        {
+            lobbyAudioSourceSoundEffect.enabled = false;
+            Img_SoundSwitchObject.anchoredPosition = new Vector3(-20, 0, 0); //스위치이동
+            btnSound_ImageComp.sprite = LobbySprites[3]; //이미지변경
+        }
+
+    }
+
+    public void MoveBgmSwitch()
+    {
+        isBGMSwitch = !isBGMSwitch;
+
+        if (isBGMSwitch)
+        {
+            lobbyAudioSourceBGM.enabled = true; //사운드켜기
+            Img_BgmSwitchObejct.anchoredPosition = new Vector3(20, 0, 0); //스위치이동
+            btnBgm_ImageComp.sprite = LobbySprites[2]; //이미지변경
+        }
+        else
+        {
+            lobbyAudioSourceBGM.enabled = false; //사운드끄기
+            Img_BgmSwitchObejct.anchoredPosition = new Vector3(-20, 0, 0); //스위치이동
+            btnBgm_ImageComp.sprite = LobbySprites[3]; //이미지변경
+
+        }
+
+    }
+    
+    bool isButtonSound = false;
+    public void ButtonSoundTest()
+    {
+        hoonSoundManager.PlaySound("hoonAudioClipArray", 0);//버튼테스트
+
+    }
 
 }// 클래스끝 
