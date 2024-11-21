@@ -26,11 +26,13 @@ public class HoonUIController : MonoBehaviour
     public AudioSource lobbyAudioSourceSoundEffect;
     public HoonSoundManagerLogin hoonSoundManager;
     public GameObject Img_OptionMenuObject;
+    public GameObject img_PlayEnd;
 
 
     void Start()
     {
         Img_OptionMenuObject.SetActive(false);
+        img_PlayEnd.SetActive(false);
     }
 
     // Update is called once per frame
