@@ -68,7 +68,10 @@ public class FlowerUIManager : MonoBehaviourPun
     private void Start()
     {
         flowerId = photonView.ViewID.ToString();
-        StartCoroutine(GetVoiceStatus());
+        if (photonView.IsMine)
+        {
+            StartCoroutine(GetVoiceStatus());
+        }
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
         sendOptions.Reliability = true; // 신뢰성 있는 전송
