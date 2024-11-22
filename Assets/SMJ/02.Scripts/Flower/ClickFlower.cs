@@ -335,7 +335,6 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     IEnumerator ReturnCameraTransform()
     {
-        Camera.main.targetDisplay = 1;
         if (cameraControll != null)
         {
             curtime = 0f;

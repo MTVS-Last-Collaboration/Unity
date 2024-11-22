@@ -10217,6 +10217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ba280669fbd37429d0af61f729b170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  triggerCamera: {fileID: 2417376069920419773}
 --- !u!1 &2447570092889674686
 GameObject:
   m_ObjectHideFlags: 0
@@ -26778,7 +26780,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
