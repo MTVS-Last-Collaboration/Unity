@@ -8,7 +8,7 @@ public class GalleryAccess : MonoBehaviour
 {
     public AspectRatioFitter aspectRatioFitter;
     public Texture2D texture;
-    public RawImage raw;
+    //public RawImage raw;
 
     // 갤러리에서 이미지를 선택하는 메서드
     public void PickImageFromGallery()
@@ -33,7 +33,7 @@ public class GalleryAccess : MonoBehaviour
 
                     byte[] pngData = readableTexture.EncodeToPNG();
                     texture2.LoadImage(pngData);
-                    raw.texture = texture2;
+                    //raw.texture = texture2;
                     if (texture != null)
                     {
                         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));

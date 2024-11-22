@@ -195,12 +195,19 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         }
     }
 
-    //public void PushFunitureSetting()
-    //{
-    //    photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
-    //}
-    [PunRPC]
     public void PushFunitureSetting()
+    {
+        photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
+        PushFunitureSetting_local();
+    }
+
+    [PunRPC]
+    public void PushFunitureSetting_RPC()
+    {
+        playerAnimator.SetBool("Setting", true);
+    }
+
+    public void PushFunitureSetting_local()
     {
         playerAnimator.SetBool("Setting", true);
         
