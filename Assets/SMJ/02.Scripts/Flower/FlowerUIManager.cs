@@ -14,7 +14,8 @@ using UnityEngine.Networking;
 public class FlowerUIManager : MonoBehaviourPun
 {
     public MidnightChecker dateChanger;
-
+    public FlowerUIManager partnerFlower;
+    private bool isInitialized = false;
     [SerializeField] private GameObject uiPanel;
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TMP_Text statusText;
@@ -55,6 +56,8 @@ public class FlowerUIManager : MonoBehaviourPun
 
     private string flowerId;
 
+    private string playerToken;
+
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -68,9 +71,21 @@ public class FlowerUIManager : MonoBehaviourPun
     private void Start()
     {
         flowerId = photonView.ViewID.ToString();
+        InitializeComponents();
+
+        // 자신이 소유한 오브젝트의 경우에만 토큰 설정 및 API 호출
         if (photonView.IsMine)
         {
-            StartCoroutine(GetVoiceStatus());
+            Debug.Log($"[Start] Initializing owned object - ViewID: {photonView.ViewID}");
+            playerToken = PlayerPrefs.GetString("token");
+            photonView.RPC("RPC_SetPlayerToken", RpcTarget.AllBuffered, playerToken, photonView.ViewID);
+
+            // 파트너 오브젝트가 설정될 때까지 대기 후 API 호출
+            StartCoroutine(WaitForPartnerAndInitialize());
+        }
+        else
+        {
+            Debug.Log($"[Start] Not owner of object - ViewID: {photonView.ViewID}");
         }
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
@@ -93,6 +108,57 @@ public class FlowerUIManager : MonoBehaviourPun
         }
 
         PhotonNetwork.NetworkingClient.StateChanged += OnStateChanged;
+    }
+    private IEnumerator WaitForPartnerAndInitialize()
+    {
+        Debug.Log($"[WaitForPartnerAndInitialize] Starting for ViewID: {photonView.ViewID}");
+
+        float timeout = 10f;
+        float elapsed = 0f;
+
+        // 파트너 오브젝트를 찾을 때까지 대기
+        while (elapsed < timeout && partnerFlower == null)
+        {
+            Debug.Log($"[WaitForPartnerAndInitialize] Waiting for partner... Time: {elapsed}s, ViewID: {photonView.ViewID}");
+            elapsed += 0.5f;
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        if (partnerFlower == null)
+        {
+            Debug.LogError($"[WaitForPartnerAndInitialize] Failed to find partner - ViewID: {photonView.ViewID}");
+            yield break;
+        }
+
+        Debug.Log($"[WaitForPartnerAndInitialize] Partner found - MyID: {photonView.ViewID}, PartnerID: {partnerFlower.photonView.ViewID}");
+        isInitialized = true;
+
+        // 실제 API 호출
+        StartCoroutine(GetVoiceStatus());
+    }
+    private void InitializeComponents()
+    {
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
+        flower = GetComponent<Flower>();
+        recorder = GetComponent<VoiceRecorder>();
+        flowerEvol = GetComponent<FlowerEvolution>();
+        click = GetComponent<ClickFlower>();
+        uiPopup = GetComponent<UIPopupAnimation>();
+        uiPopup.SetTarget(uiPanel.GetComponent<RectTransform>());
+        hoonUI = GameObject.Find("HoonLoobyCanvas");
+
+        // 초기 상태 텍스트 설정
+        UpdateStateText(flower.curState);
+    }
+
+    [PunRPC]
+    private void RPC_SetPlayerToken(string token, int viewId)
+    {
+        if (photonView.ViewID == viewId)
+        {
+            Debug.Log($"[RPC_SetPlayerToken] Setting token for ViewID: {viewId}");
+            playerToken = token;
+        }
     }
 
     private void OnStateChanged(ClientState state, ClientState previousState)
@@ -127,8 +193,10 @@ public class FlowerUIManager : MonoBehaviourPun
     private IEnumerator InitialStateSync()
     {
         yield return new WaitForSeconds(0.5f);
-        if (PhotonNetwork.IsMessageQueueRunning)
+
+        if (PhotonNetwork.IsMessageQueueRunning && photonView.IsMine)
         {
+            Debug.Log($"Requesting initial state sync for ViewID: {photonView.ViewID}");
             photonView.RPC("RPC_RequestInitialState", RpcTarget.All);
         }
     }
@@ -200,36 +268,36 @@ public class FlowerUIManager : MonoBehaviourPun
     [PunRPC]
     private void RPC_RequestInitialState()
     {
-        if (photonView.IsMine && flower != null)
-        {
-            photonView.RPC("RPC_SyncFlowerState", RpcTarget.All,
-                flower.curState,
-                flower.nickName,
-                isRecordComplete,
-                isListenComplete,
-                flower.evolutionCount,
-                flower.voiceClip != null,
-                photonView.ViewID);
+        if (!photonView.IsMine || flower == null) return;
 
-            // 상태 텍스트도 동기화
-            string statusMsg = "";
-            switch (flower.curState)
-            {
-                case Flower.States.SEED:
-                    statusMsg = "상태: 작은 씨앗";
-                    break;
-                case Flower.States.SPROUT:
-                    statusMsg = "상태: 아기 새싹";
-                    break;
-                case Flower.States.BUD:
-                    statusMsg = "상태: 꽃봉오리";
-                    break;
-                case Flower.States.BLOSSOM:
-                    statusMsg = "상태: 만개한 꽃";
-                    break;
-            }
-            photonView.RPC("RPC_UpdateStatusText", RpcTarget.All, statusMsg);
+        Debug.Log($"Processing initial state sync for ViewID: {photonView.ViewID}");
+        photonView.RPC("RPC_SyncFlowerState", RpcTarget.All,
+        flower.curState,
+        flower.nickName,
+        isRecordComplete,
+        isListenComplete,
+        flower.evolutionCount,
+        flower.voiceClip != null,
+        photonView.ViewID);
+
+        // 상태 텍스트도 동기화
+        string statusMsg = "";
+        switch (flower.curState)
+        {
+            case Flower.States.SEED:
+                statusMsg = "상태: 작은 씨앗";
+                break;
+            case Flower.States.SPROUT:
+                statusMsg = "상태: 아기 새싹";
+                break;
+            case Flower.States.BUD:
+                statusMsg = "상태: 꽃봉오리";
+                break;
+            case Flower.States.BLOSSOM:
+                statusMsg = "상태: 만개한 꽃";
+                break;
         }
+        photonView.RPC("RPC_UpdateStatusText", RpcTarget.All, statusMsg);
     }
 
     [PunRPC]
@@ -648,7 +716,7 @@ public class FlowerUIManager : MonoBehaviourPun
                 new MultipartFormFileSection("voice", audioData, "audio.wav", "audio/wav")
             };
 
-            NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+            NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
             yield return NetworkManager.Instance.PostMultipartData("/api/flower/analyze-mood", formData,
                 (success, response) =>
                 {
@@ -878,37 +946,84 @@ public class FlowerUIManager : MonoBehaviourPun
     [System.Serializable]
     private class VoiceStatus
     {
-        public bool recordComplete;
-        public bool listenComplete;
-        public DateTime savedAt;
-        public DateTime listenedAt;
-        public int moodCount;
-        public string flowerName;
+        public bool partnerRecordComplete;
+        public bool partnerListenComplete;
+        public int partnerMoodCount;
+        public string partnerFlowerName;
+        public bool myRecordComplete;
+        public bool myListenComplete;
+        public int myMoodCount;
+        public string myFlowerName;
     }
 
     private IEnumerator GetVoiceStatus()
     {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+        Debug.Log($"[GetVoiceStatus] Starting for ViewID: {photonView.ViewID}, IsMine: {photonView.IsMine}, Token: {(playerToken != null ? "Set" : "Null")}");
+
+        if (string.IsNullOrEmpty(playerToken))
+        {
+            Debug.LogError($"[GetVoiceStatus] Token is empty for ViewID: {photonView.ViewID}");
+            yield break;
+        }
+
+        if (!photonView.IsMine)
+        {
+            Debug.Log($"[GetVoiceStatus] Skipping - Not owner of ViewID: {photonView.ViewID}");
+            yield break;
+        }
+
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
 
         yield return NetworkManager.Instance.Get<VoiceStatus>("api/flower/voice/status",
             (success, response) =>
             {
                 if (success && response != null)
                 {
-                    isRecordComplete = response.recordComplete;
-                    isListenComplete = response.listenComplete;
-                    flower.evolutionCount = response.moodCount;
-                    flower.nickName = response.flowerName;
-                    nameInput.text = response.flowerName; ;
+                    // 자신의 정보 업데이트
+                    isRecordComplete = response.myRecordComplete;
+                    isListenComplete = response.myListenComplete;
+                    flower.evolutionCount = response.myMoodCount;
+                    flower.nickName = response.myFlowerName;
+                    nameInput.text = response.myFlowerName;
+
+                    // 파트너 정보 업데이트
+                    if (partnerFlower != null)
+                    {
+                        partnerFlower.isRecordComplete = response.partnerRecordComplete;
+                        partnerFlower.isListenComplete = response.partnerListenComplete;
+                        partnerFlower.flower.evolutionCount = response.partnerMoodCount;
+                        partnerFlower.flower.nickName = response.partnerFlowerName;
+                        partnerFlower.nameInput.text = response.partnerFlowerName;
+                        partnerFlower.UpdateUI(partnerFlower.flower);
+                    }
+
+                    Debug.Log($"Voice status updated for ViewID {photonView.ViewID}:\n" +
+                             $"My Record: {isRecordComplete}, Listen: {isListenComplete}, Name: {flower.nickName}\n" +
+                             $"Partner Record: {partnerFlower?.isRecordComplete}, Listen: {partnerFlower?.isListenComplete}, Name: {partnerFlower?.flower.nickName}");
+
                     UpdateUI(flower);
                     UpdateUIText();
+
+                    // 상태 동기화
+                    photonView.RPC("RPC_SyncFlowerState", RpcTarget.All,
+                        flower.curState,
+                        flower.nickName,
+                        isRecordComplete,
+                        isListenComplete,
+                        flower.evolutionCount,
+                        flower.voiceClip != null,
+                        photonView.ViewID);
+                }
+                else
+                {
+                    Debug.LogError($"[GetVoiceStatus] API call failed for ViewID: {photonView.ViewID}");
                 }
             });
     }
 
     private IEnumerator GetAndPlayVoiceMessage()
     {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
 
         bool isPlaying = false;
 
@@ -980,7 +1095,7 @@ public class FlowerUIManager : MonoBehaviourPun
     }
     private IEnumerator PostNickName(NickNamePost name, Action onComplete)
     {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
 
         yield return NetworkManager.Instance.Post($"/api/flower/set-name", name,
             (success, response) =>

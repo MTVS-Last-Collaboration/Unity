@@ -11613,6 +11613,7 @@ GameObject:
   - component: {fileID: 3984203153085351610}
   - component: {fileID: 4332719610085105379}
   - component: {fileID: 8361109178859333970}
+  - component: {fileID: 3884407178703472598}
   m_Layer: 0
   m_Name: pot_lod0_var2
   m_TagString: Untagged
@@ -11685,6 +11686,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3884407178703472598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2783736636604612391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40be044c14b2d9b4485547c53bc29e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 0681acb65e5fa944f8e1c9cce78deb3a, type: 2}
+  outlineScaleFactor: 1.1
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &2797940508397301872
 GameObject:
   m_ObjectHideFlags: 0
@@ -16660,6 +16676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dateChanger: {fileID: 856700343503844520}
+  partnerFlower: {fileID: 7270257105570071876}
   uiPanel: {fileID: 4148071112546038168}
   nameInput: {fileID: 8574759150781014298}
   statusText: {fileID: 1675612541495947377}
@@ -37757,6 +37774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dateChanger: {fileID: 856700343503844520}
+  partnerFlower: {fileID: 5007915570533345159}
   uiPanel: {fileID: 464145941187385413}
   nameInput: {fileID: 9084348058056012493}
   statusText: {fileID: 5083353206419557308}
