@@ -146,7 +146,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private IEnumerator SyncStateForNewPlayer(Player newPlayer)
+    public IEnumerator SyncStateForNewPlayer(Player newPlayer)
     {
         // API를 통해 최신 상태를 가져옴
         yield return GetVoiceStatus();
@@ -167,7 +167,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                     evolutionCount = flower.evolutionCount,
                     hasVoiceClip = flower.voiceClip != null
                 };
-
+                print("오브젝트1 받");
                 photonView.RPC("RPC_SyncInitialState", newPlayer, JsonUtility.ToJson(myState));
             }
 
@@ -184,7 +184,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                     evolutionCount = partnerFlower.flower.evolutionCount,
                     hasVoiceClip = partnerFlower.flower.voiceClip != null
                 };
-
+                print("오브젝트2 받");
                 partnerFlower.photonView.RPC("RPC_SyncInitialState", newPlayer, JsonUtility.ToJson(partnerState));
             }
         }
@@ -228,11 +228,13 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
             targetManager.isRecordComplete = state.recordComplete;
             targetManager.isListenComplete = state.listenComplete;
             targetManager.flower.evolutionCount = state.evolutionCount;
+            targetManager.flower.curState = state.state;
             targetManager.nameInput.text = state.name;
 
             targetManager.UpdateUI(targetManager.flower);
             targetManager.UpdateUIText();
         }
+        flowerEvol.CheckEvolutionCount(true);
     }
 
     // 전체 상태를 담는 클래스
@@ -1151,41 +1153,51 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     private IEnumerator GetVoiceStatus()
     {
         Debug.Log($"{gameObject.name} > [GetVoiceStatus] Starting for ViewID: {photonView.ViewID}, IsMine: {photonView.IsMine}, Token: {(playerToken != null ? "Set" : "Null")}");
-
         if (string.IsNullOrEmpty(playerToken))
         {
             Debug.LogError($"[GetVoiceStatus] Token is empty for ViewID: {photonView.ViewID}");
             yield break;
         }
-
         if (!photonView.IsMine)
         {
             Debug.Log($"[GetVoiceStatus] Skipping - Not owner of ViewID: {photonView.ViewID}");
             yield break;
         }
-
+        if (flower.managerId != "Male")
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        if (partnerFlower.flower.nickName != "")
+        {
+            Debug.Log(gameObject.name + " 상대닉 이미 있어!");
+            yield break;
+        }
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
-
         yield return NetworkManager.Instance.Get<VoiceStatus>("api/flower/voice/status",
             (success, response) =>
             {
                 if (success && response != null)
                 {
-                    // 기존 로직 유지
+                    // 토큰 소유자의 꽃에 내 정보 적용
                     isRecordComplete = response.myRecordComplete;
                     isListenComplete = response.myListenComplete;
                     flower.evolutionCount = response.myMoodCount;
                     flower.nickName = response.myFlowerName;
                     nameInput.text = response.myFlowerName;
 
-                    if (partnerFlower != null)
+                    // 다른 꽃을 찾아서 파트너 정보 적용
+                    FlowerUIManager[] flowers = GameObject.FindObjectsOfType<FlowerUIManager>();
+                    foreach (var f in flowers)
                     {
-                        partnerFlower.isRecordComplete = response.partnerRecordComplete;
-                        partnerFlower.isListenComplete = response.partnerListenComplete;
-                        partnerFlower.flower.evolutionCount = response.partnerMoodCount;
-                        partnerFlower.flower.nickName = response.partnerFlowerName;
-                        partnerFlower.nameInput.text = response.partnerFlowerName;
-                        partnerFlower.UpdateUI(partnerFlower.flower);
+                        if (f != this)
+                        {
+                            partnerFlower = f;
+                            partnerFlower.isRecordComplete = response.partnerRecordComplete;
+                            partnerFlower.isListenComplete = response.partnerListenComplete;
+                            partnerFlower.flower.evolutionCount = response.partnerMoodCount;
+                            partnerFlower.flower.nickName = response.partnerFlowerName;
+                            partnerFlower.nameInput.text = response.partnerFlowerName;
+                        }
                     }
 
                     Debug.Log($"Voice status updated for ViewID {photonView.ViewID}:\n" +
@@ -1195,8 +1207,9 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                     UpdateUI(flower);
                     UpdateUIText();
 
-                    // 새로운 플레이어를 위한 상태 동기화 추가
-                    photonView.RPC("RPC_SyncFlowerState", RpcTarget.All,
+                    //flowerEvol.CheckEvolutionCount(true);
+
+                    photonView.RPC("RPC_SyncFlowerState", RpcTarget.AllBuffered,
                         flower.curState,
                         flower.nickName,
                         isRecordComplete,
