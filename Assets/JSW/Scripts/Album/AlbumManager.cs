@@ -39,7 +39,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     public float TimeLerp=0;
 
     private string apiUrl = "http://125.132.216.190:12223/api/photo-album"; // Replace with the actual API endpoint
-    private string apiUrl2 = "http://125.132.216.190:12223/api/photo-album/convert/11"; // Replace with the actual API endpoint
+    
 
 
     private void Start()
@@ -394,6 +394,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         DeleteUIPic.SetActive(false);
         if (DestroyPic == AlbumPos123[0])
         {
+            if (Albumlist[nowIndex].id == GetComponent<Making3DObject>().exhibitionPicId) return;
             DeletePicEvent(Albumlist[nowIndex].id);
             if (Albumlist.Count < nowIndex + 2)
             {
@@ -446,6 +447,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         }
         else if (DestroyPic == AlbumPos123[1])
         {
+            if (Albumlist[nowIndex + 1].id == GetComponent<Making3DObject>().exhibitionPicId) return;
             DeletePicEvent(Albumlist[nowIndex + 1].id);
             if (Albumlist.Count < nowIndex + 3)
             {
@@ -482,6 +484,7 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
         }
         else
         {
+            if (Albumlist[nowIndex + 2].id == GetComponent<Making3DObject>().exhibitionPicId) return;
             DeletePicEvent(Albumlist[nowIndex + 2].id);
             if (Albumlist.Count < nowIndex + 4)
             {
@@ -509,7 +512,6 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
 
     public void SetImageIntoUI()
     {
-        //print("제제하ㅏ핳하ㅏ");
         //GameObject newPic = Instantiate(PicFactory, AlbumPos[0].transform);
         //newPic.transform.position = AlbumPos[0].transform.position;
         nowIndex = 0;
@@ -719,19 +721,19 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
                         content = wrapper.data[i].content,
                         sprite = texture2,
                         ObjURL = wrapper.data[i].pngUrl,
-                        TextureURL = wrapper.data[i].imageUrl
+                        TextureURL = wrapper.data[i].materialUrl
                     };
                     Albumlist.Add(albumPicClass);
                 }
 
-                for (int i =0; i < Albumlist.Count;i++)
-                {
-                    if (Albumlist[i].ObjURL != null)
-                    {
-                        GetComponent<Making3DObject>().make3DObjectInit(Albumlist[i].ObjURL, Albumlist[i].TextureURL);
-                        break;
-                    }
-                }
+                //for (int i =0; i < Albumlist.Count;i++)
+                //{
+                //    if (Albumlist[i].ObjURL != null)
+                //    {
+                //        GetComponent<Making3DObject>().make3DObjectInit(Albumlist[i].ObjURL, Albumlist[i].TextureURL);
+                //        break;
+                //    }
+                //}
                 SetImageIntoUI();
             }
             else
@@ -766,6 +768,10 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
 
     public void DeletePicEvent(int Id)
     {
+        if (GetComponent<Making3DObject>().exhibitionPicId == Id)
+        {
+            return;
+        }
         StartCoroutine(DeletePic_CO(Id));
     }
 
