@@ -11,7 +11,7 @@ using System.Linq;
 using System.IO;
 using UnityEngine.Networking;
 
-public class FlowerUIManager : MonoBehaviourPun
+public class FlowerUIManager : MonoBehaviourPunCallbacks
 {
     public MidnightChecker dateChanger;
     public FlowerUIManager partnerFlower;
@@ -58,6 +58,11 @@ public class FlowerUIManager : MonoBehaviourPun
 
     private string playerToken;
 
+    [SerializeField] private TMP_Text failCount;
+    [SerializeField] private GameObject successPanel;
+
+    public bool isSuccess = false;
+
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -71,22 +76,6 @@ public class FlowerUIManager : MonoBehaviourPun
     private void Start()
     {
         flowerId = photonView.ViewID.ToString();
-        InitializeComponents();
-
-        // 자신이 소유한 오브젝트의 경우에만 토큰 설정 및 API 호출
-        if (photonView.IsMine)
-        {
-            Debug.Log($"[Start] Initializing owned object - ViewID: {photonView.ViewID}");
-            playerToken = PlayerPrefs.GetString("token");
-            photonView.RPC("RPC_SetPlayerToken", RpcTarget.AllBuffered, playerToken, photonView.ViewID);
-
-            // 파트너 오브젝트가 설정될 때까지 대기 후 API 호출
-            StartCoroutine(WaitForPartnerAndInitialize());
-        }
-        else
-        {
-            Debug.Log($"[Start] Not owner of object - ViewID: {photonView.ViewID}");
-        }
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
         sendOptions.Reliability = true; // 신뢰성 있는 전송
@@ -99,6 +88,26 @@ public class FlowerUIManager : MonoBehaviourPun
         uiPopup.SetTarget(uiPanel.GetComponent<RectTransform>());
 
         hoonUI = GameObject.Find("HoonLoobyCanvas");
+        InitializeComponents();
+        if (photonView.IsMine)
+        {
+            recordCount = PlayerPrefs.GetInt($"RecordCount_{photonView.ViewID}", 0);
+            isSuccess = PlayerPrefs.GetInt($"IsSuccess_{photonView.ViewID}", 0) == 1;
+        }
+        // 자신이 소유한 오브젝트의 경우에만 토큰 설정 및 API 호출
+        if (photonView.IsMine)
+        {
+            Debug.Log($"[Start] Initializing owned object - ViewID: {photonView.ViewID}");
+            playerToken = PlayerPrefs.GetString("token");
+            StartCoroutine(InitializeAfterDelay());
+            // 파트너 오브젝트가 설정될 때까지 대기 후 API 호출
+            StartCoroutine(WaitForPartnerAndInitialize());
+        }
+        else
+        {
+            Debug.Log($"[Start] Not owner of object - ViewID: {photonView.ViewID}");
+        }
+        
 
         // 초기 상태 텍스트 설정
         UpdateStateText(flower.curState);
@@ -106,9 +115,139 @@ public class FlowerUIManager : MonoBehaviourPun
         {
             StartCoroutine(InitialStateSync());
         }
-
         PhotonNetwork.NetworkingClient.StateChanged += OnStateChanged;
     }
+
+    private IEnumerator InitializeAfterDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        if (flowerEvol != null)
+        {
+            photonView.RPC("RPC_SetPlayerToken", RpcTarget.All, playerToken, photonView.ViewID);
+            photonView.RPC("RPC_InitialEvolutionCheck", RpcTarget.All);
+            StartCoroutine(WaitForPartnerAndInitialize());
+            StartCoroutine(InitialStateSync());
+        }
+        else
+        {
+            Debug.LogError("FlowerEvolution component not initialized!");
+        }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+
+        // 마스터 클라이언트만 새로 들어온 플레이어에게 상태를 전송
+        if (PhotonNetwork.IsMasterClient && photonView.IsMine)
+        {
+            StartCoroutine(SyncStateForNewPlayer(newPlayer));
+        }
+    }
+
+    private IEnumerator SyncStateForNewPlayer(Player newPlayer)
+    {
+        // API를 통해 최신 상태를 가져옴
+        yield return GetVoiceStatus();
+
+        // 내가 마스터 클라이언트인 경우에만 두 오브젝트 모두의 상태를 전송
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // 오브젝트 1의 상태 전송
+            if (photonView.IsMine)
+            {
+                var myState = new FlowerFullState
+                {
+                    viewId = photonView.ViewID,
+                    state = flower.curState,
+                    name = flower.nickName,
+                    recordComplete = isRecordComplete,
+                    listenComplete = isListenComplete,
+                    evolutionCount = flower.evolutionCount,
+                    hasVoiceClip = flower.voiceClip != null
+                };
+
+                photonView.RPC("RPC_SyncInitialState", newPlayer, JsonUtility.ToJson(myState));
+            }
+
+            // 오브젝트 2의 상태 전송
+            if (partnerFlower != null && partnerFlower.photonView.IsMine)
+            {
+                var partnerState = new FlowerFullState
+                {
+                    viewId = partnerFlower.photonView.ViewID,
+                    state = partnerFlower.flower.curState,
+                    name = partnerFlower.flower.nickName,
+                    recordComplete = partnerFlower.isRecordComplete,
+                    listenComplete = partnerFlower.isListenComplete,
+                    evolutionCount = partnerFlower.flower.evolutionCount,
+                    hasVoiceClip = partnerFlower.flower.voiceClip != null
+                };
+
+                partnerFlower.photonView.RPC("RPC_SyncInitialState", newPlayer, JsonUtility.ToJson(partnerState));
+            }
+        }
+
+        // 음성 데이터가 있다면 전송
+        if (photonView.IsMine && flower.voiceClip != null && recorder != null)
+        {
+            byte[] voiceData = recorder.GetRecordedData();
+            StartCoroutine(SendVoiceDataInChunks(voiceData));
+        }
+
+        if (partnerFlower != null && partnerFlower.photonView.IsMine &&
+            partnerFlower.flower.voiceClip != null && partnerFlower.recorder != null)
+        {
+            byte[] voiceData = partnerFlower.recorder.GetRecordedData();
+            partnerFlower.StartCoroutine(partnerFlower.SendVoiceDataInChunks(voiceData));
+        }
+    }
+
+    [PunRPC]
+    private void RPC_SyncInitialState(string stateJson)
+    {
+        var state = JsonUtility.FromJson<FlowerFullState>(stateJson);
+        FlowerUIManager targetManager = null;
+
+        // 해당하는 매니저 찾기
+        if (photonView.ViewID == state.viewId)
+        {
+            targetManager = this;
+        }
+        else if (partnerFlower != null && partnerFlower.photonView.ViewID == state.viewId)
+        {
+            targetManager = partnerFlower;
+        }
+
+        // 찾은 매니저에 상태 적용
+        if (targetManager != null)
+        {
+            targetManager.flower.curState = state.state;
+            targetManager.flower.nickName = state.name;
+            targetManager.isRecordComplete = state.recordComplete;
+            targetManager.isListenComplete = state.listenComplete;
+            targetManager.flower.evolutionCount = state.evolutionCount;
+            targetManager.nameInput.text = state.name;
+
+            targetManager.UpdateUI(targetManager.flower);
+            targetManager.UpdateUIText();
+        }
+    }
+
+    // 전체 상태를 담는 클래스
+    [System.Serializable]
+    private class FlowerFullState
+    {
+        public int viewId;         // 해당 오브젝트의 ViewID
+        public Flower.States state;
+        public string name;
+        public bool recordComplete;
+        public bool listenComplete;
+        public int evolutionCount;
+        public bool hasVoiceClip;
+    }
+
     private IEnumerator WaitForPartnerAndInitialize()
     {
         Debug.Log($"[WaitForPartnerAndInitialize] Starting for ViewID: {photonView.ViewID}");
@@ -206,6 +345,24 @@ public class FlowerUIManager : MonoBehaviourPun
         restTime = $"{dateChanger.timeUntilAvailable.Hours} : {dateChanger.timeUntilAvailable.Minutes}";
         UpdateUIText();
         UpdateAlertEmoji();
+        if (dateChanger.isNewDay && photonView.IsMine)
+        {
+            // 자정이 지났을 때 값 초기화
+            recordCount = 0;
+            isSuccess = false;
+            successPanel.SetActive(false);
+
+            // 초기화된 값 저장
+            PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", recordCount);
+            PlayerPrefs.SetInt($"IsSuccess_{photonView.ViewID}", isSuccess ? 1 : 0);
+            PlayerPrefs.Save();
+
+            // 실패 횟수 UI 업데이트
+            if (failCount != null)
+            {
+                failCount.text = "0 / 3";
+            }
+        }
     }
 
     private void UpdateUIText()
@@ -342,12 +499,25 @@ public class FlowerUIManager : MonoBehaviourPun
                 }
             }
 
-            flowerEvol.CheckEvolutionCount();
+            bool isInitialSync = Time.timeSinceLevelLoad < 1f;
+            flowerEvol.CheckEvolutionCount(isInitialSync);
             UpdateUI(flower);
             UpdateUIText();
         }
     }
-
+    [PunRPC]
+    private void RPC_InitialEvolutionCheck()
+    {
+        // 씬이 시작될 때 모든 클라이언트에서 진화 체크 (isFirst = true)
+        if (flowerEvol != null)
+        {
+            flowerEvol.CheckEvolutionCount(true);
+        }
+        else
+        {
+            Debug.LogError("FlowerEvolution is null in RPC_InitialEvolutionCheck");
+        }
+    }
     private IEnumerator DelayedUIUpdate()
     {
         yield return new WaitForSeconds(1f);
@@ -375,7 +545,7 @@ public class FlowerUIManager : MonoBehaviourPun
     private void RPC_UpdateEvolutionCount(int count)
     {
         flower.evolutionCount = count;
-        flowerEvol.CheckEvolutionCount();
+        flowerEvol.CheckEvolutionCount(false);
 
         // 진화 후 상태 확인하여 UI 업데이트
         if (flower.curState == Flower.States.BLOSSOM && isRecordComplete && click.checkID.IsMine(flower))
@@ -730,6 +900,10 @@ public class FlowerUIManager : MonoBehaviourPun
                                 if (validationResponse.mood == "부정")
                                 {
                                     recordCount++;
+                                    failCount.text = $"{recordCount} / 3";
+
+                                    PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", recordCount);
+                                    PlayerPrefs.Save();
                                     if (recordCount < 3)
                                     {
                                         OffPanel();
@@ -740,10 +914,16 @@ public class FlowerUIManager : MonoBehaviourPun
                                         OffPanel();
                                         recordButtons[5].SetActive(true); // 최종 실패 UI
                                         recordCount = 0;
+                                        PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", 0);
+                                        PlayerPrefs.Save();
                                     }
                                 }
                                 else // "긍정" 또는 "중립"
                                 {
+                                    isSuccess = true;
+                                    PlayerPrefs.SetInt($"IsSuccess_{photonView.ViewID}", 1);
+                                    PlayerPrefs.Save();
+                                    successPanel.SetActive(true);
                                     recordButtons[4].SetActive(true); // 성공 UI
                                     flower.evolutionCount++;
                                     photonView.RPC("RPC_UpdateEvolutionCount", RpcTarget.All, flower.evolutionCount);
@@ -777,6 +957,18 @@ public class FlowerUIManager : MonoBehaviourPun
             {
                 File.Delete(tempPath);
             }
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (isSuccess == true)
+        {
+            successPanel.SetActive(true);
+        }
+        else
+        {
+            successPanel.SetActive(false);
         }
     }
 
@@ -958,7 +1150,7 @@ public class FlowerUIManager : MonoBehaviourPun
 
     private IEnumerator GetVoiceStatus()
     {
-        Debug.Log($"[GetVoiceStatus] Starting for ViewID: {photonView.ViewID}, IsMine: {photonView.IsMine}, Token: {(playerToken != null ? "Set" : "Null")}");
+        Debug.Log($"{gameObject.name} > [GetVoiceStatus] Starting for ViewID: {photonView.ViewID}, IsMine: {photonView.IsMine}, Token: {(playerToken != null ? "Set" : "Null")}");
 
         if (string.IsNullOrEmpty(playerToken))
         {
@@ -979,14 +1171,13 @@ public class FlowerUIManager : MonoBehaviourPun
             {
                 if (success && response != null)
                 {
-                    // 자신의 정보 업데이트
+                    // 기존 로직 유지
                     isRecordComplete = response.myRecordComplete;
                     isListenComplete = response.myListenComplete;
                     flower.evolutionCount = response.myMoodCount;
                     flower.nickName = response.myFlowerName;
                     nameInput.text = response.myFlowerName;
 
-                    // 파트너 정보 업데이트
                     if (partnerFlower != null)
                     {
                         partnerFlower.isRecordComplete = response.partnerRecordComplete;
@@ -1004,7 +1195,7 @@ public class FlowerUIManager : MonoBehaviourPun
                     UpdateUI(flower);
                     UpdateUIText();
 
-                    // 상태 동기화
+                    // 새로운 플레이어를 위한 상태 동기화 추가
                     photonView.RPC("RPC_SyncFlowerState", RpcTarget.All,
                         flower.curState,
                         flower.nickName,
@@ -1020,6 +1211,43 @@ public class FlowerUIManager : MonoBehaviourPun
                 }
             });
     }
+
+    [PunRPC]
+    private void RPC_SyncStatesFromServer(string responseJson)
+    {
+        var response = JsonUtility.FromJson<VoiceStatus>(responseJson);
+        UpdateStatesFromResponse(response);
+    }
+
+    private void UpdateStatesFromResponse(VoiceStatus response)
+    {
+        if (photonView.IsMine)
+        {
+            // 자신의 상태 업데이트
+            isRecordComplete = response.myRecordComplete;
+            isListenComplete = response.myListenComplete;
+            flower.evolutionCount = response.myMoodCount;
+            flower.nickName = response.myFlowerName;
+            nameInput.text = response.myFlowerName;
+
+            // 파트너의 상태는 파트너 오브젝트가 직접 업데이트하도록 함
+            if (partnerFlower != null)
+            {
+                partnerFlower.photonView.RPC("RPC_SyncFlowerState", RpcTarget.All,
+                    partnerFlower.flower.curState,
+                    response.partnerFlowerName,
+                    response.partnerRecordComplete,
+                    response.partnerListenComplete,
+                    response.partnerMoodCount,
+                    partnerFlower.flower.voiceClip != null,
+                    partnerFlower.photonView.ViewID);
+            }
+
+            UpdateUI(flower);
+            UpdateUIText();
+        }
+    }
+
 
     private IEnumerator GetAndPlayVoiceMessage()
     {
@@ -1165,6 +1393,13 @@ public class FlowerUIManager : MonoBehaviourPun
 
     private void OnDestroy()
     {
+        if (photonView.IsMine)
+        {
+            PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", recordCount);
+            PlayerPrefs.SetInt($"IsSuccess_{photonView.ViewID}", isSuccess ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
         PhotonNetwork.NetworkingClient.StateChanged -= OnStateChanged;
     }
 }
