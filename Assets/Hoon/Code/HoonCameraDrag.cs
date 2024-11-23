@@ -9,8 +9,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class HoonCameraDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
