@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class CameraSwitch : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class CameraSwitch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             mainCamera.targetDisplay = 1;     // Display 2
             triggerCamera.targetDisplay = 0;  // Display 1
@@ -29,7 +30,7 @@ public class CameraSwitch : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             mainCamera.targetDisplay = 0;     // Display 1
             triggerCamera.targetDisplay = 1;  // Display 2
