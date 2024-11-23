@@ -28,7 +28,6 @@ public class HoonUIController : MonoBehaviour
     public GameObject Img_OptionMenuObject;
     public GameObject img_PlayEnd;
 
-
     void Start()
     {
         Img_OptionMenuObject.SetActive(false);

@@ -34,8 +34,8 @@ public class CameraControllTest : MonoBehaviour
             Vector3 playerDir = mainCameraFocus.position - mainCam_Object.transform.position;  //플레이어 방향을 구합니다.
             float mainCamPosX = mainCamPos_Object.transform.position.x; //x방향
             float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
-            mainCam_Object.transform.position = new Vector3(mainCamPosX, mainCamY, mainCamPosZ); //플레이어의 움직임 따라가기
             mainCam_Object.transform.forward = playerDir; //카메라가 플레이어 방향을 계속 보게함
+            mainCam_Object.transform.position = new Vector3(mainCamPosX, mainCamY, mainCamPosZ); //플레이어의 움직임 따라가기
         }
        
 
