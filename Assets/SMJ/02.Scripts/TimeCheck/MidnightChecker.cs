@@ -9,6 +9,8 @@ public class MidnightChecker : MonoBehaviour
     private bool canUseFeature = true;
 
     private const string NextAvailableTimeKey = "NextAvailableTime";
+    private DateTime lastCheckedDate;
+    public bool isNewDay { get; private set; }
 
     private void Start()
     {
@@ -24,6 +26,9 @@ public class MidnightChecker : MonoBehaviour
             nextAvailableTime = DateTime.Now.Date;
         }
 
+        lastCheckedDate = DateTime.Now.Date;
+        isNewDay = false;
+
         // 코루틴 시작
         StartCoroutine(CheckTimeRoutine());
     }
@@ -32,6 +37,20 @@ public class MidnightChecker : MonoBehaviour
     {
         while (true)
         {
+            DateTime currentDate = DateTime.Now.Date;
+
+            // 날짜가 변경되었는지 확인
+            if (currentDate > lastCheckedDate)
+            {
+                isNewDay = true;
+                lastCheckedDate = currentDate;
+                Debug.Log("자정이 지나 새로운 날이 되었습니다!");
+            }
+            else
+            {
+                isNewDay = false;
+            }
+
             UpdateFeatureAvailability();
             yield return new WaitForSeconds(10); // 10초마다 체크 (필요에 따라 조정 가능)
         }

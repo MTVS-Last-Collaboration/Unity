@@ -90,6 +90,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         {
             print("새 플레이어 진입 동기화!");
             CheckForPlayer();
+            FlowerUIManager uiManager = GetComponent<FlowerUIManager>();
+            StartCoroutine(uiManager.SyncStateForNewPlayer(newPlayer));
         }
     }
 
@@ -207,57 +209,56 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     public void HandleInteraction()
     {
-        // 로컬 플레이어의 상호작용만 처리
-        if (isPlayerInRange && targetFlower != null && targetFlower.uiManager != null && isFirstClick == false)
+        // 상호작용 기본 조건 체크
+        if (!isPlayerInRange || targetFlower == null || targetFlower.uiManager == null || isFirstClick)
+            return;
+
+        isFirstClick = true;
+
+        if (!isFirst)
         {
+            originPosition = cameraTr.position;
+            originRotation = cameraTr.rotation;
+            isFirst = true;
+        }
 
-            isFirstClick = true;
+        StartCoroutine(LerpCamera());
 
-            if (isFirst == false)
+        // UI 표시 로직
+        if (checkID != null && checkID.IsMine(targetFlower))  // 자신의 꽃인 경우
+        {
+            if (targetFlower.curState == Flower.States.BLOSSOM)
             {
-                originPosition = cameraTr.position;
-                originRotation = cameraTr.rotation;
-                isFirst = true;
+                // 만개한 꽃이고 녹음이 완료된 상태
+                targetFlower.uiManager.ShowFlowerInfo(targetFlower, 5);
             }
-
-            StartCoroutine(LerpCamera());
-
-            if (checkID != null)
+            else if (targetFlower.uiManager.isRecordComplete)
             {
-                if (targetFlower.uiManager.isRecordComplete == false && checkID.IsMine(targetFlower) == true)
-                {
-                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
-                }
-                else if(targetFlower.uiManager.isRecordComplete == true && checkID.IsMine(targetFlower) == false)
-                {
-                    if (targetFlower.uiManager.isRecordComplete == false)
-                    {
-                        print("녹음완X! 1번!");
-                        targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
-                    }
-                    else
-                    {
-                        print("녹음완! 2번!");
-                        targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
-                    }
-                }
-                else
-                {
-                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
-                }
+                // 녹음만 완료된 상태
+                targetFlower.uiManager.ShowFlowerInfo(targetFlower, 3);
             }
             else
             {
-                if (targetFlower.uiManager.isRecordComplete == false)
-                {
-                    print("else 녹음 완X 1번!");
-                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
-                }
-                else
-                {
-                    print("else 2번!");
-                    targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
-                }
+                // 아무것도 완료되지 않은 상태
+                targetFlower.uiManager.ShowFlowerInfo(targetFlower, 0);
+            }
+        }
+        else  // 파트너의 꽃인 경우
+        {
+            if (!targetFlower.uiManager.isRecordComplete)
+            {
+                // 아직 녹음되지 않은 상태
+                targetFlower.uiManager.ShowFlowerInfo(targetFlower, 1);
+            }
+            else if (!targetFlower.uiManager.isListenComplete)
+            {
+                // 녹음은 되었지만 아직 듣지 않은 상태
+                targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
+            }
+            else
+            {
+                // 이미 들은 상태
+                targetFlower.uiManager.ShowFlowerInfo(targetFlower, 2);
             }
         }
     }
@@ -335,7 +336,6 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     IEnumerator ReturnCameraTransform()
     {
-        Camera.main.targetDisplay = 1;
         if (cameraControll != null)
         {
             curtime = 0f;
