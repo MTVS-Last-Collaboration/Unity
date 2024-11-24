@@ -14,6 +14,7 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
     public JSW_SoundManager soundManager;
     public GameObject imgCreateRoomBG;
     public HoonCreateRoom hoonCreateRoom;
+    public GameObject endingObject;
     
 
     void Start()
@@ -81,7 +82,39 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
             }
         }
 
+        if (endingObject != null)
+        {
+            StartCoroutine(Ending());
+        }  
+        else
+        {
+            if (lobbyGameManager != null)
+            {
+                PhotonNetwork.Destroy(lobbyGameManager.player);
+            }
+            GetComponent<JSW_ConnectionManager>().enabled = true;
+            GetComponent<JSW_ConnectionManager>().LeaveRoom();
+        }
+    }
 
+    public IEnumerator Ending()
+    {
+        endingObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        iTween.ScaleTo(endingObject, iTween.Hash(
+            "scale", Vector3.one * 1,        // 목표 스케일 (1, 1, 1)
+            "time", 2f,                // 애니메이션 시간 (조정 가능)
+            "easeType", "easeOutCirc", // 통통 튀는 느낌의 easeType
+            "oncomplete", "OnCompleteEnding", // 애니메이션 완료 시 호출할 함수
+            "oncompletetarget", gameObject
+        ));
+        
+    }
+    public void OnCompleteEnding()
+    {
+        endingObject.transform.GetChild(4).gameObject.SetActive(true);
         if (lobbyGameManager != null)
         {
             PhotonNetwork.Destroy(lobbyGameManager.player);

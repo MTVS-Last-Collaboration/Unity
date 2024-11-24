@@ -76,7 +76,7 @@ public class JSW_DecoMineWall : JSW_DecoMineObject
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
-        print("fdfdfd" + ResourcesName);
+        print("벽 구매를 위해 욜로 보냄 : " + url + ResourcesName);
         // 요청 전송 및 응답 대기
         yield return request.SendWebRequest();
 

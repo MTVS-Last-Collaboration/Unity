@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -27,17 +28,21 @@ public class JSW_UIManager : MonoBehaviour
 
     public GameObject PlayerInfoUI;
     public GameObject heartInfoUI;
+    public GameObject playerContorlUI;
 
     CanvasGroup playerInfo;
     CanvasGroup heartInfo;
-    public float time=1;
+    public float time = 1;
     public float heartTime = 1;
+
+    public bool isOpening;
 
     // Start is called before the first frame update
     void Start()
     {
         album_UI = GameObject.Find("UI_Album");
         Album2 = GameObject.Find("Album2");
+        playerContorlUI = GameObject.Find("PlayControlCanvas");
         Album_Loading2 = GameObject.Find("Album_Loading2");
         Album_Loading = GameObject.Find("Album_Loading");
         PicUploadingUI = GameObject.Find("PicUploadingUI");
@@ -53,16 +58,56 @@ public class JSW_UIManager : MonoBehaviour
         DecorateMineUI = GameObject.Find("DecorateMineUI_All");
 
         PlayerInfoUI = GameObject.Find("PlayerInfoUI");
+        
+
 
         playerInfo = PlayerInfoUI.GetComponent<CanvasGroup>();
         heartInfo = heartInfoUI.GetComponent<CanvasGroup>();
+
+        StartCoroutine(Opening());
         AllActiveFalse();
     }
 
+    public GameObject openingObject;
+
+    public IEnumerator Opening(){
+        openingObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        openingObject.transform.GetChild(4).gameObject.SetActive(false);
+
+        iTween.ScaleTo(openingObject, iTween.Hash(
+            "scale", Vector3.one*80,        // 목표 스케일 (1, 1, 1)
+            "time", 1f,                // 애니메이션 시간 (조정 가능)
+            "easeType", "easeInCirc", // 통통 튀는 느낌의 easeType
+            "oncomplete", "OnCompleteOpening", // 애니메이션 완료 시 호출할 함수
+            "oncompletetarget", gameObject
+        ));
+    }
+
+    public void OnCompleteOpening()
+    {
+        isOpening = true;
+        openingObject.SetActive(false);
+    }
+
+    public IEnumerator Closing()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
+
+
+
+
     private void Update()
     {
-        playerInfo.alpha = Mathf.Lerp(playerInfo.alpha, time, Time.deltaTime * 5);
-        heartInfo.alpha = Mathf.Lerp(heartInfo.alpha, heartTime, Time.deltaTime * 5);
+        if (isOpening)
+        {
+            playerInfo.alpha = Mathf.Lerp(playerInfo.alpha, time, Time.deltaTime * 5);
+            heartInfo.alpha = Mathf.Lerp(heartInfo.alpha, heartTime, Time.deltaTime * 5);
+        }
     }
     void AllActiveFalse()
     {
@@ -216,6 +261,7 @@ public class JSW_UIManager : MonoBehaviour
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_PetSound);
         easingUIDark(PlayerInfoUI, 0f);
+        playerContorlUI.SetActive(false);
         Mong_1.SetActive(true);
     }
     public void OnClickMong_Back()
@@ -223,6 +269,7 @@ public class JSW_UIManager : MonoBehaviour
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         easingUIDark(PlayerInfoUI, 1f);
         Mong_1.SetActive(false);
+        playerContorlUI.SetActive(true);
     }
 
 
@@ -360,6 +407,7 @@ public class JSW_UIManager : MonoBehaviour
     public GameObject img_PlayEnd;
     public Image btnSound_ImageComp;
     public Image btnBgm_ImageComp;
+    public GameObject SoundManager;
 
     public void MoveSoundSwitch()
     {
@@ -403,6 +451,15 @@ public class JSW_UIManager : MonoBehaviour
 
         }
 
+    }
+
+    public void CloseOptionSettings()
+    {
+        Img_OptionMenuObject.SetActive(false);
+    }
+    public void OpenOptionSettings()
+    {
+        Img_OptionMenuObject.SetActive(true);
     }
 
 

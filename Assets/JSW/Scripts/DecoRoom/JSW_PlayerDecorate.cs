@@ -195,33 +195,92 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
         }
     }
 
-    //public void PushFunitureSetting()
-    //{
-    //    photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
-    //}
-    [PunRPC]
     public void PushFunitureSetting()
     {
-        playerAnimator.SetBool("Setting", true);
-        
-        GameObject funitureOb = null;
+        //photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
+        PushFunitureSetting_local();
+    }
 
+    public bool isSettingNow;
+    public bool isReadyNow;
+
+    [PunRPC]
+    public void PushFunitureSetting_RPC()
+    {
+        if (isSettingNow == true) return;
+        if (isReadyNow == true)
+        {
+            playerAnimator.SetBool("Setting", true);
+            StartCoroutine(setAnimSetting(0.2f));
+            isSettingNow = true;
+            playerAnimator.speed = 1;
+        }
+        else
+        {
+            playerAnimator.SetBool("Setting", true);
+            StartCoroutine(setAnimSetting(0.4f));
+            isSettingNow = true;
+            playerAnimator.speed = 1;
+        }
+    }
+    IEnumerator setAnimSetting(float time)
+    {
+        yield return new WaitForSeconds(0.2f);
+        playerAnimator.speed = 0;
+    }
+
+
+    public void PushFunitureSettingOut()
+    {
+        photonView.RPC("PushFunitureSettingOut_RPC", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    public void PushFunitureSettingOut_RPC()
+    {
+        playerAnimator.SetBool("Setting", false);
+        isSettingNow = false;
+        isReadyNow = false;
+        playerAnimator.speed = 1;
+    }
+
+    public void PushFunitureSettingReady()
+    {
+        photonView.RPC("PushFunitureSettingReady_RPC", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    public void PushFunitureSettingReady_RPC()
+    {
+        playerAnimator.SetBool("Setting", true);
+        playerAnimator.speed = 1;
+        isReadyNow = true;
+        StartCoroutine(setAnimSetting2());
+    }
+    IEnumerator setAnimSetting2()
+    {
+        yield return new WaitForSeconds(0.2f);
+        playerAnimator.speed = 0;
+    }
+
+
+
+    public void PushFunitureSetting_local()
+    {
+  
+        GameObject funitureOb = null;
         // 플레이어의 위치와 방향 설정 (정면 방향)
         Vector3 forward = transform.TransformDirection(Vector3.forward);
 
         // Ray 생성 (카메라 앞에서 앞으로 쏘는 Ray)
-        Ray ray = new Ray(transform.position + Vector3.up * 0.75f, forward);
+        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, forward);
 
-        // Ray를 시각적으로 확인하기 위해 그립니다
-        //Debug.DrawRay(transform.position + Vector3.up * 1f , forward * 1.5f, Color.red);
-        // Ray가 물체와 충돌하는지 검사
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1.5f))
         {
             if (!(hit.transform.gameObject.tag == "Funiture")) return; 
             funitureOb = hit.collider.gameObject;
+            photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
 
-            if(funitureOb.GetComponent<PhotonView>() != null && !funitureOb.GetComponent<PhotonView>().IsMine)
+            if (funitureOb.GetComponent<PhotonView>() != null && !funitureOb.GetComponent<PhotonView>().IsMine)
             {
                 funitureOb.GetComponent<PhotonView>().RequestOwnership();
             }
@@ -271,16 +330,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
                 dir = 3;
                 transform.position = Vector3.Lerp(transform.position, new Vector3(num.x + 1, transform.position.y, num.z), Time.deltaTime * 10f);
             }
-            playerAnimator.speed = 1;
-            
         }
-        StartCoroutine(setAnimSetting());
-    }
-
-    IEnumerator setAnimSetting()
-    {
-        yield return new WaitForSeconds(0.2f);
-        playerAnimator.speed = 0;
     }
 
     public void PushFuniture()
@@ -404,7 +454,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     {
         GameObject funitureOb = null;
 
-        playerAnimator.speed = 1;
+        playerAnimator.speed = 1.2f;
         playerAnimator.SetTrigger("Pull");
         // 플레이어의 위치와 방향 설정 (정면 방향)
         Vector3 forward = transform.TransformDirection(Vector3.forward);

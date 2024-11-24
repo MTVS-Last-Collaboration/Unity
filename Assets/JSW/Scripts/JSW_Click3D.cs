@@ -11,6 +11,7 @@ public class JSW_Click3D : MonoBehaviour
     public bool ObjectRotate;
     GameObject Object1_3D;
     public bool isPlayerInRange = false;
+    public GameObject Delete_3D_UI;
 
     // Start is called before the first frame update
     // Trigger ³ÖÀÚ
@@ -31,6 +32,7 @@ public class JSW_Click3D : MonoBehaviour
             ObjectRotate = true;
             cameraControllTest.CameraTo3D();
             uiManager.time = 0;
+            Delete_3D_UI.SetActive(true);
         }
         else
         {
@@ -42,6 +44,7 @@ public class JSW_Click3D : MonoBehaviour
             ObjectRotate = false;
             cameraControllTest.ResetCamera();
             uiManager.time = 1;
+            Delete_3D_UI.SetActive(false);
         }
     }
     private void Update()

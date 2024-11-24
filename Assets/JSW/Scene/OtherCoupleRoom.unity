@@ -3677,7 +3677,9 @@ MonoBehaviour:
     type: 3}
   DRM: {fileID: 604980091}
   IsCharacterMoving: 0
+  playerAnimator: {fileID: 0}
   funiturePos: {fileID: 0}
+  SmokeEffect: {fileID: 0}
 --- !u!114 &112246692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20967,8 +20969,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avataName: {fileID: 0}
-  createRoomName: JSW_LoobyTest2
-  joinRoomName: JSW_LoobyTest2
+  createRoomName: 10
+  createRoomName22: 10
+  joinRoomName: 10
   levelNumber: 3
 --- !u!1 &578047554
 GameObject:
@@ -21511,9 +21514,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Floors: {fileID: 0}
+  Moldings: {fileID: 0}
   Walls: {fileID: 0}
+  Ceiling: {fileID: 0}
   Floormaterials: []
+  Floormaterials_Molding: []
   Wallmaterials: []
+  Wall4materials: []
+  ceiling: []
   floorNum: 0
   wallNum: 0
 --- !u!114 &604980094
@@ -33401,6 +33409,19 @@ MonoBehaviour:
   heartInfoUI: {fileID: 0}
   time: 1
   heartTime: 1
+  isOptionButton: 0
+  imgOptionPanelObject: {fileID: 0}
+  Img_OptionButton: {fileID: 0}
+  LobbySprites: []
+  Img_SoundSwitchObject: {fileID: 0}
+  Img_BgmSwitchObejct: {fileID: 0}
+  lobbyAudioSourceBGM: {fileID: 0}
+  lobbyAudioSourceSoundEffect: {fileID: 0}
+  Img_OptionMenuObject: {fileID: 0}
+  img_PlayEnd: {fileID: 0}
+  btnSound_ImageComp: {fileID: 0}
+  btnBgm_ImageComp: {fileID: 0}
+  SoundManager: {fileID: 0}
 --- !u!1001 &942018779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41500,9 +41521,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Floors: {fileID: 0}
+  Moldings: {fileID: 0}
   Walls: {fileID: 0}
+  Ceiling: {fileID: 0}
   Floormaterials: []
+  Floormaterials_Molding: []
   Wallmaterials: []
+  Wall4materials: []
+  ceiling: []
   floorNum: 0
   wallNum: 0
 --- !u!1 &1221013066
@@ -60885,6 +60911,7 @@ MonoBehaviour:
   cameraControllTest: {fileID: 0}
   ObjectRotate: 0
   isPlayerInRange: 0
+  Delete_3D_UI: {fileID: 0}
 --- !u!1 &1763201513
 GameObject:
   m_ObjectHideFlags: 0
@@ -62071,6 +62098,16 @@ MonoBehaviour:
     type: 3}
   trContent: {fileID: 0}
   testOb: {fileID: 0}
+  DestroyPic: {fileID: 0}
+  DeleteUIPic: {fileID: 0}
+  AlbumPos123: []
+  AlbumPos123Button: []
+  albumPicClass: []
+  nowIndex: 0
+  picWriteUI: {fileID: 0}
+  Albumlist: []
+  clickRightLeft: 0
+  TimeLerp: 0
   scrollRect: {fileID: 0}
   Content: {fileID: 0}
   AlbumInputField: {fileID: 0}
@@ -65452,6 +65489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avataName: {fileID: 0}
   createRoomName: LobbyTestHoon2
+  createRoomName22: 
   joinRoomName: LobbyTestHoon2
   levelNumber: 1
 --- !u!114 &1906997995
@@ -65470,6 +65508,8 @@ MonoBehaviour:
   lobbyGameManager: {fileID: 0}
   byeUI: {fileID: 764028971}
   soundManager: {fileID: 0}
+  imgCreateRoomBG: {fileID: 0}
+  hoonCreateRoom: {fileID: 0}
 --- !u!65 &1906997996
 BoxCollider:
   m_ObjectHideFlags: 0
