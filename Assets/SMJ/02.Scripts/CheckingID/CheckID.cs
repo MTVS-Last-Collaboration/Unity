@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class CheckID : MonoBehaviourPun
 {
-    IDHandler idHandler;
+    public IDHandler idHandler;
     [SerializeField] private bool isFirst = false;
 
     public bool IsMine(Flower flower)

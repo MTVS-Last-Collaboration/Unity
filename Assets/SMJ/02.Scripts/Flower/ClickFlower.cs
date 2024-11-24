@@ -90,6 +90,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         {
             print("새 플레이어 진입 동기화!");
             CheckForPlayer();
+            FlowerUIManager uiManager = GetComponent<FlowerUIManager>();
+            StartCoroutine(uiManager.SyncStateForNewPlayer(newPlayer));
         }
     }
 
