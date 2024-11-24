@@ -15,7 +15,7 @@ public class HoonChoiceRoom : MonoBehaviour
 
     void Start()
     {
-        img_CreatingRoom.SetActive(false);
+        //img_CreatingRoom.SetActive(false); //closeCreateRoom
         roomChoiceMark.SetActive(false); //closeRoomChoiceMark
     }
 

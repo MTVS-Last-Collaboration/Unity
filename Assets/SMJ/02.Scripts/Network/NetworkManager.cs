@@ -119,7 +119,7 @@ public class NetworkManager : MonoBehaviour
     public IEnumerator GetArray<T>(string endpoint, Action<bool, List<T>> callback = null) where T : class
     {
         string url = $"{baseUrl}/{endpoint}";
-        Debug.Log($"Making GET request to: {url}");
+        //Debug.Log($"Making GET request to: {url}");
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             AddHeaders(request);
@@ -130,7 +130,7 @@ public class NetworkManager : MonoBehaviour
                 try
                 {
                     string jsonArray = request.downloadHandler.text;
-                    Debug.Log($"Raw JSON response: {jsonArray}");
+                    //Debug.Log($"Raw JSON response: {jsonArray}");
 
                     // 배열을 직접 파싱
                     List<T> items = JsonUtility.FromJson<ArrayWrapper<T>>($"{{\"Items\":{jsonArray}}}").Items;
@@ -155,24 +155,24 @@ public class NetworkManager : MonoBehaviour
     public IEnumerator Get<T>(string endpoint, Action<bool, T> callback = null)
     {
         string url = $"{baseUrl}/{endpoint}";
-        Debug.Log($"Making GET request to: {url}");
+        //Debug.Log($"Making GET request to: {url}");
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             AddHeaders(request);
-            Debug.Log("Request headers added");
+            //Debug.Log("Request headers added");
 
             yield return request.SendWebRequest();
-            Debug.Log($"Request completed with result: {request.result}");
-            Debug.Log($"Response code: {request.responseCode}");
-            Debug.Log($"Response text: {request.downloadHandler.text}");
+            //Debug.Log($"Request completed with result: {request.result}");
+            //Debug.Log($"Response code: {request.responseCode}");
+            //Debug.Log($"Response text: {request.downloadHandler.text}");
 
             if (request.result == UnityWebRequest.Result.Success)
             {
                 try
                 {
                     T result = JsonUtility.FromJson<T>(request.downloadHandler.text);
-                    Debug.Log($"JSON parsed successfully: {JsonUtility.ToJson(result)}");
+                    //Debug.Log($"JSON parsed successfully: {JsonUtility.ToJson(result)}");
                     callback?.Invoke(true, result);
                 }
                 catch (Exception e)
@@ -183,7 +183,7 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Request failed: {request.error}");
+                //Debug.LogError($"Request failed: {request.error}");
                 callback?.Invoke(false, default(T));
             }
         }

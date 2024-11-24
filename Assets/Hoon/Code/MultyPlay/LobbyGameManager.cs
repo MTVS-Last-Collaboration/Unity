@@ -42,7 +42,7 @@ public class LobbyGameManager : MonoBehaviourPun
             if(LoginInfoManager.instance == null)
             {
                 playerNickName = "닉네임없음";
-                print("LobbyGameManager.instance.playerNickName" + playerNickName);
+                //print("LobbyGameManager.instance.playerNickName" + playerNickName);
                 return;
             }
             else

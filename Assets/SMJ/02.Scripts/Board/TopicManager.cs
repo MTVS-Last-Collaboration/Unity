@@ -158,16 +158,16 @@ public class TopicManager : MonoBehaviour
 
     public void GetDailyTopic(string date, Action<bool> onComplete = null)
     {
-        Debug.Log($"GetDailyTopic called with date: {date}");
+        //Debug.Log($"GetDailyTopic called with date: {date}");
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
 
         StartCoroutine(NetworkManager.Instance.Get<Topic>($"api/topic/date/{date}", (success, result) =>
         {
-            Debug.Log($"Get request callback - Success: {success}, Result: {result}");
+            //Debug.Log($"Get request callback - Success: {success}, Result: {result}");
             if (success && result != null)
             {
                 currentTopic = result;
-                Debug.Log($"Topic set: {JsonUtility.ToJson(currentTopic)}");
+                //Debug.Log($"Topic set: {JsonUtility.ToJson(currentTopic)}");
                 Topic topic = new Topic(currentId, currentContent, currentDate);
                 onComplete?.Invoke(true);
             }
@@ -188,7 +188,7 @@ public class TopicManager : MonoBehaviour
 
     public void GetTopicAnswers(Action<bool> onComplete = null)
     {
-        Debug.Log($"Getting answers for topic ID: {currentId}");
+        //Debug.Log($"Getting answers for topic ID: {currentId}");
 
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
         StartCoroutine(NetworkManager.Instance.GetArray<TopicAnswer>($"api/topic/{currentId}/answers",
@@ -197,13 +197,13 @@ public class TopicManager : MonoBehaviour
                 if (success && result != null)
                 {
                     currentAnswers = result;
-                    Debug.Log($"Successfully received {currentAnswers.Count} answers");
+                    //Debug.Log($"Successfully received {currentAnswers.Count} answers");
 
                     foreach (var answer in currentAnswers)
                     {
-                        Debug.Log($"Raw createdDate string: {answer.createdDate}");
+                        //Debug.Log($"Raw createdDate string: {answer.createdDate}");
                         var dateTime = answer.createdDate;
-                        Debug.Log($"Answer ID: {answer.id}, Created Date: {dateTime:yyyy-MM-dd HH:mm:ss}");
+                        //Debug.Log($"Answer ID: {answer.id}, Created Date: {dateTime:yyyy-MM-dd HH:mm:ss}");
                         await LoadCommentsForAnswer(answer);
                     }
 
@@ -229,7 +229,7 @@ public class TopicManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError($"Failed to load comments for answer {answer.id}");
+                    //Debug.LogError($"Failed to load comments for answer {answer.id}");
                 }
                 commentsLoaded = true;
             }));
