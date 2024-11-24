@@ -58,23 +58,17 @@ public class JSW_ButtonInter : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         if (timeSinceLastClick <= doubleClickTime && virtualJoyStick.locking == false)
         {
             virtualJoyStick.locking = true;
-            playerDecorate.playerAnimator.SetBool("Setting", true);
+            playerDecorate.PushFunitureSettingReady();
             //playerDecorate.playerAnimator.Play("push", 0, 0.2f);
-            StartCoroutine(setAnimSetting());
         }
         else if (timeSinceLastClick <= doubleClickTime && virtualJoyStick.locking == true)
         {
             virtualJoyStick.locking = false;
-            playerDecorate.playerAnimator.SetBool("Setting", false);
-            playerDecorate.playerAnimator.speed = 1;
+            playerDecorate.PushFunitureSettingOut();
         }
         lastClickTime = Time.time;
     }
-    IEnumerator setAnimSetting()
-    {
-        yield return new WaitForSeconds(0.2f);
-        playerDecorate.playerAnimator.speed = 0;
-    }
+
 
     // 매 프레임마다 호출되는 메서드
     void Update()
@@ -94,6 +88,10 @@ public class JSW_ButtonInter : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         else
         {
             //playerDecorate.playerAnimator.SetBool("Setting", false);
+            if (playerDecorate != null && playerDecorate.isReadyNow != true)
+            {
+                playerDecorate.PushFunitureSettingOut();
+            }
             isSettingFuniture = false;
             pressTime = 0f;
         }

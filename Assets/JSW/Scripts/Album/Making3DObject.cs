@@ -11,6 +11,7 @@ using System.IO;
 using System.Text;
 using static AlbumManager;
 using UnityEngine.Timeline;
+using Unity.Loading;
 
 public class Making3DObject : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class Making3DObject : MonoBehaviour
     public int exhibitionId;
     public int exhibitionPicId;
 
+    public GameObject loadingImage;
+
 
     private void Start()
     {
@@ -56,6 +59,14 @@ public class Making3DObject : MonoBehaviour
             GameObject item = Instantiate(picPrefabItem, picTr);
             item.GetComponent<Item2DTo3D>().id = albumManager.Albumlist[i].id;
             item.GetComponent<RawImage>().texture = albumManager.Albumlist[i].sprite;
+        }
+    }
+
+    private void Update()
+    {
+        if (loadingImage.activeSelf == true)
+        {
+            loadingImage.transform.GetChild(0).Rotate(0, 0, 60f * Time.deltaTime);
         }
     }
 
@@ -126,6 +137,7 @@ public class Making3DObject : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Post(apiUrl1, form);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+        loadingImage.SetActive(true);
 
         yield return request.SendWebRequest();
 
@@ -134,6 +146,7 @@ public class Making3DObject : MonoBehaviour
             print("사진 잘 올라가지 않은");
             Debug.LogError("Error: " + request.error);
             print(request.downloadHandler.text);
+            loadingImage.SetActive(false);
         }
         else
         {
@@ -264,6 +277,7 @@ public class Making3DObject : MonoBehaviour
         //loadedObj.transform.position = Object3DPos.transform.position;
         loadedObj.transform.SetParent(Object3DPos.transform);
         loadedObj.transform.localPosition = Vector3.zero;
+        loadingImage.SetActive(false);
     }
 
     //[System.Serializable]
