@@ -42,7 +42,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     private Flower flower;
     private ClickFlower click;
 
-    private int recordCount = 0;
+    public int recordCount = 0;
 
     public bool isRecordComplete = false;
     public bool isListenComplete = false;
@@ -91,7 +91,6 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         InitializeComponents();
         if (photonView.IsMine)
         {
-            recordCount = PlayerPrefs.GetInt($"RecordCount_{photonView.ViewID}", 0);
             isSuccess = PlayerPrefs.GetInt($"IsSuccess_{photonView.ViewID}", 0) == 1;
         }
         // 자신이 소유한 오브젝트의 경우에만 토큰 설정 및 API 호출
@@ -107,7 +106,6 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         {
             Debug.Log($"[Start] Not owner of object - ViewID: {photonView.ViewID}");
         }
-        
 
         // 초기 상태 텍스트 설정
         UpdateStateText(flower.curState);
@@ -347,6 +345,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         restTime = $"{dateChanger.timeUntilAvailable.Hours} : {dateChanger.timeUntilAvailable.Minutes}";
         UpdateUIText();
         UpdateAlertEmoji();
+        failCount.text = $"{recordCount}/3";
         if (dateChanger.isNewDay && photonView.IsMine)
         {
             // 자정이 지났을 때 값 초기화
@@ -355,7 +354,6 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
             successPanel.SetActive(false);
 
             // 초기화된 값 저장
-            PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", recordCount);
             PlayerPrefs.SetInt($"IsSuccess_{photonView.ViewID}", isSuccess ? 1 : 0);
             PlayerPrefs.Save();
 
@@ -902,10 +900,8 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                                 if (validationResponse.mood == "부정")
                                 {
                                     recordCount++;
-                                    failCount.text = $"{recordCount} / 3";
-
-                                    PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", recordCount);
-                                    PlayerPrefs.Save();
+                                    failCount.text = $"{recordCount}/3";
+                                    print(recordCount);
                                     if (recordCount < 3)
                                     {
                                         OffPanel();
@@ -915,9 +911,6 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                                     {
                                         OffPanel();
                                         recordButtons[5].SetActive(true); // 최종 실패 UI
-                                        recordCount = 0;
-                                        PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", 0);
-                                        PlayerPrefs.Save();
                                     }
                                 }
                                 else // "긍정" 또는 "중립"
@@ -1184,6 +1177,8 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                     flower.evolutionCount = response.myMoodCount;
                     flower.nickName = response.myFlowerName;
                     nameInput.text = response.myFlowerName;
+                    
+                    print(gameObject.name + "isRecordComplete : " + response.myRecordComplete + ", isListenComplete : " + response.myListenComplete);
 
                     // 다른 꽃을 찾아서 파트너 정보 적용
                     FlowerUIManager[] flowers = GameObject.FindObjectsOfType<FlowerUIManager>();
@@ -1197,6 +1192,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                             partnerFlower.flower.evolutionCount = response.partnerMoodCount;
                             partnerFlower.flower.nickName = response.partnerFlowerName;
                             partnerFlower.nameInput.text = response.partnerFlowerName;
+                            print(gameObject.name + "isRecordComplete : " + response.partnerRecordComplete + ", isListenComplete : " + response.partnerListenComplete);
                         }
                     }
 
@@ -1370,6 +1366,8 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     public void OnClickNewFlower()
     {
+        recordCount = 0;
+        isSuccess = false;
         sound.PlaySound("smjAudioClopAttay", 0);
         if (!click.checkID.IsMine(flower)) return;
 
@@ -1408,7 +1406,6 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            PlayerPrefs.SetInt($"RecordCount_{photonView.ViewID}", recordCount);
             PlayerPrefs.SetInt($"IsSuccess_{photonView.ViewID}", isSuccess ? 1 : 0);
             PlayerPrefs.Save();
         }
