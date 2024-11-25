@@ -30,6 +30,7 @@ public class ImageClickPixelPosition : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        JSW_SoundManager.Get().PlayEftSoundClick2();
         texture = rawImage.texture as Texture2D;
         markingImage.SetActive(true);
         if (rawImage == null || texture == null || fixPos == true)

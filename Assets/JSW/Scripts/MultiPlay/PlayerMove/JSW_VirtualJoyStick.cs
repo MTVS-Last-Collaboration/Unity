@@ -113,6 +113,8 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         locking = false;
     }
+
+    public bool isMovingPlayer;
     private void IntputControllVector()
     {
         //캐릭터에게 입력 백터를 전달
@@ -239,7 +241,11 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
         if (playerPhotonView != null && playerPhotonView.IsMine && isInput)
         {
             IntputControllVector();
-           
+            isMovingPlayer = true;
+        }
+        else
+        {
+            isMovingPlayer = false;
         }
 
 

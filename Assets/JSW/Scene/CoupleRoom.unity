@@ -1316,6 +1316,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &20408838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2440,6 +2452,8 @@ MonoBehaviour:
   uiManager: {fileID: 0}
   cameraControllTest: {fileID: 112246692}
   calenderManger: {fileID: 320206192}
+  RawScale: {x: 0, y: 0, z: 0}
+  Calender: {fileID: 1411056763}
 --- !u!1 &28920546
 GameObject:
   m_ObjectHideFlags: 0
@@ -5548,7 +5562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &103389004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6766,6 +6780,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1817660426}
         m_TargetAssemblyTypeName: AlbumManager, Assembly-CSharp
         m_MethodName: LeftMoveButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14152,6 +14178,18 @@ MonoBehaviour:
       - m_Target: {fileID: 941484407}
         m_TargetAssemblyTypeName: JSW_UIManager, Assembly-CSharp
         m_MethodName: CloseOptionSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25469,6 +25507,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1817660428}
         m_TargetAssemblyTypeName: Making3DObject, Assembly-CSharp
         m_MethodName: OnTouchImageMakingYes
@@ -27346,6 +27396,18 @@ MonoBehaviour:
       - m_Target: {fileID: 941484407}
         m_TargetAssemblyTypeName: JSW_UIManager, Assembly-CSharp
         m_MethodName: MoveBgmSwitch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29410,9 +29472,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
-        m_MethodName: ButtonSoundTest
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -35548,7 +35610,8 @@ MonoBehaviour:
   coupleDays: {fileID: 1197836812}
   coupleDays_Num: 0
   coupleMongDays: {fileID: 1285238104}
-  coupleNickName: {fileID: 1184751661}
+  coupleMineNickName: {fileID: 1742701246}
+  coupleOtherNickName: {fileID: 640090891}
 --- !u!1 &701412239
 GameObject:
   m_ObjectHideFlags: 0
@@ -43731,7 +43794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &892267364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -47206,6 +47269,7 @@ MonoBehaviour:
   PlayerInfoUI: {fileID: 0}
   heartInfoUI: {fileID: 120823172}
   playerContorlUI: {fileID: 0}
+  delete3D: {fileID: 0}
   time: 1
   heartTime: 1
   isOpening: 0
@@ -47721,6 +47785,7 @@ GameObject:
   - component: {fileID: 961739750}
   - component: {fileID: 961739754}
   - component: {fileID: 961739755}
+  - component: {fileID: 961739756}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -47853,7 +47918,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19865f010ec695748be516e2c1739b1c, type: 3}
   m_Name: 
@@ -47965,6 +48030,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &961739756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961739749}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4bac4d84e93bc04288d380d038981ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 112246688}
+  rotationSpeed: 100
+  sensitivity: {x: 0.1, y: 0.1}
+  virtualJoyStick: {fileID: 0}
 --- !u!1 &963641157
 GameObject:
   m_ObjectHideFlags: 0
@@ -50638,6 +50719,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1016090563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52671,6 +52764,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1086087005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53907,7 +54012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1107913903
 RectTransform:
   m_ObjectHideFlags: 0
@@ -53975,6 +54080,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1817660428}
         m_TargetAssemblyTypeName: Making3DObject, Assembly-CSharp
         m_MethodName: apiUrlDeleteEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -58403,6 +58520,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1220444506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58459,7 +58588,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1221013067
 RectTransform:
   m_ObjectHideFlags: 0
@@ -62695,7 +62824,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 0}
+  albumManager: {fileID: 1817660426}
   cameraControllTest: {fileID: 112246692}
+  RawScale: {x: 0, y: 0, z: 0}
+  book: {fileID: 1388785326}
 --- !u!1001 &1298931985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66164,6 +66296,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1388785324}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1388785326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9200982064607410676, guid: ba6fb337d0d67c64b9dad4aaab99d86b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1388785324}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1390388513
 GameObject:
   m_ObjectHideFlags: 0
@@ -67873,6 +68011,12 @@ PrefabInstance:
 --- !u!4 &1411056762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5593239630973883585, guid: cebe85a28eb9006449277da522c7c189,
+    type: 3}
+  m_PrefabInstance: {fileID: 1411056761}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1411056763 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4902227258957037972, guid: cebe85a28eb9006449277da522c7c189,
     type: 3}
   m_PrefabInstance: {fileID: 1411056761}
   m_PrefabAsset: {fileID: 0}
@@ -70735,6 +70879,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1492573916}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1492573918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c7be5e59659ef9240886383a25e82055,
+    type: 3}
+  m_PrefabInstance: {fileID: 1492573916}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1493337042
 GameObject:
   m_ObjectHideFlags: 0
@@ -71446,6 +71596,7 @@ MonoBehaviour:
   playerPhotonView: {fileID: 0}
   playerDecorate: {fileID: 0}
   locking: 0
+  isMovingPlayer: 0
 --- !u!1 &1508830457
 GameObject:
   m_ObjectHideFlags: 0
@@ -78788,6 +78939,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1577077416}
     m_Modifications:
+    - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bf62530755860e348b59fb3bbfde2a4c,
+        type: 3}
     - target: {fileID: 1303068094052446871, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -78914,10 +79071,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_text
+      value: "\uB300\uAD6C \uB098\uB4E4\uC774"
+      objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_Name
       value: Album_Pic (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_text
+      value: "\uB300\uAD6C \uB108\uBB34 \uC88B\uB2E4"
       objectReference: {fileID: 0}
     - target: {fileID: 6163014264769341072, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
@@ -81859,6 +82026,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1498648683}
+        m_TargetAssemblyTypeName: JSW_SoundManager, Assembly-CSharp
+        m_MethodName: PlayEftSoundClick2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1710658537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83681,6 +83860,8 @@ MonoBehaviour:
   ObjectRotate: 0
   isPlayerInRange: 0
   Delete_3D_UI: {fileID: 1107913902}
+  RawScale: {x: 0, y: 0, z: 0}
+  sunBan: {fileID: 1492573918}
 --- !u!1 &1763201513
 GameObject:
   m_ObjectHideFlags: 0
@@ -90515,6 +90696,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1926706940}
+  - component: {fileID: 1926706941}
   m_Layer: 0
   m_Name: PlayerMainCamPos
   m_TagString: Untagged
@@ -90537,6 +90719,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 112246688}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1926706941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926706939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4bac4d84e93bc04288d380d038981ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 112246688}
+  rotationSpeed: 100
+  sensitivity: {x: 0.1, y: 0.1}
+  virtualJoyStick: {fileID: 1508580536}
 --- !u!1 &1932883360
 GameObject:
   m_ObjectHideFlags: 0
@@ -96005,6 +96203,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1577077416}
     m_Modifications:
+    - target: {fileID: 741586013538902544, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40aeab8542d03e348b9ad50e5b3178fa,
+        type: 3}
     - target: {fileID: 1303068094052446871, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -96101,10 +96305,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 288.3
       objectReference: {fileID: 0}
+    - target: {fileID: 3440938562935928886, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_text
+      value: "\uBD80\uC0B0\uC5EC\uD589"
+      objectReference: {fileID: 0}
     - target: {fileID: 4203472625619166447, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}
       propertyPath: m_Name
       value: Album_Pic (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4619518942071895713, guid: 11d4ddc3d4ca70b479e11b617950feef,
+        type: 3}
+      propertyPath: m_text
+      value: "\uD589\uBCF5\uD55C \uC5EC\uD589\uC774\uC5C8\uB530"
       objectReference: {fileID: 0}
     - target: {fileID: 6163014264769341072, guid: 11d4ddc3d4ca70b479e11b617950feef,
         type: 3}

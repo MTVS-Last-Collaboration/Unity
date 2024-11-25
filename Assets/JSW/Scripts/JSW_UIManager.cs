@@ -29,6 +29,7 @@ public class JSW_UIManager : MonoBehaviour
     public GameObject PlayerInfoUI;
     public GameObject heartInfoUI;
     public GameObject playerContorlUI;
+    public GameObject delete3D;
 
     CanvasGroup playerInfo;
     CanvasGroup heartInfo;
@@ -58,8 +59,7 @@ public class JSW_UIManager : MonoBehaviour
         DecorateMineUI = GameObject.Find("DecorateMineUI_All");
 
         PlayerInfoUI = GameObject.Find("PlayerInfoUI");
-        
-
+        delete3D = GameObject.Find("3DDeleteButton");
 
         playerInfo = PlayerInfoUI.GetComponent<CanvasGroup>();
         heartInfo = heartInfoUI.GetComponent<CanvasGroup>();
@@ -123,6 +123,7 @@ public class JSW_UIManager : MonoBehaviour
         Mong_Chat_2.SetActive(false);
         DecorateShopUI.SetActive(false);
         DecorateMineUI.SetActive(false);
+        delete3D.SetActive(false);
     }
 
     // Album과 관련된 코드
@@ -131,6 +132,7 @@ public class JSW_UIManager : MonoBehaviour
     {
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
         album_UI.SetActive(true);
+        delete3D.SetActive(false);
         easingUI(album_UI, 1f);
         easingUIDark(PlayerInfoUI, 0f);
     }

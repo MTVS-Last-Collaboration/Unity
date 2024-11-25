@@ -213,6 +213,7 @@ public class JSW_PetManager : MonoBehaviour
             nickName_text.text = "어른이 된 " + MongName;
             Mong.transform.GetChild(3).gameObject.SetActive(true);
         }
+        MongName_TMP.text = MongName;
     }
 
 

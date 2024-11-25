@@ -15,7 +15,7 @@ using UnityEngine.Networking;
 using System.IO;
 using System;
 
-public class AlbumManager : MonoBehaviourPun, IOnEventCallback
+public class AlbumManager : MonoBehaviourPun
 {
     public GameObject picUploadingUI;
     public GameObject PicFactory;
@@ -116,107 +116,40 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     {
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
 
-        RaiseEventOptions eventOptions = new RaiseEventOptions();
-        eventOptions.Receivers = ReceiverGroup.All;
+        //RaiseEventOptions eventOptions = new RaiseEventOptions();
+        //eventOptions.Receivers = ReceiverGroup.All;
 
-        PhotonNetwork.RaiseEvent(2,null, eventOptions, SendOptions.SendUnreliable);
+        //PhotonNetwork.RaiseEvent(2,null, eventOptions, SendOptions.SendUnreliable);
 
-        EventSystem.current.SetSelectedGameObject(null);
-    }
+        //EventSystem.current.SetSelectedGameObject(null);
 
-    private void OnEnable()
-    {
-        //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
-        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
-    }
+        print("Dfadsa");
+        string title;
+        string content;
+        Texture2D newImage;
+        string day;
+        byte[] imageBytes;
+        PostPhoto_album postpic;
 
-    public void OnEvent(EventData photonEvent)
-    {
-        if (photonEvent.Code == 2)
+        if (picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture == null)
         {
-            print("Dfadsa");
-            string title;
-            string content;
-            Texture2D newImage;
-            string day;
-            byte[] imageBytes;
-            PostPhoto_album postpic;
+            return;
+        }
 
-            if (picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture == null)
-            {
-                return;
-            }
+        if (Albumlist.Count > 3 && nowIndex != 0)
+        {
+            title = Albumlist[nowIndex - 1].title;
+            content = Albumlist[nowIndex - 1].content;
+            day = Albumlist[nowIndex - 1].day;
+            newImage = Albumlist[nowIndex - 1].sprite;
 
-            if (Albumlist.Count >3 && nowIndex  != 0)
-            {
-                title = Albumlist[nowIndex -1].title;
-                content = Albumlist[nowIndex - 1].content;
-                day = Albumlist[nowIndex - 1].day;
-                newImage = Albumlist[nowIndex - 1].sprite;
-
-                AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
-                AlbumPos123Button[0].SetActive(true);
-            }
+            AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[0].SetActive(true);
+        }
 
 
-            if (Albumlist.Count < 1)
-            {
-                title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
-                content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;
-                newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
-                day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
-                AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
-                AlbumPos123Button[0].SetActive(true);
-
-                imageBytes = newImage.EncodeToPNG();
-
-                postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
-
-
-                StartCoroutine(PostPhotoEvent(apiUrl, postpic));
-
-                Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
-                return;
-            }
-
-            title = Albumlist[nowIndex + 0].title;
-            content = Albumlist[nowIndex + 0].content;
-            day = Albumlist[nowIndex + 0].day;
-            newImage = Albumlist[nowIndex + 0].sprite;
-
-            AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
-            AlbumPos123Button[1].SetActive(true);
-
-            if (Albumlist.Count < 2)
-            {
-                title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
-                content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;
-                newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
-                day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
-                AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
-                AlbumPos123Button[0].SetActive(true);
-
-                imageBytes = newImage.EncodeToPNG();
-                
-
-
-                postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
-
-
-                StartCoroutine(PostPhotoEvent(apiUrl, postpic));
-
-                Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
-                return;
-            }
-
-            title = Albumlist[nowIndex + 1].title;
-            content = Albumlist[nowIndex + 1].content;
-            day = Albumlist[nowIndex + 1].day;
-            newImage = Albumlist[nowIndex + 1].sprite;
-
-            AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
-            AlbumPos123Button[2].SetActive(true);
-
+        if (Albumlist.Count < 1)
+        {
             title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
             content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;
             newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
@@ -224,25 +157,94 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
             AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
             AlbumPos123Button[0].SetActive(true);
 
-
-
             imageBytes = newImage.EncodeToPNG();
-            
 
             postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
 
 
             StartCoroutine(PostPhotoEvent(apiUrl, postpic));
 
-
-            Albumlist.Insert(0,new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
+            Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
+            return;
         }
+
+        title = Albumlist[nowIndex + 0].title;
+        content = Albumlist[nowIndex + 0].content;
+        day = Albumlist[nowIndex + 0].day;
+        newImage = Albumlist[nowIndex + 0].sprite;
+
+        AlbumPos123[1].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[1].SetActive(true);
+
+        if (Albumlist.Count < 2)
+        {
+            title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
+            content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;
+            newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
+            day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
+            AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+            AlbumPos123Button[0].SetActive(true);
+
+            imageBytes = newImage.EncodeToPNG();
+
+
+
+            postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
+
+
+            StartCoroutine(PostPhotoEvent(apiUrl, postpic));
+
+            Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
+            return;
+        }
+
+        title = Albumlist[nowIndex + 1].title;
+        content = Albumlist[nowIndex + 1].content;
+        day = Albumlist[nowIndex + 1].day;
+        newImage = Albumlist[nowIndex + 1].sprite;
+
+        AlbumPos123[2].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[2].SetActive(true);
+
+        title = picUploadingUI.transform.GetChild(0).GetComponent<TMP_InputField>().text;
+        content = picUploadingUI.transform.GetChild(1).GetComponent<TMP_InputField>().text;
+        newImage = picUploadingUI.transform.GetChild(2).GetChild(0).GetComponent<GalleryAccess>().texture;
+        day = picUploadingUI.transform.GetChild(3).GetComponent<TMP_InputField>().text;
+        AlbumPos123[0].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
+        AlbumPos123Button[0].SetActive(true);
+
+
+
+        imageBytes = newImage.EncodeToPNG();
+
+
+        postpic = new PostPhoto_album { title = title, content = content, photoDate = day, photo = imageBytes };
+
+
+        StartCoroutine(PostPhotoEvent(apiUrl, postpic));
+
+
+        Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
     }
-    private void OnDisable()
-    {
-        //PhotonNetwork.NetworkingClient.RemoveCallbackTarget(this); // 델리게이트 방식
-        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
-    }
+
+    //private void OnEnable()
+    //{
+    //    //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
+    //    PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    //}
+
+    //public void OnEvent(EventData photonEvent)
+    //{
+    //    if (photonEvent.Code == 2)
+    //    {
+    //        //
+    //    }
+    //}
+    //private void OnDisable()
+    //{
+    //    //PhotonNetwork.NetworkingClient.RemoveCallbackTarget(this); // 델리게이트 방식
+    //    PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    //}
 
 
     IEnumerator PostPhotoEvent(string url, PostPhoto_album photoAlbum)
@@ -689,11 +691,12 @@ public class AlbumManager : MonoBehaviourPun, IOnEventCallback
     public void GetRoomStatus()
     {
         StartCoroutine(GetPhotoStatusCoroutine());
-        print("dsadsa");
+
     }
 
     private IEnumerator GetPhotoStatusCoroutine()
     {
+        Albumlist.Clear();
         using (UnityWebRequest request = UnityWebRequest.Get(apiUrl))
         {
 

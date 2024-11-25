@@ -12,12 +12,19 @@ public class JSW_Click3D : MonoBehaviour
     GameObject Object1_3D;
     public bool isPlayerInRange = false;
     public GameObject Delete_3D_UI;
+    public Vector3 RawScale;
+    public GameObject sunBan;
+
 
     // Start is called before the first frame update
     // Trigger 넣자
     void Awake()
     {
         cameraControllTest = GameObject.Find("PlayerPos").GetComponent<JSW_CameraControllTest>();
+    }
+    private void Start()
+    {
+        RawScale = sunBan.transform.localScale;
     }
 
     private void OnMouseDown()
@@ -61,6 +68,13 @@ public class JSW_Click3D : MonoBehaviour
         {
             isPlayerInRange = true;
             //checkID = other.GetComponent<CheckID>();
+            iTween.ScaleTo(sunBan, iTween.Hash(
+            "scale", RawScale * 1.3f,        // 목표 스케일 (1, 1, 1)
+            "time", 0.3f,                // 애니메이션 시간 (조정 가능)
+            "easeType", "easeInCirc", // 통통 튀는 느낌의 easeType
+            "oncomplete", "OnCompleteOpening", // 애니메이션 완료 시 호출할 함수
+            "oncompletetarget", gameObject
+             ));
         }
     }
 
@@ -75,6 +89,15 @@ public class JSW_Click3D : MonoBehaviour
             //    checkID = null;
             //}
             //추후 끄는 버튼 생성
+            iTween.ScaleTo(sunBan, iTween.Hash(
+            "scale", RawScale,        // 목표 스케일 (1, 1, 1)
+            "time", 0.3f,                // 애니메이션 시간 (조정 가능)
+            "easeType", "easeInCirc", // 통통 튀는 느낌의 easeType
+            "oncomplete", "OnCompleteOpening", // 애니메이션 완료 시 호출할 함수
+            "oncompletetarget", gameObject
+             ));
+            cameraControllTest.ResetCamera();
+            Delete_3D_UI.SetActive(false);
         }
     }
 }
