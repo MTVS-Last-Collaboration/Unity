@@ -71,7 +71,7 @@ public class Board : MonoBehaviour
         {
             isLoading = true;
             currentLoadingTask = new TaskCompletionSource<bool>();
-            Debug.Log($"크아악 Loading topic for date: {_date:yyyy-MM-dd}");
+            //Debug.Log($"크아악 Loading topic for date: {_date:yyyy-MM-dd}");
 
             // 보드 초기화는 한 번만 수행
             ClearBoard();
@@ -95,7 +95,7 @@ public class Board : MonoBehaviour
             if (success)
             {
                 topicText.text = topicManager.currentContent;
-                Debug.Log($"[Board] Topic loaded: {topicManager.currentContent}");
+                //Debug.Log($"[Board] Topic loaded: {topicManager.currentContent}");
 
                 // 포스트 로딩
                 bool postsLoaded = await LoadPosts(topicManager.currentId);
@@ -161,7 +161,7 @@ public class Board : MonoBehaviour
 
     private void ClearBoard()
     {
-        Debug.Log("[Board] Clearing board");
+        //Debug.Log("[Board] Clearing board");
         posts?.Clear();
 
         if (postListContent != null)

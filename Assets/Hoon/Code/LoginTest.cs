@@ -238,7 +238,7 @@ public class LoginTest : MonoBehaviour
             myToken = accessToken; //토큰저장변수
             //print("내토큰보기" + myToken);
             PlayerPrefs.SetString("token", myToken); //플레이어 프리펩에 토큰저장
-            LoginInfoManager.instance.myToken = myToken; ; //로그인인포에 토큰저장
+            LoginInfoManager.instance.myToken = myToken;  //로그인인포에 토큰저장
             //print("플레이어 프리팹 내토큰" + PlayerPrefs.GetString("token"));
             //Access Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmNAbmF2ZXIuY29tIiwidHlwZSI6ImFjY2VzcyIsInVzZXJJZCI6Mywibmlja25hbWUiOiLtlZzqta3rjIDsnqUiLCJhdXRoIjoiVVNFUiIsImNvdXBsZUlkIjozLCJpYXQiOjvE3MzA3MDgzODQsImV4cCI6MTczMDcxMTk4NH0.gpZys92FhA63oRm_Qxu_7O5oK-GLnUWrv7trmJzrick
 
@@ -410,7 +410,6 @@ public class LoginTest : MonoBehaviour
         loginImage.SetActive(false);
 
     }
-
 
     public void LocalRegistJson()
     {
