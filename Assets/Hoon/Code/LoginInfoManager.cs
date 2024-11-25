@@ -14,6 +14,7 @@ public class LoginInfoManager : MonoBehaviour
     public string avataChoice;
     public TMP_InputField inputField_NickName;
     public string nickName;
+    public string partnerNickName;
     public TextMeshProUGUI dataPath;
     public string coupleCode;
     public string coupleDay;
