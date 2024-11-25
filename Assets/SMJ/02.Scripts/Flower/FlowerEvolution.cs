@@ -4,10 +4,14 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using Unity.VisualScripting;
 
 public class FlowerEvolution : MonoBehaviourPun
 {
+    [System.Serializable]
+    private class ResponseData
+    {
+        public int moodCount;
+    }
     private Flower flower;
     public GameObject[] flowers = new GameObject[3];
     [SerializeField] private const int sproutEvolCount = 1; //10
@@ -85,59 +89,56 @@ public class FlowerEvolution : MonoBehaviourPun
 
     public void CheckEvolutionCount(bool isFirst)
     {
-        Flower.States newState = flower.curState;
-
-        if (isFirst == true)
+        if (isFirst)
         {
+            // 최초 로딩 시에는 즉시 해당 상태로 변경
             if (flower.evolutionCount >= blossomEvolCount)
             {
-                newState = Flower.States.BLOSSOM;
-                StartEvolution(newState, true);
+                StartEvolution(Flower.States.BLOSSOM, true);
             }
             else if (flower.evolutionCount >= budEvolCount)
             {
-                newState = Flower.States.BUD;
-                StartEvolution(newState, true);
+                StartEvolution(Flower.States.BUD, true);
             }
             else if (flower.evolutionCount >= sproutEvolCount)
             {
-                newState = Flower.States.SPROUT;
-                StartEvolution(newState, true);
+                StartEvolution(Flower.States.SPROUT, true);
             }
         }
         else
         {
-            // 시연 연출용
-            if (flower.evolutionCount >= sproutEvolCount)
-            {
-                if (newState == Flower.States.SEED)
-                {
-                    newState = Flower.States.SPROUT;
-                    StartEvolution(newState, false);
-                }
-                if (flower.evolutionCount >= budEvolCount)
-                {
-                    if (newState == Flower.States.SPROUT)
-                    {
-                        newState = Flower.States.BUD;
-                        StartEvolution(newState, false);
-                    }
-                    if (flower.evolutionCount >= blossomEvolCount)
-                    {
-                        newState = Flower.States.BLOSSOM;
-                        StartEvolution(newState, false);
-                    }
-                }
-            }
+            // 순차적 진화를 위한 코루틴 시작
+            StartCoroutine(SequentialEvolution());
         }
-        
+    }
 
-        
+    private IEnumerator SequentialEvolution()
+    {
+        // SEED에서 시작
+        if (flower.curState == Flower.States.SEED && flower.evolutionCount >= sproutEvolCount)
+        {
+            StartEvolution(Flower.States.SPROUT, false);
+            yield return new WaitForSeconds(2f); // 진화 애니메이션 + 대기 시간
+        }
+
+        // SPROUT 진화
+        if (flower.curState == Flower.States.SPROUT && flower.evolutionCount >= budEvolCount)
+        {
+            StartEvolution(Flower.States.BUD, false);
+            yield return new WaitForSeconds(2f);
+        }
+
+        // BUD 진화
+        if (flower.curState == Flower.States.BUD && flower.evolutionCount >= blossomEvolCount)
+        {
+            StartEvolution(Flower.States.BLOSSOM, false);
+            yield return new WaitForSeconds(2f);
+        }
     }
 
     private void StartEvolution(Flower.States newState, bool isFirst)
     {
-        // 모든 클라이언트에서 진화 상태 동기화
+        flower.curState = newState; // 현재 상태 즉시 업데이트
         photonView.RPC("RPC_SyncFlowerState", RpcTarget.All, newState);
         StartCoroutine(EvolutionAnimation(newState, isFirst));
     }
@@ -146,7 +147,7 @@ public class FlowerEvolution : MonoBehaviourPun
     {
         StartCoroutine(PostNewSeed(() => {
             StartEvolution(Flower.States.SEED, false);
-            points.AddPoints(10);
+            points.AddPoints(0);
             //추후 코인 연출
         }));
     }
@@ -159,8 +160,19 @@ public class FlowerEvolution : MonoBehaviourPun
             {
                 if (success)
                 {
-                    Debug.Log("New seed successfully updated");
-                    onComplete?.Invoke();
+                    try
+                    {
+                        // JSON 파싱
+                        ResponseData data = JsonUtility.FromJson<ResponseData>(response);
+                        GetComponent<FlowerUIManager>().recordCount = data.moodCount;
+
+                        Debug.Log($"Mood count updated: {data.moodCount}");
+                        onComplete?.Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Failed to parse response: {e.Message}");
+                    }
                 }
                 else
                 {
@@ -171,20 +183,26 @@ public class FlowerEvolution : MonoBehaviourPun
 
     IEnumerator EvolutionAnimation(Flower.States state, bool isFirst)
     {
-        // 사운드 재생
-        // 최초 씬이 시작될때는 무시
-        if (isFirst == false)
+        // 최초 씬이 시작될 때가 아닐 때만 사운드와 이펙트 재생
+        if (!isFirst)
         {
+            // 사운드 재생
             sound.PlaySound("smjAudioClopAttay", 3);
+
+            // 진화 이펙트 재생
+            if (evolutionEffect != null)
+            {
+                // 기존 이펙트 정지 및 초기화
+                evolutionEffect.Stop();
+                evolutionEffect.Clear();
+
+                // 이펙트 재시작
+                evolutionEffect.Play();
+            }
+
+            //연출 대기
+            yield return new WaitForSeconds(1f);
         }
-        
-        // 진화 이펙트 재생
-        if (evolutionEffect != null)
-        {
-            evolutionEffect.Play();
-        }
-        //연출 대기
-        yield return new WaitForSeconds(1f);
 
         // 진화 완료 후 UI 업데이트
         FlowerUIManager uiManager = GetComponent<FlowerUIManager>();

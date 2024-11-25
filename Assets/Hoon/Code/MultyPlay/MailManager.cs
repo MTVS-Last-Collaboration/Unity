@@ -173,7 +173,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         jsonSyncPath = Application.persistentDataPath + "/DayComentTest.json";
         if (System.IO.File.Exists(jsonSyncPath))
         {
-            print("findLocalJsonFile");
+            //print("findLocalJsonFile");
         }
         else
         {
@@ -225,7 +225,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
             else
             {
-                Debug.LogError("myobject" + imgMoodChoiceBlackBg);
+                //Debug.LogError("myobject" + imgMoodChoiceBlackBg);
             }
 
             mail_ImageObject.SetActive(false); //offImgMailUIObject
@@ -640,7 +640,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void NewCheckHistory()
     {
-        print("Check LocalHistory");
+        //print("Check LocalHistory");
         string path = Application.persistentDataPath + "/DayComentTest.json"; // JSON 파일 경로
 
         if (System.IO.File.Exists(path))
@@ -904,10 +904,10 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         // ���� ��¥�� yyyy-MM-dd ������ ���ڿ��� ��ȯ
         startDate = "2024-10-28";
-        Debug.Log("coupleAnivarsary: " + startDate);
+        //Debug.Log("coupleAnivarsary: " + startDate);
 
         currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-        Debug.Log("todayDate: " + currentDate);
+        //Debug.Log("todayDate: " + currentDate);
         // ���ڿ��� DateTime �������� ��ȯ
         DateTime startDay = DateTime.Parse(startDate);
         // ���� ��¥ ��������
@@ -937,7 +937,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                 if (ComentData.date == currentDate) //find MatchDate
                 {
-                    print("Find Match Date");
+                    //print("Find Match Date");
                     isCurrentDateMatch = true;
                     break;
                 }
@@ -1474,7 +1474,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     }
 
-   
     IEnumerator PostDayComentQuaryParameter(string url)
     {
         print("서버에 요청시작");
@@ -2187,7 +2186,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         if (!player1 && !player2)//���ڿ��� �Ѵپ���
         {
             //Debug.LogError("�÷��̾� ����");
-            print("�÷��̾� ����");
+            //print("�÷��̾� ����");
         }
 
         //�����ư����
