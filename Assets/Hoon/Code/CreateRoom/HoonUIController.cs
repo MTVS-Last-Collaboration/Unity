@@ -89,7 +89,8 @@ public class HoonUIController : MonoBehaviour
 
             }
         }
-        else if(obj.name == "GetRoomMark")
+        
+        if(obj.name == "GetRoomMark")
         {
             isGetMarkObject = !isGetMarkObject;
             if (isGetMarkObject)
