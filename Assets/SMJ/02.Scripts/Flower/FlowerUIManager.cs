@@ -64,6 +64,8 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     public bool isSuccess = false;
 
     [SerializeField] private GameObject loadingObj;
+    [SerializeField] private CoinCollectionEffect coinEffect;
+    [SerializeField] private GameObject coinStartVecObj;
 
     void Awake()
     {
@@ -88,7 +90,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         click = GetComponent<ClickFlower>();
         uiPopup = GetComponent<UIPopupAnimation>();
         uiPopup.SetTarget(uiPanel.GetComponent<RectTransform>());
-
+        coinEffect.GetComponent<CoinCollectionEffect>();
         hoonUI = GameObject.Find("HoonLoobyCanvas");
         InitializeComponents();
         if (photonView.IsMine)
@@ -1383,6 +1385,16 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
         flower.ResetFlower();
         OnCloseButtonClick();
+        StartCoroutine(Delay(0.5f));
+    }
+
+    IEnumerator Delay(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        //Vector3 worldPosition = coinStartVecObj.transform.position;
+        Vector3 worldPosition = gameObject.transform.position;
+        coinEffect.PlayCoinEffect(worldPosition);
+        sound.PlaySound("smjAudioClopAttay", 4);
     }
 
     [PunRPC]

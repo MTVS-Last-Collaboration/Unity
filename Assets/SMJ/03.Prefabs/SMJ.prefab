@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7b876471a03774eb79b00fcb79df88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: {fileID: 0}
 --- !u!1 &62527349513393235
 GameObject:
   m_ObjectHideFlags: 0
@@ -2429,6 +2430,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: aaa42b52cf6b61f459ce6d7b2ee189f7, type: 3}
   - {fileID: 8300000, guid: a8e35bfad6981954fbbc7b6ea4b985ed, type: 3}
   - {fileID: 8300000, guid: dc2ccfc34c494df49aeda8d3b957be67, type: 3}
+  - {fileID: 8300000, guid: 02ceccbe7d8f6ec44a8c17748027a58f, type: 3}
 --- !u!82 &4786701379766238504
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16999,6 +17001,7 @@ GameObject:
   - component: {fileID: 4368723476450875808}
   - component: {fileID: 5367097247313097509}
   - component: {fileID: 839562433568580623}
+  - component: {fileID: 1639061468321508280}
   m_Layer: 15
   m_Name: Flower_0
   m_TagString: Flower
@@ -17158,6 +17161,8 @@ MonoBehaviour:
   successPanel: {fileID: 7777636432701422643}
   isSuccess: 0
   loadingObj: {fileID: 9123685995393350674}
+  coinEffect: {fileID: 1639061468321508280}
+  coinStartVecObj: {fileID: 0}
 --- !u!114 &6199684215589895039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17340,6 +17345,27 @@ MonoBehaviour:
   popupTime: 0.4
   overshootScale: 1.2
   settleTime: 0.5
+--- !u!114 &1639061468321508280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3686684361784684261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6020bd2825cce9b449904f3a7a4b59c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 0}
+  targetUI: {fileID: 0}
+  canvas: {fileID: 0}
+  coinCount: 10
+  spreadRadius: 100
+  moveDelay: 0.1
+  scaleTime: 0.2
+  moveTime: 0.5
+  fadeTime: 0.3
 --- !u!1 &3723476523048264463
 GameObject:
   m_ObjectHideFlags: 0
@@ -38951,6 +38977,7 @@ GameObject:
   - component: {fileID: 4973103783756715180}
   - component: {fileID: 4705553895710190595}
   - component: {fileID: 2108952428245807850}
+  - component: {fileID: 8001152637237448715}
   m_Layer: 15
   m_Name: Flower_1
   m_TagString: Flower
@@ -39110,6 +39137,8 @@ MonoBehaviour:
   successPanel: {fileID: 8045898665793893812}
   isSuccess: 0
   loadingObj: {fileID: 1736886526301507896}
+  coinEffect: {fileID: 8001152637237448715}
+  coinStartVecObj: {fileID: 0}
 --- !u!114 &2288378785039965616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39292,6 +39321,27 @@ MonoBehaviour:
   popupTime: 0.4
   overshootScale: 1.2
   settleTime: 0.5
+--- !u!114 &8001152637237448715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042256914650423115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6020bd2825cce9b449904f3a7a4b59c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 0}
+  targetUI: {fileID: 0}
+  canvas: {fileID: 0}
+  coinCount: 10
+  spreadRadius: 100
+  moveDelay: 0.1
+  scaleTime: 0.2
+  moveTime: 0.5
+  fadeTime: 0.3
 --- !u!1 &9090177292323110412
 GameObject:
   m_ObjectHideFlags: 0

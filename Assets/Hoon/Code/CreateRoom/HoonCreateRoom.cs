@@ -14,6 +14,7 @@ using static System.Net.WebRequestMethods;
 
 public class HoonCreateRoom : MonoBehaviour
 {
+    //캐싱데이터
     public GameObject imgMyStorageMenuObject;
     public GameObject imgGetRoomObject;
     public GameObject imgShowRoomListObject;
@@ -23,16 +24,20 @@ public class HoonCreateRoom : MonoBehaviour
     public OnMoveTrigger onMoveTrigger;
     public Transform colloectionContent;
     public GameObject btn_MyCollection; //생성할 버튼 프리팹
+    public GameObject[] presetRoomArray;
+
     List<RoomData> collectionRoomList;
     bool isCreateCollectionStart = false;
     bool isApplyRoom = false;
 
+
     //변화되는정보
     public string myToken;
-    public int presetIndex = 0;
+    public int checkCollectionMarkCount = 0;
+    public int checkPresetMarkCount = 0;
+   
     public int collectionIndex = 0;
-    public int checkCollectionMarkCount = 0; 
-
+    public int presetIndex = 0;
     void Start()
     {
         ViewCollectionRoom();
@@ -547,7 +552,13 @@ public class HoonCreateRoom : MonoBehaviour
             {
                 // 결과 출력: GetPresetList[0]
                 Debug.Log(JsonConvert.SerializeObject(presets[i], Formatting.Indented));
+                presetRoomArray[i].GetComponent<HoonCheckPresetRoom>().presetIndex = presets[i].presetId;
+                print("저장된 presetIndex" + presets[i].presetId);
+
             }
+
+
+
         }
 
     }
