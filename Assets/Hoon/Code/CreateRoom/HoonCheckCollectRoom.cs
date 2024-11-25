@@ -1,7 +1,7 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 public class HoonCheckCollectRoom : MonoBehaviour
 {
@@ -56,4 +56,4 @@ public class HoonCheckCollectRoom : MonoBehaviour
     
     
 
-}
+}//클래스 끝
