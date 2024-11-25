@@ -63,6 +63,8 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     public bool isSuccess = false;
 
+    [SerializeField] private GameObject loadingObj;
+
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -843,6 +845,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
         OffPanel();
         recordButtons[2].SetActive(false);
+        loadingObj.SetActive(true);
         StartCoroutine(ValidateAndTransferVoice());
     }
     private IEnumerator WaitForConnectionAndSendVoice(byte[] voiceData)
@@ -892,6 +895,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                 {
                     if (success)
                     {
+                        loadingObj.SetActive(false);
                         try
                         {
                             var validationResponse = JsonUtility.FromJson<VoiceValidationResponse>(response);
@@ -967,7 +971,6 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         }
     }
 
-    [SerializeField] private TMP_Text progressText;
     private IEnumerator SendVoiceDataInChunks(byte[] voiceData)
     {
         const int CHUNK_SIZE = 16384; // 16KB
@@ -1368,6 +1371,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     {
         recordCount = 0;
         isSuccess = false;
+        successPanel.SetActive(false);
         sound.PlaySound("smjAudioClopAttay", 0);
         if (!click.checkID.IsMine(flower)) return;
 

@@ -45,7 +45,7 @@ public class HoonPointInfo : MonoBehaviour
         StartCoroutine(GetEvents());
     }
 
-    IEnumerator GetEvents()
+    public IEnumerator GetEvents()
     {
         // UnityWebRequest를 사용하여 GET 요청 전송
         using (UnityWebRequest request = UnityWebRequest.Get(apiUrl))
@@ -70,7 +70,7 @@ public class HoonPointInfo : MonoBehaviour
                 //decoShopManager.point = Points;
 
                 textPrice.text = Points.ToString(); //포인트를 문자열로 변경하여 표시
-                //Debug.LogError("커플포인트" + Points.ToString());
+                Debug.LogError("커플포인트" + Points.ToString());
 
                 // JSON 데이터 파싱
                 //ProcessEvents(request.downloadHandler.text);

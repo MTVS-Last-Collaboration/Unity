@@ -6,29 +6,40 @@ using UnityEngine.Networking;
 using WebSocketSharp;
 using Newtonsoft.Json.Linq;
 using static ChatTestHttp;
+using TMPro;
 
 
 
 public class ChatTestHttp : MonoBehaviour
 {
+    [SerializeField] private HoonPointInfo info;
+    private void Start()
+    {
+        if (GameObject.Find("HoonLoobyCanvas") != null)
+        {
+            info = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonPointInfo>();
+        }
+    }
     public void AddPoints(int points)
     {
         ItemIDs itemids = new ItemIDs
         {
             itemId = 3
         };
-
+        print("포인트 : " + points);
         StartCoroutine(PostAddPoints(points));
+        
     }
 
     public class ItemIDs
     {
         public int itemId;
     }
-
+    int temp = 0;
     // Coroutine을 통해 POST 요청을 수행
     private IEnumerator PostAddPoints(int points)
     {
+        
         // 요청 URL 설정 (서버의 URL로 변경해야 합니다)
         string url = "http://125.132.216.190:12223/api/couple/add-points";
         //string url = "http://125.132.216.190:12223/api/shop/purchase";
@@ -51,6 +62,7 @@ public class ChatTestHttp : MonoBehaviour
         // 응답 처리
         if (request.result == UnityWebRequest.Result.Success)
         {
+            yield return StartCoroutine(info.GetEvents());
             Debug.Log("포인트가 성공적으로 추가되었습니다: " + request.downloadHandler.text);
         }
         else
