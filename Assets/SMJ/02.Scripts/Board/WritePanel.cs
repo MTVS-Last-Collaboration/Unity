@@ -49,22 +49,30 @@ public class WritePanel : MonoBehaviour
     // 글쓰기 완료
     private void OnSubmit()
     {
-        
         // 입력값 검증
         if (string.IsNullOrEmpty(contentInput.text))
         {
             Debug.Log("내용을 입력해주세요.");
             return;
         }
-        
+
         Debug.Log($"닉네임: {LoginInfoManager.instance.nickName}, 제목: {titleInput.text}, 내용: {contentInput.text}");
-        
+
         string nickName = LoginInfoManager.instance.nickName;
-
         // 게시판에 글 추가
-        board.CreatePost(board.lastId + 1, nickName, titleInput.text, contentInput.text, DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 0);
+        board.CreatePost(board.lastId + 1, nickName, titleInput.text, contentInput.text, DateTime.Now.ToString("MM-dd"), 0);
 
-        CreatePostAnswer(PlayerPrefs.GetInt("dailyTopicId"), titleInput.text, contentInput.text);
+        // TopicManager에서 오늘의 토픽 ID를 가져옴
+        int todayTopicId = TopicManager.GetTodayTopicId();
+        if (todayTopicId != -1)
+        {
+            CreatePostAnswer(todayTopicId, titleInput.text, contentInput.text);
+        }
+        else
+        {
+            Debug.LogError("Today's topic ID not found!");
+        }
+
         Hide();
     }
 
