@@ -70,6 +70,10 @@ public class LoginTest : MonoBehaviour
     {
         public string coupleCode;
     }
+    public class PartnerNickName
+    {
+        public string partnerNickName;
+    }
 
     public class MyInfoResponse
     {
@@ -223,13 +227,15 @@ public class LoginTest : MonoBehaviour
         else //연결이 잘되면.
         {
             string responseText = request.downloadHandler.text;
-            //print("서버 응답: " + responseText);
+            print("서버 응답: " + responseText);
             myCoupleCodeJson = responseText;
             //print("커플코드json" + myCoupleCodeJson);
             CoupleCode  cc = JsonConvert.DeserializeObject<CoupleCode>(responseText); //json을 문자열로 파싱하기.
             myCoupleCode = cc.coupleCode; //정보 넣기
             print("커플코드 " + myCoupleCode); //커플코드출력
             LoginInfoManager.instance.coupleCode = myCoupleCode;
+            PartnerNickName pnn = JsonConvert.DeserializeObject<PartnerNickName>(responseText);
+            LoginInfoManager.instance.partnerNickName = pnn.partnerNickName;
             //print("로그인인포 매니저 커플코드 " + LoginInfoManager.instance.coupleCode);
 
             string authHeader = request.GetResponseHeader("authorization");

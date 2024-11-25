@@ -2192,10 +2192,14 @@ MonoBehaviour:
   onMoveTrigger: {fileID: 1151646544}
   colloectionContent: {fileID: 866548045}
   btn_MyCollection: {fileID: 892348653}
+  presetRoomArray:
+  - {fileID: 1055393385}
+  - {fileID: 1540599967}
+  - {fileID: 763985184}
   myToken: 
-  presetIndex: 0
-  collectionIndex: 0
   checkCollectionMarkCount: 0
+  collectionIndex: 0
+  presetIndex: 0
 --- !u!114 &62636650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3975,9 +3979,9 @@ RectTransform:
   m_Father: {fileID: 792021970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &113976774
 MonoBehaviour:
@@ -11609,7 +11613,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &345459881
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15530,7 +15534,7 @@ GameObject:
   - component: {fileID: 462164312}
   - component: {fileID: 462164311}
   m_Layer: 5
-  m_Name: Btn_MoveRoom (1)
+  m_Name: Btn_AddCollection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26997,7 +27001,7 @@ GameObject:
   - component: {fileID: 730690138}
   - component: {fileID: 730690137}
   m_Layer: 5
-  m_Name: GetRoomMark
+  m_Name: GetRoomMark1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27749,6 +27753,7 @@ GameObject:
   - component: {fileID: 763985188}
   - component: {fileID: 763985187}
   - component: {fileID: 763985186}
+  - component: {fileID: 763985189}
   m_Layer: 5
   m_Name: Btn_GetRoomForm2
   m_TagString: Untagged
@@ -27821,9 +27826,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62636648}
-        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
-        m_MethodName: ViewMarkObejct
+      - m_Target: {fileID: 763985189}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckPresetNumber
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 763985189}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckRoomMarker
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 785558817}
@@ -27871,6 +27888,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763985184}
   m_CullTransparentMesh: 1
+--- !u!114 &763985189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763985184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a0e87811fd9a14c9fe83657ebe51c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  presetIndex: 0
+  roomMarker: {fileID: 785558817}
+  hoonCreateRoom: {fileID: 62636649}
 --- !u!1 &764028971
 GameObject:
   m_ObjectHideFlags: 0
@@ -28350,7 +28382,7 @@ GameObject:
   - component: {fileID: 785558820}
   - component: {fileID: 785558819}
   m_Layer: 5
-  m_Name: GetRoomMark
+  m_Name: GetRoomMark2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33360,7 +33392,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 480}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &958014838
 MonoBehaviour:
@@ -35721,6 +35753,7 @@ GameObject:
   - component: {fileID: 1055393389}
   - component: {fileID: 1055393388}
   - component: {fileID: 1055393387}
+  - component: {fileID: 1055393390}
   m_Layer: 5
   m_Name: Btn_GetRoomForm0
   m_TagString: Untagged
@@ -35793,9 +35826,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62636648}
-        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
-        m_MethodName: ViewMarkObejct
+      - m_Target: {fileID: 1055393390}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckPresetNumber
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1055393390}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckRoomMarker
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1745569703}
@@ -35843,6 +35888,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055393385}
   m_CullTransparentMesh: 1
+--- !u!114 &1055393390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055393385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a0e87811fd9a14c9fe83657ebe51c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  presetIndex: 0
+  roomMarker: {fileID: 1745569703}
+  hoonCreateRoom: {fileID: 62636649}
 --- !u!1 &1057841109
 GameObject:
   m_ObjectHideFlags: 0
@@ -36510,7 +36570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1076873743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -50994,6 +51054,7 @@ GameObject:
   - component: {fileID: 1540599971}
   - component: {fileID: 1540599970}
   - component: {fileID: 1540599969}
+  - component: {fileID: 1540599972}
   m_Layer: 5
   m_Name: Btn_GetRoomForm1
   m_TagString: Untagged
@@ -51066,9 +51127,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62636648}
-        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
-        m_MethodName: ViewMarkObejct
+      - m_Target: {fileID: 1540599972}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckPresetNumber
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1540599972}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckRoomMarker
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 730690135}
@@ -51116,6 +51189,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540599967}
   m_CullTransparentMesh: 1
+--- !u!114 &1540599972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540599967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a0e87811fd9a14c9fe83657ebe51c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  presetIndex: 0
+  roomMarker: {fileID: 730690135}
+  hoonCreateRoom: {fileID: 62636649}
 --- !u!1 &1541036575
 GameObject:
   m_ObjectHideFlags: 0
@@ -51592,10 +51680,10 @@ RectTransform:
   - {fileID: 461450224}
   m_Father: {fileID: 958014837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1191.5, y: -200}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1555402728
 MonoBehaviour:
@@ -57074,7 +57162,7 @@ GameObject:
   - component: {fileID: 1745569706}
   - component: {fileID: 1745569705}
   m_Layer: 5
-  m_Name: GetRoomMark
+  m_Name: GetRoomMark0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61973,7 +62061,7 @@ RectTransform:
   m_Father: {fileID: 424129069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -63553,7 +63641,7 @@ GameObject:
   - component: {fileID: 1976271958}
   - component: {fileID: 1976271957}
   m_Layer: 5
-  m_Name: Text_MoveRoom
+  m_Name: Text_AddCollection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65117,10 +65205,10 @@ RectTransform:
   - {fileID: 561635097}
   m_Father: {fileID: 958014837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 291.5, y: -200}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2015854236
 MonoBehaviour:
@@ -66054,10 +66142,10 @@ RectTransform:
   - {fileID: 1793765190}
   m_Father: {fileID: 958014837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 741.5, y: -200}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2046912155
 MonoBehaviour:
