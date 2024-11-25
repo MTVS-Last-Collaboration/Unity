@@ -140,7 +140,7 @@ public class TopicManager : MonoBehaviour
     private bool isClickTopicBanner = false;
 
     private const string TODAY_TOPIC_ID_KEY = "todayTopicId";
-
+    private HoonSoundManagerLogin sound;
     private void OnEnable()
     {
         if (topicBannerButton != null)
@@ -149,6 +149,7 @@ public class TopicManager : MonoBehaviour
 
     private void Start()
     {
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         StartCoroutine(GetWeeklyTopics());
     }
 
@@ -257,11 +258,13 @@ public class TopicManager : MonoBehaviour
     {
         if (isClickTopicBanner == false)
         {
+            sound.PlaySound("smjAudioClopAttay", 0);
             isClickTopicBanner = true;
             topicBannerObj.SetActive(true);
         }
         else
         {
+            sound.PlaySound("smjAudioClopAttay", 1);
             isClickTopicBanner = false;
             topicBannerObj.SetActive(false);
         }

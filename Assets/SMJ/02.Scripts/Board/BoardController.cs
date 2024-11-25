@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,8 +18,10 @@ public class BoardController : MonoBehaviour
     [SerializeField] private Button sortLikeButton;// 인기순 정렬 버튼
     [SerializeField] private Button exitBoardButton;// 게시판 종료 버튼
 
+    private HoonSoundManagerLogin sound;
     private void Start()
     {
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         InitializeButtons();
     }
 
@@ -31,12 +34,14 @@ public class BoardController : MonoBehaviour
 
     public void OnClickExitBoard()
     {
+        sound.PlaySound("smjAudioClopAttay", 1);
         clickBoard.ExitBoard();
     }
 
     // 글쓰기 버튼 클릭
     public void OnWriteButtonClick()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         writePanel.Show();
     }
 

@@ -20,11 +20,12 @@ public class CommentItem : MonoBehaviour
     [SerializeField] private TMP_Text dateText;
     [SerializeField] private TMP_Text likeCountText;
     [SerializeField] private Button likeButton;
-
+    private HoonSoundManagerLogin sound;
     private CommentData data;
     private bool isClickLike = false;
     private void Start()
     {
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
     }
     public void Initialize(CommentData commentData)
@@ -66,6 +67,7 @@ public class CommentItem : MonoBehaviour
             likeButton.interactable = false;
 
         StartCoroutine(CommentLike(data.id, () => {
+            sound.PlaySound("smjAudioClopAttay", 0);
             data.AddLike();
             isClickLike = true;
             UpdateLikeUI();
@@ -96,6 +98,7 @@ public class CommentItem : MonoBehaviour
                     {
                         Debug.Log("Already liked comment, trying to unlike");
                         StartCoroutine(CommentLikeCancel(commentId, () => {
+                            sound.PlaySound("smjAudioClopAttay", 1);
                             data.SubLike();
                             isClickLike = false;
                             UpdateLikeUI();

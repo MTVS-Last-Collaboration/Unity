@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,10 @@ public class CommentController : MonoBehaviour
 
     [Header("UI Buttons")]
     [SerializeField] private Button writeCommentButton;   // 댓글쓰기 버튼
-
+    private HoonSoundManagerLogin sound;
     private void Start()
     {
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         //writeCommentPanel = GameObject.Find("CommentWritePanel").GetComponent<WriteCommentPanel>();
         InitializeButtons();
     }
@@ -27,6 +29,7 @@ public class CommentController : MonoBehaviour
     // 댓글쓰기 버튼 클릭
     public void OnWriteButtonClick()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         writeCommentPanel.OnSubmitComment();
     }
 
