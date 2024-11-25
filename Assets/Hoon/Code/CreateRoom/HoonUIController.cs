@@ -28,12 +28,34 @@ public class HoonUIController : MonoBehaviour
     public GameObject Img_OptionMenuObject;
     public GameObject img_PlayEnd;
 
+    HoonChoiceRoom hoonChiceRoom;
     void Start()
     {
         Img_OptionMenuObject.SetActive(false);
         img_PlayEnd.SetActive(false);
-    }
 
+        // 특정 컴포넌트를 찾기
+        HoonChoiceRoom[] foundComponents = FindObjectsOfType<HoonChoiceRoom>();
+
+        foreach (HoonChoiceRoom component in foundComponents)
+        {
+            // 컴포넌트를 가진 오브젝트
+            GameObject currentObject = component.gameObject;
+
+            // 부모 오브젝트 확인
+            if (currentObject.transform.parent != null)
+            {
+                print($"오브젝트 '{currentObject.name}'의 부모는 '{currentObject.transform.parent.name}'입니다.");
+            }
+            else
+            {
+                print($"오브젝트 '{currentObject.name}'는 부모가 없습니다. (최상위 오브젝트)");
+            }
+
+
+        }
+    }
+    
     // Update is called once per frame
     /* void Update()
      {
@@ -67,7 +89,8 @@ public class HoonUIController : MonoBehaviour
 
             }
         }
-        else if(obj.name == "GetRoomMark")
+        
+        if(obj.name == "GetRoomMark")
         {
             isGetMarkObject = !isGetMarkObject;
             if (isGetMarkObject)

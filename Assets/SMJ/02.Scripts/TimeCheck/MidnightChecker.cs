@@ -63,7 +63,7 @@ public class MidnightChecker : MonoBehaviour
         if (now >= nextAvailableTime)
         {
             canUseFeature = true;
-            Debug.Log("기능 사용 가능!");
+            //Debug.Log("기능 사용 가능!");
         }
     }
     public TimeSpan timeUntilAvailable;

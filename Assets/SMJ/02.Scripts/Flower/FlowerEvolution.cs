@@ -14,15 +14,19 @@ public class FlowerEvolution : MonoBehaviourPun
     }
     private Flower flower;
     public GameObject[] flowers = new GameObject[3];
-    [SerializeField] private const int sproutEvolCount = 1; //10
-    [SerializeField] private const int budEvolCount = 1; //20
-    [SerializeField] private const int blossomEvolCount = 1; //30
+    [SerializeField] private const int sproutEvolCount = 1;     // 10
+    [SerializeField] private const int budEvolCount = 1;        // 20
+    [SerializeField] private const int blossomEvolCount = 1;  // 30
     private ChatTestHttp points;
 
     [SerializeField] private Image flowerImage;
     [SerializeField] private Sprite[] flowerSprite;
-
     [SerializeField] private ParticleSystem evolutionEffect;
+    
+    // 애니메이션 관련 변수 추가
+    [SerializeField] private float animationDuration = 1.0f;
+    [SerializeField] private float startScale = 0.1f;
+    private Vector3 originalScale;
 
     private HoonSoundManagerLogin sound;
 
@@ -31,6 +35,15 @@ public class FlowerEvolution : MonoBehaviourPun
         flower = GetComponent<Flower>();
         points = GameObject.Find("PointsManager").GetComponent<ChatTestHttp>();
         Flower.States newState = flower.curState;
+
+        // 각 꽃의 원래 스케일 저장
+        foreach (GameObject flowerObj in flowers)
+        {
+            if (flowerObj != null)
+            {
+                originalScale = flowerObj.transform.localScale;
+            }
+        }
 
         if (flower.evolutionCount >= blossomEvolCount)
         {
@@ -65,25 +78,41 @@ public class FlowerEvolution : MonoBehaviourPun
             flowerObj.SetActive(false);
         }
 
+        GameObject targetFlower = null;
+
         // 현재 상태에 맞는 꽃 오브젝트만 활성화
         switch (state)
         {
             case Flower.States.SEED:
                 flowerImage.sprite = flowerSprite[0];
-                flowers[0].SetActive(true);
+                targetFlower = flowers[0];
                 break;
             case Flower.States.SPROUT:
                 flowerImage.sprite = flowerSprite[1];
-                flowers[1].SetActive(true);
+                targetFlower = flowers[1];
                 break;
             case Flower.States.BUD:
                 flowerImage.sprite = flowerSprite[2];
-                flowers[2].SetActive(true);
+                targetFlower = flowers[2];
                 break;
             case Flower.States.BLOSSOM:
                 flowerImage.sprite = flowerSprite[3];
-                flowers[3].SetActive(true);
+                targetFlower = flowers[3];
                 break;
+        }
+
+        if (targetFlower != null)
+        {
+            targetFlower.SetActive(true);
+            // 초기 스케일을 작게 설정
+            targetFlower.transform.localScale = originalScale * startScale;
+
+            // iTween으로 스케일 애니메이션 실행
+            iTween.ScaleTo(targetFlower, iTween.Hash(
+                "scale", originalScale,
+                "time", animationDuration,
+                "easetype", iTween.EaseType.easeOutElastic
+            ));
         }
     }
 
@@ -192,16 +221,13 @@ public class FlowerEvolution : MonoBehaviourPun
             // 진화 이펙트 재생
             if (evolutionEffect != null)
             {
-                // 기존 이펙트 정지 및 초기화
                 evolutionEffect.Stop();
                 evolutionEffect.Clear();
-
-                // 이펙트 재시작
                 evolutionEffect.Play();
             }
 
-            //연출 대기
-            yield return new WaitForSeconds(1f);
+            // 연출 대기 (애니메이션 시간만큼)
+            yield return new WaitForSeconds(animationDuration);
         }
 
         // 진화 완료 후 UI 업데이트
