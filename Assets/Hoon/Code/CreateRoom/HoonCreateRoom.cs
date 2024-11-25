@@ -7,14 +7,10 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Linq; // for LINQ operations
 using System.Net.NetworkInformation;
-using UnityEditor;
-using UnityEditor.PackageManager.Requests;
 using static HoonCreateRoom;
 using static JSW_InitRoom;
 using static LoginTest;
 using static System.Net.WebRequestMethods;
-using UnityEditor.Presets;
-using UnityEngine.UIElements;
 
 public class HoonCreateRoom : MonoBehaviour
 {

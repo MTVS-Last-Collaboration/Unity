@@ -11,6 +11,7 @@ public class RoomShareManager : MonoBehaviour
     public GameObject ceiling;
     public Camera RenderingCam;
     public GameObject cri;
+    public string myToken;
 
     void Start()
     {
@@ -93,4 +94,77 @@ public class RoomShareManager : MonoBehaviour
         }
 
     }
+
+    public void OnListMyRoom()
+    {
+        //string jsonData = "";
+        //StartCoroutine(PostShareRoomStart(jsonData));
+        StartCoroutine(PostShareRoomStart());
+    }
+    //
+    IEnumerator PostShareRoomStart()
+    {
+        myToken = LoginInfoManager.instance.myToken;
+        string urlTrue = "http://125.132.216.190:12223/api/rooms/sharing?isShared=true";
+
+        UnityWebRequest request = new UnityWebRequest(urlTrue, "POST");  // HTTP POST 요청 준비
+
+        //byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData); // JSON 데이터를 담아 요청 생성
+        //request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + myToken); //Bearer에 공백 있어야함. 서버로 토큰 발사
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+            //에러403 토큰보내기
+        }
+        else
+        {
+            string responseText = request.downloadHandler.text;
+            Debug.Log("서버응답" + responseText);
+
+        }
+
+    }
+    //방공유설정 그만하기 1-2
+    public void OffListMyRoom()
+    {
+        string jsonData = "";
+        StartCoroutine(PostShareRoomEnd(jsonData));
+    }
+
+    IEnumerator PostShareRoomEnd(string jsonData)
+    {
+        myToken = LoginInfoManager.instance.myToken;
+
+        string urlFalse = "http://125.132.216.190:12223/api/rooms/sharing?isShared=false";
+
+        UnityWebRequest request = new UnityWebRequest(urlFalse, "POST");
+
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + myToken); //Bearer에 공백 있어야함. 서버로 토큰 발
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+            //에러403 토큰보내기
+        }
+        else
+        {
+            string responseText = request.downloadHandler.text;
+            Debug.Log("서버응답" + responseText);
+
+        }
+
+    }
+
+
 }

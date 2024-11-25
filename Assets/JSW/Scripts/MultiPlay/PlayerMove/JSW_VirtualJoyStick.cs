@@ -4,6 +4,7 @@ using Photon.Pun;
 using Photon.Pun.Demo.SlotRacer;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems; //키보드, 마우스 , 터치를 이벤트로 오브젝트에 보낼 수 있는 기능 지원
@@ -127,25 +128,26 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
             {
                 if (buttonInter.isSettingFuniture || locking || playerDecorate.IsCharacterMoving)
                 {
-
                     float x = inputDirection.x;
                     float y = inputDirection.y;
-                    if (x > 0.5f && y > -0.5f && y < 0.5f) //오른쪽
+
+                    print("Inpux " + x + " INputy" + y + "x" + pressX + " y " + pressY);
+                    if (x > 0.1f && y > -0.5f && y < 0.5f) //오른쪽
                     {
                         if (pressX < 0) pressX = 0;
                         pressX += Time.deltaTime;
                     }
-                    else if (x < -0.5 && y > -0.5f && y < 0.5f) //왼쪽
+                    else if (x < -0.1f && y > -0.5f && y < 0.5f) //왼쪽
                     {
                         if (pressX > 0) pressX = 0;
                         pressX -= Time.deltaTime;
                     }
-                    else if (y > 0.5 && x > -0.5f && x < 0.5f) //위
+                    else if (y > 0.1f && x > -0.5f && x < 0.5f) //위
                     {
                         if (pressY < 0) pressY = 0;
                         pressY += Time.deltaTime;
                     }
-                    else if (y < -0.5 && x > -0.5f && x < 0.5f) //아래
+                    else if (y < -0.1f && x > -0.5f && x < 0.5f) //아래
                     {
                         if (pressY > 0) pressY = 0;
                         pressY -= Time.deltaTime;
