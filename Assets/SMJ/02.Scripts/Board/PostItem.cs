@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,13 +34,14 @@ public class PostItem : MonoBehaviour
     [SerializeField] public PostData data;
     private bool isClickLike = false;
     private bool isInitialized = false;
-
+    public int answerId = 0;
     [SerializeField] private GameObject detailPostPanel;
     [SerializeField] private GameObject PostListPanel;
+    private HoonSoundManagerLogin sound;
     public void Initialize(PostData postData)
     {
         data = postData;
-
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         layout = GetComponent<LayoutElement>();
         InitializeButtons();
         UpdateUI();
@@ -62,7 +64,7 @@ public class PostItem : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
-        PostListPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/PostListPanel");
+        PostListPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/PostListPanel/");
     }
 
     private void LoadLikeStatus()
@@ -81,24 +83,19 @@ public class PostItem : MonoBehaviour
         if (likeButton != null)
             likeButton.onClick.AddListener(OnLikeButton);
     }
-
     public void OnToggleCommentPanel()
     {
         detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
-        if (PostListPanel.activeSelf)
-        {
-            PostListPanel.SetActive(false);
-        }
-        else
-        {
-            PostListPanel.SetActive(true);
-        }
+        sound.PlaySound("smjAudioClopAttay", 0);
+        //PostListPanel.SetActive(true);
         if (detailPostPanel != null)
         {
             // CommentBoard 가져오기 및 댓글 표시
             CommentBoard commentBoard = detailPostPanel.GetComponent<CommentBoard>();
             if (commentBoard != null)
             {
+                print(answerId);
+                commentBoard.answerId = answerId;
                 commentBoard.item = gameObject.GetComponent<PostItem>();
                 // DisplayCommentsForAnswer만 호출
                 commentBoard.DisplayCommentsForAnswer(data.answerId);
@@ -209,6 +206,7 @@ public class PostItem : MonoBehaviour
             likeButton.interactable = false;
 
         StartCoroutine(PostLike(data.answerId, () => {
+            sound.PlaySound("smjAudioClopAttay", 0);
             data.AddLike();
             isClickLike = true;
             UpdateLikeUI();
@@ -237,6 +235,7 @@ public class PostItem : MonoBehaviour
                     {
                         Debug.Log("Already liked post, trying to unlike");
                         StartCoroutine(PostLikeCancel(answerId, () => {
+                            sound.PlaySound("smjAudioClopAttay", 1);
                             data.SubLike();
                             isClickLike = false;
                             UpdateLikeUI();

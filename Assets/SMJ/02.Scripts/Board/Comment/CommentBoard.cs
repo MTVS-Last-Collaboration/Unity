@@ -67,7 +67,7 @@ public class CommentBoard : MonoBehaviour
     [SerializeField] private Button recentButton;
     [SerializeField] public PostItem item;
 
-    private int answerId;
+    public int answerId;
     private Board parentBoard;
     private List<CommentData> comments = new List<CommentData>();
     private bool isInitialized = false;
@@ -81,7 +81,7 @@ public class CommentBoard : MonoBehaviour
     public int likeCount = 0;
 
     [SerializeField] public Button likeButton;
-
+    private HoonSoundManagerLogin sound;
     public void Initialize(TopicAnswer answer, Board board)
     {
         Debug.Log($"CommentBoard Initialize - AnswerId: {answer.id}");
@@ -116,7 +116,7 @@ public class CommentBoard : MonoBehaviour
         closeButton.onClick.AddListener(() => Close());
         likeButton.onClick.AddListener(() => LikeClick());
         commentPanel.SetActive(false);
-
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         // NetworkManager 미리 초기화
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
     }
@@ -128,6 +128,7 @@ public class CommentBoard : MonoBehaviour
 
     public void Close()
     {
+        sound.PlaySound("smjAudioClopAttay", 1);
         commentPanel.SetActive(false);
         closeButton.gameObject.SetActive(false);
         recentButton.gameObject.SetActive(true);

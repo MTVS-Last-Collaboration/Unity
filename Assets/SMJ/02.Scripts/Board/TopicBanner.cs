@@ -13,12 +13,12 @@ public class TopicBanner : MonoBehaviour
     private int days;
     private Board board;
     private TopicManager topicManager;
-
+    private HoonSoundManagerLogin sound;
     private void Start()
     {
         board = GameObject.Find("Board").GetComponent<Board>();
         topicManager = GameObject.Find("Board").GetComponent<TopicManager>();
-
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         if (button == null)
             button = GetComponent<Button>();
     }
@@ -33,6 +33,7 @@ public class TopicBanner : MonoBehaviour
     {
         try
         {
+            sound.PlaySound("smjAudioClopAttay", 0);
             topicManager.CloseWeeklyTopics();
             button.interactable = false;
             DateTime now = DateTime.Now.AddDays(-days);
