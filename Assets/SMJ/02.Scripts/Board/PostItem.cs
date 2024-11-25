@@ -33,6 +33,9 @@ public class PostItem : MonoBehaviour
     [SerializeField] public PostData data;
     private bool isClickLike = false;
     private bool isInitialized = false;
+
+    [SerializeField] private GameObject detailPostPanel;
+    [SerializeField] private GameObject PostListPanel;
     public void Initialize(PostData postData)
     {
         data = postData;
@@ -58,7 +61,8 @@ public class PostItem : MonoBehaviour
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(1.0f);
-        GameObject detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
+        detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
+        PostListPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/PostListPanel");
     }
 
     private void LoadLikeStatus()
@@ -80,7 +84,15 @@ public class PostItem : MonoBehaviour
 
     public void OnToggleCommentPanel()
     {
-        GameObject detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
+        detailPostPanel = GameObject.Find("SMJ/Board/Board_Canvas/BoardHandler/DetailPostPanel");
+        if (PostListPanel.activeSelf)
+        {
+            PostListPanel.SetActive(false);
+        }
+        else
+        {
+            PostListPanel.SetActive(true);
+        }
         if (detailPostPanel != null)
         {
             // CommentBoard 가져오기 및 댓글 표시
@@ -100,7 +112,7 @@ public class PostItem : MonoBehaviour
         }
         //bool isOpen = !commentPanel.activeSelf;
         //commentPanel.SetActive(isOpen);
-        //layout.preferredHeight = isOpen ? maxHeight : minHeight;
+        //ayout.preferredHeight = isOpen ? maxHeight : minHeight;
         //verticalLayoutGroup.padding.bottom = isOpen ? maxVertical : minVertical;
     }
     private IEnumerator WaitForNetworkAndShowPanel()

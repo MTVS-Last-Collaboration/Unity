@@ -124,7 +124,7 @@ public class Topic
 public class TopicManager : MonoBehaviour
 {
     private Topic currentTopic;
-
+    private int todayTopicId;
     public string currentContent => currentTopic?.content ?? Topic.GetSavedContent();
     public string currentDate => currentTopic?.date ?? "";
 
@@ -138,6 +138,8 @@ public class TopicManager : MonoBehaviour
     private List<Topic> weeklyTopics = new List<Topic>();  // 주간 토픽 저장 리스트
 
     private bool isClickTopicBanner = false;
+
+    private const string TODAY_TOPIC_ID_KEY = "todayTopicId";
 
     private void OnEnable()
     {
@@ -167,8 +169,19 @@ public class TopicManager : MonoBehaviour
             if (success && result != null)
             {
                 currentTopic = result;
+
+                // 오늘 날짜의 토픽인 경우 todayTopicId 업데이트
+                if (date == DateTime.Now.ToString("yyyy-MM-dd"))
+                {
+                    todayTopicId = result.id;
+                    PlayerPrefs.SetInt(TODAY_TOPIC_ID_KEY, todayTopicId);
+                    PlayerPrefs.SetInt("dailyTopicId", todayTopicId); // WritePanel에서 사용하는 키도 업데이트
+                    PlayerPrefs.Save();
+                    Debug.Log($"Today's topic ID saved: {todayTopicId}");
+                }
+
                 Debug.Log($"Topic set: {JsonUtility.ToJson(currentTopic)}");
-                Topic topic = new Topic(currentId, currentContent, currentDate);
+                Topic topic = new Topic(currentTopic.id, currentContent, currentDate);
                 onComplete?.Invoke(true);
             }
             else
@@ -229,7 +242,7 @@ public class TopicManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError($"Failed to load comments for answer {answer.id}");
+                    //Debug.LogError($"Failed to load comments for answer {answer.id}");
                 }
                 commentsLoaded = true;
             }));
@@ -270,8 +283,31 @@ public class TopicManager : MonoBehaviour
 
         weeklyTopics.Clear();
 
-        // 오늘부터 7일 전까지의 데이터 가져오기
-        for (int i = 0; i < 7; i++)
+        // 오늘 날짜 토픽을 먼저 가져오기
+        string todayDate = DateTime.Now.ToString("yyyy-MM-dd");
+        bool todayRequestComplete = false;
+
+        GetDailyTopic(todayDate, (success) =>
+        {
+            if (success)
+            {
+                Topic topic = new Topic(currentId, currentContent, currentDate);
+                weeklyTopics.Add(topic);
+
+                GameObject bannerObj = Instantiate(topicBannerPrefab, scrollView.content);
+                TopicBanner banner = bannerObj.GetComponent<TopicBanner>();
+                if (banner != null)
+                {
+                    banner.Initialize(topic, 0);
+                }
+            }
+            todayRequestComplete = true;
+        });
+
+        yield return new WaitUntil(() => todayRequestComplete);
+
+        // 나머지 6일의 데이터 가져오기
+        for (int i = 1; i < 7; i++)
         {
             DateTime date = DateTime.Now.AddDays(-i);
             string formattedDate = date.ToString("yyyy-MM-dd");
@@ -281,11 +317,9 @@ public class TopicManager : MonoBehaviour
             {
                 if (success)
                 {
-                    // 현재 토픽의 정보로 새 Topic 객체 생성
                     Topic topic = new Topic(currentId, currentContent, currentDate);
                     weeklyTopics.Add(topic);
 
-                    // 토픽 배너 생성
                     GameObject bannerObj = Instantiate(topicBannerPrefab, scrollView.content);
                     TopicBanner banner = bannerObj.GetComponent<TopicBanner>();
                     if (banner != null)
@@ -296,12 +330,14 @@ public class TopicManager : MonoBehaviour
                 requestComplete = true;
             });
 
-            // 각 요청이 완료될 때까지 대기
             yield return new WaitUntil(() => requestComplete);
-
-            // 연속적인 서버 요청 사이에 짧은 딜레이 추가
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    public static int GetTodayTopicId()
+    {
+        return PlayerPrefs.GetInt(TODAY_TOPIC_ID_KEY, -1);
     }
 
     private void OnDestroy()

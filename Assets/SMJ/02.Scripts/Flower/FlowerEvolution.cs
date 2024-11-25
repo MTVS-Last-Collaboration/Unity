@@ -147,7 +147,7 @@ public class FlowerEvolution : MonoBehaviourPun
     {
         StartCoroutine(PostNewSeed(() => {
             StartEvolution(Flower.States.SEED, false);
-            points.AddPoints(10);
+            points.AddPoints(0);
             //추후 코인 연출
         }));
     }
