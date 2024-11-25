@@ -53,7 +53,7 @@ public class ImageClickPixelPosition : MonoBehaviour, IPointerClickHandler
 
             // Step 3: 텍스처의 픽셀 좌표로 변환
             int pixelX = Mathf.Clamp((int)(normalizedX * texture.width), 0, texture.width - 1);
-            int pixelY = Mathf.Clamp((int)(normalizedY * texture.height), 0, texture.height - 1);
+            int pixelY = Mathf.Clamp(texture.height - (int)(normalizedY * texture.height), 0, texture.height - 1);
 
             making3DObject.SetTouchPos(pixelX, pixelY);
 

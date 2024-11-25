@@ -6,13 +6,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class DecoMineManager : MonoBehaviourPun, IOnEventCallback
 {
     public GameObject Floors;
+    public GameObject Moldings;
     public GameObject Walls;
+    public GameObject Ceiling;
     public Material[] Floormaterials;
+    public Material[] Floormaterials_Molding;
     public Material[] Wallmaterials;
+    public Material[] Wall4materials;
+
+    public Material[] ceiling;
+
     public int floorNum=0;
     public int wallNum=0;
 
@@ -31,9 +39,27 @@ public class DecoMineManager : MonoBehaviourPun, IOnEventCallback
         }
         
         Floors.GetComponent<MeshRenderer>().material = Floormaterials[floorNum];
-        for(int i=0; i < 4;i++)
+
+        for (int i = 0;i < 5;i++)
         {
-            Walls.transform.GetChild(i).GetComponent<MeshRenderer>().material = Wallmaterials[wallNum];
+            Moldings.transform.GetChild(i).GetComponent<MeshRenderer>().material = Floormaterials_Molding[floorNum];
+        }
+
+        if (wallNum  < 2)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Ceiling.GetComponent<MeshRenderer>().material = ceiling[wallNum];
+                Walls.transform.GetChild(i).GetComponent<MeshRenderer>().material = Wallmaterials[wallNum];
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Ceiling.GetComponent<MeshRenderer>().material = ceiling[wallNum];
+                Walls.transform.GetChild(3 - i).GetComponent<MeshRenderer>().material = Wall4materials[i+(wallNum-2)*4];
+            }
         }
     }
 

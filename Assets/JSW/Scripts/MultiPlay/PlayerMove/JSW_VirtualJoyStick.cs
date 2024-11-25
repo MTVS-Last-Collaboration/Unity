@@ -150,7 +150,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         if (pressY > 0) pressY = 0;
                         pressY -= Time.deltaTime;
                     }
-                    if (pressX >= 1.5f)
+                    if (pressX >= 1.0f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -158,7 +158,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 오른쪽 옮기기
 
                     }
-                    else if (pressX <= -1.5f)
+                    else if (pressX <= -1.0f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -166,7 +166,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 왼쪽 옮기기
 
                     }
-                    else if (pressY >= 1.5f)
+                    else if (pressY >= 1.0f)
                     {
                         pressX = 0;
                         pressY = 0;
@@ -174,7 +174,7 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                         // 위쪽 옮기기
 
                     }
-                    else if (pressY <= -1.5f)
+                    else if (pressY <= -1.0f)
                     {
                         pressX = 0;
                         pressY = 0;

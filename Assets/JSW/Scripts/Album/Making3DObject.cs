@@ -11,6 +11,7 @@ using System.IO;
 using System.Text;
 using static AlbumManager;
 using UnityEngine.Timeline;
+using Unity.Loading;
 
 public class Making3DObject : MonoBehaviour
 {
@@ -35,6 +36,16 @@ public class Making3DObject : MonoBehaviour
     public GameObject Object3DPos;
     public GameObject Marker;
 
+    public int exhibitionId;
+    public int exhibitionPicId;
+
+    public GameObject loadingImage;
+
+
+    private void Start()
+    {
+        Get3DPhotoRoomStatus();
+    }
     public void OnClickButtonPicUITo3D()
     {
         int childCound = picTr.childCount;
@@ -48,6 +59,14 @@ public class Making3DObject : MonoBehaviour
             GameObject item = Instantiate(picPrefabItem, picTr);
             item.GetComponent<Item2DTo3D>().id = albumManager.Albumlist[i].id;
             item.GetComponent<RawImage>().texture = albumManager.Albumlist[i].sprite;
+        }
+    }
+
+    private void Update()
+    {
+        if (loadingImage.activeSelf == true)
+        {
+            loadingImage.transform.GetChild(0).Rotate(0, 0, 60f * Time.deltaTime);
         }
     }
 
@@ -91,14 +110,18 @@ public class Making3DObject : MonoBehaviour
         posY = posY1;
     }
 
-    private string apiUrl2 = "http://125.132.216.190:12223/api/photo-album/convert/"; // Replace with the actual API endpoint
-
+    private string apiUrl1 = "http://125.132.216.190:12223/api/photo-album/convert/";
     public void OnTouchImageMakingYes()
     {
-        StartCoroutine(PostPhotoEvent(apiUrl2, To3DId, posX, posY));
+        if (Object3DPos.transform.childCount != 0)
+        {
+            print("이미 전시된 게 있습니다.");
+            return;
+        }
+        StartCoroutine(PostPhotoEvent1(apiUrl1, To3DId, posX, posY));
     }
 
-    IEnumerator PostPhotoEvent(string url, int Id, int positionx, int positiony)
+    IEnumerator PostPhotoEvent1(string url, int Id, int positionx, int positiony)
     {
         // JWT 토큰 가져오기
         string jwtToken = LoginInfoManager.instance.myToken;
@@ -108,16 +131,13 @@ public class Making3DObject : MonoBehaviour
         form.AddField("positionX", posX);       // 내용
         form.AddField("positionY", posY);   // 날짜
 
-        apiUrl2 = apiUrl2 + Id.ToString();
-
         print("PosX +" + posX + " PosY " + posY);
-
+        apiUrl1 = apiUrl1 + Id;
         // UnityWebRequest 생성
-        UnityWebRequest request = UnityWebRequest.Post(apiUrl2, form);
+        UnityWebRequest request = UnityWebRequest.Post(apiUrl1, form);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
-
-        Debug.Log("Send!");
+        loadingImage.SetActive(true);
 
         yield return request.SendWebRequest();
 
@@ -126,17 +146,77 @@ public class Making3DObject : MonoBehaviour
             print("사진 잘 올라가지 않은");
             Debug.LogError("Error: " + request.error);
             print(request.downloadHandler.text);
-            //decoobject.funitureLayoutId = 11;
-
+            loadingImage.SetActive(false);
         }
         else
         {
-            print("3D사진 잘 올라감"); 
-            Debug.Log("Response: " + request.downloadHandler.text);
-            AlbumPic3D wrapper = JsonUtility.FromJson<AlbumPic3D>(request.downloadHandler.text);
-            StartCoroutine(LoadOBJWithTexture(wrapper.data[1], wrapper.data[2]));
-            //FurnitureData schedulepost = JsonUtility.FromJson<FurnitureData>(request.downloadHandler.text);
-           
+            print("3D사진 잘 올라감");
+            StartCoroutine(PostPhotoEvent2(apiUrl2, To3DId, posX, posY));
+        }
+    }
+
+
+
+    // 데이터 클래스 정의
+    [System.Serializable]
+    public class ExhibitionData
+    {
+        public int photoId;
+        public int positionX;
+        public int positionY;
+    }
+
+    private string apiUrl2 = "http://125.132.216.190:12223/api/exhibition"; // Replace with the actual API endpoint
+
+    IEnumerator PostPhotoEvent2(string url, int Id, int positionx, int positiony)
+    {
+        // JWT 토큰 가져오기
+        string jwtToken = LoginInfoManager.instance.myToken;
+
+        ExhibitionData data = new ExhibitionData
+        {
+            photoId = Id,
+            positionX = posX,
+            positionY = posY
+        };
+
+        string jsonData = JsonUtility.ToJson(data);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+
+        print("PosX +" + data.photoId + " PosY " + data.positionX+ "dsa" + data.positionY);
+
+
+        // UnityWebRequest로 POST 요청 생성
+        using (UnityWebRequest request = new UnityWebRequest(apiUrl2, "POST"))
+        {
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+
+
+            // Content-Type 헤더 설정
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+            // 요청 전송
+            yield return request.SendWebRequest();
+
+            // 응답 처리
+            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                print("사진 잘 올라가지 않은2");
+                Debug.LogError("Error: " + request.error);
+                print(request.downloadHandler.text);
+            }
+            else
+            {
+                print("3D사진 잘 올라감2");
+                Debug.Log("Response: " + request.downloadHandler.text);
+                Photo3DFirst wrapper = JsonUtility.FromJson<Photo3DFirst>(request.downloadHandler.text);
+                StartCoroutine(LoadOBJWithTexture(wrapper.textureUrl, wrapper.materialUrl));
+                exhibitionId = wrapper.exhibitionId;
+                exhibitionPicId = wrapper.photo.photoId;
+
+            }
         }
     }
 
@@ -182,7 +262,8 @@ public class Making3DObject : MonoBehaviour
         Texture2D texture = DownloadHandlerTexture.GetContent(textureRequest);
        
         // Step 4: Create a Material and assign the texture
-        Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+       // Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        Material material = new Material(Shader.Find("SimpleURPToonLitExample(With Outline)"));
         material.mainTexture = texture;
 
         // Step 5: Apply the Material to the loaded object
@@ -196,14 +277,145 @@ public class Making3DObject : MonoBehaviour
         //loadedObj.transform.position = Object3DPos.transform.position;
         loadedObj.transform.SetParent(Object3DPos.transform);
         loadedObj.transform.localPosition = Vector3.zero;
+        loadingImage.SetActive(false);
+    }
+
+    //[System.Serializable]
+    //public class AlbumPic3D
+    //{
+    //    public string message;
+    //    public string[] data;
+    //}
+
+
+
+    [System.Serializable]
+    public class Photo3DFirst
+    {
+       public int exhibitionId;
+       public string objectUrl;
+       public string textureUrl;
+       public string materialUrl;
+       public int positionX;
+       public int positionY;
+       public string exhibitedAt;
+       public Photo3D photo;
     }
 
     [System.Serializable]
-    public class AlbumPic3D
+    public class Photo3D
     {
-        public string message;
-        public string[] data;
+        public int photoId;
+        public string title;
+        public string imageUrl;
+        public string photoDate;
+        public string description;
     }
+
+    private string apiUrlDelete = "http://125.132.216.190:12223/api/exhibition/"; // Replace with the actual API endpoint
+
+    public GameObject exhibitionPos;
+
+    public void apiUrlDeleteEvent()
+    {
+        if (exhibitionPos.transform.childCount != 0)
+        {
+            Destroy(exhibitionPos.transform.GetChild(0).gameObject);
+            StartCoroutine(apiUrlDeleteEvent_CO(exhibitionId));
+        }
+
+    }
+
+    IEnumerator apiUrlDeleteEvent_CO(int Id)
+    {
+        // JWT 토큰 가져오기
+        string jwtToken = LoginInfoManager.instance.myToken;
+
+        apiUrlDelete = apiUrlDelete + Id.ToString();
+        // UnityWebRequest 생성
+        UnityWebRequest request = UnityWebRequest.Delete(apiUrlDelete);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            print("사진 잘 삭제되지 않은");
+            Debug.LogError("Error: " + request.error);
+            print(request.downloadHandler.text);
+        }
+        else
+        {
+            print("3D사진 잘 삭제됨");
+            exhibitionId = 0;
+            exhibitionPicId = -1;
+            Debug.Log("Response: " + request.downloadHandler.text);
+            Photo3DFirst wrapper = JsonUtility.FromJson<Photo3DFirst>(request.downloadHandler.text);
+            //StartCoroutine(LoadOBJWithTexture(wrapper.objectUrl, wrapper.textureUrl));
+            //exhibitionId = wrapper.exhibitionId;
+        }
+    }
+
+
+    public class ExhibitionResponse
+    {
+        public Photo3DFirst1[] exhibitions;
+    }
+
+    [System.Serializable]
+    public class Photo3DFirst1
+    {
+        public int exhibitionId;
+        public string objectUrl;
+        public string textureUrl;
+        public string materialUrl;
+        public int positionX;
+        public int positionY;
+        public string exhibitedAt;
+        public Photo3D photo;
+    }
+
+    public void Get3DPhotoRoomStatus()
+    {
+        StartCoroutine(Get3DPhotoStatusCoroutine());
+        print("dsadsa");
+    }
+
+    private string apiUrl3Dex = "http://125.132.216.190:12223/api/exhibition/list"; 
+
+    private IEnumerator Get3DPhotoStatusCoroutine()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(apiUrl3Dex))
+        {
+            print("3D 포토다 냥");
+            //request.SetRequestHeader("Accept", "application/json");
+            string jwtToken = LoginInfoManager.instance.myToken;
+            request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("ResponsexZ: " + request.downloadHandler.text);
+                ExhibitionResponse wrapper = JsonUtility.FromJson<ExhibitionResponse>("{\"exhibitions\":" + request.downloadHandler.text + "}");
+                if ((wrapper.exhibitions.Length) != 0)
+                {
+                    exhibitionId = wrapper.exhibitions[0].exhibitionId;
+                    exhibitionPicId = wrapper.exhibitions[0].photo.photoId;
+                    make3DObjectInit(wrapper.exhibitions[0].textureUrl, wrapper.exhibitions[0].materialUrl);
+                }
+            }
+            else
+            {
+                print("안나왓어요!!!!!!!!!!");
+            }
+
+        }
+    }
+
+
+
+
+
     //private string initAlbumUrl = "http://125.132.216.190:12223/api/photo-album";
 
     //public void GetAlbumStatus()

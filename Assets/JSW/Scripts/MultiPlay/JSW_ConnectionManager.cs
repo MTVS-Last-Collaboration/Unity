@@ -8,6 +8,8 @@ using UnityEngine;
 using Photon.Realtime;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
 {
@@ -15,6 +17,7 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     public static ConnectionManager Instance;
     public GameObject avataName;
     public string createRoomName;
+    public string createRoomName22;
     public string joinRoomName;
     public int levelNumber;
 
@@ -87,7 +90,21 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     //방생성
     public void CreateRoom()
     {
-        string roomName = LoginInfoManager.instance.coupleCode;
+
+        print(LoginInfoManager.instance.coupleCode + "나방333");
+        string roomName;
+
+        
+        if (createRoomName22 == "10")
+        {
+            roomName = LoginInfoManager.instance.coupleCode;
+        }
+        else
+        {
+            roomName = createRoomName;
+        }
+
+        print("나 방 만든다-----------------------" + roomName);
         int playerCount = 10;
 
         //룸 네임 길이가 0보다 길고 플레이 카운트가 1보다 크다면
@@ -98,10 +115,14 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
             //최대인원
             roomOpt.MaxPlayers = playerCount;
             
-            if (roomName == "CoupleRoom")
+            if (createRoomName22 != "10")
             {
                 // 룸나가도 삭제 x
                 roomOpt.CleanupCacheOnLeave = false;
+            }
+            else
+            {
+                roomOpt.CleanupCacheOnLeave = true;
             }
 
             //룸에 사람이 들어오게 하자.
@@ -121,8 +142,18 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
     //방참가
     public void JoinRoom()
     {
+        print("나 방들어간다-----------------------");
         //string roomName = "JSW_LoobyTest";
-        string roomName = LoginInfoManager.instance.coupleCode;
+        string roomName;
+
+        if (createRoomName22 == "10")
+        {
+            roomName = LoginInfoManager.instance.coupleCode;
+        }
+        else
+        {
+            roomName = createRoomName;
+        }
 
         //룸이름 길이가 0보다 크면
         if (roomName.Length > 0)
@@ -194,8 +225,16 @@ public class JSW_ConnectionManager : MonoBehaviourPunCallbacks
         // 로비에 들어갔으면 방을 생성
         //JoinRoom();
 
-        joinRoomName = LoginInfoManager.instance.coupleCode;
-        createRoomName = LoginInfoManager.instance.coupleCode;
+        if (createRoomName22 == "10")
+        {
+            joinRoomName = LoginInfoManager.instance.coupleCode;
+            createRoomName = LoginInfoManager.instance.coupleCode;
+        }
+        else
+        {
+            joinRoomName = LoginInfoManager.instance.coupleCode[0].ToString() + LoginInfoManager.instance.coupleCode[1].ToString() + createRoomName22;
+            createRoomName = LoginInfoManager.instance.coupleCode[0].ToString() + LoginInfoManager.instance.coupleCode[1].ToString() + createRoomName22;
+        }
 
         if (roomList.Count == 0)
         {
