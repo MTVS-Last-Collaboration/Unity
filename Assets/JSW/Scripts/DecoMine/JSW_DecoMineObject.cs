@@ -37,7 +37,6 @@ public class JSW_DecoMineObject : MonoBehaviour
             transform.GetChild(2).GetComponent<TMP_Text>().text = "";
             transform.gameObject.SetActive(false);
         }
-        print("fdsafdasfdafdasfda");
     }
     public void OnClickMineDeco()
     {

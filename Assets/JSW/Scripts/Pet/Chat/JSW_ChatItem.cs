@@ -10,7 +10,7 @@ public class JSW_ChatItem : MonoBehaviour
     public TMP_Text chatText;
     public TMP_Text time;
     public TMP_Text mongName;
-
+    public GameObject UIManager;
 
     private void Awake()
     {
@@ -27,17 +27,24 @@ public class JSW_ChatItem : MonoBehaviour
 
     public void SetText(string msg, string isMong, string times)
     {
-        if(isMong == "Mong")
+        UIManager = GameObject.Find("UIManager");
+        GameObject MongChat2 = UIManager.GetComponent<JSW_UIManager>().Mong_Chat_2;
+
+        if (isMong == "Mong")
         {
             mongName.text = GameObject.Find("PetManager").GetComponent<JSW_PetManager>().MongName;
             //chatText.text = msg;
+            chatText.text = msg;
+            transform.parent.parent.parent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+            if (MongChat2.activeSelf == false) return;
             StartCoroutine(numberChat(msg, 0.03f));
-            //time.text = times;
         }
         else
         {
             chatText.text = msg;
             time.text = times;
+            transform.parent.parent.parent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+            if (MongChat2.activeSelf == false) return;
             StartCoroutine(numberChat(msg, 0.003f));
         }
     }

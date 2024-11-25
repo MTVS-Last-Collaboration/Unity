@@ -111,8 +111,9 @@ public class JSW_ScheduleManager : MonoBehaviourPun, IOnEventCallback
     }
     IEnumerator InitCalenderforUpdate_CO()
     {
-        yield return new WaitForSeconds(0.5f);
-        calenderManager.UpdateDaySchedule();
+        yield return new WaitForSeconds(0.2f);
+        //calenderManager.UpdateDaySchedule();
+        calenderManager.InitCalender2();
     }
 
 
