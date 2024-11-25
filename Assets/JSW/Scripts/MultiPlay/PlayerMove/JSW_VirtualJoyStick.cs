@@ -132,22 +132,22 @@ public class JSW_VirtualJoyStick : MonoBehaviour, IBeginDragHandler, IDragHandle
                     float y = inputDirection.y;
 
                     print("Inpux " + x + " INputy" + y + "x" + pressX + " y " + pressY);
-                    if (x > 0.1f && y > -0.5f && y < 0.5f) //오른쪽
+                    if (x > 0.5f && y > -0.5f && y < 0.5f) //오른쪽
                     {
                         if (pressX < 0) pressX = 0;
                         pressX += Time.deltaTime;
                     }
-                    else if (x < -0.1f && y > -0.5f && y < 0.5f) //왼쪽
+                    else if (x < -0.5f && y > -0.5f && y < 0.5f) //왼쪽
                     {
                         if (pressX > 0) pressX = 0;
                         pressX -= Time.deltaTime;
                     }
-                    else if (y > 0.1f && x > -0.5f && x < 0.5f) //위
+                    else if (y > 0.5f && x > -0.5f && x < 0.5f) //위
                     {
                         if (pressY < 0) pressY = 0;
                         pressY += Time.deltaTime;
                     }
-                    else if (y < -0.1f && x > -0.5f && x < 0.5f) //아래
+                    else if (y < -0.5f && x > -0.5f && x < 0.5f) //아래
                     {
                         if (pressY > 0) pressY = 0;
                         pressY -= Time.deltaTime;
