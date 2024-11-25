@@ -27,10 +27,15 @@ public class HoonCreateRoom : MonoBehaviour
     public GameObject choiceRoomOk;
     public OnMoveTrigger onMoveTrigger;
     public Transform colloectionContent;
-    public GameObject btn_MyCollection; //생성할 버튼 프리팹
+    public Transform shareContent;
+    public GameObject btn_MyCollection; //생성할 컬렉션버튼프리팹
+    public GameObject img_ShareRoom; //생성할 공유룸이미지프리팹
     public GameObject[] presetRoomArray;
 
-    List<RoomData> collectionRoomList;
+    List<CollectionRoomData> collectionRoomList;
+    HashSet<int> collectionIDHash = new HashSet<int>(); // 처리된 room ID 추적
+    List<ShareRoomInfo> shareRoomInfoList;
+    HashSet<int> shareIDHash = new HashSet<int>(); // 처리된 room ID 추적
     bool isCreateCollectionStart = false;
     bool isApplyRoom = false;
 
@@ -39,13 +44,16 @@ public class HoonCreateRoom : MonoBehaviour
     public string myToken;
     public int checkCollectionMarkCount = 0;
     public int checkPresetMarkCount = 0;
-   
+    public int checkShareMarkCount = 0;
+
     public int collectionIndex = 0;
     public int presetIndex = 0;
+    public int shareIndex = 0;
     void Start()
     {
         ViewCollectionRoom();
-       
+        ViewPresetRoom();
+        ViewSharedRoom();
     }
 
     // Update is called once per frame
@@ -114,8 +122,6 @@ public class HoonCreateRoom : MonoBehaviour
         }
 
     }
-
-
 
     //Http 통신 코드 테스트 -------------------------
     //Http Post
@@ -234,7 +240,7 @@ public class HoonCreateRoom : MonoBehaviour
         public List<string> furnitureNames;
         public int totalFurniture;
     }
-    public class RoomData
+    public class CollectionRoomData
     {
         public int id;
         public string source;
@@ -254,7 +260,24 @@ public class HoonCreateRoom : MonoBehaviour
 
     }
     //내보관함파싱끝내기
-
+    //공유방 파싱시작--------------------------
+    [System.Serializable]
+    public class ShareRoomData
+    {
+        public string wallpaperName;
+        public string floorName;
+        public List<string> furnitureNames;
+        public int totalFurniture;
+    }
+    [System.Serializable]
+    public class ShareRoomInfo
+    {
+        public int roomId;
+        public string coupleName;
+        public RoomPreview roomPreview;
+        public List<int> sharedAt; // 날짜 데이터를 리스트로 받음
+    }
+    //공유방 파싱끝내기--------------------------
 
     //Http Post---------------------------
     //방공유설정 시작하기 1-1
@@ -330,15 +353,15 @@ public class HoonCreateRoom : MonoBehaviour
     }
 
     //공유방 저장하기, 공유된 방 리스트 골랐을때 내보관함으로 가져오는것
-    public void SvaeSharedRoom()
+    public void AddSharedRoom()
     {
         //string jsonData = "";
-        StartCoroutine(PostSaveShareRoomNumber(presetIndex));
+        StartCoroutine(PostAddShareRoomNumber(shareIndex));
     }
     //Post 공유보관함->내보관함
-    IEnumerator PostSaveShareRoomNumber(int presetID)
+    IEnumerator PostAddShareRoomNumber(int shareID)
     {
-        string urlRoomNum = "http://125.132.216.190:12223/api/rooms/collection/shared/" + presetID; //공유방 방번호가 들어갑니다.
+        string urlRoomNum = "http://125.132.216.190:12223/api/rooms/collection/shared/" + shareID; //공유방 방번호가 들어갑니다.
 
         UnityWebRequest request = new UnityWebRequest(urlRoomNum, "POST");
 
@@ -358,7 +381,7 @@ public class HoonCreateRoom : MonoBehaviour
         {
             string responseText = request.downloadHandler.text;
             Debug.Log("서버응답" + responseText);
-
+            ViewCollectionRoom();
         }
     
     }
@@ -367,7 +390,16 @@ public class HoonCreateRoom : MonoBehaviour
     {
         //string jsonData = "";
         //int presetIndex = 10;
-        StartCoroutine(PostAddPresetRoomNumber(presetIndex));
+
+        if (checkPresetMarkCount == 1)
+        {
+            StartCoroutine(PostAddPresetRoomNumber(presetIndex));
+        }
+        else
+        {
+            print("방을선택해주세요");
+        }
+
     }
     //Post 기본보관함 -> 내보관함
     IEnumerator PostAddPresetRoomNumber(int presetID)
@@ -395,8 +427,10 @@ public class HoonCreateRoom : MonoBehaviour
             string responseText = request.downloadHandler.text;
             Debug.Log("서버응답" + responseText);
 
-            //응답받은 데이터를 json으로 파싱하고 리스트로 저장한다음 필요한 정보를 저장해주고 리스트의 
-           
+            //프리셋 -> 내보관함, 버튼생성하기
+            Debug.LogError("버튼생성해보자.");
+            //CreateCollectionRoomButton();
+            ViewCollectionRoom();
         }
     }
     //현재방 상태 저장
@@ -437,13 +471,15 @@ public class HoonCreateRoom : MonoBehaviour
         //need collectionRoomId 
         //string jsonData = "";
         //int collectionIndex = 2;
+        print("collectionIndex" + collectionIndex);
         StartCoroutine(PostApplySavaeRoom(collectionIndex));
     }
     //
     IEnumerator PostApplySavaeRoom(int collectionNum)
     {
         string urlApplyRoomNum = "http://125.132.216.190:12223/api/rooms/collection/apply/" + collectionNum; //collectionRoomId 필요.
-
+        Debug.LogError("collectionNum" + collectionNum);
+        Debug.LogError("urlApplyRoomNum" + urlApplyRoomNum);
         UnityWebRequest request = new UnityWebRequest(urlApplyRoomNum, "POST");
 
         //byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(new byte[0]);
@@ -456,6 +492,7 @@ public class HoonCreateRoom : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + request.error);
+            
             //에러403 토큰보내기
         }
         else
@@ -489,9 +526,9 @@ public class HoonCreateRoom : MonoBehaviour
     //Get 공유방
     IEnumerator GetSharedRoom()
     {
-        string url = "http://125.132.216.190:12223/api/rooms/shared";
+        string urlShare = "http://125.132.216.190:12223/api/rooms/shared";
         //Get 서버요청
-        UnityWebRequest request = UnityWebRequest.Get(url); //Get url
+        UnityWebRequest request = UnityWebRequest.Get(urlShare); //Get url
         //UnityWebRequest request = UnityWebRequest.Get(urlTodayMission); //Get url 미션가져오기테스트용
         myToken = LoginInfoManager.instance.myToken;
         request.SetRequestHeader("Authorization", "Bearer " + myToken);
@@ -509,11 +546,46 @@ public class HoonCreateRoom : MonoBehaviour
             Debug.Log("서버응답" + responseText);
 
             // JSON 배열을 List<RoomInfo>로 변환
-            List<PresetRoomInfo> roomInfoList = JsonConvert.DeserializeObject<List<PresetRoomInfo>>(responseText);
-            
+            shareRoomInfoList = JsonConvert.DeserializeObject<List<ShareRoomInfo>>(responseText);
+
+            // roomId 기준으로 정렬
+            shareRoomInfoList = shareRoomInfoList.OrderBy(share => share.roomId).ToList();
+
+            for (int i = 0; i < shareRoomInfoList.Count; i++)
+            {
+                // 결과 출력: GetPresetList[0]
+                Debug.Log(JsonConvert.SerializeObject(shareRoomInfoList[i], Formatting.Indented));
+
+            }
+            CreateShareRoomButton(); //크기만큼 방을 생성하기
         }
 
     }
+
+    public void CreateShareRoomButton()
+    {
+        //생성할때 hash에 중복된 아이디가 있다면 건너뜁니다.
+        for (int i = 0; i < shareRoomInfoList.Count; i++)
+        {
+            int shareID = shareRoomInfoList[i].roomId;
+
+            // shareIDHash 에 포함되어 이미 생성된 버튼이라면 스킵
+            if (shareIDHash.Contains(shareID))
+                continue;
+
+            GameObject shareRoom = Instantiate(img_ShareRoom, shareContent); //shareContent 에생성
+            //각방에 스크립트를 넣어주고 각 변수를 확인해주자.
+            shareRoom.GetComponent<HoonCheckShareRoom>().shareIndex = shareRoomInfoList[i].roomId;
+
+            // 생성된 버튼 정보 기록
+            shareIDHash.Add(shareID);
+
+        }
+        print("누적된 버튼생성량" + shareIDHash.Count);
+
+    }
+
+
     //프리셋 방 목록조회
     public void ViewPresetRoom()
     {
@@ -569,19 +641,20 @@ public class HoonCreateRoom : MonoBehaviour
     //저장된 방 목록조회
     public void ViewCollectionRoom()
     {
+        //Debug.LogError("왜갑자기 안돼는지 궁금합니다");
         StartCoroutine(GetCollectionRoom());
     }
     //Get 내목록
     IEnumerator GetCollectionRoom()
     {
-        print("요청시작");
+        //print("요청시작");
         string urlColletction = "http://125.132.216.190:12223/api/rooms/collection";
         //Get 서버요청
         UnityWebRequest request = UnityWebRequest.Get(urlColletction); //Get url
         myToken = LoginInfoManager.instance.myToken;
         request.SetRequestHeader("Authorization", "Bearer " + myToken);
         
-        print("요청중");
+        //print("요청중");
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
@@ -605,11 +678,11 @@ public class HoonCreateRoom : MonoBehaviour
             Debug.Log("서버응답" + responseText);
 
             // JSON 배열을 List<RoomInfo>로 변환
-            List<RoomData> roomInfoList = JsonConvert.DeserializeObject<List<RoomData>>(responseText);
+            List<CollectionRoomData> roomInfoList = JsonConvert.DeserializeObject<List<CollectionRoomData>>(responseText);
 
             // ID 기준으로 중복 제거를 위해 Dictionary 사용
-            Dictionary<int, RoomData> roomDictionary = new Dictionary<int, RoomData>();
-            foreach (RoomData room in roomInfoList)
+            Dictionary<int, CollectionRoomData> roomDictionary = new Dictionary<int, CollectionRoomData>();
+            foreach (CollectionRoomData room in roomInfoList)
             {
                 // Dictionary에 이미 해당 id가 있으면 추가하지 않음
                 if (!roomDictionary.ContainsKey(room.id))
@@ -620,19 +693,23 @@ public class HoonCreateRoom : MonoBehaviour
 
             }
             // 중복 제거 후 다시 roomInfoList에 값 넣기(Dictionary의 값들로)
-            collectionRoomList = new List<RoomData>(roomDictionary.Values);
+            collectionRoomList = new List<CollectionRoomData>(roomDictionary.Values);
 
             // 중복 제거된 roomInfoList 항목을 문자열로 출력
-            foreach (RoomData room in collectionRoomList)
+            foreach (CollectionRoomData room in collectionRoomList)
             {
                 // JSON 문자열로 직렬화하여 출력
                 string roomDataAsString = JsonConvert.SerializeObject(room, Formatting.Indented);
                 Debug.Log("Room Info: " + roomDataAsString);
             }
-           
+
+            Debug.LogError("방버튼을 만듭시다.");
+            CreateCollectionRoomButton();
+
             //이게 false일때
-            if(!isCreateCollectionStart)
+            if (!isCreateCollectionStart)
             {
+                Debug.LogError("방버튼을 만듭시다.");
                 CreateCollectionRoomButton();
                 isCreateCollectionStart = true;
             }
@@ -651,19 +728,26 @@ public class HoonCreateRoom : MonoBehaviour
         //배열에 저장된 정보를 카운트 합니다.
         Debug.Log("roomInfoList.Count" + collectionRoomList.Count);
 
-        //content의 위치를 캐싱해서 가져옵니다.
+        //생성할때 hash에 중복된 아이디가 있다면 건너뜁니다.
         for (int i = 0; i < collectionRoomList.Count; i++)
         {
+            int collectionID = collectionRoomList[i].id;
+
+            // 이미 생성된 버튼이라면 스킵
+            if (collectionIDHash.Contains(collectionID))
+                continue;
+
             GameObject collectionRoom = Instantiate(btn_MyCollection, colloectionContent);
             //각방에 스크립트를 넣어주고 각 변수를 확인해주자.
-            collectionRoom.GetComponent<HoonCheckCollectRoom>(). collectionIndex =collectionRoomList[i].id ;
+            collectionRoom.GetComponent<HoonCheckCollectRoom>(). collectionIndex = collectionRoomList[i].id ;
+
+            // 생성된 버튼 정보 기록
+            collectionIDHash.Add(collectionID);
 
         }
+        print("누적된 버튼생성량" + collectionIDHash.Count);
+
     }
-
-
-
-
     //방전체목록, 공유된 목록전체를 가져옵니다.
     public void ViewStatus()
     {
