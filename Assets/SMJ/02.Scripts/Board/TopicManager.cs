@@ -127,6 +127,7 @@ public class TopicManager : MonoBehaviour
     private int todayTopicId;
     public string currentContent => currentTopic?.content ?? Topic.GetSavedContent();
     public string currentDate => currentTopic?.date ?? "";
+    public string _date;
 
     public int currentId => currentTopic?.id ?? Topic.GetSavedTopicId();
 
@@ -172,7 +173,8 @@ public class TopicManager : MonoBehaviour
                 currentTopic = result;
 
                 // 오늘 날짜의 토픽인 경우 todayTopicId 업데이트
-                if (date == DateTime.Now.ToString("yyyy-MM-dd"))
+                //date == DateTime.Now.ToString("yyyy-MM-dd")
+                if (date == _date)
                 {
                     todayTopicId = result.id;
                     PlayerPrefs.SetInt(TODAY_TOPIC_ID_KEY, todayTopicId);
@@ -287,7 +289,8 @@ public class TopicManager : MonoBehaviour
         weeklyTopics.Clear();
 
         // 오늘 날짜 토픽을 먼저 가져오기
-        string todayDate = DateTime.Now.ToString("yyyy-MM-dd");
+        //string todayDate = DateTime.Now.ToString("yyyy-MM-dd");
+        string todayDate = new DateTime(2024, 11, 15).ToString("yyyy-MM-dd");
         bool todayRequestComplete = false;
 
         GetDailyTopic(todayDate, (success) =>
@@ -308,11 +311,11 @@ public class TopicManager : MonoBehaviour
         });
 
         yield return new WaitUntil(() => todayRequestComplete);
-
+        DateTime temp = new DateTime(2024, 11, 15);
         // 나머지 6일의 데이터 가져오기
         for (int i = 1; i < 7; i++)
         {
-            DateTime date = DateTime.Now.AddDays(-i);
+            DateTime date = temp.AddDays(-i);
             string formattedDate = date.ToString("yyyy-MM-dd");
 
             bool requestComplete = false;
