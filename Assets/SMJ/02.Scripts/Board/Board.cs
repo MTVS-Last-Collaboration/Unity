@@ -33,9 +33,9 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-        //DateTime time = new DateTime(2024, 11, 6);
+        DateTime time = new DateTime(2024, 11, 15);
         topicManager = GetComponent<TopicManager>();
-        DateTime time = DateTime.Today;
+        //DateTime time = DateTime.Today;
 
         InitTopic(time);
         StartCoroutine(DailyWeeklyLikesCheck());
@@ -201,15 +201,14 @@ public class Board : MonoBehaviour
         });
     }
 
-    public void CreatePost(int answerId, string nickName, string title, string content, string date, int likeCount)
+    public void CreatePost(DateTime time, int answerId, string nickName, string title, string content, string date, int likeCount)
     {
         var post = new PostData(answerId, nickName, title, content, date, likeCount);
         posts.Add(post);
         GameObject postObj = Instantiate(postPrefab, postListContent);
         postObj.GetComponent<PostItem>().Initialize(post);
-        print("¾¾! : " + answerId);
         postObj.GetComponent<PostItem>().answerId = answerId;
-        InitTopic(DateTime.Now);
+        InitTopic(time);
     }
 
     public void CreatePost(TopicAnswer answer)

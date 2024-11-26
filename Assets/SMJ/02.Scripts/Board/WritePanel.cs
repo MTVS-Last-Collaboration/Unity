@@ -25,12 +25,18 @@ public class WritePanel : MonoBehaviour
 
     [SerializeField] private Board board;                  // 게시판 참조
     private HoonSoundManagerLogin sound;
+    [SerializeField] private TopicManager topicManager;
     private void Start()
     {
         // 버튼 이벤트 등록
         submitButton.onClick.AddListener(OnSubmit);
         exitButton.onClick.AddListener(Hide);
-        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
+        GameObject smj = GameObject.Find("SMJ");
+        sound = smj.GetComponent<HoonSoundManagerLogin>();
+        if (topicManager == null)
+        {
+            topicManager = GameObject.Find("Board").GetComponent<TopicManager>();
+        }
     }
 
     // 패널 표시
@@ -64,12 +70,15 @@ public class WritePanel : MonoBehaviour
 
         string nickName = LoginInfoManager.instance.nickName;
         // 게시판에 글 추가
-        board.CreatePost(board.lastId + 1, nickName, titleInput.text, contentInput.text, DateTime.Now.ToString("MM-dd"), 0);
+        
 
         // TopicManager에서 오늘의 토픽 ID를 가져옴
         int todayTopicId = TopicManager.GetTodayTopicId();
+        print(topicManager._date);
+        DateTime tempTime = DateTime.Parse(topicManager._date);
         if (todayTopicId != -1)
         {
+            board.CreatePost(tempTime, board.lastId + 1, nickName, titleInput.text, contentInput.text, tempTime.ToString("MM-dd"), 0);
             CreatePostAnswer(todayTopicId, titleInput.text, contentInput.text);
         }
         else
