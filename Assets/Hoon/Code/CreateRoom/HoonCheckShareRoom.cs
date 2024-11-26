@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HoonCheckShareRoom : MonoBehaviour
 {
-    public int shareIndex;
+    public HoonCreateRoom hoonCreateRoom; //방만들 정보를 선택합니다.
     public GameObject roomMarker;
     public Button addShareRoom;
-    public HoonCreateRoom hoonCreateRoom; //방만들 정보를 선택합니다.
+    public TextMeshProUGUI shreRoomName;
+    public string coupleName;
+    public int shareIndex;
+
     
     bool isRoomMaker = false;
 
@@ -51,6 +55,9 @@ public class HoonCheckShareRoom : MonoBehaviour
         }
 
     }
-
+    public void ChangeCoupleRoomName()
+    {
+        shreRoomName.text = coupleName;
+    }
 
 }//클래스

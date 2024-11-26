@@ -15,17 +15,17 @@ using static System.Net.WebRequestMethods;
 public class HoonCreateRoom : MonoBehaviour
 {
     //캐싱데이터
+    public HoonUIController hoonUIController;
+    public OnMoveTrigger onMoveTrigger;
     public GameObject imgMyStorageMenuObject;
     public GameObject imgGetRoomObject;
     public GameObject imgShowRoomListObject;
-    public HoonUIController hoonUIController;
     public GameObject choiceRoomErr;
     public GameObject choiceRoomOk;
-    public OnMoveTrigger onMoveTrigger;
-    public Transform colloectionContent;
-    public Transform shareContent;
     public GameObject btn_MyCollection; //생성할 컬렉션버튼프리팹
     public GameObject img_ShareRoom; //생성할 공유룸이미지프리팹
+    public Transform shareContent;
+    public Transform colloectionContent;
     public GameObject[] presetRoomArray;
 
     List<CollectionRoomData> collectionRoomList;
@@ -474,8 +474,8 @@ public class HoonCreateRoom : MonoBehaviour
     IEnumerator PostApplySavaeRoom(int collectionNum)
     {
         string urlApplyRoomNum = "http://125.132.216.190:12223/api/rooms/collection/apply/" + collectionNum; //collectionRoomId 필요.
-        Debug.LogError("collectionNum" + collectionNum);
-        Debug.LogError("urlApplyRoomNum" + urlApplyRoomNum);
+        //Debug.LogError("collectionNum" + collectionNum);
+        //Debug.LogError("urlApplyRoomNum" + urlApplyRoomNum);
         UnityWebRequest request = new UnityWebRequest(urlApplyRoomNum, "POST");
 
         //byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(new byte[0]);
@@ -509,6 +509,8 @@ public class HoonCreateRoom : MonoBehaviour
         else
         {
             print("ㅎㅎ 못가");
+            choiceRoomOk.SetActive(false);
+            choiceRoomErr.SetActive(true);
         }
 
 
@@ -551,7 +553,7 @@ public class HoonCreateRoom : MonoBehaviour
             {
                 // 결과 출력: GetPresetList[0]
                 Debug.Log(JsonConvert.SerializeObject(shareRoomInfoList[i], Formatting.Indented));
-
+               
             }
             CreateShareRoomButton(); //크기만큼 방을 생성하기
         }
@@ -570,6 +572,8 @@ public class HoonCreateRoom : MonoBehaviour
                 continue;
 
             GameObject shareRoom = Instantiate(img_ShareRoom, shareContent); //shareContent 에생성
+            shareRoom.GetComponent<HoonCheckShareRoom>().coupleName = shareRoomInfoList[i].coupleName; //이름값 넣어주기.
+            shareRoom.GetComponent<HoonCheckShareRoom>().ChangeCoupleRoomName(); //이름바꾸어주기
             //각방에 스크립트를 넣어주고 각 변수를 확인해주자.
             shareRoom.GetComponent<HoonCheckShareRoom>().shareIndex = shareRoomInfoList[i].roomId;
 
