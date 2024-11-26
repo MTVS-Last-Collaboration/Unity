@@ -147,6 +147,13 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
         loadingImage.SetActive(true);
 
+        RaiseEventOptions eventOptions = new RaiseEventOptions();
+        eventOptions.Receivers = ReceiverGroup.All;
+
+        PhotonNetwork.RaiseEvent(13, null, eventOptions, SendOptions.SendUnreliable);
+
+        EventSystem.current.SetSelectedGameObject(null);
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
@@ -155,6 +162,14 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
             Debug.LogError("Error: " + request.error);
             print(request.downloadHandler.text);
             loadingImage.SetActive(false);
+
+           
+            eventOptions.Receivers = ReceiverGroup.All;
+
+            PhotonNetwork.RaiseEvent(14, null, eventOptions, SendOptions.SendUnreliable);
+
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
         else
         {
@@ -249,12 +264,20 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
 
     public void OnEvent(EventData photonEvent)
     {
-        if (photonEvent.Code == 12)
+        if (photonEvent.Code == 12) //啊备 积己
         {
             object[] receiveObjects = (object[])photonEvent.CustomData;
             string receiveString1 = receiveObjects[0].ToString();
             string receiveString2 = receiveObjects[1].ToString();
             StartCoroutine(LoadOBJWithTexture(receiveString1, receiveString2));
+        }
+        if (photonEvent.Code == 13) // 积己 矫累
+        {
+            loadingImage.SetActive(true);
+        }
+        if (photonEvent.Code == 14) // 积己 角菩 1
+        {
+            loadingImage.SetActive(false);
         }
     }
 
@@ -262,6 +285,7 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
     {
         PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }
+
 
 
 
