@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 //동기화 용도 클래스를 부모로 MonoBehaviourPun
@@ -12,6 +13,7 @@ public class LobbyGameManager : MonoBehaviourPun
 
     string playerAvataType;
     public string playerNickName;
+    public Vector3 initPosition;
 
     void Awake()
     {
@@ -31,8 +33,7 @@ public class LobbyGameManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-      
-        if(playerAvataType != null)
+        if (playerAvataType != null)
         { 
             return;
         
@@ -101,7 +102,7 @@ public class LobbyGameManager : MonoBehaviourPun
         //player = PhotonNetwork.Instantiate("PlayerMale", initPosition, Quaternion.identity);
         //player = PhotonNetwork.Instantiate("PlayerWoman", initPosition, Quaternion.identity);
 
-        Vector3 initPosition = new Vector3(-23, 1, -13);
+        initPosition = new Vector3(-18, -8.6f, 7);
         player = PhotonNetwork.Instantiate(playerAvataType, initPosition, Quaternion.identity);
 
         // player 오브젝트 캐싱 완료
