@@ -95,14 +95,15 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
             GetComponent<JSW_ConnectionManager>().enabled = true;
             GetComponent<JSW_ConnectionManager>().LeaveRoom();
         }
+        print("코코ㅗ오오오");
     }
 
     public IEnumerator Ending()
     {
         endingObject.SetActive(true);
-
+        print("fdfa");
         yield return new WaitForSeconds(0.5f);
-
+        print("Fdafdaf");
         iTween.ScaleTo(endingObject, iTween.Hash(
             "scale", Vector3.one * 1,        // 목표 스케일 (1, 1, 1)
             "time", 2f,                // 애니메이션 시간 (조정 가능)
