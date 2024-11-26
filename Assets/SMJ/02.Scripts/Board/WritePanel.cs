@@ -79,6 +79,7 @@ public class WritePanel : MonoBehaviour
         if (todayTopicId != -1)
         {
             board.CreatePost(tempTime, board.lastId + 1, nickName, titleInput.text, contentInput.text, tempTime.ToString("MM-dd"), 0);
+            //CreatePostAnswer(todayTopicId, titleInput.text, contentInput.text);
             CreatePostAnswer(todayTopicId, titleInput.text, contentInput.text);
         }
         else
