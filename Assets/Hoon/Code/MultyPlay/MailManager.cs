@@ -165,7 +165,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public HoonPetInfo hoonPetInfo;
     //포인트정보
     public HoonPointInfo hoonPointInfo;
-
+    //씬월드포지션
+    public Vector3 canvasWorldPos = new Vector3(-11, -6.5f, 13.5f);
     void Start()
     {
         StartCoroutine(FindPlayer());
@@ -1839,7 +1840,9 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             //어떻게 보여줄건데?
             mail_ImageObject.SetActive(true); //켠다
             hoonMailCanvasObject.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
-            hoonMailCanvasObject.transform.position = new Vector3(-17.9f, 3.3f, -5f);
+            //hoonMailCanvasObject.transform.position = new Vector3(-11, -6.5f, 13.5f);
+            //hoonMailCanvasObject.transform.position = canvasWorldPos;
+            hoonMailCanvasObject.GetComponent<RectTransform>().position = new Vector3(-11, -6.6f, 13.5f);
             hoonMailCanvasObject.transform.localScale = new Vector3(0.0003f, 0.0003f, 0.0003f);
 
             StartCoroutine(MoveUPMailUI());
@@ -1882,8 +1885,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     IEnumerator MoveUPMailUI()
     {
-        Vector3 startPos = new Vector3(-17.9f, 3.3f, -5);
-        Vector3 endPos = new Vector3(-17.9f, 20f, -5);
+        Vector3 startPos = new Vector3(-11, -6.6f, 13.5f);
+        Vector3 endPos = new Vector3(-11, 0, 13.5f);
         float duration = 1f;
         float currTime = 0f;
         while (currTime < duration)

@@ -21,6 +21,7 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
 
     float x;
     float z;
+    float y;
     float myDirectionX;
     float myDirectionZ;
 
@@ -38,6 +39,7 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
+        
         //PlayerMoveKey();
         //PlayerMoveJoyStick(joyStick.inputDirection);
         if(photonView.IsMine == false)  //print("내것이 아님 캐릭터 동기화");
@@ -138,6 +140,7 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
             //print("내꺼 움직이자");
             x = inputDirection.x;     //print("Horizontal=" + x);
             z = inputDirection.y;     //print("Vertical=" + y);
+           
 
             Vector3 playerMoveDir = new Vector3(x, 0, z);
             playerMoveDir.Normalize();
