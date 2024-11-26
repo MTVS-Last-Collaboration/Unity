@@ -131,7 +131,7 @@ public class JSW_PetManager : MonoBehaviour
             // 실패 응답 처리
             Debug.LogError("경험치 추가 실패: " + request.error);
         }
-        mongExpTarget += 10;
+        mongExpTarget += 500;
     }
 
     public void MongLevelUpnineteen()

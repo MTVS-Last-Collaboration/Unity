@@ -11,10 +11,10 @@ using static HoonCreateRoom;
 using static JSW_InitRoom;
 using static LoginTest;
 using static System.Net.WebRequestMethods;
-using UnityEditor.PackageManager.Requests;
+//using UnityEditor.PackageManager.Requests;
 using UnityEngine.UI;
 using Unity.VisualScripting;
-using UnityEditor.Presets;
+//using UnityEditor.Presets;
 
 public class HoonCreateRoom : MonoBehaviour
 {

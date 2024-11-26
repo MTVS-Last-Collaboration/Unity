@@ -16,6 +16,7 @@ public class BusController : MonoBehaviour
 
     public Camera cameraBus;
     public GameObject byeUI;
+    public AudioSource busAudio;
 
     private void Start()
     {
@@ -32,6 +33,7 @@ public class BusController : MonoBehaviour
         Bus.transform.position = Pos1.transform.position;
         Bus.transform.Rotate(0, 0, 180);
         cameraBus.targetDisplay = 0;
+        busAudio.Play();
 
         while (true)
         {
@@ -92,4 +94,5 @@ public class BusController : MonoBehaviour
     {
         openingObject.SetActive(false);
     }
+
 }

@@ -475,44 +475,14 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         }
     }
 
+    public GameObject object1;
+    public GameObject object2;
+    public GameObject object3;
 
-
-
-
-    //private string initAlbumUrl = "http://125.132.216.190:12223/api/photo-album";
-
-    //public void GetAlbumStatus()
-    //{
-    //    StartCoroutine(GetAlbumStatusCoroutine());
-    //}
-
-    //private IEnumerator GetAlbumStatusCoroutine()
-    //{
-    //    using (UnityWebRequest request = UnityWebRequest.Get(initAlbumUrl))
-    //    {
-
-    //        request.SetRequestHeader("Accept", "application/json");
-    //        string jwtToken = LoginInfoManager.instance.myToken;
-    //        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
-    //        yield return request.SendWebRequest();
-    //        if (request.result == UnityWebRequest.Result.Success)
-    //        {
-    //            // Process JSON response
-    //            Debug.Log("Responsesssss: " + request.downloadHandler.text);
-
-    //            string jsonResponse = "{\"items\":" + request.downloadHandler.text + "}";
-    //            Debug.Log("Response: " + jsonResponse);
-
-    //            // JSON 데이터를 ShoplistItemWrapper로 파싱
-    //            // ShoplistItemWrapper wrapper = JsonUtility.FromJson<ShoplistItemWrapper>(jsonResponse);
-    //        }
-    //        else
-    //        {
-    //            print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임");
-    //            Debug.LogError("Error: " + request.error);
-    //        }
-    //    }
-    //}
-
-
+    public void EasterEgg()
+    {
+        object1.SetActive(false);
+        object2.SetActive(false);
+        object3.SetActive(true);
+    }
 }
