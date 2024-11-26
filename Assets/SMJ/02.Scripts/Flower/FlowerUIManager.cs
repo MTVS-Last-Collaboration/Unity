@@ -79,6 +79,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
+        StartCoroutine(Delay());
         flowerId = photonView.ViewID.ToString();
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         SendOptions sendOptions = new SendOptions();
@@ -119,7 +120,10 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         }
         PhotonNetwork.NetworkingClient.StateChanged += OnStateChanged;
     }
-
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(1f);
+    }
     private IEnumerator InitializeAfterDelay()
     {
         yield return new WaitForSeconds(0.1f);
@@ -661,7 +665,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         
         if (click.isFirstClick == true)
         {
-            Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("Player_CheckFlower"));
+            click.mainCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Player_CheckFlower"));
             uiPopup.PlayPopupAnimation(uiPanel.GetComponent<RectTransform>());
         }
         if (targetFlower == null)
@@ -722,7 +726,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     public void HideFlowerInfo()
     {
-        Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("Player_CheckFlower"));
+        click.mainCam.cullingMask |= (1 << LayerMask.NameToLayer("Player_CheckFlower"));
         hoonUI.SetActive(true);
         uiPopup.Hide(uiPanel.GetComponent<RectTransform>());
         //uiPanel.SetActive(false);
@@ -1374,9 +1378,9 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         recordCount = 0;
         isSuccess = false;
         successPanel.SetActive(false);
-        sound.PlaySound("smjAudioClopAttay", 0);
+        
         if (!click.checkID.IsMine(flower)) return;
-
+        sound.PlaySound("smjAudioClopAttay", 0);
         photonView.RPC("RPC_UpdateRecordStatus", RpcTarget.All, false, false);
         click.checkID.ResetFirst();
 
