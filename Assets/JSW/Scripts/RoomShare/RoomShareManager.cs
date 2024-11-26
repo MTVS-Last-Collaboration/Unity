@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
+using Photon.Realtime;
 
 public class RoomShareManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class RoomShareManager : MonoBehaviour
     public Camera RenderingCam;
     public GameObject cri;
     public string myToken;
+
 
     void Start()
     {
@@ -26,40 +28,48 @@ public class RoomShareManager : MonoBehaviour
 
     public void OnClickShareButton()
     {
-        //ceiling.SetActive(false);
-        //RenderingCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
+        ceiling.SetActive(false);
+        RenderingCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
 
-        //RawImage ri = cri.GetComponent<RawImage>();
+        RawImage ri = cri.GetComponent<RawImage>();
 
-        //// 각 모델을 위한 Render Texture 생성
-        //RenderTexture renderTextures = new RenderTexture(256, 256, 16);
-        //RenderingCam.targetTexture = renderTextures;
+        // 각 모델을 위한 Render Texture 생성
+        RenderTexture renderTextures = new RenderTexture(256, 256, 16);
+        RenderingCam.targetTexture = renderTextures;
 
-        //// 모델 위치 조정 및 렌더링
-        //RenderingCam.Render();
+        // 모델 위치 조정 및 렌더링
+        RenderingCam.Render();
 
-        //// UI에 해당 Render Texture 할당
-        //ri.texture = renderTextures;
-        //RenderingCam.targetTexture = renderTextures = new RenderTexture(256, 256, 16);
-        ////models[i].SetActive(false);
-        ////Destroy(models[i]);
+        // UI에 해당 Render Texture 할당
+        ri.texture = renderTextures;
+        RenderingCam.targetTexture = renderTextures = new RenderTexture(256, 256, 16);
 
-        ////if (i == models.Length - 1)
-        ////{
-        ////    RenderingCam.targetTexture = new RenderTexture(256, 256, 16);
-        ////}
-
-        ////if (i % 22 == 0 && i != 0)
-        ////{
-        ////    RenderingCam.targetTexture = new RenderTexture(256, 256, 16);
-
-        ////}
-        //ceiling.SetActive(true);
-
+        ceiling.SetActive(true);
 
         StartCoroutine(PostRequest());
-        
     }
+
+    public void OnClickImage()
+    {
+        ceiling.SetActive(false);
+        RenderingCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
+
+        RawImage ri = cri.GetComponent<RawImage>();
+
+        // 각 모델을 위한 Render Texture 생성
+        RenderTexture renderTextures = new RenderTexture(256, 256, 16);
+        RenderingCam.targetTexture = renderTextures;
+
+        // 모델 위치 조정 및 렌더링
+        RenderingCam.Render();
+
+        // UI에 해당 Render Texture 할당
+        ri.texture = renderTextures;
+        RenderingCam.targetTexture = renderTextures = new RenderTexture(256, 256, 16);
+
+        ceiling.SetActive(true);
+    }
+
 
     private string apiUrl = "http://125.132.216.190:12223/api/rooms/collection/current"; // 이미지에 나온 엔드포인트
 
