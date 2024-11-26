@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using Photon.Realtime;
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class RoomShareManager : MonoBehaviour
 {
@@ -12,19 +16,14 @@ public class RoomShareManager : MonoBehaviour
     public GameObject ceiling;
     public Camera RenderingCam;
     public GameObject cri;
+    public GameObject cri2;
     public string myToken;
+    public byte[] nowImage;
+
+    public GameObject ShareOnButton;
+    public GameObject NoShareOnButton;
 
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void OnClickShareButton()
     {
@@ -57,7 +56,7 @@ public class RoomShareManager : MonoBehaviour
         RawImage ri = cri.GetComponent<RawImage>();
 
         // 각 모델을 위한 Render Texture 생성
-        RenderTexture renderTextures = new RenderTexture(256, 256, 16);
+        RenderTexture renderTextures = new RenderTexture(1024, 1024, 16);
         RenderingCam.targetTexture = renderTextures;
 
         // 모델 위치 조정 및 렌더링
@@ -65,9 +64,25 @@ public class RoomShareManager : MonoBehaviour
 
         // UI에 해당 Render Texture 할당
         ri.texture = renderTextures;
-        RenderingCam.targetTexture = renderTextures = new RenderTexture(256, 256, 16);
-
+        //RenderingCam.targetTexture = renderTextures = new RenderTexture(256, 256, 16);
+       
+        Texture2D texture2D = ConvertTextureToTexture2D(RenderingCam.targetTexture);
+        cri2.GetComponent<RawImage>().texture = texture2D;
+        //cri.GetComponent<RawImage>().texture = cri2.GetComponent<RawImage>().texture;
+        nowImage = texture2D.EncodeToPNG();
+        print(nowImage);
         ceiling.SetActive(true);
+    }
+
+    private Texture2D ConvertTextureToTexture2D(RenderTexture texture)
+    {
+        var oldRen = RenderTexture.active;
+        RenderTexture.active = texture;
+        var texture2D = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false, false);
+        texture2D.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0);
+        texture2D.Apply();
+        RenderTexture.active = oldRen;
+        return texture2D;
     }
 
 
@@ -75,20 +90,18 @@ public class RoomShareManager : MonoBehaviour
 
     IEnumerator PostRequest()
     {
-        // 데이터를 보낼 필요가 없는 경우 빈 JSON 데이터 준비
-        string jsonData = "{}";
+        //// 데이터를 보낼 필요가 없는 경우 빈 JSON 데이터 준비
+        //string jsonData = "{}";
 
+        print(nowImage);
         string jwtToken = LoginInfoManager.instance.myToken;
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("thumbnail", nowImage, "photo.png", "image/png");
 
         // UnityWebRequest에 POST 요청 초기화
-        UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        UnityWebRequest request = UnityWebRequest.Post(apiUrl, form);
         request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
-
-        print("fads---");
 
         // 요청 보내기
         yield return request.SendWebRequest();
@@ -173,8 +186,5 @@ public class RoomShareManager : MonoBehaviour
             Debug.Log("서버응답" + responseText);
 
         }
-
     }
-
-
 }

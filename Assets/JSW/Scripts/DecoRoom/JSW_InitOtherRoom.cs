@@ -12,13 +12,50 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
 
     private string apiUrl = "http://125.132.216.190:12223/api/rooms/public/"; // Replace with the actual API endpoint
 
+
+    public bool isOpening;
+
+    public GameObject openingObject;
+
+    public IEnumerator Opening()
+    {
+        openingObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        openingObject.transform.GetChild(4).gameObject.SetActive(false);
+
+        iTween.ScaleTo(openingObject, iTween.Hash(
+            "scale", Vector3.one * 80,        // 목표 스케일 (1, 1, 1)
+            "time", 1f,                // 애니메이션 시간 (조정 가능)
+            "easeType", "easeInCirc", // 통통 튀는 느낌의 easeType
+            "oncomplete", "OnCompleteOpening", // 애니메이션 완료 시 호출할 함수
+            "oncompletetarget", gameObject
+        ));
+    }
+
+    public void OnCompleteOpening()
+    {
+        isOpening = true;
+        openingObject.SetActive(false);
+    }
+
+    public IEnumerator Closing()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
+
+
+
+
+
+
+
     private void Start()
     {
         DRM = GetComponent<JSW_DecorateRoomManager>();
-        if (PhotonNetwork.CountOfPlayersInRooms == 1)
-        {
-            GetRoomStatus();
-        }
+        StartCoroutine(Opening());
     }
 
     // Call this function to start the GET request

@@ -235,7 +235,7 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
                 print("3D사진 잘 올라감2");
                 Debug.Log("Response: " + request.downloadHandler.text);
                 Photo3DFirst wrapper = JsonUtility.FromJson<Photo3DFirst>(request.downloadHandler.text);
-                StartCoroutine(LoadOBJWithTexture(wrapper.textureUrl, wrapper.materialUrl));
+                //StartCoroutine(LoadOBJWithTexture(wrapper.textureUrl, wrapper.materialUrl));
 
 
                 object[] sendContent = new object[] { wrapper.textureUrl, wrapper.materialUrl};
