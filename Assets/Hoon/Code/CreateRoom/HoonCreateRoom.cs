@@ -34,6 +34,7 @@ public class HoonCreateRoom : MonoBehaviour
     public Image[] img_Test;
     public GameObject[] presetRoomArray;
     public List<Sprite> roomImage = new List<Sprite>();
+    public Dictionary<int, Sprite> collectionSpriteMap = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> presetSpriteMap = new Dictionary<int, Sprite>(); // presetID와 Sprite 매칭
     public Dictionary<int, Sprite> shareSpriteMap = new Dictionary<int, Sprite>();
 
@@ -575,7 +576,7 @@ public class HoonCreateRoom : MonoBehaviour
             {
                 // 결과 출력: GetPresetList[0]
                 Debug.Log(JsonConvert.SerializeObject(shareRoomInfoList[i], Formatting.Indented));
-                //DownloadShareImage(shareRoomInfoList[i].roomId, shareRoomInfoList[i].thumbnailUrl);//0번을 가져옵니다.
+                
                 
             }
             //CreateShareRoomButton(shareRoomInfoList[i].roomId); //크기만큼 방을 생성하기
@@ -583,13 +584,13 @@ public class HoonCreateRoom : MonoBehaviour
         }
 
     }
-    public void DownloadShareImage(int roomID, string urlPresetImage)
+    public void DownloadShareImage(int roomID, string urlPresetImage, GameObject obj)
     {
         //print("ImageUrl" + urlPresetImage);
-        StartCoroutine(WaitDownloadSharedImage(roomID, urlPresetImage));
+        StartCoroutine(WaitDownloadSharedImage(roomID, urlPresetImage, obj));
     }
 
-    IEnumerator WaitDownloadSharedImage(int roomID, string urlPresetImage)
+    IEnumerator WaitDownloadSharedImage(int roomID, string urlPresetImage, GameObject obj )
     {
 
         // UnityWebRequest를 사용하여 이미지 다운로드
@@ -644,7 +645,7 @@ public class HoonCreateRoom : MonoBehaviour
             shareRoom.GetComponent<HoonCheckShareRoom>().ChangeCoupleRoomName(); //이름바꾸어주기
             //각방에 스크립트를 넣어주고 각 변수를 확인해주자.
             shareRoom.GetComponent<HoonCheckShareRoom>().shareIndex = shareRoomInfoList[i].roomId;
-           
+            DownloadShareImage(shareRoomInfoList[i].roomId, shareRoomInfoList[i].thumbnailUrl, shareRoom);//0번을 가져옵니다.
 
             // 생성된 버튼 정보 기록
             shareIDHash.Add(shareID);
@@ -670,7 +671,8 @@ public class HoonCreateRoom : MonoBehaviour
             shareRoom.GetComponent<HoonCheckShareRoom>().ChangeCoupleRoomName(); //이름바꾸어주기
             //각방에 스크립트를 넣어주고 각 변수를 확인해주자.
             shareRoom.GetComponent<HoonCheckShareRoom>().shareIndex = shareRoomInfoList[i].roomId;
-            shareRoom.GetComponent<Image>().sprite = presetSpriteMap[id];
+            //이미지를 변경해주자.
+            shareRoom.GetComponent<Image>().sprite = shareSpriteMap[id];
 
             // 생성된 버튼 정보 기록
             shareIDHash.Add(shareID);
@@ -679,10 +681,6 @@ public class HoonCreateRoom : MonoBehaviour
         print("누적된 버튼생성량" + shareIDHash.Count);
 
     }
-
-
-    
-
     //프리셋 방 목록조회
     public void ViewPresetRoom()
     {
@@ -778,14 +776,14 @@ public class HoonCreateRoom : MonoBehaviour
             {
                 presetSpriteMap[presetID] = sprite;//중복있으면 덮어쓰기
             }
+            Debug.LogError("imgIndex" + imgIndex + "presetID" + presetID);
+            img_Test[imgIndex].sprite = presetSpriteMap[presetID]; //이미지에 저장.
+            imgIndex++;
             if (imgIndex == img_Test.Length)
             {
                 imgIndex = 0;
                 Debug.LogError("이미지인덱스초기화");
             }
-            img_Test[imgIndex].sprite = presetSpriteMap[presetID]; //이미지에 저장.
-            imgIndex++;
-            Debug.LogError("imgIndex" + imgIndex);
 
 
         }
@@ -795,8 +793,6 @@ public class HoonCreateRoom : MonoBehaviour
         }
 
     }
-
-
 
     //저장된 방 목록조회
     public void ViewCollectionRoom()
@@ -840,6 +836,7 @@ public class HoonCreateRoom : MonoBehaviour
             // JSON 배열을 List<RoomInfo>로 변환
             List<CollectionRoomInfo> roomInfoList = JsonConvert.DeserializeObject<List<CollectionRoomInfo>>(responseText);
 
+            
             // ID 기준으로 중복 제거를 위해 Dictionary 사용
             Dictionary<int, CollectionRoomInfo> roomDictionary = new Dictionary<int, CollectionRoomInfo>();
             foreach (CollectionRoomInfo room in roomInfoList)
@@ -861,6 +858,7 @@ public class HoonCreateRoom : MonoBehaviour
                 // JSON 문자열로 직렬화하여 출력
                 string roomDataAsString = JsonConvert.SerializeObject(room, Formatting.Indented);
                 Debug.Log("Room Info: " + roomDataAsString);
+                
             }
 
             Debug.LogError("방버튼을 만듭시다.");
@@ -878,9 +876,8 @@ public class HoonCreateRoom : MonoBehaviour
                 print("이미 방을 만들었어용");
             }
 
-
-
         }
+
     }
 
     public void ViewCollectionRoom(int id)
@@ -899,7 +896,6 @@ public class HoonCreateRoom : MonoBehaviour
 
         //print("요청중");
         yield return request.SendWebRequest();
-
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + request.error);
@@ -919,7 +915,6 @@ public class HoonCreateRoom : MonoBehaviour
         {
             string responseText = request.downloadHandler.text;
             Debug.Log("서버응답" + responseText);
-
             // JSON 배열을 List<RoomInfo>로 변환
             List<CollectionRoomInfo> roomInfoList = JsonConvert.DeserializeObject<List<CollectionRoomInfo>>(responseText);
 
@@ -982,6 +977,9 @@ public class HoonCreateRoom : MonoBehaviour
             GameObject collectionRoom = Instantiate(btn_MyCollection, colloectionContent);
             //각방에 스크립트를 넣어주고 각 변수를 확인해주자.
             collectionRoom.GetComponent<HoonCheckCollectRoom>().collectionIndex = collectionRoomList[i].id;
+            //썬네일을 받아서 이미지에 추가해줘야함.
+            DownloadCollectionImage(collectionRoomList[i].id, collectionRoomList[i].thumbnailUrl, collectionRoom); 
+            
 
             // 생성된 버튼 정보 기록
             collectionIDHash.Add(collectionID);
@@ -1016,6 +1014,49 @@ public class HoonCreateRoom : MonoBehaviour
         print("누적된 버튼생성량" + collectionIDHash.Count);
 
     }
+
+    public void DownloadCollectionImage(int roomID, string urlCollectionImage, GameObject obj)
+    {
+        //print("ImageUrl" + urlPresetImage);
+        StartCoroutine(WaitDownloadCollectionImage(roomID, urlCollectionImage, obj));
+    }
+
+    IEnumerator WaitDownloadCollectionImage(int roomID, string urlCollectionImage, GameObject obj)
+    {
+
+        // UnityWebRequest를 사용하여 이미지 다운로드
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(urlCollectionImage);
+        yield return request.SendWebRequest();
+        //Debug.Log("Request completed.");
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Image download successful.");
+            // 텍스처로 변환
+            Texture2D downloadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            Sprite sprite = TextureToSprite(downloadedTexture);
+
+
+            // 중복 키 체크 및 추가
+            if (!collectionSpriteMap.ContainsKey(roomID))
+            {
+                collectionSpriteMap.Add(roomID, sprite);//중복없으면 추가
+                obj.GetComponent<Image>().sprite = sprite;
+            }
+            else
+            {
+                collectionSpriteMap[roomID] = sprite;//중복있으면 덮어쓰기
+                obj.GetComponent<Image>().sprite = sprite;
+            }
+            
+
+        }
+        else
+        {
+            Debug.LogError("Image download failed: " + request.error);
+        }
+
+    }
+
     //방전체목록, 공유된 목록전체를 가져옵니다.
     public void ViewStatus()
     {
