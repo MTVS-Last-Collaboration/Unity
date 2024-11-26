@@ -29,9 +29,10 @@ public class FlowerEvolution : MonoBehaviourPun
     private Vector3 originalScale;
 
     private HoonSoundManagerLogin sound;
-
+    int count = 0;
     private void Start()
     {
+        
         flower = GetComponent<Flower>();
         points = GameObject.Find("PointsManager").GetComponent<ChatTestHttp>();
         Flower.States newState = flower.curState;
@@ -44,7 +45,8 @@ public class FlowerEvolution : MonoBehaviourPun
                 originalScale = flowerObj.transform.localScale;
             }
         }
-
+        count++;
+        
         if (flower.evolutionCount >= blossomEvolCount)
         {
             newState = Flower.States.BLOSSOM;
@@ -60,6 +62,7 @@ public class FlowerEvolution : MonoBehaviourPun
             newState = Flower.States.SPROUT;
             StartEvolution(newState, true);
         }
+        print("꽃이름 : " + flower.gameObject.name + ", 카운트 : " + flower.evolutionCount + "몇번? : " + count);
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
     }
 
@@ -77,7 +80,7 @@ public class FlowerEvolution : MonoBehaviourPun
         {
             flowerObj.SetActive(false);
         }
-
+        print("꽃이름 : " + flower.gameObject.name + ", 카운트 : " + flower.evolutionCount + "몇번? : " + count);
         GameObject targetFlower = null;
 
         // 현재 상태에 맞는 꽃 오브젝트만 활성화
@@ -118,6 +121,7 @@ public class FlowerEvolution : MonoBehaviourPun
 
     public void CheckEvolutionCount(bool isFirst)
     {
+        print("꽃이름 : " + flower.gameObject.name + ", 카운트 : " + flower.evolutionCount + "몇번? : " + count);
         if (isFirst)
         {
             // 최초 로딩 시에는 즉시 해당 상태로 변경
@@ -143,6 +147,7 @@ public class FlowerEvolution : MonoBehaviourPun
 
     private IEnumerator SequentialEvolution()
     {
+        print("꽃이름 : " + flower.gameObject.name + ", 카운트 : " + flower.evolutionCount + "몇번? : " + count);
         // SEED에서 시작
         if (flower.curState == Flower.States.SEED && flower.evolutionCount >= sproutEvolCount)
         {
@@ -167,6 +172,7 @@ public class FlowerEvolution : MonoBehaviourPun
 
     private void StartEvolution(Flower.States newState, bool isFirst)
     {
+        print("꽃이름 : " + flower.gameObject.name + ", 카운트 : " + flower.evolutionCount + "몇번? : " + count);
         flower.curState = newState; // 현재 상태 즉시 업데이트
         photonView.RPC("RPC_SyncFlowerState", RpcTarget.All, newState);
         StartCoroutine(EvolutionAnimation(newState, isFirst));
@@ -212,6 +218,7 @@ public class FlowerEvolution : MonoBehaviourPun
 
     IEnumerator EvolutionAnimation(Flower.States state, bool isFirst)
     {
+        print("꽃이름 : " + flower.gameObject.name + ", 카운트 : " + flower.evolutionCount + "몇번? : " + count);
         // 최초 씬이 시작될 때가 아닐 때만 사운드와 이펙트 재생
         if (!isFirst)
         {

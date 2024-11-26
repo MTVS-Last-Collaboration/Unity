@@ -155,7 +155,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         }
     }
 
-    private void CheckForPlayer()
+    public void CheckForPlayer()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, idHandlingRadius);
         bool foundPlayer = false;
