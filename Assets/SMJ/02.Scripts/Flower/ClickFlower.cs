@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Photon.Pun;
+using static UnityEngine.ParticleSystem;
 
 public class ClickFlower : MonoBehaviourPunCallbacks
 {
@@ -35,6 +36,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
     private HoonSoundManagerLogin sound;
 
     public Camera mainCam;
+    public ParticleTriggerController particle;
 
     private void Awake()
     {
@@ -141,6 +143,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         }
     }
 
+
+
     [PunRPC]
     private void RPC_SyncFlowerClickId(int viewID) // CheckID 대신 ViewID 사용
     {
@@ -230,6 +234,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
         if (!isPlayerInRange || targetFlower == null || targetFlower.uiManager == null || isFirstClick)
             return;
 
+        particle.DisableChecking();
         isFirstClick = true;
 
         if (!isFirst)

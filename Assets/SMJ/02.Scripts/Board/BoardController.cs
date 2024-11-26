@@ -35,6 +35,7 @@ public class BoardController : MonoBehaviour
     public void OnClickExitBoard()
     {
         sound.PlaySound("smjAudioClopAttay", 1);
+        clickBoard.particle.EnableChecking();
         clickBoard.ExitBoard();
     }
 
