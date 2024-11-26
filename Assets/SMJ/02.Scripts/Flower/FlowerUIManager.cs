@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.IO;
 using UnityEngine.Networking;
+using Photon.Pun.Demo.Procedural;
 
 public class FlowerUIManager : MonoBehaviourPunCallbacks
 {
@@ -103,6 +104,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         {
             Debug.Log($"[Start] Initializing owned object - ViewID: {photonView.ViewID}");
             playerToken = PlayerPrefs.GetString("token");
+            print("누구? : " + gameObject.name + "내토큰 : " + playerToken);
             StartCoroutine(InitializeAfterDelay());
             // 파트너 오브젝트가 설정될 때까지 대기 후 API 호출
             StartCoroutine(WaitForPartnerAndInitialize());
@@ -508,7 +510,8 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
             }
 
             bool isInitialSync = Time.timeSinceLevelLoad < 1f;
-            flowerEvol.CheckEvolutionCount(isInitialSync);
+            //flowerEvol.CheckEvolutionCount(isInitialSync);
+            
             UpdateUI(flower);
             UpdateUIText();
         }
@@ -1155,10 +1158,10 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         public int myMoodCount;
         public string myFlowerName;
     }
-
+    
     private IEnumerator GetVoiceStatus()
     {
-        Debug.Log($"{gameObject.name} > [GetVoiceStatus] Starting for ViewID: {photonView.ViewID}, IsMine: {photonView.IsMine}, Token: {(playerToken != null ? "Set" : "Null")}");
+        Debug.Log($"{gameObject.name} > [GetVoiceStatus] Starting for ViewID: {photonView.ViewID}");
         if (string.IsNullOrEmpty(playerToken))
         {
             Debug.LogError($"[GetVoiceStatus] Token is empty for ViewID: {photonView.ViewID}");
@@ -1169,67 +1172,74 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
             Debug.Log($"[GetVoiceStatus] Skipping - Not owner of ViewID: {photonView.ViewID}");
             yield break;
         }
+        
         if (flower.managerId != "Male")
         {
             yield return new WaitForSeconds(0.5f);
         }
-        if (partnerFlower.flower.nickName != "")
+        if (click.checkID == null)
         {
-            Debug.Log(gameObject.name + " 상대닉 이미 있어!");
-            yield break;
+            click.CheckForPlayer();
+            yield return new WaitForSeconds(0.2f);
         }
+        //print("누구? : " + gameObject.name + ", 내꺼니? : " + click.checkID.IsMine(flower));
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
         yield return NetworkManager.Instance.Get<VoiceStatus>("api/flower/voice/status",
             (success, response) =>
             {
                 if (success && response != null)
                 {
-                    // 토큰 소유자의 꽃에 내 정보 적용
-                    isRecordComplete = response.myRecordComplete;
-                    isListenComplete = response.myListenComplete;
-                    flower.evolutionCount = response.myMoodCount;
-                    flower.nickName = response.myFlowerName;
-                    nameInput.text = response.myFlowerName;
-                    
-                    print(gameObject.name + "isRecordComplete : " + response.myRecordComplete + ", isListenComplete : " + response.myListenComplete);
-
-                    // 다른 꽃을 찾아서 파트너 정보 적용
+                    print("누구? : " + gameObject.name + ", 내꺼니? : " + click.checkID.IsMine(flower));
+                    bool isFirstSync = Time.timeSinceLevelLoad < 1f;
                     FlowerUIManager[] flowers = GameObject.FindObjectsOfType<FlowerUIManager>();
+
+                    // API를 호출한 오브젝트에서 모든 꽃의 정보를 업데이트
                     foreach (var f in flowers)
                     {
-                        if (f != this)
-                        {
-                            partnerFlower = f;
-                            partnerFlower.isRecordComplete = response.partnerRecordComplete;
-                            partnerFlower.isListenComplete = response.partnerListenComplete;
-                            partnerFlower.flower.evolutionCount = response.partnerMoodCount;
-                            partnerFlower.flower.nickName = response.partnerFlowerName;
-                            partnerFlower.nameInput.text = response.partnerFlowerName;
-                            print(gameObject.name + "isRecordComplete : " + response.partnerRecordComplete + ", isListenComplete : " + response.partnerListenComplete);
-                        }
-                    }
+                        bool isTokenOwner = f.click.checkID != null && f.click.checkID.IsMine(f.flower);
 
-                    Debug.Log($"Voice status updated for ViewID {photonView.ViewID}:\n" +
-                             $"My Record: {isRecordComplete}, Listen: {isListenComplete}, Name: {flower.nickName}\n" +
-                             $"Partner Record: {partnerFlower?.isRecordComplete}, Listen: {partnerFlower?.isListenComplete}, Name: {partnerFlower?.flower.nickName}");
+                        if (isTokenOwner)
+                        {
+                            // 토큰 소유자의 꽃이면 my 정보 사용
+                            f.isRecordComplete = response.myRecordComplete;
+                            f.isListenComplete = response.myListenComplete;
+                            f.flower.evolutionCount = response.myMoodCount;
+                            f.flower.nickName = response.myFlowerName;
+                            f.nameInput.text = response.myFlowerName;
+                            print($"[{gameObject.name}] 토큰 소유자의 꽃({f.gameObject.name})에 my 정보 적용");
+                        }
+                        else
+                        {
+                            // 토큰 소유자가 아닌 꽃이면 partner 정보 사용
+                            f.isRecordComplete = response.partnerRecordComplete;
+                            f.isListenComplete = response.partnerListenComplete;
+                            f.flower.evolutionCount = response.partnerMoodCount;
+                            f.flower.nickName = response.partnerFlowerName;
+                            f.nameInput.text = response.partnerFlowerName;
+                            print($"[{gameObject.name}] 파트너의 꽃({f.gameObject.name})에 partner 정보 적용");
+                        }
+
+                        f.photonView.RPC("RPC_SyncFlowerState", RpcTarget.AllBuffered,
+                            f.flower.curState,
+                            f.flower.nickName,
+                            f.isRecordComplete,
+                            f.isListenComplete,
+                            f.flower.evolutionCount,
+                            f.flower.voiceClip != null,
+                            f.photonView.ViewID);
+
+                        f.flowerEvol.CheckEvolutionCount(isFirstSync);
+                    }
 
                     UpdateUI(flower);
                     UpdateUIText();
-
-                    //flowerEvol.CheckEvolutionCount(true);
-
-                    photonView.RPC("RPC_SyncFlowerState", RpcTarget.AllBuffered,
-                        flower.curState,
-                        flower.nickName,
-                        isRecordComplete,
-                        isListenComplete,
-                        flower.evolutionCount,
-                        flower.voiceClip != null,
-                        photonView.ViewID);
                 }
                 else
                 {
-                    Debug.LogError($"[GetVoiceStatus] API call failed for ViewID: {photonView.ViewID}");
+                    if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
+                    {
+                        Debug.LogError($"[GetVoiceStatus] API call failed for ViewID: {photonView.ViewID}");
+                    }
                 }
             });
     }
