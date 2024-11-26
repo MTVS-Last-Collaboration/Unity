@@ -16,7 +16,11 @@ public class HoonCheckCollectRoom : MonoBehaviour
     
     void Start()
     {
-        
+        GameObject hoonLobbyCanvas = GameObject.Find("HoonLoobyCanvas");
+        if (hoonLobbyCanvas != null)
+        {
+            hoonCreateRoom = hoonLobbyCanvas.GetComponent<HoonCreateRoom>();
+        }
     }
 
     // Update is called once per frame
