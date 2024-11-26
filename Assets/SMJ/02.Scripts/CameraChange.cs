@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using System.Collections;
 
 public class CameraSwitch : MonoBehaviour
 {
@@ -10,21 +11,33 @@ public class CameraSwitch : MonoBehaviour
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
-
         if (triggerCamera == null)
             triggerCamera = GetComponentInChildren<Camera>();
 
-        // 초기 디스플레이 설정 (인덱스는 0부터 시작)
-        mainCamera.targetDisplay = 0;    // Display 1
-        triggerCamera.targetDisplay = 1;  // Display 2
+        StartCoroutine(InitializeDisplays());
+    }
+
+    private IEnumerator InitializeDisplays()
+    {
+        Debug.Log("displays connected: " + Display.displays.Length);
+
+        // 추가 디스플레이가 있는지 확인하고 활성화
+        if (Display.displays.Length > 1)
+        {
+            Display.displays[1].Activate();
+            yield return new WaitForSeconds(0.5f); // 디스플레이 활성화 대기
+        }
+
+        // 초기 카메라 설정
+        SwitchToMainCamera();
+        Debug.Log("Displays initialized");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
-            mainCamera.targetDisplay = 1;     // Display 2
-            triggerCamera.targetDisplay = 0;  // Display 1
+            StartCoroutine(SwitchToTriggerCamera());
         }
     }
 
@@ -32,8 +45,33 @@ public class CameraSwitch : MonoBehaviour
     {
         if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
-            mainCamera.targetDisplay = 0;     // Display 1
-            triggerCamera.targetDisplay = 1;  // Display 2
+            StartCoroutine(SwitchToMainCameraRoutine());
         }
+    }
+
+    private void SwitchToMainCamera()
+    {
+        mainCamera.enabled = true;
+        mainCamera.targetDisplay = 0;
+        triggerCamera.enabled = false;
+        triggerCamera.targetDisplay = 1;
+    }
+
+    private IEnumerator SwitchToMainCameraRoutine()
+    {
+        triggerCamera.targetDisplay = 1;
+        mainCamera.targetDisplay = 0;
+        yield return new WaitForSeconds(0.005f);
+        triggerCamera.enabled = false;
+        mainCamera.enabled = true;
+    }
+
+    private IEnumerator SwitchToTriggerCamera()
+    {
+        mainCamera.targetDisplay = 1;
+        triggerCamera.targetDisplay = 0;
+        yield return new WaitForSeconds(0.005f);
+        mainCamera.enabled = false;
+        triggerCamera.enabled = true;
     }
 }

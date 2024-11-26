@@ -36,7 +36,8 @@ public class TopicBanner : MonoBehaviour
             sound.PlaySound("smjAudioClopAttay", 0);
             topicManager.CloseWeeklyTopics();
             button.interactable = false;
-            DateTime now = DateTime.Now.AddDays(-days);
+            DateTime now = new DateTime(2024, 11, 15).AddDays(-days);
+            topicManager._date = now.ToString("yyyy-MM-dd");
             await InitTopic(now);
         }
         finally

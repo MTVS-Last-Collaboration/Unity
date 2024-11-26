@@ -34,6 +34,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     private HoonSoundManagerLogin sound;
 
+    public Camera mainCam;
+
     private void Awake()
     {
         targetFlower = GetComponent<Flower>();
@@ -44,32 +46,47 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        sound = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonSoundManagerLogin>();
-        cameraTr = Camera.main.transform;
-
-        // 로컬 플레이어의 카메라 컨트롤러 찾기
-        GameObject localPlayer = PhotonNetwork.LocalPlayer.TagObject as GameObject;
-        if (localPlayer != null)
+        // 이전에 있던 모든 초기화 코드 제거
+        if (Camera.main != null)
         {
-            cameraControll = localPlayer.GetComponent<CameraControllTest>();
+            cameraTr = mainCam.transform;
+        }
+        // 나머지 초기화는 코루틴으로 이동
+        StartCoroutine(InitializeComponents());
+    }
+    private IEnumerator InitializeComponents()
+    {
+        // 씬이 완전히 로드될 때까지 대기
+        yield return new WaitForSeconds(1f);
+
+        // HoonLoobyCanvas 찾기 시도 (널체크 추가)
+        GameObject lobbyCanvas = GameObject.Find("SMJ");
+        if (lobbyCanvas != null)
+        {
+            sound = lobbyCanvas.GetComponent<HoonSoundManagerLogin>();
         }
 
-        // 만약 카메라 컨트롤러를 찾지 못했다면, 씬에서 찾아보기
-        if (cameraControll == null)
+        // 카메라가 아직 없다면 다시 시도
+        if (cameraTr == null && Camera.main != null)
         {
-            var players = GameObject.FindGameObjectsWithTag("Player");
-            foreach (var player in players)
+            cameraTr = mainCam.transform;
+        }
+
+        // 카메라 컨트롤러 찾기
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in players)
+        {
+            var playerPhotonView = player.GetComponent<PhotonView>();
+            if (playerPhotonView != null && playerPhotonView.IsMine)
             {
-                var playerPhotonView = player.GetComponent<PhotonView>();
-                if (playerPhotonView != null && playerPhotonView.IsMine)
+                cameraControll = player.GetComponent<CameraControllTest>();
+                if (cameraControll != null)
                 {
-                    cameraControll = player.GetComponent<CameraControllTest>();
                     break;
                 }
             }
         }
     }
-
     private IEnumerator WaitForInitialization()
     {
         while (!PhotonNetwork.IsConnectedAndReady)
@@ -282,7 +299,13 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     private void CheckInteraction(Vector2 position)
     {
-        Ray ray = Camera.main.ScreenPointToRay(position);
+        if (mainCam == null)
+        {
+            Debug.LogError("Main Camera is null!");
+            return;
+        }
+
+        Ray ray = mainCam.ScreenPointToRay(position);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
@@ -294,7 +317,8 @@ public class ClickFlower : MonoBehaviourPunCallbacks
 
     IEnumerator LerpCamera()
     {
-        Camera.main.targetDisplay = 0;
+        mainCam.targetDisplay = 0;
+        mainCam.enabled = true;
         if (cameraControll != null)
         {
             cameraControll.isMoveAble = false;
@@ -338,6 +362,7 @@ public class ClickFlower : MonoBehaviourPunCallbacks
     {
         if (cameraControll != null)
         {
+            mainCam.enabled = false;
             curtime = 0f;
             float lerpDuration = 0.5f;
             Vector3 startPosition = cameraTr.position;
