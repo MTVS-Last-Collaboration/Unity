@@ -398,6 +398,8 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
+        print(jwtToken + " token ");
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)

@@ -41,7 +41,16 @@ public class RoomShareManager : MonoBehaviour
 
         // UI에 해당 Render Texture 할당
         ri.texture = renderTextures;
-        RenderingCam.targetTexture = renderTextures = new RenderTexture(256, 256, 16);
+        //RenderingCam.targetTexture = renderTextures = new RenderTexture(256, 256, 16);
+
+
+
+        Texture2D texture2D = ConvertTextureToTexture2D(RenderingCam.targetTexture);
+        cri2.GetComponent<RawImage>().texture = texture2D;
+        //cri.GetComponent<RawImage>().texture = cri2.GetComponent<RawImage>().texture;
+        nowImage = texture2D.EncodeToPNG();
+        print(nowImage);
+
 
         ceiling.SetActive(true);
 
@@ -120,9 +129,9 @@ public class RoomShareManager : MonoBehaviour
 
     public void OnListMyRoom()
     {
-        //string jsonData = "";
-        //StartCoroutine(PostShareRoomStart(jsonData));
         StartCoroutine(PostShareRoomStart());
+        ShareOnButton.SetActive(false);
+        NoShareOnButton.SetActive(true);
     }
     //
     IEnumerator PostShareRoomStart()
@@ -157,6 +166,8 @@ public class RoomShareManager : MonoBehaviour
     {
         string jsonData = "";
         StartCoroutine(PostShareRoomEnd(jsonData));
+        ShareOnButton.SetActive(true);
+        NoShareOnButton.SetActive(false);
     }
 
     IEnumerator PostShareRoomEnd(string jsonData)

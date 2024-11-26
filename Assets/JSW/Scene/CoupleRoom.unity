@@ -42031,8 +42031,8 @@ MonoBehaviour:
   cri2: {fileID: 873592782}
   myToken: 
   nowImage: 
-  ShareOnButton: {fileID: 0}
-  NoShareOnButton: {fileID: 0}
+  ShareOnButton: {fileID: 1153325982}
+  NoShareOnButton: {fileID: 1195229681}
 --- !u!1001 &839737956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52532,7 +52532,7 @@ PrefabInstance:
     - target: {fileID: 6865704080437056590, guid: efad07394ea1a9345b22f4b99c66daf6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.35
+      value: 3.467
       objectReference: {fileID: 0}
     - target: {fileID: 6865704080437056590, guid: efad07394ea1a9345b22f4b99c66daf6,
         type: 3}
@@ -58486,7 +58486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1195229682
 RectTransform:
   m_ObjectHideFlags: 0
@@ -80346,7 +80346,7 @@ Transform:
   m_GameObject: {fileID: 1639116025}
   serializedVersion: 2
   m_LocalRotation: {x: 0.8322612, y: -0, z: -0, w: 0.5543838}
-  m_LocalPosition: {x: 3.51, y: 3.93, z: 6.98}
+  m_LocalPosition: {x: 3.6, y: 3.441, z: 7.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -97675,6 +97675,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 836804403}
+        m_TargetAssemblyTypeName: RoomShareManager, Assembly-CSharp
+        m_MethodName: OnClickImage
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
