@@ -10,6 +10,7 @@ public class ClickBoard : MonoBehaviour
 
     private UIPopupAnimation uiPopup;
     private HoonSoundManagerLogin sound;
+    public ParticleTriggerController particle;
     private void Start()
     {
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
@@ -23,6 +24,7 @@ public class ClickBoard : MonoBehaviour
     public void HandleInteraction()
     {
         sound.PlaySound("smjAudioClopAttay", 0);
+        particle.DisableChecking();
         playerUIObject.SetActive(false);
         boardUIObject.SetActive(true);
         boardPartition.SetActive(true);

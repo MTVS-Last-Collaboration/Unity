@@ -775,6 +775,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     public void OnCloseButtonClick()
     {
         sound.PlaySound("smjAudioClopAttay", 1);
+        click.particle.EnableChecking();
         HideFlowerInfo();
         click.ReturnCamera();
     }
@@ -914,17 +915,20 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                                     print(recordCount);
                                     if (recordCount < 3)
                                     {
+                                        sound.PlaySound("smjAudioClopAttay", 6);
                                         OffPanel();
                                         recordButtons[3].SetActive(true); // 재녹음 버튼
                                     }
                                     else
                                     {
+                                        sound.PlaySound("smjAudioClopAttay", 6);
                                         OffPanel();
                                         recordButtons[5].SetActive(true); // 최종 실패 UI
                                     }
                                 }
                                 else // "긍정" 또는 "중립"
                                 {
+                                    sound.PlaySound("smjAudioClopAttay", 5);
                                     isSuccess = true;
                                     PlayerPrefs.SetInt($"IsSuccess_{photonView.ViewID}", 1);
                                     PlayerPrefs.Save();

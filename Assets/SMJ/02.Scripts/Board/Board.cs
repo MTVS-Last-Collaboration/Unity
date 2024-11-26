@@ -105,7 +105,7 @@ public class Board : MonoBehaviour
                 }
 
                 // 날짜 텍스트 업데이트
-                TimeSpan difference = DateTime.Now - _date;
+                TimeSpan difference = new DateTime(2024, 11, 15) - _date;
                 dayTopicText.text = difference.Days > 0
                     ? $"<{difference.Days}일전 주제>"
                     : "<오늘의 주제>";
