@@ -2191,11 +2191,21 @@ MonoBehaviour:
   choiceRoomOk: {fileID: 217479269}
   onMoveTrigger: {fileID: 1151646544}
   colloectionContent: {fileID: 866548045}
+  shareContent: {fileID: 958014837}
   btn_MyCollection: {fileID: 892348653}
+  img_ShareRoom: {fileID: 1796517020041096688, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+    type: 3}
+  presetRoomArray:
+  - {fileID: 1055393385}
+  - {fileID: 1540599967}
+  - {fileID: 763985184}
   myToken: 
-  presetIndex: 0
-  collectionIndex: 0
   checkCollectionMarkCount: 0
+  checkPresetMarkCount: 0
+  checkShareMarkCount: 0
+  collectionIndex: 0
+  presetIndex: 0
+  shareIndex: 0
 --- !u!114 &62636650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9724,7 +9734,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1927073415}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.53763443
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15570,7 +15580,7 @@ GameObject:
   - component: {fileID: 462164312}
   - component: {fileID: 462164311}
   m_Layer: 5
-  m_Name: Btn_MoveRoom (1)
+  m_Name: Btn_AddPresetCollection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15642,7 +15652,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 62636649}
         m_TargetAssemblyTypeName: HoonCreateRoom, Assembly-CSharp
-        m_MethodName: MoveRoom
+        m_MethodName: AddPresetRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27037,7 +27047,7 @@ GameObject:
   - component: {fileID: 730690138}
   - component: {fileID: 730690137}
   m_Layer: 5
-  m_Name: GetRoomMark
+  m_Name: GetRoomMark1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27113,7 +27123,7 @@ GameObject:
   - component: {fileID: 732483882}
   - component: {fileID: 732483881}
   m_Layer: 5
-  m_Name: Btn_MoveRoom (2)
+  m_Name: Btn_VewSharedRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27185,7 +27195,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 62636649}
         m_TargetAssemblyTypeName: HoonCreateRoom, Assembly-CSharp
-        m_MethodName: MoveRoom
+        m_MethodName: ViewSharedRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27789,6 +27799,7 @@ GameObject:
   - component: {fileID: 763985188}
   - component: {fileID: 763985187}
   - component: {fileID: 763985186}
+  - component: {fileID: 763985189}
   m_Layer: 5
   m_Name: Btn_GetRoomForm2
   m_TagString: Untagged
@@ -27861,9 +27872,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62636648}
-        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
-        m_MethodName: ViewMarkObejct
+      - m_Target: {fileID: 763985189}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckPresetNumber
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 763985189}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckRoomMarker
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 785558817}
@@ -27911,6 +27934,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763985184}
   m_CullTransparentMesh: 1
+--- !u!114 &763985189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763985184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a0e87811fd9a14c9fe83657ebe51c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  presetIndex: 0
+  roomMarker: {fileID: 785558817}
+  hoonCreateRoom: {fileID: 62636649}
 --- !u!1 &764028971
 GameObject:
   m_ObjectHideFlags: 0
@@ -28390,7 +28428,7 @@ GameObject:
   - component: {fileID: 785558820}
   - component: {fileID: 785558819}
   m_Layer: 5
-  m_Name: GetRoomMark
+  m_Name: GetRoomMark2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30922,7 +30960,7 @@ GameObject:
   - component: {fileID: 866548046}
   - component: {fileID: 866548047}
   m_Layer: 5
-  m_Name: Content
+  m_Name: ContentCollection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33374,7 +33412,7 @@ GameObject:
   - component: {fileID: 958014839}
   - component: {fileID: 958014838}
   m_Layer: 5
-  m_Name: Content
+  m_Name: ContenShare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33395,6 +33433,7 @@ RectTransform:
   - {fileID: 2015854235}
   - {fileID: 2046912154}
   - {fileID: 1555402727}
+  - {fileID: 3011834737189740502}
   m_Father: {fileID: 113976773}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -35736,11 +35775,11 @@ RectTransform:
   - {fileID: 2076351628}
   - {fileID: 1961711924}
   - {fileID: 1736536023}
+  - {fileID: 1722582218}
   - {fileID: 209595425}
   - {fileID: 1879230557}
   - {fileID: 126996662}
   - {fileID: 73530349}
-  - {fileID: 1722582218}
   - {fileID: 285754113}
   m_Father: {fileID: 1691929443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -35761,6 +35800,7 @@ GameObject:
   - component: {fileID: 1055393389}
   - component: {fileID: 1055393388}
   - component: {fileID: 1055393387}
+  - component: {fileID: 1055393390}
   m_Layer: 5
   m_Name: Btn_GetRoomForm0
   m_TagString: Untagged
@@ -35833,9 +35873,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62636648}
-        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
-        m_MethodName: ViewMarkObejct
+      - m_Target: {fileID: 1055393390}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckPresetNumber
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1055393390}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckRoomMarker
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1745569703}
@@ -35883,6 +35935,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055393385}
   m_CullTransparentMesh: 1
+--- !u!114 &1055393390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055393385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a0e87811fd9a14c9fe83657ebe51c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  presetIndex: 0
+  roomMarker: {fileID: 1745569703}
+  hoonCreateRoom: {fileID: 62636649}
 --- !u!1 &1057841109
 GameObject:
   m_ObjectHideFlags: 0
@@ -46284,7 +46351,7 @@ GameObject:
   - component: {fileID: 1413231933}
   - component: {fileID: 1413231932}
   m_Layer: 5
-  m_Name: Text_MoveRoom
+  m_Name: Text_VewSharedRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51034,6 +51101,7 @@ GameObject:
   - component: {fileID: 1540599971}
   - component: {fileID: 1540599970}
   - component: {fileID: 1540599969}
+  - component: {fileID: 1540599972}
   m_Layer: 5
   m_Name: Btn_GetRoomForm1
   m_TagString: Untagged
@@ -51106,9 +51174,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62636648}
-        m_TargetAssemblyTypeName: HoonUIController, Assembly-CSharp
-        m_MethodName: ViewMarkObejct
+      - m_Target: {fileID: 1540599972}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckPresetNumber
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1540599972}
+        m_TargetAssemblyTypeName: HoonCheckPresetRoom, Assembly-CSharp
+        m_MethodName: CheckRoomMarker
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 730690135}
@@ -51156,6 +51236,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540599967}
   m_CullTransparentMesh: 1
+--- !u!114 &1540599972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540599967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a0e87811fd9a14c9fe83657ebe51c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  presetIndex: 0
+  roomMarker: {fileID: 730690135}
+  hoonCreateRoom: {fileID: 62636649}
 --- !u!1 &1541036575
 GameObject:
   m_ObjectHideFlags: 0
@@ -52605,7 +52700,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ????
+  m_text: "\uACF5\uC720\uBC29\uB2F4\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e791567ef337316438666b86c93ad566, type: 2}
   m_sharedMaterial: {fileID: 6757106057086530224, guid: e791567ef337316438666b86c93ad566,
@@ -56561,7 +56656,7 @@ GameObject:
   - component: {fileID: 1722582220}
   - component: {fileID: 1722582219}
   m_Layer: 5
-  m_Name: Btn_test
+  m_Name: Btn_AddShareCollection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56584,7 +56679,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 712, y: 280}
+  m_AnchoredPosition: {x: 713, y: 280}
   m_SizeDelta: {x: 256, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1722582219
@@ -56633,7 +56728,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 62636649}
         m_TargetAssemblyTypeName: HoonCreateRoom, Assembly-CSharp
-        m_MethodName: ViewCollectionRoom
+        m_MethodName: AddSharedRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -57114,7 +57209,7 @@ GameObject:
   - component: {fileID: 1745569706}
   - component: {fileID: 1745569705}
   m_Layer: 5
-  m_Name: GetRoomMark
+  m_Name: GetRoomMark0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63593,7 +63688,7 @@ GameObject:
   - component: {fileID: 1976271958}
   - component: {fileID: 1976271957}
   m_Layer: 5
-  m_Name: Text_MoveRoom
+  m_Name: Text_AddCollection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71626,6 +71721,140 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2266077304085023578}
   m_Mesh: {fileID: -6782690445341110588, guid: d6727102dacdb6f468e77001eb5928d8, type: 3}
+--- !u!1001 &3011834737189740501
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 958014837}
+    m_Modifications:
+    - target: {fileID: 1796517020041096688, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_Name
+      value: Img_ShareRoom (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711527665277365291, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: hoonCreateRoom
+      value: 
+      objectReference: {fileID: 62636649}
+    - target: {fileID: 7772155892877192210, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 62636649}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c9283fa4d05b8bd4f9f11b32b3f06251, type: 3}
+--- !u!224 &3011834737189740502 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2563936456714574092, guid: c9283fa4d05b8bd4f9f11b32b3f06251,
+    type: 3}
+  m_PrefabInstance: {fileID: 3011834737189740501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!33 &3020876592782860073
 MeshFilter:
   m_ObjectHideFlags: 0

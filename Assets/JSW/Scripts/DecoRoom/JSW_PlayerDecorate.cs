@@ -280,6 +280,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             funitureOb = hit.collider.gameObject;
             photonView.RPC("PushFunitureSetting_RPC", RpcTarget.AllBuffered);
 
+            print(funitureOb.name);
+
             if (funitureOb.GetComponent<PhotonView>() != null && !funitureOb.GetComponent<PhotonView>().IsMine)
             {
                 funitureOb.GetComponent<PhotonView>().RequestOwnership();

@@ -18,7 +18,7 @@ public class ImageClickPixelPosition : MonoBehaviour, IPointerClickHandler
 
             if (texture == null)
             {
-                Debug.LogError("RawImage에 Texture2D가 할당되지 않았습니다.");
+                print("RawImage에 Texture2D가 할당되지 않았습니다.");
             }
         }
         else
@@ -30,6 +30,7 @@ public class ImageClickPixelPosition : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        JSW_SoundManager.Get().PlayEftSoundClick2();
         texture = rawImage.texture as Texture2D;
         markingImage.SetActive(true);
         if (rawImage == null || texture == null || fixPos == true)

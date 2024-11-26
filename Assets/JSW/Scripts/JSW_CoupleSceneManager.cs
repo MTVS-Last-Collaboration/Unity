@@ -19,7 +19,9 @@ public class JSW_CoupleSceneManager : MonoBehaviour
     public Text coupleDays;
     public int coupleDays_Num;
     public TMP_Text coupleMongDays;
-    public TMP_Text coupleNickName;
+    public TMP_Text coupleMineNickName;
+    public TMP_Text coupleOtherNickName;
+
 
     private void Awake()
     {
@@ -80,7 +82,7 @@ public class JSW_CoupleSceneManager : MonoBehaviour
                 // 두 날짜의 차이를 계산
                 int difference = (today - givenDate).Days;
                 coupleDays_Num = difference;
-                coupleDays.text = "<<color=\"#FF5733\"> D - " + difference.ToString() + "</color>>";
+                coupleDays.text = "<<color=\"#FF5733\"> D - " + difference.ToString() + "</color> >";
                 coupleMongDays.text = "D - " + difference.ToString();
 
                 string CoupleCompleteNick = "";
@@ -121,7 +123,8 @@ public class JSW_CoupleSceneManager : MonoBehaviour
                 {
                     CoupleCompleteNick = "평생을 함께 하고픈 특별한";
                 }
-                coupleNickName.text = CoupleCompleteNick;
+                coupleMineNickName.text = LoginInfoManager.instance.nickName;
+                coupleOtherNickName.text = LoginInfoManager.instance.partnerNickName;
             }
             else if (request.responseCode == 404)
             {

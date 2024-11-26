@@ -17,5 +17,6 @@ public class Item2DTo3D : MonoBehaviour
     public void OnClickButtonMe()
     {
         making3dObject.ClickPic(GetComponent<RawImage>().texture, id);
+        JSW_SoundManager.Get().PlayEftSoundClick1();
     }
 }

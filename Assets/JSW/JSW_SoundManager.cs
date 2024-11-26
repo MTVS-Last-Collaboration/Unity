@@ -64,7 +64,7 @@ public class JSW_SoundManager : MonoBehaviour
     }
     public void PlayEftSoundClick2()
     {
-        int audioIdx = 3;
+        int audioIdx = 4;
         eftAudio.PlayOneShot(eftAudios[audioIdx]);
         //eftAudio.clip = eftAudios[audioIdx];
         //eftAudio.Play();

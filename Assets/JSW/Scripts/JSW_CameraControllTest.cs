@@ -55,7 +55,7 @@ public class JSW_CameraControllTest : MonoBehaviour
             float mainCamPosY = mainCamPos_Object.transform.position.y; //x방향
             float mainCamPosZ = mainCamPos_Object.transform.position.z; //z방향
             mainCam_Object.transform.position = Vector3.Lerp(mainCam_Object.transform.position, new Vector3(mainCamPosX, mainCamPosY, mainCamPosZ) + cameraMoveDir.normalized * 2.5f + Vector3.up * -2.3f, Time.deltaTime); //플레이어의 움직임 따라가기
-            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward, cameraMoveDir, Time.deltaTime * 0.5f); //카메라가 플레이어 방향을 계속 보게함
+            mainCam_Object.transform.forward = Vector3.Lerp(mainCam_Object.transform.forward, cameraMoveDir, Time.deltaTime * 2f); //카메라가 플레이어 방향을 계속 보게함
         }
         else if (cameraPos == "Funiture")    
         {

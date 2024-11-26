@@ -12,7 +12,7 @@ public class ClickBoard : MonoBehaviour
     private HoonSoundManagerLogin sound;
     private void Start()
     {
-        sound = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonSoundManagerLogin>();
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
         playerUIObject = GameObject.Find("HoonLoobyCanvas");
         uiPopup = GetComponent<UIPopupAnimation>();
         uiPopup.SetTarget(boardUIObject.GetComponent<RectTransform>());

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using TMPro;
 using Unity.VisualScripting;
@@ -44,7 +45,7 @@ public class JSW_PetManager : MonoBehaviour
         {
             MongName_InputField.GetComponent<TMP_InputField>().onEndEdit.AddListener(MongNickname);
         }
-
+        StartCoroutine(GetAboutMinssion());
         //nickName_text.text = "어른이 된 " + MongName;
     }
 
@@ -212,6 +213,7 @@ public class JSW_PetManager : MonoBehaviour
             nickName_text.text = "어른이 된 " + MongName;
             Mong.transform.GetChild(3).gameObject.SetActive(true);
         }
+        MongName_TMP.text = MongName;
     }
 
 
@@ -352,4 +354,58 @@ public class JSW_PetManager : MonoBehaviour
     }
 
 
- }
+
+
+
+    [System.Serializable]
+    public class MissionStatus
+    {
+        public int missionNumber;
+        public string missionDate;
+        public string missionContent;
+        public string partnerMood;
+        public string partnerAnswer;
+        public string partner2Mood;
+        public string partner2Answer;
+        public bool completed;
+    }
+
+    private string missionUrl = "http://125.132.216.190:12223/api/missions/current";
+
+    IEnumerator GetAboutMinssion()
+    {
+        // GET 요청을 생성합니다.
+        UnityWebRequest request = UnityWebRequest.Get(missionUrl);
+
+        string jwtToken = LoginInfoManager.instance.myToken;
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+
+        // 요청을 서버로 전송하고 응답을 기다립니다.
+        yield return request.SendWebRequest();
+
+        // 서버의 응답을 확인합니다.
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            //// 성공 응답 처리
+            //Debug.Log("펫 상태 조회 성공: " + request.downloadHandler.text);
+            MissionStatus missionStatus = JsonUtility.FromJson<MissionStatus>(request.downloadHandler.text);
+            if (missionStatus.completed)
+            {
+                completeAnswer.SetActive(true);
+                NOcompleteAnswer.SetActive(false);
+            }
+            else
+            {
+                completeAnswer.SetActive(false);
+                NOcompleteAnswer.SetActive(true);
+            }
+        }
+        else
+        {
+            // 실패 응답 처리
+            Debug.LogError("미션 상태 조회 실패: " + request.error);
+        }
+    }
+
+}

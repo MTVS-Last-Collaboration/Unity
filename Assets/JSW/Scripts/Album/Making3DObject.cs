@@ -12,8 +12,13 @@ using System.Text;
 using static AlbumManager;
 using UnityEngine.Timeline;
 using Unity.Loading;
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
-public class Making3DObject : MonoBehaviour
+public class Making3DObject : MonoBehaviour, IOnEventCallback
 {
     public GameObject picPrefabItem;
     public Transform picTr;
@@ -121,6 +126,9 @@ public class Making3DObject : MonoBehaviour
         StartCoroutine(PostPhotoEvent1(apiUrl1, To3DId, posX, posY));
     }
 
+
+   
+
     IEnumerator PostPhotoEvent1(string url, int Id, int positionx, int positiony)
     {
         // JWT 토큰 가져오기
@@ -131,13 +139,20 @@ public class Making3DObject : MonoBehaviour
         form.AddField("positionX", posX);       // 내용
         form.AddField("positionY", posY);   // 날짜
 
-        print("PosX +" + posX + " PosY " + posY);
+        print("PosX +" + posX + " PosY " + posY +"ID: " + Id);
         apiUrl1 = apiUrl1 + Id;
         // UnityWebRequest 생성
         UnityWebRequest request = UnityWebRequest.Post(apiUrl1, form);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
         loadingImage.SetActive(true);
+
+        RaiseEventOptions eventOptions = new RaiseEventOptions();
+        eventOptions.Receivers = ReceiverGroup.All;
+
+        PhotonNetwork.RaiseEvent(13, null, eventOptions, SendOptions.SendUnreliable);
+
+        EventSystem.current.SetSelectedGameObject(null);
 
         yield return request.SendWebRequest();
 
@@ -147,6 +162,14 @@ public class Making3DObject : MonoBehaviour
             Debug.LogError("Error: " + request.error);
             print(request.downloadHandler.text);
             loadingImage.SetActive(false);
+
+           
+            eventOptions.Receivers = ReceiverGroup.All;
+
+            PhotonNetwork.RaiseEvent(14, null, eventOptions, SendOptions.SendUnreliable);
+
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
         else
         {
@@ -213,12 +236,58 @@ public class Making3DObject : MonoBehaviour
                 Debug.Log("Response: " + request.downloadHandler.text);
                 Photo3DFirst wrapper = JsonUtility.FromJson<Photo3DFirst>(request.downloadHandler.text);
                 StartCoroutine(LoadOBJWithTexture(wrapper.textureUrl, wrapper.materialUrl));
+
+
+                object[] sendContent = new object[] { wrapper.textureUrl, wrapper.materialUrl};
+
+                RaiseEventOptions eventOptions = new RaiseEventOptions();
+                eventOptions.Receivers = ReceiverGroup.All;
+
+                PhotonNetwork.RaiseEvent(12, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+                EventSystem.current.SetSelectedGameObject(null);
+
+
                 exhibitionId = wrapper.exhibitionId;
                 exhibitionPicId = wrapper.photo.photoId;
 
             }
         }
     }
+
+
+    private void OnEnable()
+    {
+        //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == 12) //가구 생성
+        {
+            object[] receiveObjects = (object[])photonEvent.CustomData;
+            string receiveString1 = receiveObjects[0].ToString();
+            string receiveString2 = receiveObjects[1].ToString();
+            StartCoroutine(LoadOBJWithTexture(receiveString1, receiveString2));
+        }
+        if (photonEvent.Code == 13) // 생성 시작
+        {
+            loadingImage.SetActive(true);
+        }
+        if (photonEvent.Code == 14) // 생성 실패 1
+        {
+            loadingImage.SetActive(false);
+        }
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
+
+
+
 
     public void make3DObjectInit(string obj, string png)
     {
@@ -279,14 +348,6 @@ public class Making3DObject : MonoBehaviour
         loadedObj.transform.localPosition = Vector3.zero;
         loadingImage.SetActive(false);
     }
-
-    //[System.Serializable]
-    //public class AlbumPic3D
-    //{
-    //    public string message;
-    //    public string[] data;
-    //}
-
 
 
     [System.Serializable]

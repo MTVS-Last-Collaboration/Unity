@@ -207,6 +207,9 @@ public class Board : MonoBehaviour
         posts.Add(post);
         GameObject postObj = Instantiate(postPrefab, postListContent);
         postObj.GetComponent<PostItem>().Initialize(post);
+        print("¾¾! : " + answerId);
+        postObj.GetComponent<PostItem>().answerId = answerId;
+        InitTopic(DateTime.Now);
     }
 
     public void CreatePost(TopicAnswer answer)

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 using System.Net;
+using Unity.VisualScripting;
 
 [Serializable]
 public class WritePost
@@ -23,12 +24,13 @@ public class WritePanel : MonoBehaviour
     [SerializeField] private Button exitButton;            // 나가기 버튼
 
     [SerializeField] private Board board;                  // 게시판 참조
-
+    private HoonSoundManagerLogin sound;
     private void Start()
     {
         // 버튼 이벤트 등록
         submitButton.onClick.AddListener(OnSubmit);
         exitButton.onClick.AddListener(Hide);
+        sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
     }
 
     // 패널 표시
@@ -42,6 +44,7 @@ public class WritePanel : MonoBehaviour
     // 패널 숨김
     public void Hide()
     {
+        sound.PlaySound("smjAudioClopAttay", 1);
         writeAnswerPartiton.SetActive(false);
         handler.SetActive(false);
     }
@@ -49,6 +52,7 @@ public class WritePanel : MonoBehaviour
     // 글쓰기 완료
     private void OnSubmit()
     {
+        sound.PlaySound("smjAudioClopAttay", 0);
         // 입력값 검증
         if (string.IsNullOrEmpty(contentInput.text))
         {
@@ -82,27 +86,30 @@ public class WritePanel : MonoBehaviour
         titleInput.text = "";
         contentInput.text = "";
     }
-    public void CreatePostAnswer(int dailyTopicId, string title, string content, Action onComplete = null)
+    public void CreatePostAnswer(int _dailyTopicId, string title, string content, Action onComplete = null)
     {
+        print("오늘 토픽 id! : " + _dailyTopicId);
         var newPost = new WritePost
         {
-            dailyTopicId = dailyTopicId,
+            dailyTopicId = _dailyTopicId,
             title = title,
             content = content,
         };
-        Debug.Log($"topicId: {dailyTopicId}, 제목: {title}, 내용: {content}");
-        StartCoroutine(PostAnswer(dailyTopicId, newPost, onComplete));
+        Debug.Log($"topicId: {_dailyTopicId}, 제목: {title}, 내용: {content}");
+        StartCoroutine(PostAnswer(newPost.dailyTopicId, newPost, onComplete));
     }
     private IEnumerator PostAnswer(int dailyTopicId, WritePost post, Action onComplete)
     {
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", PlayerPrefs.GetString("token"));
-        Debug.Log($"topicId: {dailyTopicId}, 제목: {post.title}, 내용: {post.content}");
+        Debug.Log($"topicId: {post.dailyTopicId}, 제목: {post.title}, 내용: {post.content}");
 
         yield return NetworkManager.Instance.Post($"/api/topic/answer/create", post,
             (success, response) =>
             {
                 if (success)
                 {
+                    PostResponse postResponse = JsonUtility.FromJson<PostResponse>(response);
+                   //  postResponse.id
                     Debug.Log("Post created successfully");
                     onComplete?.Invoke();
                 }
@@ -118,4 +125,14 @@ public class WritePanel : MonoBehaviour
         submitButton.onClick.RemoveListener(OnSubmit);
         exitButton.onClick.RemoveListener(Hide);
     }
+}
+[System.Serializable]
+public class PostResponse
+{
+    public int id;
+    public string title;
+    public string content;
+    public string authorNickname;
+    public int likeCount;
+    public string createdDate;
 }
