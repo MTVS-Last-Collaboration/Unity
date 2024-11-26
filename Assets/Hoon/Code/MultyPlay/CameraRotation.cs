@@ -12,7 +12,7 @@ public class CameraRotation : MonoBehaviour
     public GameObject mainCamPos_Object;
     public bool isLeftRotaion = false;
     public bool isRightRotaion = false;
-    public float mainCamY = 8; //카메라의 높이
+    public float mainCamY = -6.6f; //카메라의 높이
     public float mianCamZ = -8; // 카메라 거리
     public float radius = 10.0f;  // 기준점으로부터 거리 (반지름)
     public float speed = 1.0f;   // 원운동 속도
