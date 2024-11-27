@@ -169,9 +169,9 @@ RectTransform:
   - {fileID: 8453653521897171808}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1140, y: -540}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7868492977353404759
@@ -224,12 +224,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b7c545987d771409a80195c4c993d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shareIndex: 0
+  hoonCreateRoom: {fileID: 0}
   roomMarker: {fileID: 5593842172783220602}
   addShareRoom: {fileID: 7772155892877192210}
   shreRoomName: {fileID: 8240944101247445387}
   coupleName: 
-  hoonCreateRoom: {fileID: 0}
+  shareIndex: 0
 --- !u!1 &4005889602107381935
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,8 +476,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -20}
-  m_SizeDelta: {x: 300, y: 300}
+  m_AnchoredPosition: {x: 60, y: -30}
+  m_SizeDelta: {x: 270, y: 270}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8828710699925223904
 CanvasRenderer:

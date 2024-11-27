@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -27,8 +28,13 @@ public class HoonUIController : MonoBehaviour
     public HoonSoundManagerLogin hoonSoundManager;
     public GameObject Img_OptionMenuObject;
     public GameObject img_PlayEnd;
-
     HoonChoiceRoom hoonChiceRoom;
+
+
+    //플레이어 닉네임 세팅
+    public TextMeshProUGUI myNickname;
+    public TextMeshProUGUI partnerNickname;
+    
     void Start()
     {
         Img_OptionMenuObject.SetActive(false);
@@ -54,6 +60,11 @@ public class HoonUIController : MonoBehaviour
 
 
         }
+
+        myNickname.text = LoginInfoManager.instance.nickName;
+        partnerNickname.text = LoginInfoManager.instance.partnerNickName;
+
+
     }
     
     // Update is called once per frame
