@@ -232,16 +232,14 @@ public class FlowerEvolution : MonoBehaviourPun
                 evolutionEffect.Clear();
                 evolutionEffect.Play();
             }
-
+            // 진화 완료 후 UI 업데이트
+            FlowerUIManager uiManager = GetComponent<FlowerUIManager>();
+            if (uiManager != null)
+            {
+                uiManager.UpdateUI(flower);
+            }
             // 연출 대기 (애니메이션 시간만큼)
             yield return new WaitForSeconds(animationDuration);
-        }
-
-        // 진화 완료 후 UI 업데이트
-        FlowerUIManager uiManager = GetComponent<FlowerUIManager>();
-        if (uiManager != null)
-        {
-            uiManager.UpdateUI(flower);
         }
     }
 

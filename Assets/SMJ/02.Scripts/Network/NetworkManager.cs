@@ -154,6 +154,12 @@ public class NetworkManager : MonoBehaviour
     }
     public IEnumerator Get<T>(string endpoint, Action<bool, T> callback = null)
     {
+        if (string.IsNullOrEmpty(baseUrl))
+        {
+            Debug.LogError("baseUrl이 초기화되지 않았습니다!");
+            callback?.Invoke(false, default(T));
+            yield break;
+        }
         string url = $"{baseUrl}/{endpoint}";
         //Debug.Log($"Making GET request to: {url}");
 
@@ -169,16 +175,27 @@ public class NetworkManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                try
+                string responseText = request.downloadHandler.text;
+                Debug.Log($"서버 응답 원본: {responseText}");  // 실제 응답 확인
+
+                if (string.IsNullOrEmpty(responseText))
                 {
-                    T result = JsonUtility.FromJson<T>(request.downloadHandler.text);
-                    //Debug.Log($"JSON parsed successfully: {JsonUtility.ToJson(result)}");
-                    callback?.Invoke(true, result);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"JSON parsing failed: {e.Message}");
+                    Debug.LogError("Server response is empty");
                     callback?.Invoke(false, default(T));
+                }
+                else
+                {
+                    try
+                    {
+                        T result = JsonUtility.FromJson<T>(responseText);
+                        callback?.Invoke(true, result);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"JSON parsing failed: {e.Message}");
+                        Debug.LogError($"Response that failed to parse: {responseText}");
+                        callback?.Invoke(false, default(T));
+                    }
                 }
             }
             else
@@ -217,12 +234,12 @@ public class NetworkManager : MonoBehaviour
     public IEnumerator PostMultipartData(string endpoint, List<IMultipartFormSection> formData, Action<bool, string> callback)
     {
         string url = baseUrl + endpoint;
-
+        jwtToken = PlayerPrefs.GetString("token");
         using (UnityWebRequest request = UnityWebRequest.Post(url, formData))
         {
             request.SetRequestHeader("accept", "application/json");
             request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
-
+            print("내토큰 : " + jwtToken);
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)

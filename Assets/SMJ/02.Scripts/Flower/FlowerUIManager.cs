@@ -747,7 +747,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     public void SwapButtonUI(int onIdx)
     {
-        sound.PlaySound("smjAudioClopAttay", 0);
+        //sound.PlaySound("smjAudioClopAttay", 0);
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].SetActive(false);
@@ -1133,21 +1133,21 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
         SwapButtonUI(4);  // 재생 중 UI
 
-        // 제출 전이라면 로컬 녹음 재생
-        if (!isRecordComplete)
-        {
-            recorder.PlayRecording();
-            StartCoroutine(CheckAudioCompletion());
-        }
-        // 제출된 상태라면 서버에서 받아와서 재생
-        else
+        //// 제출 전이라면 로컬 녹음 재생
+        //if (!isRecordComplete)
+        //{
+        //    recorder.PlayRecording();
+        //    StartCoroutine(CheckAudioCompletion());
+        //}
+        //// 제출된 상태라면 서버에서 받아와서 재생
+        //else
         {
             StartCoroutine(GetAndPlayVoiceMessage());
         }
     }
 
     [System.Serializable]
-    private class VoiceStatus
+    public class VoiceStatus
     {
         public bool partnerRecordComplete;
         public bool partnerListenComplete;
@@ -1180,7 +1180,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         if (click.checkID == null)
         {
             click.CheckForPlayer();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.6f);
         }
         //print("누구? : " + gameObject.name + ", 내꺼니? : " + click.checkID.IsMine(flower));
         NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
@@ -1376,6 +1376,16 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     public void UpdateName(Flower flower)
     {
+        // 디버깅을 위한 로그 추가
+        Debug.Log($"Click: {click}, CheckID: {click?.checkID}, Flower: {flower}");
+
+        if (click?.checkID == null)
+        {
+            Debug.LogError($"CheckID is null on GameObject: {gameObject.name}");
+            Debug.LogError($"PlayerWoman reference exists: {click?.checkID != null}");
+            return;
+        }
+
         if (!click.checkID.IsMine(flower)) return;
 
         var newName = new NickNamePost
