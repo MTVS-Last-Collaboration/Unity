@@ -20,7 +20,7 @@ public class BusController : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(Opening());
+        StartCoroutine(Opening());
     }
     public void ClickByeBus()
     {
