@@ -23,6 +23,35 @@ public class RoomShareManager : MonoBehaviour
     public GameObject ShareOnButton;
     public GameObject NoShareOnButton;
 
+    public Scrollbar volumeScrollbar1;
+    public Scrollbar volumeScrollbar2;
+
+    public Text text1;
+    public Text text2;
+
+    public AudioSource audio1;
+    public AudioSource audio2;
+
+    private void Start()
+    {
+        volumeScrollbar1.onValueChanged.AddListener(OnVolumeChange1);
+        volumeScrollbar2.onValueChanged.AddListener(OnVolumeChange2);
+    }
+    void OnVolumeChange1(float value)
+    {
+        // Scrollbar 값(0~1)을 dB 값으로 변환하여 AudioMixser에 전달
+        float volume = value;
+        audio1.volume = volume;
+        text1.text = volume.ToString();
+
+    }
+    void OnVolumeChange2(float value)
+    {
+        // Scrollbar 값(0~1)을 dB 값으로 변환하여 AudioMixser에 전달
+        float volume = value;
+        audio2.volume = volume;
+        text2.text = volume.ToString();
+    }
 
 
     public void OnClickShareButton()
