@@ -65,9 +65,9 @@ public class HoonCameraDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         playerPos = playerObject.transform.position;
         PlayerMove(); //플레이어를 움직이게
-        CameraViewTest(); //카메라 보는 방향
+        //CameraViewTest(); //카메라 보는 방향
         //CameraPosTest(); //카메라 위치를 고정
-        FixTouchInputCameraMove(); //터치하면 카메라가 움직이게
+        //FixTouchInputCameraMove(); //터치하면 카메라가 움직이게
         //MouseDragTest();
         //TouchInputTest();
         //DrawMouseLineTest();
@@ -76,11 +76,12 @@ public class HoonCameraDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     void PlayerMove()
     {
         float MoveX = Input.GetAxisRaw("Horizontal");
+        print("MoveX" + MoveX);
         float MoveY = Input.GetAxisRaw("Vertical");
-        
+        print("MoveX"+ MoveY);
         //방향, 속도, 시간
         //내위치 + 변화량
-        transform.position += new Vector3(MoveX, 0, MoveY) * 3 * Time.deltaTime;
+        playerObject.transform.position += new Vector3(MoveX, 0, MoveY) * 3 * Time.deltaTime;
 
     }
 
@@ -96,6 +97,7 @@ public class HoonCameraDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
        
         if (Input.GetMouseButton(0))
         {
+            print("GetMouseButton");
             isMouseTouch = true;
 
             float mouseX = Input.GetAxis("Mouse X");
