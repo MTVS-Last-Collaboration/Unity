@@ -33,7 +33,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private AudioSource audioSource;
 
-    //[SerializeField] public bool testRecord = false;
+    [SerializeField] public bool testRecord = false;
     [SerializeField] private GameObject hoonUI;
 
     private UIPopupAnimation uiPopup;
@@ -817,37 +817,38 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         OffPanel();
         recordButtons[2].SetActive(true);
     }
-    //public void SubmitRecord()
-    //{
-    //    if (!click.checkID.IsMine(flower)) return;
+    public void SubmitRecord_Temp()
+    {
+        if (!click.checkID.IsMine(flower)) return;
 
-    //    // 기존의 테스트 모드일 경우
-    //    if (testRecord == true)
-    //    {
-    //        OffPanel();
-    //        recordButtons[2].SetActive(false);
+        // 기존의 테스트 모드일 경우
+        if (testRecord == true)
+        {
+            OffPanel();
+            recordButtons[2].SetActive(false);
 
-    //        // 서버 검증 시작
-    //        StartCoroutine(ValidateAndTransferVoice());
-    //    }
-    //    else
-    //    {
-    //        recordCount++;
-    //        if (recordCount < 3)
-    //        {
-    //            OffPanel();
-    //            recordButtons[2].SetActive(false);
-    //            recordButtons[3].SetActive(true);
-    //        }
-    //        else
-    //        {
-    //            OffPanel();
-    //            recordButtons[2].SetActive(false);
-    //            recordButtons[5].SetActive(true);
-    //            recordCount = 0;
-    //        }
-    //    }
-    //}
+            // 서버 검증 시작
+            StartCoroutine(ValidateAndTransferVoice());
+        }
+        else
+        {
+            testRecord = true;
+            recordCount++;
+            if (recordCount < 3)
+            {
+                OffPanel();
+                recordButtons[2].SetActive(false);
+                recordButtons[3].SetActive(true);
+            }
+            else
+            {
+                OffPanel();
+                recordButtons[2].SetActive(false);
+                recordButtons[5].SetActive(true);
+                recordCount = 0;
+            }
+        }
+    }
     public void SubmitRecord()
     {
         sound.PlaySound("smjAudioClopAttay", 0);
