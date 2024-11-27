@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -40,7 +41,8 @@ public class BusController : MonoBehaviour
         // Scrollbar 값(0~1)을 dB 값으로 변환하여 AudioMixser에 전달
         float volume = value;
         audio1.volume = volume;
-        text1.text = volume.ToString();
+        if (text2 == null) return;
+        text1.text = (((int)(volume *= 100))).ToString();
 
     }
     void OnVolumeChange2(float value)
@@ -48,11 +50,13 @@ public class BusController : MonoBehaviour
         // Scrollbar 값(0~1)을 dB 값으로 변환하여 AudioMixser에 전달
         float volume = value;
         audio2.volume = volume;
-        text2.text = volume.ToString();
+        if (text2 == null) return; 
+        text2.text = (((int)(volume *= 100))).ToString();
     }
 
     public void ClickByeBus()
     {
+        //Bus.SetActive(true);
         StartCoroutine(GoBus());
     }
 
