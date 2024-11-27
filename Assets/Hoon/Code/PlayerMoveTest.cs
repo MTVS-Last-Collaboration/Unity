@@ -21,7 +21,7 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
 
     float x;
     float z;
-    float y;
+    float y = -1f;
     float myDirectionX;
     float myDirectionZ;
 
@@ -39,10 +39,16 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
+        if(transform.position.y > -8.8f)
+        {
+            //Debug.LogError("1111");
+            transform.position = new Vector3(transform.position.x, -8.8f, transform.position.z);
+        }
         
+
         //PlayerMoveKey();
         //PlayerMoveJoyStick(joyStick.inputDirection);
-        if(photonView.IsMine == false)  //print("내것이 아님 캐릭터 동기화");
+        if (photonView.IsMine == false)  //print("내것이 아님 캐릭터 동기화");
         {
             transform.position = myPos; // 서버에서 받은 위치 및 회전을 부드럽게 동기화
             model.transform.rotation = myRot; //모델을 회전시키자
@@ -70,7 +76,7 @@ public class PlayerMoveTest : MonoBehaviourPun, IPunObservable
         //CC로 움직이게 하자
         float x = Input.GetAxisRaw("Horizontal");   //print("Horizontal=" + x);
         float z = Input.GetAxisRaw("Vertical");     //print("Vertical=" + y);
-
+       
         Vector3 playerMoveDir = new Vector3(x, 0, z);
         playerMoveDir.Normalize();
         Vector3 playerMove = playerMoveDir * playerMoveSpeed * Time.deltaTime;
