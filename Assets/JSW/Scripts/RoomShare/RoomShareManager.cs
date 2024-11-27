@@ -42,6 +42,7 @@ public class RoomShareManager : MonoBehaviour
         // Scrollbar 값(0~1)을 dB 값으로 변환하여 AudioMixser에 전달
         float volume = value;
         audio1.volume = volume;
+        if (text1 == null) return;
         text1.text = volume.ToString();
 
     }
@@ -50,6 +51,7 @@ public class RoomShareManager : MonoBehaviour
         // Scrollbar 값(0~1)을 dB 값으로 변환하여 AudioMixser에 전달
         float volume = value;
         audio2.volume = volume;
+        if (text2 == null) return;
         text2.text = volume.ToString();
     }
 
