@@ -368,17 +368,22 @@ public class HoonCreateRoom : MonoBehaviour
     public void AddSharedRoom()
     {
         //string jsonData = "";
+        print("shareIndex 체크해보자 :" + shareIndex);
         StartCoroutine(PostAddShareRoomNumber(shareIndex));
+      
     }
     //Post 공유보관함->내보관함
     IEnumerator PostAddShareRoomNumber(int shareID)
     {
+        print("전달하는 shareID :" + shareID);
         string urlRoomNum = "http://125.132.216.190:12223/api/rooms/collection/shared/" + shareID; //공유방 방번호가 들어갑니다.
 
         UnityWebRequest request = new UnityWebRequest(urlRoomNum, "POST");
 
         //byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
         //request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        // 빈 바디 전송
+        request.uploadHandler = new UploadHandlerRaw(new byte[0]);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", "Bearer " + myToken); //Bearer에 공백 있어야함. 서버로 토큰 발
