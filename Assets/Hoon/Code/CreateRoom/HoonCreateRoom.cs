@@ -14,6 +14,7 @@ using static System.Net.WebRequestMethods;
 //using UnityEditor.PackageManager.Requests;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using Photon.Pun.Demo.Cockpit;
 //using UnityEditor.Presets;
 
 public class HoonCreateRoom : MonoBehaviour
@@ -367,17 +368,22 @@ public class HoonCreateRoom : MonoBehaviour
     public void AddSharedRoom()
     {
         //string jsonData = "";
+        print("shareIndex 체크해보자 :" + shareIndex);
         StartCoroutine(PostAddShareRoomNumber(shareIndex));
+      
     }
     //Post 공유보관함->내보관함
     IEnumerator PostAddShareRoomNumber(int shareID)
     {
+        print("전달하는 shareID :" + shareID);
         string urlRoomNum = "http://125.132.216.190:12223/api/rooms/collection/shared/" + shareID; //공유방 방번호가 들어갑니다.
 
         UnityWebRequest request = new UnityWebRequest(urlRoomNum, "POST");
 
         //byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
         //request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        // 빈 바디 전송
+        request.uploadHandler = new UploadHandlerRaw(new byte[0]);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", "Bearer " + myToken); //Bearer에 공백 있어야함. 서버로 토큰 발
@@ -584,17 +590,17 @@ public class HoonCreateRoom : MonoBehaviour
         }
 
     }
-    public void DownloadShareImage(int roomID, string urlPresetImage, GameObject obj)
+    public void DownloadShareImage(int roomID, string urlShareImage, GameObject obj)
     {
         //print("ImageUrl" + urlPresetImage);
-        StartCoroutine(WaitDownloadSharedImage(roomID, urlPresetImage, obj));
+        StartCoroutine(WaitDownloadSharedImage(roomID, urlShareImage, obj));
     }
 
-    IEnumerator WaitDownloadSharedImage(int roomID, string urlPresetImage, GameObject obj )
+    IEnumerator WaitDownloadSharedImage(int roomID, string urlShareImage, GameObject obj )
     {
 
         // UnityWebRequest를 사용하여 이미지 다운로드
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture(urlPresetImage);
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(urlShareImage);
         yield return request.SendWebRequest();
         //Debug.Log("Request completed.");
         if (request.result == UnityWebRequest.Result.Success)
@@ -608,14 +614,21 @@ public class HoonCreateRoom : MonoBehaviour
             if (!shareSpriteMap.ContainsKey(roomID))
             {
                 shareSpriteMap.Add(roomID, sprite);
-
+                //obj.GetComponentInChildren<Image>().sprite = sprite;
+                Button btn = obj.GetComponentInChildren<Button>();
+                btn.GetComponent<Image>().sprite = sprite;
             }
             else
             {
                 shareSpriteMap[roomID] = sprite; // 이미 존재하면 덮어쓰기
+                //obj.GetComponentInChildren<Image>().sprite = sprite;
+                Button btn = obj.GetComponentInChildren<Button>();
+                btn.GetComponent<Image>().sprite = sprite;
+
                 //img_Test[index].sprite = presetSpriteMap[roomID]; //이미지에 저장.
                 //index++;
                 //Debug.LogError("presetID" + roomID + "index" + index);
+
             }
 
 
@@ -645,6 +658,7 @@ public class HoonCreateRoom : MonoBehaviour
             shareRoom.GetComponent<HoonCheckShareRoom>().ChangeCoupleRoomName(); //이름바꾸어주기
             //각방에 스크립트를 넣어주고 각 변수를 확인해주자.
             shareRoom.GetComponent<HoonCheckShareRoom>().shareIndex = shareRoomInfoList[i].roomId;
+            print("이미지 다운로드 시작");
             DownloadShareImage(shareRoomInfoList[i].roomId, shareRoomInfoList[i].thumbnailUrl, shareRoom);//0번을 가져옵니다.
 
             // 생성된 버튼 정보 기록
