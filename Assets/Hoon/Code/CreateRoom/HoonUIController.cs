@@ -34,12 +34,15 @@ public class HoonUIController : MonoBehaviour
     //플레이어 닉네임 세팅
     public TextMeshProUGUI myNickname;
     public TextMeshProUGUI partnerNickname;
+    //사운드 조절 오브젝트
+    public GameObject soundController;
+
     
     void Start()
     {
         Img_OptionMenuObject.SetActive(false);
         img_PlayEnd.SetActive(false);
-
+        soundController.SetActive(false);
         // 특정 컴포넌트를 찾기
         HoonChoiceRoom[] foundComponents = FindObjectsOfType<HoonChoiceRoom>();
 
