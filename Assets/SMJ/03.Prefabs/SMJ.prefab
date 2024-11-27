@@ -18296,7 +18296,6 @@ GameObject:
   - component: {fileID: 681475144267402364}
   - component: {fileID: 5930545301029098311}
   - component: {fileID: 673029896373848741}
-  - component: {fileID: 8940545274836675189}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -18418,35 +18417,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8940545274836675189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3925078201691072277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5007915570533345159}
-          m_TargetAssemblyTypeName: FlowerUIManager, Assembly-CSharp
-          m_MethodName: SubmitRecord_Temp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &3944377339828005914
 GameObject:
   m_ObjectHideFlags: 0
@@ -20897,7 +20867,6 @@ GameObject:
   - component: {fileID: 2706348982048285150}
   - component: {fileID: 2400488503973054792}
   - component: {fileID: 2627009301388174027}
-  - component: {fileID: 8147248969557784465}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -21019,35 +20988,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8147248969557784465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4499355283077226247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7270257105570071876}
-          m_TargetAssemblyTypeName: FlowerUIManager, Assembly-CSharp
-          m_MethodName: SubmitRecord_Temp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &4524869380877711684
 GameObject:
   m_ObjectHideFlags: 0
@@ -25744,7 +25684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -541.84045, y: -0.000015258789}
+  m_AnchoredPosition: {x: -541.84045, y: 0.000015258789}
   m_SizeDelta: {x: 1094.3, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3855742971217176964
