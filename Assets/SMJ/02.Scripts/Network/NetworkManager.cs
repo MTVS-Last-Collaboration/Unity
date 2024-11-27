@@ -45,6 +45,7 @@ public class NetworkManager : MonoBehaviour
         if (!string.IsNullOrEmpty(jwtToken))
         {
             request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+            print("내토큰" + jwtToken);
         }
     }
 
