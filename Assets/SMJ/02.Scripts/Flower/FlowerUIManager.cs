@@ -10,7 +10,7 @@ using System;
 using System.Linq;
 using System.IO;
 using UnityEngine.Networking;
-using Photon.Pun.Demo.Procedural;
+using UnityEngine.Android;
 
 public class FlowerUIManager : MonoBehaviourPunCallbacks
 {
@@ -80,6 +80,16 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
+#if PLATFORM_ANDROID
+        if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+        {
+            Permission.RequestUserPermission(Permission.Microphone);
+        }
+        if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
+        {
+            Permission.RequestUserPermission(Permission.ExternalStorageWrite);
+        }
+#endif
         StartCoroutine(Delay());
         flowerId = photonView.ViewID.ToString();
         sound = GameObject.Find("SMJ").GetComponent<HoonSoundManagerLogin>();
@@ -1292,9 +1302,23 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     private IEnumerator GetAndPlayVoiceMessage()
     {
-        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
+        // 토큰이 없는 경우 처리
+        if (string.IsNullOrEmpty(playerToken))
+        {
+            playerToken = PlayerPrefs.GetString("token");
+            if (string.IsNullOrEmpty(playerToken))
+            {
+                Debug.LogError("No authentication token available");
+                buttons[4].SetActive(false);
+                yield break;
+            }
+        }
 
+        NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
         bool isPlaying = false;
+
+        // 요청 전 토큰 로깅
+        Debug.Log($"Using token for voice request: {playerToken}");
 
         yield return NetworkManager.Instance.GetWithoutBody("api/flower/voice",
             (success, response) =>
@@ -1303,7 +1327,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                 {
                     try
                     {
-                        // response는 URL 문자열이므로 JsonUtility.FromJson 필요없이 바로 사용
+                        Debug.Log($"Successful voice response: {response}");
                         recorder.PlayStreamingAudio(response);
                         isPlaying = true;
                     }
@@ -1315,7 +1339,11 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    Debug.LogError($"Failed to get voice URL: {response}");
+                    Debug.LogError($"Failed to get voice URL. Response code: {response}");
+                    if (response.Contains("403"))
+                    {
+                        Debug.LogError("Authentication failed - please check token validity");
+                    }
                     buttons[4].SetActive(false);
                 }
             });
