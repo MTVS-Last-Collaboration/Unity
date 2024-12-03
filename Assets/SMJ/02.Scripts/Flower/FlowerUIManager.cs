@@ -583,8 +583,12 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         isRecordComplete = recordComplete;
         isListenComplete = listenComplete;
 
+        if (click.checkID == null)
+        {
+            
+        }
         // 녹음 완료 시 상태 다시 체크
-        if (isRecordComplete && flower.curState == Flower.States.BLOSSOM && click.checkID.IsMine(flower))
+        else if (isRecordComplete && flower.curState == Flower.States.BLOSSOM && click.checkID.IsMine(flower))
         {
             SwapButtonUI(5);
         }
@@ -1152,10 +1156,14 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     {
         public bool partnerRecordComplete;
         public bool partnerListenComplete;
+        public DateTime partnerSavedAt;
+        public DateTime partnerListenedAt;
         public int partnerMoodCount;
         public string partnerFlowerName;
         public bool myRecordComplete;
         public bool myListenComplete;
+        public DateTime mySavedAt;
+        public DateTime myListenedAt;
         public int myMoodCount;
         public string myFlowerName;
     }

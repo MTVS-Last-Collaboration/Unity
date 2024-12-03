@@ -193,8 +193,8 @@ public class NetworkManager : MonoBehaviour
                     }
                     catch (Exception e)
                     {
-                        Debug.LogError($"JSON parsing failed: {e.Message}");
-                        Debug.LogError($"Response that failed to parse: {responseText}");
+                        //Debug.LogError($"JSON parsing failed: {e.Message}");
+                        //Debug.LogError($"Response that failed to parse: {responseText}");
                         callback?.Invoke(false, default(T));
                     }
                 }
