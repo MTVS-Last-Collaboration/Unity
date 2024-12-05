@@ -131,7 +131,6 @@ public class LoginTest : MonoBehaviour
     IEnumerator PostCreateCoupleCode(string jsonData)
     {
         string url = "http://125.132.216.190:12223/api/couple/join"; //couplecode join
-
         UnityWebRequest request = new UnityWebRequest(url, "POST");  // HTTP POST 요청 준비
 
         // JSON 데이터를 담아 요청 생성

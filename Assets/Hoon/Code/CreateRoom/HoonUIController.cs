@@ -30,13 +30,11 @@ public class HoonUIController : MonoBehaviour
     public GameObject img_PlayEnd;
     HoonChoiceRoom hoonChiceRoom;
 
-
     //플레이어 닉네임 세팅
     public TextMeshProUGUI myNickname;
     public TextMeshProUGUI partnerNickname;
     //사운드 조절 오브젝트
-    public GameObject soundController;
-
+    public GameObject soundController; 
     
     void Start()
     {
