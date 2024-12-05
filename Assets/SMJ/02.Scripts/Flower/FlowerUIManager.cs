@@ -485,14 +485,27 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
             statusText.text = statusMsg;
         }
     }
+    private List<byte> accumulatedVoiceData = new List<byte>();
     [PunRPC]
-    private void RPC_SyncVoiceClip(byte[] voiceData)
+    private void RPC_SyncVoiceClip(byte[] chunk, bool isFirstChunk, bool isLastChunk)
     {
-        if (voiceData != null && voiceData.Length > 0)
+        if (isFirstChunk)
         {
-            recorder.SetRecordedData(voiceData);
-            flower.voiceClip = recorder.GetAudioClip();
-            UpdateAlertEmoji();
+            accumulatedVoiceData.Clear();
+        }
+
+        accumulatedVoiceData.AddRange(chunk);
+
+        if (isLastChunk)
+        {
+            byte[] voiceData = accumulatedVoiceData.ToArray();
+
+            if (voiceData != null && voiceData.Length > 0)
+            {
+                recorder.SetRecordedData(voiceData);
+                flower.voiceClip = recorder.GetAudioClip();
+                UpdateAlertEmoji();
+            }
         }
     }
 
@@ -1100,13 +1113,21 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         if (!click.checkID.IsMine(flower)) return;
 
         byte[] voiceData = recorder.GetRecordedData();
-        photonView.RPC("RPC_SyncVoiceClip", RpcTarget.All, voiceData);
+        int chunkSize = 1024; // Adjust chunk size as needed
+
+        for (int i = 0; i < voiceData.Length; i += chunkSize)
+        {
+            int currentChunkSize = Math.Min(chunkSize, voiceData.Length - i);
+            byte[] chunk = new byte[currentChunkSize];
+            Array.Copy(voiceData, i, chunk, 0, currentChunkSize);
+
+            photonView.RPC("RPC_SyncVoiceClip", RpcTarget.All, chunk, i == 0, i + currentChunkSize >= voiceData.Length);
+        }
 
         recordPanel.SetActive(false);
         exitButton.SetActive(true);
         isRecordComplete = true;
         ShowFlowerInfo(flower, 3);
-        //SwapButtonUI(3);
         UpdateUI(flower);
         OffPanel();
     }
