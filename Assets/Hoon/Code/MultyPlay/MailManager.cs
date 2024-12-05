@@ -16,6 +16,7 @@ using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using System.Net.NetworkInformation;
 using UnityEditor;
+using UnityEditor.PackageManager.Requests;
 /*using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.LookDev;
@@ -281,6 +282,44 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
          }*/
 
     }
+
+    public void WeeklyMissionPostServer()
+    {
+        hoonSoundManagerLogin.PlaySound(0);
+        StartCoroutine(PostWeeklyMission());
+    }
+    IEnumerator PostWeeklyMission()
+    {
+        string url = "http://125.132.216.190:12223/api/missions/generate-weekly";
+
+        print("서버에 요청시작");
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + LoginInfoManager.instance.myToken); //Bearer에 공백 있어야함. 서버로 토큰 발사
+        //print("내토큰" + LoginInfoManager.instance.myToken);
+        print("서버에 요청중");
+
+        yield return request.SendWebRequest();
+
+        // 요청 결과 처리
+        if (request.result == UnityWebRequest.Result.Success) //성공이니?
+        {
+            print("요청성공");
+            Debug.Log("Response: " + request.downloadHandler.text);
+            Debug.Log("Response Code: " + request.responseCode);
+            Debug.Log("Response Body: " + request.downloadHandler.text);
+        }
+        else //응 아니야~
+        {
+            print("요청실패");
+            Debug.LogError("Error: " + request.error);
+            Debug.LogError("Response Code: " + request.responseCode);
+            Debug.LogError("Response Body: " + request.downloadHandler.text);
+
+       
+        }
+
+    }
+
 
     public void TodayMissonGetServer()//�������� ���� �̼��� ��������.
     {
@@ -2010,6 +2049,47 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 textMyMood = "Bad";
                 print("textMyMood" + textMyMood);
             }
+            else if (mood == "Dizzy")
+            {
+                img1.sprite = moodSprites[4];
+                moodChoice1ButtonImageList[4].color = new Color(1, 1, 1, 1);
+                textMyMood = "Dizzy";
+                print("textMyMood" + textMyMood);
+            }
+            else if (mood == "Cry")
+            {
+                img1.sprite = moodSprites[5];
+                moodChoice1ButtonImageList[5].color = new Color(1, 1, 1, 1);
+                textMyMood = "Cry";
+                print("textMyMood" + textMyMood);
+            }
+            else if (mood == "Angry")
+            {
+                img1.sprite = moodSprites[6];
+                moodChoice1ButtonImageList[6].color = new Color(1, 1, 1, 1);
+                textMyMood = "Angry";
+                print("textMyMood" + textMyMood);
+            }
+            else if (mood == "Confuse")
+            {
+                img1.sprite = moodSprites[7];
+                moodChoice1ButtonImageList[7].color = new Color(1, 1, 1, 1);
+                textMyMood = "Confuse";
+                print("textMyMood" + textMyMood);
+            }
+            else if (mood == "Sleep")
+            {
+                img1.sprite = moodSprites[8];
+                moodChoice1ButtonImageList[8].color = new Color(1, 1, 1, 1);
+                textMyMood = "Sleep";
+                print("textMyMood" + textMyMood);
+            }
+
+
+
+
+
+
 
         }
         else
@@ -2042,7 +2122,48 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 moodChoice2ButtonImageList[3].color = new Color(1, 1, 1, 1);
 
             }
-            
+            else if (mood == "Bad")
+            {
+                textMyMood = "Bad";
+                img2.sprite = moodSprites[3];
+                moodChoice2ButtonImageList[3].color = new Color(1, 1, 1, 1);
+
+            }
+            else if (mood == "Dizzy")
+            {
+                textMyMood = "Dizzy";
+                img2.sprite = moodSprites[4];
+                moodChoice2ButtonImageList[4].color = new Color(1, 1, 1, 1);
+
+            }
+            else if (mood == "Cry")
+            {
+                textMyMood = "Cry";
+                img2.sprite = moodSprites[5];
+                moodChoice2ButtonImageList[5].color = new Color(1, 1, 1, 1);
+
+            }
+            else if (mood == "Angry")
+            {
+                textMyMood = "Angry";
+                img2.sprite = moodSprites[6];
+                moodChoice2ButtonImageList[6].color = new Color(1, 1, 1, 1);
+
+            }
+            else if (mood == "Confuse")
+            {
+                textMyMood = "Confuse";
+                img2.sprite = moodSprites[7];
+                moodChoice2ButtonImageList[7].color = new Color(1, 1, 1, 1);
+
+            }
+            else if (mood == "Sleep")
+            {
+                textMyMood = "Sleep";
+                img2.sprite = moodSprites[8];
+                moodChoice2ButtonImageList[8].color = new Color(1, 1, 1, 1);
+
+            }
         }
         print("myChoiceMood" + mood);
 
