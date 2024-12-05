@@ -1107,21 +1107,21 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
             voiceDataChunks = null;
         }
     }
-
+    private bool isTransferComplete = false;
     public void OnRecordCompleteToday()
     {
         if (!click.checkID.IsMine(flower)) return;
 
         byte[] voiceData = recorder.GetRecordedData();
-        int chunkSize = 1024; // Adjust chunk size as needed
-
-        for (int i = 0; i < voiceData.Length; i += chunkSize)
+        isTransferComplete = false;
+        StartCoroutine(ChunkVoiceTransfer(voiceData));
+        StartCoroutine(WaitForTransferComplete());
+    }
+    private IEnumerator WaitForTransferComplete()
+    {
+        while (!isTransferComplete)
         {
-            int currentChunkSize = Math.Min(chunkSize, voiceData.Length - i);
-            byte[] chunk = new byte[currentChunkSize];
-            Array.Copy(voiceData, i, chunk, 0, currentChunkSize);
-
-            photonView.RPC("RPC_SyncVoiceClip", RpcTarget.All, chunk, i == 0, i + currentChunkSize >= voiceData.Length);
+            yield return new WaitForSeconds(0.1f);
         }
 
         recordPanel.SetActive(false);
@@ -1130,6 +1130,20 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         ShowFlowerInfo(flower, 3);
         UpdateUI(flower);
         OffPanel();
+    }
+    private IEnumerator ChunkVoiceTransfer(byte[] voiceData)
+    {
+        int chunkSize = 16384;
+        for (int i = 0; i < voiceData.Length; i += chunkSize)
+        {
+            int currentChunkSize = Math.Min(chunkSize, voiceData.Length - i);
+            byte[] chunk = new byte[currentChunkSize];
+            Array.Copy(voiceData, i, chunk, 0, currentChunkSize);
+
+            photonView.RPC("RPC_SyncVoiceClip", RpcTarget.All, chunk, i == 0, i + currentChunkSize >= voiceData.Length);
+            yield return new WaitForSeconds(0.1f);
+        }
+        isTransferComplete = true;
     }
 
     public void OnReRecordingClick()
