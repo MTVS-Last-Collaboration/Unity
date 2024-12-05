@@ -184,7 +184,7 @@ public class VoiceRecorder : MonoBehaviourPun
 
     private IEnumerator StopRecordingAfterMaxDuration()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(9.5f);
         if (isRecording)
         {
             StopRecording();
