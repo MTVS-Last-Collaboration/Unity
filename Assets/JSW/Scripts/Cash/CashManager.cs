@@ -7,7 +7,9 @@ using UnityEngine.Networking;
 public class CashManager : MonoBehaviour
 {
     // Start is called before the first frame update
+    public GameObject CashBackground1;
     public GameObject cashMenu;
+    public GameObject CashBackground2;
     public GameObject isOkayCash;
 
     public GameObject moneyPanel1;
@@ -20,6 +22,7 @@ public class CashManager : MonoBehaviour
 
     public void  OnClickCash()
     {
+        CashBackground1.SetActive(true);
         cashMenu.SetActive(true);
     }
     public void OnClickCashBack()
@@ -27,16 +30,21 @@ public class CashManager : MonoBehaviour
         moneyPanel1.transform.GetChild(1).gameObject.SetActive(false);
         moneyPanel2.transform.GetChild(1).gameObject.SetActive(false);
         moneyPanel3.transform.GetChild(1).gameObject.SetActive(false);
+        CashBackground1.SetActive(false);
         cashMenu.SetActive(false);
     }
 
     public void OnClickIsCash()
     {
+        CashBackground1.SetActive(false);
+        CashBackground2.SetActive(true);
         isOkayCash.SetActive(true);
     }
 
     public void OnClickIsCashBack()
     {
+        CashBackground1.SetActive(true);
+        CashBackground2.SetActive(false);
         isOkayCash.SetActive(false);
     }
 
@@ -101,6 +109,7 @@ public class CashManager : MonoBehaviour
             //yield return StartCoroutine(info.GetEvents());
             decoShopmanager.point += points;
             isOkayCash.SetActive(false);
+            CashBackground2.SetActive(false);
             Debug.Log("포인트가 성공적으로 추가되었습니다: " + request.downloadHandler.text);
         }
         else

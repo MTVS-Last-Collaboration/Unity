@@ -31,6 +31,17 @@ public class JSW_UIManager : MonoBehaviour
     public GameObject playerContorlUI;
     public GameObject delete3D;
 
+    public GameObject mongBackground1;
+    public GameObject mongBackground2;
+
+    public GameObject AlbumBackground1;
+    public GameObject AlbumBackground2;
+    public GameObject AlbumBackground3;
+
+    public GameObject CalenderBackground1;
+
+
+
     CanvasGroup playerInfo;
     CanvasGroup heartInfo;
     public float time = 1;
@@ -124,6 +135,12 @@ public class JSW_UIManager : MonoBehaviour
         DecorateShopUI.SetActive(false);
         DecorateMineUI.SetActive(false);
         delete3D.SetActive(false);
+        mongBackground1.SetActive(false);
+        mongBackground2.SetActive(false);
+        AlbumBackground1.SetActive(false);
+        AlbumBackground2.SetActive(false);
+        //      AlbumBackground3.SetActive(false); //  직접 자식으로 넣음
+        CalenderBackground1.SetActive(false);
     }
 
     // Album과 관련된 코드
@@ -132,6 +149,7 @@ public class JSW_UIManager : MonoBehaviour
     {
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
         album_UI.SetActive(true);
+        AlbumBackground1.SetActive(true);
         delete3D.SetActive(false);
         easingUI(album_UI, 1f);
         easingUIDark(PlayerInfoUI, 0f);
@@ -140,6 +158,7 @@ public class JSW_UIManager : MonoBehaviour
     {
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound1);
         album_UI.SetActive(false);
+        AlbumBackground1.SetActive(false);
         easingUIDark(PlayerInfoUI, 1f);
     }
 
@@ -152,6 +171,9 @@ public class JSW_UIManager : MonoBehaviour
         Album2.SetActive(true);
 
         easingUI(Album2, 0.5f);
+
+        //AlbumBackground1.SetActive(false);
+        //AlbumBackground2.SetActive(true);
     }
     public void OnClickAlbum_Making_Back()
     {
@@ -160,6 +182,9 @@ public class JSW_UIManager : MonoBehaviour
         album_UI.SetActive(true);
 
         easingUI(album_UI, 1f);
+
+        //AlbumBackground1.SetActive(true);
+        //AlbumBackground2.SetActive(false);
     }
 
     public void OnClickAlbum_Loading0()
@@ -168,6 +193,9 @@ public class JSW_UIManager : MonoBehaviour
         //dasdsa
         Album2.SetActive(false);
         Album_Loading2.SetActive(true);
+
+        AlbumBackground1.SetActive(false);
+        AlbumBackground2.SetActive(true);
     }
     public void OnClickAlbum_Loading0_Back()
     {
@@ -175,6 +203,9 @@ public class JSW_UIManager : MonoBehaviour
         //dasdsa
         Album2.SetActive(true);
         Album_Loading2.SetActive(false);
+
+        AlbumBackground1.SetActive(true);
+        AlbumBackground2.SetActive(false);
     }
 
 
@@ -186,20 +217,23 @@ public class JSW_UIManager : MonoBehaviour
         Album_Loading2.SetActive(false);
         Album_Loading.SetActive(true);
         StartCoroutine(OnClickAlbum_Loading_Back());
+
+        AlbumBackground1.SetActive(false);
+        AlbumBackground2.SetActive(true);
     }
 
     IEnumerator OnClickAlbum_Loading_Back()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_To3D);
         float time = 0;
         while (true)
         {
-            if(time >= 5)
+            if(time >= 2f)
             {
                 break;
             }
-            Album_Loading.GetComponent<CanvasGroup>().alpha= Mathf.Lerp(Album_Loading.GetComponent<CanvasGroup>().alpha,0,Time.deltaTime * 0.5f);
+            Album_Loading.GetComponent<CanvasGroup>().alpha= Mathf.Lerp(Album_Loading.GetComponent<CanvasGroup>().alpha,0,Time.deltaTime * 1.5f);
             time += Time.deltaTime;
             yield return null;
         }
@@ -208,6 +242,11 @@ public class JSW_UIManager : MonoBehaviour
         Album_Loading.GetComponent<CanvasGroup>().alpha = 1f;
         Album_Loading.SetActive(false);
         album_UI.SetActive(true);
+
+        OnClickAlbum_Making_Back();
+
+        AlbumBackground1.SetActive(true);
+        AlbumBackground2.SetActive(false);
         //easingUI(Album2, 1f);
     }
 
@@ -246,6 +285,7 @@ public class JSW_UIManager : MonoBehaviour
         easingUI(Calender, 1.0f);
         Calender1.SetActive(true);
         Calender2.SetActive(true);
+        CalenderBackground1.SetActive(true);
     }
 
 
@@ -255,6 +295,7 @@ public class JSW_UIManager : MonoBehaviour
         easingUIDark(PlayerInfoUI, 1f);
         Calender1.SetActive(false);
         Calender2.SetActive(false);
+        CalenderBackground1.SetActive(false);
     }
 
     // Mong과 관련된 코드
@@ -281,6 +322,7 @@ public class JSW_UIManager : MonoBehaviour
         Mong_1.SetActive(false);
         Mong_Chat_2.SetActive(true);
         easingUI(Mong_Chat_2, 2.0f);
+        mongBackground1.SetActive(true);
         //Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 1;
     }
     public void OnClickMongChat_Back()
@@ -289,6 +331,7 @@ public class JSW_UIManager : MonoBehaviour
         //Mong_Chat_2.GetComponent<CanvasGroup>().alpha = 0;
         Mong_Chat_2.SetActive(false);
         Mong_1.SetActive(true);
+        mongBackground1.SetActive(false);
     }
 
     public void OnClickDecorateShopUI()
@@ -367,7 +410,8 @@ public class JSW_UIManager : MonoBehaviour
 
     IEnumerator OpenOptionPanel()
     {
-        Vector3 targetPos = new Vector3(1824, -265, 0);
+        //Vector3 targetPos = new Vector3(1824, -265, 0);
+        Vector3 targetPos = imgOptionPanelObject.anchoredPosition - new Vector2(280, 0);
         float duration = 1f;
         float currentTime = 0f;
 
@@ -385,7 +429,8 @@ public class JSW_UIManager : MonoBehaviour
 
     IEnumerator CloseOptionPanel()
     {
-        Vector3 targetPos = new Vector3(2105, -265, 0);
+        //        Vector3 targetPos = new Vector3(2105, -265, 0);
+        Vector3 targetPos = imgOptionPanelObject.anchoredPosition + new Vector2(280, 0);
         float duration = 1f;
         float currentTime = 0f;
 
@@ -405,6 +450,7 @@ public class JSW_UIManager : MonoBehaviour
     bool isBGMSwitch = true;
     public AudioSource lobbyAudioSourceBGM;
     public AudioSource lobbyAudioSourceSoundEffect;
+    public GameObject Img_OptionMenuObject_Background;
     public GameObject Img_OptionMenuObject;
     public GameObject img_PlayEnd;
     public Image btnSound_ImageComp;
@@ -457,13 +503,14 @@ public class JSW_UIManager : MonoBehaviour
 
     public void CloseOptionSettings()
     {
+        Img_OptionMenuObject_Background.SetActive(false);
         Img_OptionMenuObject.SetActive(false);
     }
     public void OpenOptionSettings()
     {
+        Img_OptionMenuObject_Background.SetActive(true);
         Img_OptionMenuObject.SetActive(true);
     }
-
 
 }
 

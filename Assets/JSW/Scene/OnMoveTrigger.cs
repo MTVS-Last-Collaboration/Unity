@@ -95,7 +95,6 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
             GetComponent<JSW_ConnectionManager>().enabled = true;
             GetComponent<JSW_ConnectionManager>().LeaveRoom();
         }
-        print("코코ㅗ오오오");
     }
 
     public IEnumerator Ending()

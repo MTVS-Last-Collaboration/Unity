@@ -29,6 +29,7 @@ public class JSW_PetManager : MonoBehaviour
 
     public TMP_Text mainMongText;
     public GameObject GifticonImage;
+    public GameObject mongBackground2;
 
     public TMP_Text MongName_TMP;
     public GameObject MongName_InputField;
@@ -283,7 +284,7 @@ public class JSW_PetManager : MonoBehaviour
     public void OpenGifticon()
     {
         GifticonImage.SetActive(true);
-
+        mongBackground2.SetActive(true);
         Vector3 size = GifticonImage.transform.localScale;
         GifticonImage.transform.localScale = Vector3.one * 0.2f;
         iTween.ScaleTo(GifticonImage, iTween.Hash(
@@ -295,7 +296,7 @@ public class JSW_PetManager : MonoBehaviour
     public void CloseGifticon()
     {
         GifticonImage.SetActive(false);
-
+        mongBackground2.SetActive(false);
     }
 
 
@@ -407,5 +408,4 @@ public class JSW_PetManager : MonoBehaviour
             Debug.LogError("미션 상태 조회 실패: " + request.error);
         }
     }
-
 }

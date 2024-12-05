@@ -75,10 +75,13 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         }
     }
 
+    public GameObject AlbumBackground2;
+
     public void ClickPic(Texture texture2d, int id)
     {
         imageclickpixelposition.fixPos = false;
         isMaking3DUI.SetActive(true);
+        AlbumBackground2.SetActive(true);
         To3DId = id;
         modelImage = texture2d;
         isMaking3DUIImage.GetComponent<RawImage>().texture = texture2d;
