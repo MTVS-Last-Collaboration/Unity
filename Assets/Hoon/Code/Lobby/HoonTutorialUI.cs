@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class HoonTutorialUI : MonoBehaviour
 {
     //변경되지 않음
+    public GameObject img_LobbyTutorialBG_Object;
+    public GameObject img_LoobyTutorialBlackBG_Object;
     public HoonSoundManagerLogin hoonSoundManager;
     public TextMeshProUGUI text_LobbyTutorialNumber;
     public GameObject[] allTutotialImageObject;
@@ -16,7 +18,7 @@ public class HoonTutorialUI : MonoBehaviour
     int tutorialCount = 1;
     void Start()
     {
-        
+        img_LobbyTutorialBG_Object.SetActive(false);
     }
 
     /* void Update()
@@ -28,13 +30,14 @@ public class HoonTutorialUI : MonoBehaviour
     {
         hoonSoundManager.PlaySound(0);
         obj.SetActive(true);
-
+        img_LoobyTutorialBlackBG_Object.SetActive(true);
     }
 
     public void CloseUI(GameObject obj)
     {
         hoonSoundManager.PlaySound(1);
         obj.SetActive(false);
+        img_LoobyTutorialBlackBG_Object.SetActive(false);
     }
 
 

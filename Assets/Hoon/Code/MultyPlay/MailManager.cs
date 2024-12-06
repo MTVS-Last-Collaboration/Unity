@@ -168,6 +168,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public HoonPointInfo hoonPointInfo;
     //씬월드포지션
     public Vector3 canvasWorldPos = new Vector3(-11, -6.5f, 13.5f);
+    //하트이펙트
+    public ParticleSystem mailHeartParticle;
     void Start()
     {
         StartCoroutine(FindPlayer());
@@ -303,7 +305,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         // 요청 결과 처리
         if (request.result == UnityWebRequest.Result.Success) //성공이니?
         {
+            
+
             print("요청성공");
+            string responseText = request.downloadHandler.text;
+            Debug.Log("서버 응답: " + responseText);
             Debug.Log("Response: " + request.downloadHandler.text);
             Debug.Log("Response Code: " + request.responseCode);
             Debug.Log("Response Body: " + request.downloadHandler.text);
@@ -1527,6 +1533,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         // 요청 결과 처리
         if (request.result == UnityWebRequest.Result.Success) //성공이니?
         {
+            string responseText = request.downloadHandler.text;
+            Debug.Log("서버 응답: " + responseText);
             Debug.Log("Response: " + request.downloadHandler.text);
             Debug.Log("Response Code: " + request.responseCode);
             Debug.Log("Response Body: " + request.downloadHandler.text);
@@ -1875,6 +1883,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
+            mailHeartParticle.transform.localScale = new Vector3(2,2,2);
+            mailHeartParticle.Play(); //playParticle
             hoonSoundManagerLogin.PlaySound(0); //buttonSound
             //어떻게 보여줄건데?
             mail_ImageObject.SetActive(true); //켠다
@@ -1883,7 +1893,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             //hoonMailCanvasObject.transform.position = canvasWorldPos;
             hoonMailCanvasObject.GetComponent<RectTransform>().position = new Vector3(-11, -6.6f, 13.5f);
             hoonMailCanvasObject.transform.localScale = new Vector3(0.0003f, 0.0003f, 0.0003f);
-
             StartCoroutine(MoveUPMailUI());
            
 
