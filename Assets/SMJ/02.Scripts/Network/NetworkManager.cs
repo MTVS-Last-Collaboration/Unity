@@ -242,7 +242,6 @@ public class NetworkManager : MonoBehaviour
             request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
             print("내토큰 : " + jwtToken);
             yield return request.SendWebRequest();
-
             if (request.result == UnityWebRequest.Result.Success)
             {
                 callback?.Invoke(true, request.downloadHandler.text);
