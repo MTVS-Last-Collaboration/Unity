@@ -238,7 +238,7 @@ public class NetworkManager : MonoBehaviour
         jwtToken = PlayerPrefs.GetString("token");
         using (UnityWebRequest request = UnityWebRequest.Post(url, formData))
         {
-            request.SetRequestHeader("accept", "application/json");
+            request.SetRequestHeader("Accept", "application/json");
             request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
             print("내토큰 : " + jwtToken);
             yield return request.SendWebRequest();

@@ -924,7 +924,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
             List<IMultipartFormSection> formData = new List<IMultipartFormSection>
             {
-                new MultipartFormFileSection("voice", audioData, "audio.wav", "audio/wav")
+                new MultipartFormFileSection("voice", fileData, "audio.wav", "audio/wav")
             };
 
             NetworkManager.Instance.Initialize("http://125.132.216.190:12223", playerToken);
@@ -1121,9 +1121,10 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     {
         while (!isTransferComplete)
         {
+            loadingObj.SetActive(true);
             yield return new WaitForSeconds(0.1f);
         }
-
+        loadingObj.SetActive(false);
         recordPanel.SetActive(false);
         exitButton.SetActive(true);
         isRecordComplete = true;
