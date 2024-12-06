@@ -45,6 +45,7 @@ public class DecoShopManager : MonoBehaviour
             JDMO.isPurchased = true;
             JDSI.isPurchase = true;
             BuyId(shopId);
+            JSW_SoundManager.Get().PlayEftSoundClick3();
         }
     }
 

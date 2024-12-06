@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -414,6 +415,7 @@ public class JSW_UIManager : MonoBehaviour
         Vector3 targetPos = imgOptionPanelObject.anchoredPosition - new Vector2(280, 0);
         float duration = 1f;
         float currentTime = 0f;
+        JSW_SoundManager.Get().PlayEftSoundClick1();
 
         while (currentTime < duration)
         {
@@ -433,6 +435,7 @@ public class JSW_UIManager : MonoBehaviour
         Vector3 targetPos = imgOptionPanelObject.anchoredPosition + new Vector2(280, 0);
         float duration = 1f;
         float currentTime = 0f;
+        JSW_SoundManager.Get().PlayEftSoundClick1();
 
         while (currentTime < duration)
         {

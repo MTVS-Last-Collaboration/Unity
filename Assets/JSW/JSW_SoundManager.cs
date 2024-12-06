@@ -13,7 +13,8 @@ public class JSW_SoundManager : MonoBehaviour
         EFT_ButtonSound2,
         EFT_ImageSound,
         EFT_PetSound,
-        EFT_FuniMoveSound
+        EFT_FuniMoveSound,
+        EFT_MoneySound
     }
 
     static JSW_SoundManager instance;
@@ -65,6 +66,13 @@ public class JSW_SoundManager : MonoBehaviour
     public void PlayEftSoundClick2()
     {
         int audioIdx = 4;
+        eftAudio.PlayOneShot(eftAudios[audioIdx]);
+        //eftAudio.clip = eftAudios[audioIdx];
+        //eftAudio.Play();
+    }
+    public void PlayEftSoundClick3()
+    {
+        int audioIdx = 8;
         eftAudio.PlayOneShot(eftAudios[audioIdx]);
         //eftAudio.clip = eftAudios[audioIdx];
         //eftAudio.Play();
