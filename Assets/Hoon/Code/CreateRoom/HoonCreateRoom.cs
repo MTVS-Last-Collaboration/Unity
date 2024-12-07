@@ -741,12 +741,7 @@ public class HoonCreateRoom : MonoBehaviour
                 presetRoomArray[i].GetComponent<HoonCheckPresetRoom>().presetIndex = presets[i].presetId;
                 DownloadPresetImage(presets[i].presetId, presets[i].thumbnailUrl);//0번을 가져옵니다.
             }
-
-
-
-
         }
-
     }
     public void DownloadPresetImage(int presetID, string urlPresetImage)
     {

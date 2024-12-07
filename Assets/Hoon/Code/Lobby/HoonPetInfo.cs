@@ -67,10 +67,5 @@ public class HoonPetInfo : MonoBehaviour
             // 실패 응답 처리
             Debug.LogError("펫 상태 조회 실패: " + request.error);
         }
-
-
-
     }
-
-
 }//클래스 끝

@@ -47,3 +47,8 @@ public class TutorialManager : MonoBehaviour
         pageNumber.text = number.ToString() + " / 6";
     }
 }
+
+
+
+
+
