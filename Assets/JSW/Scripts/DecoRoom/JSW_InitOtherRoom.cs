@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 public class JSW_InitOtherRoom : MonoBehaviourPun
@@ -13,6 +14,7 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
     public bool[] initShopId = new bool[45];
 
     private string apiUrl = "http://125.132.216.190:12223/api/rooms/status"; // Replace with the actual API endpoint
+    private string apiUr2 = "http://125.132.216.190:12223/api/rooms/public/13"; // Replace with the actual API endpoint
 
 
     public bool isOpening;
@@ -52,20 +54,76 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
     {
         DRM = GetComponent<JSW_DecorateRoomManager>();
         StartCoroutine(Opening());
-        GetRoomStatus();
-        GetShopStatus();
+        GetOtherRoomStatus();
+        //GetRoomStatus();
+        //GetShopStatus();
     }
+
+    //// Call this function to start the GET request
+    //public void GetRoomStatus()
+    //{
+    //    StartCoroutine(GetRoomStatusCoroutine());
+    //    print("dsadsa");
+    //}
+
+    //private IEnumerator GetRoomStatusCoroutine()
+    //{
+    //    using (UnityWebRequest request = UnityWebRequest.Get(apiUrl))
+    //    {
+
+    //        request.SetRequestHeader("Accept", "application/json");
+    //        string jwtToken = LoginInfoManager.instance.myToken;
+    //        request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
+    //        yield return request.SendWebRequest();
+    //        if (request.result == UnityWebRequest.Result.Success)
+    //        {
+    //            // Process JSON response
+    //            Debug.Log("Response: " + request.downloadHandler.text);
+
+    //            // You can parse the JSON here
+    //            RoomStatus0 roomStatus = JsonUtility.FromJson<RoomStatus0>(request.downloadHandler.text);
+
+    //            // Example: Access room data
+    //            Debug.Log("Room ID: " + roomStatus.data.roomId);
+    //            Debug.Log("Furniture Count: " + roomStatus.data.furnitureLayouts.Length);
+
+
+    //            if (PhotonNetwork.IsMasterClient)
+    //            {
+    //                foreach (FurnitureLayout layout in roomStatus.data.furnitureLayouts)
+    //                {
+    //                    InitSetFuniture(layout.furnitureLayoutId, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, layout.width, layout.height);
+    //                }
+    //            }
+
+    //            DMM.floorNum = roomStatus.data.floor.floorNumber - 1;
+    //            DMM.wallNum = roomStatus.data.wallpaper.wallpaperNumber - 1;
+    //            print("처음인데 잘 나왔어요!!!!!!!");
+
+    //        }
+    //        else
+    //        {
+    //            InitSetFuniture(0, 1, "(Prb)Plant2", 4, 3, 3, 1, 1);
+    //            print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임");
+    //            Debug.LogError("Error: " + request.error);
+
+    //            print("안나왓어요!!!!!!!!!!");
+    //        }
+    //    }
+    //}
 
     // Call this function to start the GET request
-    public void GetRoomStatus()
+    public void GetOtherRoomStatus()
     {
-        StartCoroutine(GetRoomStatusCoroutine());
-        print("dsadsa");
+        StartCoroutine(GetOtherRoomStatusCoroutine());
     }
 
-    private IEnumerator GetRoomStatusCoroutine()
+    public TMP_Text coupleName1;
+    public TMP_Text coupleName2;
+
+    private IEnumerator GetOtherRoomStatusCoroutine()
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(apiUrl))
+        using (UnityWebRequest request = UnityWebRequest.Get(apiUr2))
         {
 
             request.SetRequestHeader("Accept", "application/json");
@@ -78,36 +136,74 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
                 Debug.Log("Response: " + request.downloadHandler.text);
 
                 // You can parse the JSON here
-                RoomStatus0 roomStatus = JsonUtility.FromJson<RoomStatus0>(request.downloadHandler.text);
-
-                // Example: Access room data
-                Debug.Log("Room ID: " + roomStatus.data.roomId);
-                Debug.Log("Furniture Count: " + roomStatus.data.furnitureLayouts.Length);
+                OtherRoomStatus0 otherRoomStatus = JsonUtility.FromJson<OtherRoomStatus0>(request.downloadHandler.text);
 
 
+                print(otherRoomStatus.data.coupleName);
+                string[] splitStrings = otherRoomStatus.data.coupleName.Split('♥');
+
+                // 나눠진 문자열 캐싱
+                string firstName = splitStrings[0];
+                string lastName = splitStrings[1];
+                coupleName1.text = firstName;
+                coupleName2.text = lastName;
+
+                print(otherRoomStatus.data.style.wallpaperName);
+                print(otherRoomStatus.data.style.floorName);
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    foreach (FurnitureLayout layout in roomStatus.data.furnitureLayouts)
+                    foreach (OtherFurnitureLayout layout in otherRoomStatus.data.furnitureLayouts)
                     {
-                        InitSetFuniture(layout.furnitureLayoutId, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, layout.width, layout.height);
+                        InitSetFuniture(0, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, 0, 0);
                     }
                 }
 
-                DMM.floorNum = roomStatus.data.floor.floorNumber - 1;
-                DMM.wallNum = roomStatus.data.wallpaper.wallpaperNumber - 1;
-                print("처음인데 잘 나왔어요!!!!!!!");
-
+                DMM.floorNum = (otherRoomStatus.data.style.floorName[otherRoomStatus.data.style.floorName.Length - 1] - '0') - 1;
+                DMM.wallNum = (otherRoomStatus.data.style.wallpaperName[otherRoomStatus.data.style.wallpaperName.Length-1]-'0') - 1;
             }
             else
             {
+                print("가구 init 실패");
                 InitSetFuniture(0, 1, "(Prb)Plant2", 4, 3, 3, 1, 1);
-                print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임");
-                Debug.LogError("Error: " + request.error);
-
-                print("안나왓어요!!!!!!!!!!");
+                print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임 잘 안나옴");
             }
         }
     }
+
+    [System.Serializable]
+    public class OtherRoomStatus0
+    {
+        public string message;
+        public OtherRoomStatus data;
+    }
+
+    [System.Serializable]
+    public class Styles
+    {
+        public string wallpaperName;
+        public string floorName;
+    }
+
+    [System.Serializable]
+    public class OtherRoomStatus
+    {
+        public int roomId;
+        public int coupleId;
+        public string coupleName;
+        public Styles style;
+        public OtherFurnitureLayout[] furnitureLayouts;
+    }
+    [System.Serializable]
+    public class OtherFurnitureLayout
+    {
+        // 여기에 아이디 받아 오면 될듯
+        public int furnitureId;
+        public string furnitureName;
+        public int positionX;
+        public int positionY;
+        public int rotation;
+    }
+
 
     [System.Serializable]
     public class RoomStatus0
