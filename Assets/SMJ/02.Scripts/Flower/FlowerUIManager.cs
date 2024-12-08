@@ -1162,7 +1162,6 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
         StopCoroutine(recordingCor);
         recorder.StopRecording();
-        exitButton.SetActive(true);
         OffPanel();
         recordButtons[2].SetActive(true);
     }

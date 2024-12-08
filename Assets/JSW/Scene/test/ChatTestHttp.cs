@@ -7,12 +7,14 @@ using WebSocketSharp;
 using Newtonsoft.Json.Linq;
 using static ChatTestHttp;
 using TMPro;
+using Photon.Pun;
 
 
 
-public class ChatTestHttp : MonoBehaviour
+public class ChatTestHttp : MonoBehaviourPun
 {
     [SerializeField] private HoonPointInfo info;
+
     private void Start()
     {
         if (GameObject.Find("HoonLoobyCanvas") != null)
@@ -20,15 +22,31 @@ public class ChatTestHttp : MonoBehaviour
             info = GameObject.Find("HoonLoobyCanvas").GetComponent<HoonPointInfo>();
         }
     }
+
     public void AddPoints(int points)
     {
-        ItemIDs itemids = new ItemIDs
+        if (photonView != null)
         {
-            itemId = 3
-        };
-        print("Æ÷ÀÎÆ® : " + points);
-        StartCoroutine(PostAddPoints(points));
-        
+            photonView.RPC("RPC_AddPoints", RpcTarget.All, points);
+        }
+        else
+        {
+            Debug.LogError("PhotonView not found!");
+        }
+    }
+
+    [PunRPC]
+    private void RPC_AddPoints(int points)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(PostAddPoints(points));
+        }
+
+        if (info != null)
+        {
+            StartCoroutine(info.GetEvents());
+        }
     }
 
     public class ItemIDs
