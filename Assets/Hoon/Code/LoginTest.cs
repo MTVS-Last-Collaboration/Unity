@@ -156,18 +156,25 @@ public class LoginTest : MonoBehaviour
             Debug.LogError("HTTP Status Code: " + responseCode);
             // 추가 응답 메시지
             Debug.LogError("서버 응답 내용: " + request.downloadHandler.text);
+
+            //커플코드 연결 성공처리
+
             
         }
         else //응답성공
         {
             string responseText = request.downloadHandler.text;
             Debug.Log("서버 응답: " + responseText);
-           
+            //서버가 응답하면 커플정보를 불러오자.
+
+
 
             // 서버 응답과 newUser 정보가 같은지 확인
             if (responseText.Contains(input_Id.text))
             {
                 Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
+
+                
             }
             else
             {
