@@ -4174,7 +4174,6 @@ RectTransform:
   - {fileID: 1508580533}
   - {fileID: 1143808713}
   - {fileID: 1208583314}
-  - {fileID: 397170844}
   m_Father: {fileID: 820073780}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -20924,14 +20923,14 @@ RectTransform:
   m_GameObject: {fileID: 397170843}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1875001, y: 1.1875001, z: 1.1875001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 62636645}
+  m_Father: {fileID: 1881082253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.56352085, y: 1}
-  m_AnchorMax: {x: 0.56352085, y: 1}
-  m_AnchoredPosition: {x: -98.25, y: -59}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 39.36845, y: 338}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &397170845
@@ -27466,7 +27465,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 155.65929, y: -244.17783}
+  m_AnchoredPosition: {x: 155.65929, y: -275.8709}
   m_SizeDelta: {x: 217.0581, y: 75.2398}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &503496027
@@ -27996,8 +27995,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 957979185}
   m_HandleRect: {fileID: 957979184}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.9999999
+  m_Value: 1
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -37687,7 +37686,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1769361372}
   m_HandleRect: {fileID: 1769361371}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 1.0000002
   m_Size: 0.72183776
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -43475,6 +43474,7 @@ RectTransform:
   - {fileID: 97540946}
   - {fileID: 1568139190}
   - {fileID: 896638909}
+  - {fileID: 1881082253}
   - {fileID: 62636645}
   - {fileID: 1416416856}
   - {fileID: 22513944}
@@ -43582,8 +43582,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 855885246}
   m_HandleRect: {fileID: 855885245}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.8715111
+  m_Value: -0.0000050265285
+  m_Size: 0.87151074
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -55265,7 +55265,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -137.3, y: -244.30693}
+  m_AnchoredPosition: {x: -137.3, y: -275.8709}
   m_SizeDelta: {x: 217.0581, y: 75.2398}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1016090562
@@ -100433,6 +100433,42 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1880714929}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1881082252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1881082253}
+  m_Layer: 5
+  m_Name: Warnings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1881082253
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881082252}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 397170844}
+  m_Father: {fileID: 820073780}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -1820, y: -980}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1883934226
 GameObject:
   m_ObjectHideFlags: 0
@@ -112582,19 +112618,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 941484407}
         m_TargetAssemblyTypeName: JSW_UIManager, Assembly-CSharp
-        m_MethodName: OnClickAlbum_Loading0
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1817660426}
-        m_TargetAssemblyTypeName: AlbumManager, Assembly-CSharp
-        m_MethodName: testObject
+        m_MethodName: OnClickAlbum_Making_Back
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

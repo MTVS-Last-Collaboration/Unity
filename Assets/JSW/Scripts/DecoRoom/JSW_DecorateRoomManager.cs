@@ -98,7 +98,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        warningAnimator.Play("New Animation", 0, 0f);
+                        if(warningAnimator !=null) warningAnimator.Play("New Animation", 0, 0f);
                         return false;
                     }
                 }
@@ -114,7 +114,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        warningAnimator.Play("New Animation", 0, 0f);
+                        if (warningAnimator != null) warningAnimator.Play("New Animation", 0, 0f);
                         return false;
                     }
                 }
@@ -130,7 +130,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        warningAnimator.Play("New Animation", 0, 0f);
+                        if (warningAnimator != null) warningAnimator.Play("New Animation", 0, 0f);
                         return false;
                     }
                 }
@@ -147,7 +147,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        warningAnimator.Play("New Animation", 0, 0f);
+                        if (warningAnimator != null) warningAnimator.Play("New Animation", 0, 0f);
                         return false;
                     }
                 }
