@@ -16,6 +16,7 @@ using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using System.Net.NetworkInformation;
 using UnityEditor;
+using UnityEngine.ProBuilder.MeshOperations;
 /*using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.LookDev;
@@ -326,14 +327,14 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
 
 
-    public void TodayMissonGetServer()//�������� ���� �̼��� ��������.
+    public void TodayMissionGetServer()//미션 코트틴
     {
         hoonSoundManagerLogin.PlaySound(0); //buttonSound
         StartCoroutine(GetTodayMission());
         
     }
 
-    IEnumerator GetTodayMission() //�������� Get �̼��� ��������.
+    IEnumerator GetTodayMission() //서버에서 미션 가져오기
     {
         string urlTodayMission = "http://125.132.216.190:12223/api/missions/current"; //url 
 
@@ -416,6 +417,31 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         img2.sprite = moodSprites[3];
                         textMyMood = "Bad";
                     }
+                    else if (partner2Mood == "Dizzy")
+                    {
+                        img2.sprite = moodSprites[4];
+                        textMyMood = "Dizzy";
+                    }
+                    else if (partner2Mood == "Cry")
+                    {
+                        img2.sprite = moodSprites[5];
+                        textMyMood = "Cry";
+                    }
+                    else if (partner2Mood == "Angry")
+                    {
+                        img2.sprite = moodSprites[6];
+                        textMyMood = "Angry";
+                    }
+                    else if (partner2Mood == "Confuse")
+                    {
+                        img2.sprite = moodSprites[7];
+                        textMyMood = "Confuse";
+                    }
+                    else if (partner2Mood == "Sleep")
+                    {
+                        img2.sprite = moodSprites[8];
+                        textMyMood = "Sleep";
+                    }
 
                 }
                 else
@@ -443,10 +469,34 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         img1.sprite = moodSprites[3];
                         textMyMood = "Bad";
                     }
-
+                    else if (partner1Mood == "Dizzy")
+                    {
+                        img1.sprite = moodSprites[4];
+                        textMyMood = "Dizzy";
+                    }
+                    else if (partner1Mood == "Cry")
+                    {
+                        img1.sprite = moodSprites[5];
+                        textMyMood = "Cry";
+                    }
+                    else if (partner1Mood == "Angry")
+                    {
+                        img1.sprite = moodSprites[6];
+                        textMyMood = "Angry";
+                    }
+                    else if (partner1Mood == "Confuse")
+                    {
+                        img1.sprite = moodSprites[7];
+                        textMyMood = "Confuse";
+                    }
+                    else if (partner1Mood == "Sleep")
+                    {
+                        img1.sprite = moodSprites[8];
+                        textMyMood = "Sleep";
+                    }
 
                 }
-                
+
                 Coment1.GetComponent<TextMeshProUGUI>().text = jsonObj["partner1Answer"].ToString();
                 Coment2.GetComponent<TextMeshProUGUI>().text = jsonObj["partner2Answer"].ToString();
                 moodSwitch1.GetComponent<Image>().color = Color.white; //chage switch color
@@ -480,7 +530,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user1coment
                     if (jsonObj["partner1Answer"].ToString() == "null")
                     {
-                        Coment1.GetComponent<TextMeshProUGUI>().text = "작성하기를 눌러 답변을 작성하고 제출해보세요.";
+                        Coment1.GetComponent<TextMeshProUGUI>().text = $"<작성하기>를 누르세요. {"\n"}<기분>을 선택하세요.{"\n"}<답변>을 입력하세요. {"\n"}<제출하기>를 누르세요.";
                     }
                     else
                     {
@@ -505,11 +555,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user2coment.
                     if (jsonObj["partner2Answer"].ToString() == "null")
                     {
-                        Coment2.GetComponent<TextMeshProUGUI>().text = "연인이 답변을 기다리고있습니다.";
+                        Coment2.GetComponent<TextMeshProUGUI>().text = "연인의 답변을 기다리고 있습니다.";
                     }
                     else
                     {
-                        Coment2.GetComponent<TextMeshProUGUI>().text = "연인의 답변이 등록되었습니다. 답반을 작성하고 저장하면 공개됩니다."; //hideUser2Mood
+                        Coment2.GetComponent<TextMeshProUGUI>().text = $"연인의 답변이 등록되었어요.{"\n"}답변을 <제출>하세요.{"\n"}<답변보기>를 누르세요."; //hideUser2Mood
                     }
                 
                 }
@@ -537,11 +587,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user1coment
                     if (jsonObj["partner1Answer"].ToString() == "null")
                     {
-                        Coment1.GetComponent<TextMeshProUGUI>().text = "아직 연인의 답변이 입력되지 않았습니다.";
+                        Coment1.GetComponent<TextMeshProUGUI>().text = "연인의 답변을 기다리고 있습니다";
                     }
                     else
                     {
-                        Coment1.GetComponent<TextMeshProUGUI>().text = "연인의 답변이 등록되었습니다. 답반을 작성하고 저장하면 공개됩니다.";  //hideUser1Coment
+                        Coment1.GetComponent<TextMeshProUGUI>().text = $"연인의 답변이 등록되었어요.{"\n"}답변을 <제출>하세요.{"\n"}<답변보기>를 누르세요.";  //hideUser1Coment
                     }
 
                     // user2Mood
@@ -561,7 +611,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user2coment.
                     if (jsonObj["partner2Answer"].ToString() == "null")
                     {
-                        Coment2.GetComponent<TextMeshProUGUI>().text = "작성하기를 눌러 답변을 작성하고 저장해보세요.";
+                        Coment2.GetComponent<TextMeshProUGUI>().text = $"<작성하기>를 누르세요. {"\n"}<기분>을 선택하세요.{"\n"}<답변>을 입력하세요. {"\n"}<제출하기>를 누르세요.";
                     }
                     else
                     {
@@ -630,11 +680,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void CheckHistoty()
     {
         print("Check LocalHistory");
-        string path = Application.persistentDataPath + "/DayComentTest.json"; //����ȭ���
-        if (System.IO.File.Exists(path))//�����ִ�?
+        string path = Application.persistentDataPath + "/DayComentTest.json"; // filePath
+        if (System.IO.File.Exists(path)) //
         {
-            string loadDayComentInfo = System.IO.File.ReadAllText(path); //���ڿ��� ��������
-            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); //List�� �Ľ��ϱ�
+            string loadDayComentInfo = System.IO.File.ReadAllText(path); // loadFileString
+            loadDayComenList = JsonConvert.DeserializeObject<List<DayComentData>>(loadDayComentInfo); // dataList
 
             bool isCurrentDate = false;
             foreach (var ComentData in loadDayComenList)
@@ -643,19 +693,19 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 //��¥�� ��ġ
                 if (ComentData.date != null && ComentData.dateMission != null)
                 {
-                    histrotyList.Add(ComentData); //�ҷ������� historyList ���
+                    histrotyList.Add(ComentData); //
 
-                    string historyDate = ComentData.date; //��¥
-                    string historyDateMission = ComentData.dateMission; //�̼�
+                    string historyDate = ComentData.date; //
+                    string historyDateMission = ComentData.dateMission; //�
 
                     // ��ư ���� �� ����
-                    GameObject newButtonObj = Instantiate(historyButton, historyContent); // �������� Content�� �ڽ����� ����
-                    Button newButton = newButtonObj.GetComponent<Button>(); //������ ��ư�� ������Ʈ ��������  
-                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>(); // Button �ڽ�������Ʈ TextMeshProUGUI ��������
+                    GameObject newButtonObj = Instantiate(historyButton, historyContent); //
+                    Button newButton = newButtonObj.GetComponent<Button>(); //
+                    TextMeshProUGUI buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>(); //
 
-                    histroyButtonList.Add(newButton); //�����丮 ��ư ����Ʈ�� �ű� ������ ��ư�� ���
+                    histroyButtonList.Add(newButton); //히스토리 리스트
 
-                    int buttonIndex = histroyButtonList.Count - 1; // ���� �ε��� ���� (���� ����Ʈ�� ������ �ε���)
+                    int buttonIndex = histroyButtonList.Count - 1; // 
 
                     //Create newButton onClick Button
                     /*newButton.onClick.AddListener(() =>
@@ -672,7 +722,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     if (buttonText != null)
                     {
-                        buttonText.text = "질문" + (histroyButtonList.Count) + ":" + " "+ historyDateMission;//+ "\n" + historyDate; // ��ư �ؽ�Ʈ ����
+                        buttonText.text = "질문" + (histroyButtonList.Count) + ":" + " "+ historyDateMission;//+ "\n" + historyDate; 
 
                     }
                 }
@@ -1174,29 +1224,54 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     img1.sprite = moodSprites[0];
                     textMyMood = "null";
-                    print("textMyMood" + textMyMood);
+                    //print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Good")
                 {
                     //chage switch mood
                     img1.sprite = moodSprites[1];
                     textMyMood = "Good";
-                    print("textMyMood" + textMyMood);
+                    //print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Normal")
                 {
                     img1.sprite = moodSprites[2];
                     textMyMood = "Normal";
-                    print("textMyMood" + textMyMood);
+                    //print("textMyMood" + textMyMood);
                 }
                 else if (ComentData.user1mood == "Bad")
                 {
                     img1.sprite = moodSprites[3];
                     textMyMood = "Bad";
-                    print("textMyMood" + textMyMood);
+                    //print("textMyMood" + textMyMood);
+                }
+                else if (ComentData.user1mood == "Dizzy")
+                {
+                    img1.sprite = moodSprites[4];
+                    textMyMood = "Dizzy";
+                }
+                else if (ComentData.user1mood == "Cry")
+                {
+                    img1.sprite = moodSprites[5];
+                    textMyMood = "Cry";
+                }
+                else if (ComentData.user1mood == "Angry")
+                {
+                    img1.sprite = moodSprites[6];
+                    textMyMood = "Angry";
+                }
+                else if (ComentData.user1mood == "Confuse")
+                {
+                    img1.sprite = moodSprites[7];
+                    textMyMood = "Confuse";
+                }
+                else if (ComentData.user1mood == "Sleep")
+                {
+                    img1.sprite = moodSprites[8];
+                    textMyMood = "Sleep";
                 }
 
-                print("1�� �̹��� ������� Ȯ���ϱ�" + ComentData.user1mood);
+                print("user1mood" + ComentData.user1mood);
 
 
                 if (ComentData.user2mood == "null")
@@ -1219,14 +1294,38 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     img2.sprite = moodSprites[3];
                     textMyMood = "Bad";
                 }
-
-                print("user2 �̹��� ������� Ȯ���ϱ�");
+                else if (ComentData.user2mood == "Dizzy")
+                {
+                    img2.sprite = moodSprites[4];
+                    textMyMood = "Dizzy";
+                }
+                else if (ComentData.user2mood == "Cry")
+                {
+                    img2.sprite = moodSprites[5];
+                    textMyMood = "Cry";
+                }
+                else if (ComentData.user2mood == "Angry")
+                {
+                    img2.sprite = moodSprites[6];
+                    textMyMood = "Angry";
+                }
+                else if (ComentData.user2mood == "Confuse")
+                {
+                    img2.sprite = moodSprites[7];
+                    textMyMood = "Confuse";
+                }
+                else if (ComentData.user2mood == "Sleep")
+                {
+                    img2.sprite = moodSprites[8];
+                    textMyMood = "Sleep";
+                }
+                print("user2mood" + ComentData.user2mood);
                 break;
 
             }
             else
             {
-                print("CheckMood, ��ġ�ϴ� ��¥ ����, ��ġ�ϴ� �̹����� ����.");
+                print("CheckMood, 둘다 없는데?");
             }
         }
     }
@@ -1440,7 +1539,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                      print("답변" + tmp_InputFieldObject.GetComponent<TextMeshPro>().text);
                  }*/
 
-                Coment1.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "답변" + ":" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
+                Coment1.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "답변" + ":" + "\n" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
 
             }
             else
@@ -1452,7 +1551,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                      print("답변" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text);
                  }*/
 
-                Coment2.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "답변" + ":" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
+                Coment2.GetComponent<TextMeshProUGUI>().text = LoginInfoManager.instance.nickName + "답변" + ":" + "\n" + tmp_InputFieldObject.GetComponent<TMP_InputField>().text;
 
             }
 
@@ -1853,21 +1952,26 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void CloseMailUI(GameObject obj)//closeMailUIObject
     {
-        obj.SetActive(false);
-       
         hoonSoundManagerLogin.PlaySound(1); //buttonSound
-        isMailImage = !isMailImage; // mailRangeReset
+        //isMailImage = !isMailImage; // mailRangeReset
 
         if (obj.name == "Img_MoodChoice1")
         {
             imgMoodChoiceBlackBg.SetActive(false);
         }
-
-        if (obj.name == "Img_MoodChoice2")
+        else if (obj.name == "Img_MoodChoice2")
         {
             imgMoodChoiceBlackBg.SetActive(false);
 
         }
+        else if(obj.name == "Img_MailBG")
+        {
+            isMailImage = !isMailImage; // mailRangeReset
+            obj.SetActive(false);
+            print("CloseMailUI");
+        }
+        obj.SetActive(false);
+        print("CloseMailUI");
     }
 
     public void WithInRangeViewMailImageControll()
@@ -2029,68 +2133,68 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         if (userNumber == "user1")
         {
             print("checkUserNumber" + userNumber);
-            //��й迭���ִ¸�� �׸��� �����ϰ� ����.
+            //사용자 번호를 확인
             for (int i = 1; i < moodChoice1ButtonImageList.Count; i++)
             {
                 moodChoice1ButtonImageList[i].color = new Color(1, 1, 1, 0.4f);
             }
 
-            //1���̹��� ����
+            //user1mood
             if (mood == "Good")
             {
                 img1.sprite = moodSprites[1];
                 moodChoice1ButtonImageList[1].color = new Color(1, 1, 1, 1);
                 textMyMood = "Good";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
             else if (mood == "Normal")
             {
                 img1.sprite = moodSprites[2];
                 moodChoice1ButtonImageList[2].color = new Color(1, 1, 1, 1);
                 textMyMood = "Normal";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
             else if (mood == "Bad")
             {
                 img1.sprite = moodSprites[3];
                 moodChoice1ButtonImageList[3].color = new Color(1, 1, 1, 1);
                 textMyMood = "Bad";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
             else if (mood == "Dizzy")
             {
                 img1.sprite = moodSprites[4];
                 moodChoice1ButtonImageList[4].color = new Color(1, 1, 1, 1);
                 textMyMood = "Dizzy";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
             else if (mood == "Cry")
             {
                 img1.sprite = moodSprites[5];
                 moodChoice1ButtonImageList[5].color = new Color(1, 1, 1, 1);
                 textMyMood = "Cry";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
             else if (mood == "Angry")
             {
                 img1.sprite = moodSprites[6];
                 moodChoice1ButtonImageList[6].color = new Color(1, 1, 1, 1);
                 textMyMood = "Angry";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
             else if (mood == "Confuse")
             {
                 img1.sprite = moodSprites[7];
                 moodChoice1ButtonImageList[7].color = new Color(1, 1, 1, 1);
                 textMyMood = "Confuse";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
             else if (mood == "Sleep")
             {
                 img1.sprite = moodSprites[8];
                 moodChoice1ButtonImageList[8].color = new Color(1, 1, 1, 1);
                 textMyMood = "Sleep";
-                print("textMyMood" + textMyMood);
+                //print("textMyMood" + textMyMood);
             }
 
 
@@ -2122,13 +2226,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 textMyMood = "Normal";
                 img2.sprite = moodSprites[2];
                 moodChoice2ButtonImageList[2].color = new Color(1, 1, 1, 1);
-            }
-            else if (mood == "Bad")
-            {
-                textMyMood = "Bad";
-                img2.sprite = moodSprites[3];
-                moodChoice2ButtonImageList[3].color = new Color(1, 1, 1, 1);
-
             }
             else if (mood == "Bad")
             {
@@ -2170,8 +2267,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 textMyMood = "Sleep";
                 img2.sprite = moodSprites[8];
                 moodChoice2ButtonImageList[8].color = new Color(1, 1, 1, 1);
-
             }
+
         }
         print("myChoiceMood" + mood);
 
@@ -2338,9 +2435,9 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //CheckMission(); //load mission local
         //CheckComent(); //load coment local
         //CheckMood(); //load mood local
-        //CheckHistoty();
+        //CheckHistoty(); //load history local
         GetCheckMission();
-        NewCheckHistory();
+        //NewCheckHistory();
         hoonPetInfo.MongLevelUpGet();
         hoonPointInfo.GetCalenderEvent();
 
