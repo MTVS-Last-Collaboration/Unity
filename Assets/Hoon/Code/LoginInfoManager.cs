@@ -89,10 +89,10 @@ public class LoginInfoManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         
-    }
+    }*/
 
     public void ChoiceAvata(string avataName)
     {

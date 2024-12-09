@@ -1,6 +1,9 @@
+using Autodesk.Fbx;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -35,6 +38,8 @@ public class HoonUIController : MonoBehaviour
     public TextMeshProUGUI partnerNickname;
     //사운드 조절 오브젝트
     public GameObject soundController; 
+    //기념을 텍스트
+    public Text Text_AnnivarsaryDate;
     
     void Start()
     {
@@ -62,9 +67,9 @@ public class HoonUIController : MonoBehaviour
 
         }
 
-        myNickname.text = LoginInfoManager.instance.nickName;
-        partnerNickname.text = LoginInfoManager.instance.partnerNickName;
-
+        myNickname.text = LoginInfoManager.instance.nickName; //내 닉네임변경ㄴ
+        partnerNickname.text = LoginInfoManager.instance.partnerNickName; //파트너 닉네임 변경
+        ViewAnnivalsary();
 
     }
     
@@ -238,6 +243,26 @@ public class HoonUIController : MonoBehaviour
     {
         hoonSoundManager.PlaySound("hoonAudioClipArray", 0);//버튼테스트
 
+    }
+
+    //date 를 설정합니다.
+    public void ViewAnnivalsary()
+    {
+        //<< color = "#FF5733" > D - 186 </ color > >
+
+        string date = LoginInfoManager.instance.coupleDay;
+        // 문자열을 DateTime 객체로 변환
+        DateTime coupleDate = DateTime.Parse(date); // stirng -> DateTime
+        // 오늘 날짜 가져오기
+        DateTime today = DateTime.Now;
+        // 날짜 차이 계산
+        TimeSpan difference = today - coupleDate;
+        // 차이를 일(day) 단위로 표시
+        int daysDifference = (int)difference.TotalDays;
+        // 결과를 문자열로 변환
+        string text_DaysDifference = daysDifference.ToString();
+        print(daysDifference);
+        Text_AnnivarsaryDate.text = $"<color={"#FF5733"}>D{"+"}{text_DaysDifference}</color>";
     }
 
 }// 클래스끝 
