@@ -7757,7 +7757,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 4
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -10726,18 +10726,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AlbumManager, Assembly-CSharp
         m_MethodName: SettingPic
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 792236032}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -27996,7 +27984,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 957979184}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.99999976
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -43582,8 +43570,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 855885246}
   m_HandleRect: {fileID: 855885245}
   m_Direction: 0
-  m_Value: -0.0000050265285
-  m_Size: 0.87151074
+  m_Value: -0.0000046398795
+  m_Size: 0.8715109
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -76676,7 +76664,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426150717}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -97425,6 +97413,7 @@ MonoBehaviour:
   Albumlist: []
   clickRightLeft: 0
   TimeLerp: 0
+  AlbumUploading: {fileID: 792236032}
   scrollRect: {fileID: 1548001920}
   Content: {fileID: 478713378}
   AlbumInputField: {fileID: 1667569664}

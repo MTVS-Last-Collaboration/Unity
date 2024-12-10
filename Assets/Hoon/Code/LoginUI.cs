@@ -42,6 +42,7 @@ public class LoginUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandle
     void Start()
     {
         imgMoodChoiceBlackBg = GameObject.Find("Img_MoodChoiceBlackBG");
+        Screen.SetResolution(2340, 1080, true); // false는 창 모드
         // 버튼에 리스너 추가
         //btnStartButton.onClick.AddListener(OnButtonPress);
     }

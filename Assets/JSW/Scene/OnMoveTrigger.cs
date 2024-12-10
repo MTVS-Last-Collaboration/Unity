@@ -15,7 +15,8 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
     public GameObject imgCreateRoomBG;
     public HoonCreateRoom hoonCreateRoom;
     public GameObject endingObject;
-    
+
+    bool isFull = false;
 
     void Start()
     {
@@ -25,6 +26,15 @@ public class OnMoveTrigger : MonoBehaviourPunCallbacks
         }
     }
 
+    private void LateUpdate()
+    {
+        if (!isFull)
+        {
+            Screen.SetResolution(2340, 1080, true);
+            isFull = true;
+        }
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {

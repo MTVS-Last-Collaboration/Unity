@@ -111,11 +111,20 @@ public class AlbumManager : MonoBehaviourPun
         //trContent = GameObject.Find("AlbumContentBody").GetComponent<RectTransform>();
     }
 
+    public GameObject AlbumUploading;
 
     public void SettingPic()
     {
+        if (textDay.text.Length != 10)
+        {
+            JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound2);
+            textDay.text = "";
+
+            return;
+        }
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
 
+        
         //RaiseEventOptions eventOptions = new RaiseEventOptions();
         //eventOptions.Receivers = ReceiverGroup.All;
 
@@ -225,6 +234,7 @@ public class AlbumManager : MonoBehaviourPun
 
 
         Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
+        AlbumUploading.SetActive(false);
     }
 
     //private void OnEnable()
@@ -258,10 +268,7 @@ public class AlbumManager : MonoBehaviourPun
         form.AddField("photoDate", photoAlbum.photoDate);   // 날짜
         form.AddBinaryData("photo", photoAlbum.photo, "photo.png", "image/png");
 
-        //WWWForm form = new WWWForm();
-        //form.AddField("photoId",11);           // 제목
-        //form.AddField("positionX", 470);       // 내용
-        //form.AddField("positionY", 546);   // 날짜
+
 
         // UnityWebRequest 생성
         UnityWebRequest request = UnityWebRequest.Post(url, form);
@@ -287,10 +294,6 @@ public class AlbumManager : MonoBehaviourPun
         }
     }
 
-    public void testObject()
-    {
-        testOb.SetActive(true);
-    }
 
 
 

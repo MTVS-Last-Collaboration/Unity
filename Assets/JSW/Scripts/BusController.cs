@@ -30,12 +30,16 @@ public class BusController : MonoBehaviour
     public AudioSource audio1;
     public AudioSource audio2;
 
+    bool isfull = false;
+
     private void Start()
     {
+        //Screen.SetResolution(2340, 1080, true);
         StartCoroutine(Opening());
         volumeScrollbar1.onValueChanged.AddListener(OnVolumeChange1);
         volumeScrollbar2.onValueChanged.AddListener(OnVolumeChange2);
     }
+
     void OnVolumeChange1(float value)
     {
         // Scrollbar 값(0~1)을 dB 값으로 변환하여 AudioMixser에 전달
@@ -62,6 +66,7 @@ public class BusController : MonoBehaviour
 
     public IEnumerator GoBus()
     {
+        GameObject.Find("HoonLoobyCanvas").gameObject.SetActive(false);
         byeUI.SetActive(false);
         Bus.transform.position = Pos1.transform.position;
         Bus.transform.Rotate(0, 0, 180);
