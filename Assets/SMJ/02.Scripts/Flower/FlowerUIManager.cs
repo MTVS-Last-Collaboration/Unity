@@ -883,6 +883,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
         OffPanel();
         recordButtons[2].SetActive(false);
+        exitButton.SetActive(false);
         loadingObj.SetActive(true);
         StartCoroutine(ValidateAndTransferVoice());
     }
@@ -1164,6 +1165,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         recorder.StopRecording();
         OffPanel();
         recordButtons[2].SetActive(true);
+        exitButton.SetActive(true);
     }
 
     //public void OnListenVoiceButtonClick()
