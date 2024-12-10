@@ -17,11 +17,25 @@ public class JSW_ClickMong : MonoBehaviour
 
     public int MongLevel = 0;
 
+    public float MongUITime = 0;
+
     private void Start()
     {
         uiManager = GameObject.Find("UIManager");
     }
 
+    private void Update()
+    {
+        if (oneClick == true)
+        {
+            MongUITime += Time.deltaTime;
+            if (MongUITime >= 4.0f)
+            {
+                MongUITime = 0;
+                oneClick = false;
+            }
+        }
+    }
 
     private void OnMouseDown()
     {

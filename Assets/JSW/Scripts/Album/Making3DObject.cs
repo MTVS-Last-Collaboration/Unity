@@ -143,9 +143,8 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         form.AddField("positionY", posY);   // 날짜
 
         print("PosX +" + posX + " PosY " + posY +"ID: " + Id);
-        apiUrl1 = apiUrl1 + Id;
         // UnityWebRequest 생성
-        UnityWebRequest request = UnityWebRequest.Post(apiUrl1, form);
+        UnityWebRequest request = UnityWebRequest.Post(apiUrl1 + Id, form);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
         loadingImage.SetActive(true);
@@ -162,6 +161,8 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             print("사진 잘 올라가지 않은");
+            print(apiUrl1);
+
             Debug.LogError("Error: " + request.error);
             print(request.downloadHandler.text);
             loadingImage.SetActive(false);
@@ -177,6 +178,7 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         else
         {
             print("3D사진 잘 올라감");
+            print(apiUrl1);
             StartCoroutine(PostPhotoEvent2(apiUrl2, To3DId, posX, posY));
         }
     }
@@ -395,9 +397,8 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         // JWT 토큰 가져오기
         string jwtToken = LoginInfoManager.instance.myToken;
 
-        apiUrlDelete = apiUrlDelete + Id.ToString();
         // UnityWebRequest 생성
-        UnityWebRequest request = UnityWebRequest.Delete(apiUrlDelete);
+        UnityWebRequest request = UnityWebRequest.Delete(apiUrlDelete + Id.ToString());
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
 
@@ -408,12 +409,14 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             print("사진 잘 삭제되지 않은");
+            print(Id);
             Debug.LogError("Error: " + request.error);
             print(request.downloadHandler.text);
         }
         else
         {
             print("3D사진 잘 삭제됨");
+            print(Id);
             exhibitionId = 0;
             exhibitionPicId = -1;
             Debug.Log("Response: " + request.downloadHandler.text);
@@ -454,7 +457,6 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
     {
         using (UnityWebRequest request = UnityWebRequest.Get(apiUrl3Dex))
         {
-            print("3D 포토다 냥");
             //request.SetRequestHeader("Accept", "application/json");
             string jwtToken = LoginInfoManager.instance.myToken;
             request.SetRequestHeader("Authorization", $"Bearer {jwtToken}");

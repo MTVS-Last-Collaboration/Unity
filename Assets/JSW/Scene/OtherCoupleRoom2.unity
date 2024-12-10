@@ -6269,6 +6269,10 @@ MonoBehaviour:
   bb: -2
   cameraPos: Original
   mainCamY: 8
+  Mong: {fileID: 0}
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &114980184
 GameObject:
   m_ObjectHideFlags: 0
@@ -7622,7 +7626,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 4
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -32590,9 +32594,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avataName: {fileID: 0}
-  createRoomName: 
-  createRoomName22: 
-  joinRoomName: 
+  createRoomName: 10
+  createRoomName22: 10
+  joinRoomName: 10
   levelNumber: 1
 --- !u!1001 &578261638
 PrefabInstance:
@@ -33910,6 +33914,7 @@ MonoBehaviour:
   funiturePos: {fileID: 457434907}
   DMM: {fileID: 1219026402}
   initShopId: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  otherCoupleMongDays: {fileID: 1197836812}
   isOpening: 0
   openingObject: {fileID: 1725304584}
   coupleName1: {fileID: 1742701246}
@@ -58631,6 +58636,7 @@ MonoBehaviour:
   uiManager: {fileID: 0}
   cameraControll: {fileID: 112246692}
   MongLevel: 0
+  MongUITime: 0
 --- !u!1 &1089445504
 GameObject:
   m_ObjectHideFlags: 0
@@ -64829,7 +64835,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1208583313}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -97815,9 +97821,11 @@ MonoBehaviour:
   Albumlist: []
   clickRightLeft: 0
   TimeLerp: 0
+  AlbumUploading: {fileID: 0}
   scrollRect: {fileID: 1548001920}
   Content: {fileID: 478713378}
   AlbumInputField: {fileID: 1667569664}
+  textDay: {fileID: 0}
 --- !u!4 &1817660427
 Transform:
   m_ObjectHideFlags: 0
@@ -101942,9 +101950,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avataName: {fileID: 0}
-  createRoomName: 3
-  createRoomName22: 3
-  joinRoomName: 3
+  createRoomName: 10
+  createRoomName22: 10
+  joinRoomName: 10
   levelNumber: 1
 --- !u!114 &1906997995
 MonoBehaviour:

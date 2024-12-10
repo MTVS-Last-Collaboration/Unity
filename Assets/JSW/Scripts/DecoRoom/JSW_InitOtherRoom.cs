@@ -1,11 +1,13 @@
 using Newtonsoft.Json.Linq;
 using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 public class JSW_InitOtherRoom : MonoBehaviourPun
 {
     public GameObject funiturePos;
@@ -14,8 +16,9 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
     public bool[] initShopId = new bool[45];
 
     private string apiUrl = "http://125.132.216.190:12223/api/rooms/status"; // Replace with the actual API endpoint
-    private string apiUr2 = "http://125.132.216.190:12223/api/rooms/public/13"; // Replace with the actual API endpoint
+    private string apiUr2 = "http://125.132.216.190:12223/api/rooms/random"; // Replace with the actual API endpoint
 
+    public Text otherCoupleMongDays;
 
     public bool isOpening;
 
@@ -136,11 +139,11 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
                 Debug.Log("Response: " + request.downloadHandler.text);
 
                 // You can parse the JSON here
-                OtherRoomStatus0 otherRoomStatus = JsonUtility.FromJson<OtherRoomStatus0>(request.downloadHandler.text);
+                OtherRoomStatus otherRoomStatus = JsonUtility.FromJson<OtherRoomStatus>(request.downloadHandler.text);
 
 
-                print(otherRoomStatus.data.coupleName);
-                string[] splitStrings = otherRoomStatus.data.coupleName.Split('♥');
+                print(otherRoomStatus.coupleName);
+                string[] splitStrings = otherRoomStatus.coupleName.Split('♥');
 
                 // 나눠진 문자열 캐싱
                 string firstName = splitStrings[0];
@@ -148,18 +151,31 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
                 coupleName1.text = firstName;
                 coupleName2.text = lastName;
 
-                print(otherRoomStatus.data.style.wallpaperName);
-                print(otherRoomStatus.data.style.floorName);
+                print(otherRoomStatus.style.wallpaperName);
+                print(otherRoomStatus.style.floorName);
+                print(otherRoomStatus.anniversaryDate + "fdasfadfd");
+
+                string dayDay = otherRoomStatus.anniversaryDate[0] + "-" + otherRoomStatus.anniversaryDate[1] + "-" + otherRoomStatus.anniversaryDate[2];
+                DateTime givenDate = DateTime.Parse(dayDay);
+                
+                // 오늘 날짜 가져오기
+                DateTime today = DateTime.Today;
+
+                // 두 날짜의 차이를 계산
+                int difference = (today - givenDate).Days;
+
+                otherCoupleMongDays.text = "<<color=\"#FF5733\"> D + " + difference.ToString() + "</color> >";
+
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    foreach (OtherFurnitureLayout layout in otherRoomStatus.data.furnitureLayouts)
+                    foreach (OtherFurnitureLayout layout in otherRoomStatus.furnitureLayouts)
                     {
                         InitSetFuniture(0, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, 0, 0);
                     }
                 }
 
-                DMM.floorNum = (otherRoomStatus.data.style.floorName[otherRoomStatus.data.style.floorName.Length - 1] - '0') - 1;
-                DMM.wallNum = (otherRoomStatus.data.style.wallpaperName[otherRoomStatus.data.style.wallpaperName.Length-1]-'0') - 1;
+                DMM.floorNum = (otherRoomStatus.style.floorName[otherRoomStatus.style.floorName.Length - 1] - '0') - 1;
+                DMM.wallNum = (otherRoomStatus.style.wallpaperName[otherRoomStatus.style.wallpaperName.Length-1]-'0') - 1;
             }
             else
             {
@@ -190,6 +206,8 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
         public int roomId;
         public int coupleId;
         public string coupleName;
+        public List<int> anniversaryDate;
+        //public string anniversaryDate;
         public Styles style;
         public OtherFurnitureLayout[] furnitureLayouts;
     }
@@ -297,10 +315,6 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
                 print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임");
                 Debug.LogError("Error: " + request.error);
             }
-            //for (int i=0; i < 45;i++)
-            //{
-            //    print(i+ " = " + initShopId[i]);
-            //}
         }
     }
 

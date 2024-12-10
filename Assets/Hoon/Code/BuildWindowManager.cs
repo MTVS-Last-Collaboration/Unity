@@ -8,7 +8,7 @@ public class BuildWindowManager : MonoBehaviour
     void Start()
     {
         //빌드에서 윈도우 크기를 제한하자.
-        Screen.SetResolution(1600, 900, FullScreenMode.Windowed);
+        //Screen.SetResolution(1600, 900, FullScreenMode.Windowed);
     }
 
     // Update is called once per frame

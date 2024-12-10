@@ -82,8 +82,8 @@ public class JSW_CoupleSceneManager : MonoBehaviour
                 // 두 날짜의 차이를 계산
                 int difference = (today - givenDate).Days;
                 coupleDays_Num = difference;
-                coupleDays.text = "<<color=\"#FF5733\"> D - " + difference.ToString() + "</color> >";
-                coupleMongDays.text = "D - " + difference.ToString();
+                coupleDays.text = "<<color=\"#FF5733\"> D + " + difference.ToString() + "</color> >";
+                coupleMongDays.text = "D + " + difference.ToString();
 
                 string CoupleCompleteNick = "";
 

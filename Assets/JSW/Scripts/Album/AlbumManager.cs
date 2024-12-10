@@ -111,11 +111,20 @@ public class AlbumManager : MonoBehaviourPun
         //trContent = GameObject.Find("AlbumContentBody").GetComponent<RectTransform>();
     }
 
+    public GameObject AlbumUploading;
 
     public void SettingPic()
     {
+        if (textDay.text.Length != 10)
+        {
+            JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ButtonSound2);
+            textDay.text = "";
+
+            return;
+        }
         JSW_SoundManager.Get().PlayEftSound(JSW_SoundManager.ESoundType.EFT_ImageSound);
 
+        
         //RaiseEventOptions eventOptions = new RaiseEventOptions();
         //eventOptions.Receivers = ReceiverGroup.All;
 
@@ -225,6 +234,7 @@ public class AlbumManager : MonoBehaviourPun
 
 
         Albumlist.Insert(0, new AlbumPicClass { sprite = newImage, title = title, content = content, day = day });
+        AlbumUploading.SetActive(false);
     }
 
     //private void OnEnable()
@@ -258,10 +268,7 @@ public class AlbumManager : MonoBehaviourPun
         form.AddField("photoDate", photoAlbum.photoDate);   // 날짜
         form.AddBinaryData("photo", photoAlbum.photo, "photo.png", "image/png");
 
-        //WWWForm form = new WWWForm();
-        //form.AddField("photoId",11);           // 제목
-        //form.AddField("positionX", 470);       // 내용
-        //form.AddField("positionY", 546);   // 날짜
+
 
         // UnityWebRequest 생성
         UnityWebRequest request = UnityWebRequest.Post(url, form);
@@ -287,10 +294,6 @@ public class AlbumManager : MonoBehaviourPun
         }
     }
 
-    public void testObject()
-    {
-        testOb.SetActive(true);
-    }
 
 
 
@@ -305,7 +308,7 @@ public class AlbumManager : MonoBehaviourPun
         Texture2D newImage;
         for (int i = nowIndex; i < Albumlist.Count; i++)
         {
-            if (Albumlist[i].content.Contains(AlbumInputField.text))
+            if (Albumlist[i].content.Contains(AlbumInputField.text) || Albumlist[i].title.Contains(AlbumInputField.text) || Albumlist[i].day.Contains(AlbumInputField.text))
             {
                if(i % 3 == 0)
                {
@@ -336,7 +339,6 @@ public class AlbumManager : MonoBehaviourPun
                         {
                             AlbumPos123[j+l].GetComponent<AlbumItem>().SetContents(null, null, null, null);
                             AlbumPos123Button[j + l].SetActive(false);
-                            l += 1;
                             continue;
                         }
                         title = Albumlist[i + j].title;
@@ -345,20 +347,18 @@ public class AlbumManager : MonoBehaviourPun
                         newImage = Albumlist[i + j].sprite;
                         AlbumPos123[j + l].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
                         AlbumPos123Button[j + l].SetActive(true);
-                        l += 1;
                     }
                 }
                 else if (i % 3 == 2)
                 {
                     nowIndex = i - 2;
-                    int l = 1;
+                    int l = 2;
                     for (int j = -2; j < 1; j++)
                     {
                         if (i + j >= Albumlist.Count)
                         {
                             AlbumPos123[j+ l].GetComponent<AlbumItem>().SetContents(null, null, null, null);
                             AlbumPos123Button[j + l].SetActive(false);
-                            l += 1;
                             continue;
                         }
                         title = Albumlist[i + j].title;
@@ -367,7 +367,6 @@ public class AlbumManager : MonoBehaviourPun
                         newImage = Albumlist[i + j].sprite;
                         AlbumPos123[j+ l].GetComponent<AlbumItem>().SetContents(newImage, title, content, day);
                         AlbumPos123Button[j + l].SetActive(true);
-                        l += 1;
                     }
                 }
                 clickRightLeft = true;
@@ -849,5 +848,18 @@ public class AlbumManager : MonoBehaviourPun
         public string materialUrl;
         public int positionX;
         public int positionY;
+    }
+
+    public TMP_InputField textDay;
+
+    public void DateToday()
+    {
+        // 오늘 날짜를 가져옴
+        DateTime today = DateTime.Now;
+
+        // 날짜를 "0000-00-00" 형식으로 변환
+        string formattedDate = today.ToString("yyyy-MM-dd");
+
+        textDay.text = formattedDate;
     }
 }

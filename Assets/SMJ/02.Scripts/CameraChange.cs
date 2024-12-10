@@ -24,7 +24,7 @@ public class CameraSwitch : MonoBehaviour
         // 추가 디스플레이가 있는지 확인하고 활성화
         if (Display.displays.Length > 1)
         {
-            Display.displays[1].Activate();
+            //Display.displays[1].Activate();
             yield return new WaitForSeconds(0.5f); // 디스플레이 활성화 대기
         }
 
@@ -54,24 +54,23 @@ public class CameraSwitch : MonoBehaviour
         mainCamera.enabled = true;
         mainCamera.targetDisplay = 0;
         triggerCamera.enabled = false;
-        triggerCamera.targetDisplay = 1;
+        triggerCamera.targetDisplay = 5;
     }
 
     private IEnumerator SwitchToMainCameraRoutine()
     {
-        triggerCamera.targetDisplay = 1;
+        triggerCamera.targetDisplay = 5;
         mainCamera.targetDisplay = 0;
-        yield return new WaitForSeconds(0.005f);
         triggerCamera.enabled = false;
         mainCamera.enabled = true;
+        yield return new WaitForSeconds(0.005f);
     }
 
     private IEnumerator SwitchToTriggerCamera()
     {
-        mainCamera.targetDisplay = 1;
-        triggerCamera.targetDisplay = 0;
-        yield return new WaitForSeconds(0.005f);
-        mainCamera.enabled = false;
+        mainCamera.targetDisplay = 5;
+        triggerCamera.targetDisplay = 0; mainCamera.enabled = false;
         triggerCamera.enabled = true;
+        yield return new WaitForSeconds(0.005f);
     }
 }
