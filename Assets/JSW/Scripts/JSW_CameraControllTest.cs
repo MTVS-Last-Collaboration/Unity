@@ -73,6 +73,7 @@ public class JSW_CameraControllTest : MonoBehaviour
         }
         else if (cameraPos == "Mong")
         {
+            UpdateMongCam();
             int layerMask = 1 << LayerMask.NameToLayer("Player");
             // 현재 카메라의 cullingMask에서 지정된 레이어를 제외시킴
             mainCam_Object.GetComponent<Camera>().cullingMask &= ~layerMask;
@@ -130,6 +131,9 @@ public class JSW_CameraControllTest : MonoBehaviour
         int layerMask = 1 << LayerMask.NameToLayer("Player");
         // 현재 카메라의 cullingMask에 지정된 레이어를 추가
         Camera.main.cullingMask |= layerMask;
+        // 이전 장애물 초기화
+        ResetObstacles();
+
 
         cameraPos = "Original";
         playerTransform = lobbyGameManager.GetComponent<JSW_LobbyGameManager>().player.transform;
@@ -140,4 +144,76 @@ public class JSW_CameraControllTest : MonoBehaviour
         cameraPos = "3D";
     }
     //0.13 0.15 -1
+
+
+    public Transform Mong; // 캐릭터
+    public LayerMask obstacleMask; // 감지할 레이어 (벽이나 장애물)
+
+    private Dictionary<GameObject, int> originalMaterials = new Dictionary<GameObject, int>(); // 원래의 Material 저장
+    private List<GameObject> currentObstacles = new List<GameObject>(); // 현재 투명 처리된 장애물
+
+    public void UpdateMongCam()
+    {
+        // 카메라와 캐릭터 사이를 레이캐스트로 감지
+        Vector3 direction = Mong.position - Camera.main.transform.position;
+        float distance = direction.magnitude;
+        RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position, direction.normalized, distance, obstacleMask);
+
+        //ResetObstacles();
+
+        print("Dddd");
+
+        // 현재 감지된 장애물 투명 처리
+        foreach (var hit in hits)
+        {
+            GameObject obstacle = hit.collider.gameObject;
+            print("Dddd1");
+            if (!currentObstacles.Contains(obstacle)) // 이미 처리되지 않은 장애물만 추가
+            {
+                print("Dddd3");
+                SetTransparent(obstacle);
+                currentObstacles.Add(obstacle);
+            }
+        }
+
+    }
+    void SetTransparent(GameObject obstacle)
+    {
+        var renderer = obstacle.GetComponent<MeshRenderer>();
+        if (renderer != null || obstacle.name.Contains("(Prb)"))
+        {
+            
+            if (!originalMaterials.ContainsKey(obstacle))
+            {
+                originalMaterials[obstacle] = 1; // 원래 Material 저장
+            }
+
+            //Material transparentMaterial = new Material(originalMaterials[obstacle]);
+            //transparentMaterial.color = new Color(
+            //    originalMaterials[obstacle].color.r,
+            //    originalMaterials[obstacle].color.g,
+            //    originalMaterials[obstacle].color.b,
+            //    0.2f); // 투명도 설정
+            //renderer.material = transparentMaterial;
+            obstacle.SetActive(false);
+        }
+    }
+
+    void ResetObstacles()
+    {
+        foreach (var obstacle in currentObstacles)
+        {
+            //if (obstacle != null && originalMaterials.ContainsKey(obstacle))
+            //{
+            //    var renderer = obstacle.GetComponent<Renderer>();
+            //    if (renderer != null)
+            //    {
+            //        renderer.material = originalMaterials[obstacle]; // 원래 Material 복원
+            //    }
+            //}
+            obstacle.SetActive(true);
+        }
+
+        currentObstacles.Clear(); // 현재 리스트 초기화
+    }
 }
