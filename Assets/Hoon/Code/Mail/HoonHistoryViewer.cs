@@ -8,6 +8,7 @@ public class HoonHistoryViewer : MonoBehaviour
 {
     public GameObject Img_HistoryViewerBG;
     public TextMeshProUGUI Text_HistoryDate;
+    public TextMeshProUGUI Text_HistroyMission;
     public TextMeshProUGUI Text_HistoryUser1NickName;
     public TextMeshProUGUI Text_HistoryUser2NickName;
     public TextMeshProUGUI Text_HistoryUser1Coment;
@@ -16,6 +17,7 @@ public class HoonHistoryViewer : MonoBehaviour
     public Image Img_HistoryUser2Mood;
 
     public TextMeshProUGUI Text_HistoryViewerDate;
+    public TextMeshProUGUI Text_HistroyViewerMission;
     public TextMeshProUGUI Text_HistoryViewerNickName1;
     public TextMeshProUGUI Text_HistoryViewerNickName2;
     public TextMeshProUGUI Img_HistoryViwerComent1;
@@ -43,7 +45,9 @@ public class HoonHistoryViewer : MonoBehaviour
         if(isHistoryViwer)
         {
             Img_HistoryViewerBG.SetActive(true);
+
             Text_HistoryViewerDate.text = Text_HistoryDate.text;
+            Text_HistroyViewerMission.text = Text_HistroyMission.text;
             Text_HistoryViewerNickName1.text = Text_HistoryUser1NickName.text;
             Text_HistoryViewerNickName2.text = Text_HistoryUser2NickName.text;
             Img_HistoryViwerComent1.text = Text_HistoryUser1Coment.text;

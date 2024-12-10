@@ -320,8 +320,6 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             Debug.LogError("Error: " + request.error);
             Debug.LogError("Response Code: " + request.responseCode);
             Debug.LogError("Response Body: " + request.downloadHandler.text);
-
-       
         }
 
     }
@@ -530,7 +528,8 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user1coment
                     if (jsonObj["partner1Answer"].ToString() == "null")
                     {
-                        Coment1.GetComponent<TextMeshProUGUI>().text = $"<작성하기>를 누르세요. {"\n"}<기분>을 선택하세요.{"\n"}<답변>을 입력하세요. {"\n"}<제출하기>를 누르세요.";
+                        //Coment1.GetComponent<TextMeshProUGUI>().text = $"<작성하기>를 누르세요. {"\n"}<기분>을 선택하세요.{"\n"}<답변>을 입력하세요. {"\n"}<제출하기>를 누르세요.";
+                        Coment1.GetComponent<TextMeshProUGUI>().text = $"나의 답변:{"\n"}연인이 답변을 기다리고 있어요.";
                     }
                     else
                     {
@@ -555,11 +554,11 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user2coment.
                     if (jsonObj["partner2Answer"].ToString() == "null")
                     {
-                        Coment2.GetComponent<TextMeshProUGUI>().text = "연인의 답변을 기다리고 있습니다.";
+                        Coment2.GetComponent<TextMeshProUGUI>().text = $"연인의 답변:{"\n"}연인의 답변을 기다리고 있어요.";
                     }
                     else
                     {
-                        Coment2.GetComponent<TextMeshProUGUI>().text = $"연인의 답변이 등록되었어요.{"\n"}답변을 <제출>하세요.{"\n"}<답변보기>를 누르세요."; //hideUser2Mood
+                        Coment2.GetComponent<TextMeshProUGUI>().text = $"연인의 답변이 등록되었어요.{"\n"}답변을 완료하고{"\n"}<답변보기>를 누르세요."; //hideUser2Mood
                     }
                 
                 }
@@ -587,7 +586,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user1coment
                     if (jsonObj["partner1Answer"].ToString() == "null")
                     {
-                        Coment1.GetComponent<TextMeshProUGUI>().text = "연인의 답변을 기다리고 있습니다";
+                        Coment1.GetComponent<TextMeshProUGUI>().text = $"연인의 답변:{"\n"}연인의 답변을 기다리고 있어요.";
                     }
                     else
                     {
@@ -611,7 +610,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     // user2coment.
                     if (jsonObj["partner2Answer"].ToString() == "null")
                     {
-                        Coment2.GetComponent<TextMeshProUGUI>().text = $"<작성하기>를 누르세요. {"\n"}<기분>을 선택하세요.{"\n"}<답변>을 입력하세요. {"\n"}<제출하기>를 누르세요.";
+                        Coment2.GetComponent<TextMeshProUGUI>().text = $"나의 답변:{"\n"}연인이 답변을 기다리고 있어요.";
                     }
                     else
                     {
@@ -2440,6 +2439,7 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //NewCheckHistory();
         hoonPetInfo.MongLevelUpGet();
         hoonPointInfo.GetCalenderEvent();
+        WeeklyMissionPostServer();
 
 
     }

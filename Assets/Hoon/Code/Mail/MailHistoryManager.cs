@@ -68,6 +68,7 @@ public class MailHistoryManager : MonoBehaviour
     public Transform historyContent;
     public Sprite[] moodSprites;
     public TextMeshProUGUI text_HistoryDate;
+    public TextMeshProUGUI Text_HistoryMission;
     public TextMeshProUGUI text_HistoryUser1NickName;
     public TextMeshProUGUI text_HistoryUser2NickName;
     public TextMeshProUGUI text_HistoryUser1Coment;
@@ -91,7 +92,11 @@ public class MailHistoryManager : MonoBehaviour
             }
    
         }
-       
+
+        //기존미션조회하기
+        ViewMissionHistroyComplete();
+
+
     }
 
     // Update is called once per frame
@@ -253,6 +258,7 @@ public class MailHistoryManager : MonoBehaviour
             Debug.Log("날짜: " + date + ", 미션: " + data.missionContent + ", 닉네임1: " + data.partner1Name + ", 기분1: " + data.partner1Mood + ", 답변1: " + data.partner1Answer + ", 닉네임2: " + data.partner2Name + ", 기분2: " + data.partner2Mood + ", 답변2: " + data.partner2Answer);
 
             text_HistoryDate.text = date;
+            Text_HistoryMission.text = data.missionContent;
             text_HistoryUser1NickName.text = data.partner1Name;
             text_HistoryUser2NickName.text = data.partner2Name;
             // 원래 텍스트
