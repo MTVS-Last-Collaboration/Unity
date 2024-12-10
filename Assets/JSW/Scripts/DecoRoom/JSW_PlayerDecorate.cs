@@ -18,7 +18,7 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
     public bool IsCharacterMoving;
     public Animator playerAnimator;
     public GameObject funiturePos;
-    int dir = 0;
+    public int dir = 0;
     JSW_ServerDeco serverDeco;
     public GameObject SmokeEffect;
 
