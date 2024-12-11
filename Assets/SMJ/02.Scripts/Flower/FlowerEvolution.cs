@@ -152,21 +152,21 @@ public class FlowerEvolution : MonoBehaviourPun
         if (flower.curState == Flower.States.SEED && flower.evolutionCount >= sproutEvolCount)
         {
             StartEvolution(Flower.States.SPROUT, false);
-            yield return new WaitForSeconds(2f); // 진화 애니메이션 + 대기 시간
+            yield return new WaitForSeconds(3f); // 진화 애니메이션 + 대기 시간
         }
 
         // SPROUT 진화
         if (flower.curState == Flower.States.SPROUT && flower.evolutionCount >= budEvolCount)
         {
             StartEvolution(Flower.States.BUD, false);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
         }
 
         // BUD 진화
         if (flower.curState == Flower.States.BUD && flower.evolutionCount >= blossomEvolCount)
         {
             StartEvolution(Flower.States.BLOSSOM, false);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
         }
     }
 
