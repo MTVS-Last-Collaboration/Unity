@@ -20,6 +20,9 @@ public class DecoShopManager : MonoBehaviour
 
     public int shopId;
 
+    public TMP_Text warningAnimator_Text;
+    public Animator warningAnimator;
+
     void Start()
     {
         profilePrice.text = point.ToString();
@@ -46,6 +49,12 @@ public class DecoShopManager : MonoBehaviour
             JDSI.isPurchase = true;
             BuyId(shopId);
             JSW_SoundManager.Get().PlayEftSoundClick3();
+        }
+        else
+        {
+            JSW_SoundManager.Get().PlayEftSoundClick2();
+            warningAnimator_Text.text = "포인트가 부족합니다";
+            warningAnimator.Play("New Animation", 0, 0f);
         }
     }
 

@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
@@ -11,6 +12,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
     public List<JSW_InfoDecoObject> FunitureList = new List<JSW_InfoDecoObject>();
     public JSW_PlayerDecorate playerDecorate;
 
+    public TMP_Text warningAnimator_Text;
     public Animator warningAnimator;
 
     private void Start()
@@ -98,7 +100,12 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        if(warningAnimator !=null) warningAnimator.Play("New Animation", 0, 0f);
+                        if (warningAnimator != null)
+                        {
+                            warningAnimator_Text.text = "공간이 부족합니다";
+                            warningAnimator.Play("New Animation", 0, 0f);
+                        }
+
                         return false;
                     }
                 }
@@ -114,7 +121,11 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        if (warningAnimator != null) warningAnimator.Play("New Animation", 0, 0f);
+                        if (warningAnimator != null)
+                        {
+                            warningAnimator_Text.text = "공간이 부족합니다";
+                            warningAnimator.Play("New Animation", 0, 0f);
+                        }
                         return false;
                     }
                 }
@@ -130,7 +141,11 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        if (warningAnimator != null) warningAnimator.Play("New Animation", 0, 0f);
+                        if (warningAnimator != null)
+                        {
+                            warningAnimator_Text.text = "공간이 부족합니다";
+                            warningAnimator.Play("New Animation", 0, 0f);
+                        }
                         return false;
                     }
                 }
@@ -147,7 +162,11 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
-                        if (warningAnimator != null) warningAnimator.Play("New Animation", 0, 0f);
+                        if (warningAnimator != null)
+                        {
+                            warningAnimator_Text.text = "공간이 부족합니다";
+                            warningAnimator.Play("New Animation", 0, 0f);
+                        }
                         return false;
                     }
                 }
