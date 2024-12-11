@@ -262,7 +262,7 @@ public class HoonUIController : MonoBehaviour
         // 결과를 문자열로 변환
         string text_DaysDifference = daysDifference.ToString();
         print(daysDifference);
-        Text_AnnivarsaryDate.text = $"<color={"#FF5733"}>D{"+"}{text_DaysDifference}</color>";
+        Text_AnnivarsaryDate.text = $"{"<"}<color={"#FF5733"}>D{"+"}{text_DaysDifference}</color>{">"}";
     }
 
 }// 클래스끝 

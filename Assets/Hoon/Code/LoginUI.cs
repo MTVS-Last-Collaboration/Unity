@@ -140,8 +140,13 @@ public class LoginUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandle
         if(obj.name == "LoginMenuBG")
         {
             registMenuAll.SetActive(true);
+
         }
-    
+        if(obj.name == "LoginBG")
+        {
+
+        }
+
     }
 
     public void CloseUI(GameObject objecName)
