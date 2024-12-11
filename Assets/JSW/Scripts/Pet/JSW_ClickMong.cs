@@ -19,6 +19,8 @@ public class JSW_ClickMong : MonoBehaviour
 
     public float MongUITime = 0;
 
+    public GameObject AlbumUI;
+
     private void Start()
     {
         uiManager = GameObject.Find("UIManager");
@@ -42,6 +44,7 @@ public class JSW_ClickMong : MonoBehaviour
         //추후 클릭 성공 시 플레이어 움직임 막기
         if (isPlayerInRange && !oneClick)
         {
+            if (AlbumUI.activeSelf == true) return;
             uiManager.GetComponent<JSW_UIManager>().OnClickMong();
             cameraControll.CameraToMong();
             oneClick = true;
