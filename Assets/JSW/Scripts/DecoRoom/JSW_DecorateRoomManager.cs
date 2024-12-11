@@ -100,6 +100,7 @@ public class JSW_DecorateRoomManager : MonoBehaviour
                     if (j >= 8 || j < 0 || i >= 8 || i < 0 || roomPosition[j, i] == true)
                     {
                         JSW_SoundManager.Get().PlayEftSoundClick2();
+                        
                         if (warningAnimator != null)
                         {
                             warningAnimator_Text.text = "공간이 부족합니다";

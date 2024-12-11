@@ -1,11 +1,15 @@
+using ExitGames.Client.Photon;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using Photon.Realtime;
+using UnityEngine.EventSystems;
 
-public class CashManager : MonoBehaviour
-{
+public class CashManager : MonoBehaviour, IOnEventCallback
+{ 
     // Start is called before the first frame update
     public GameObject CashBackground1;
     public GameObject cashMenu;
@@ -79,6 +83,27 @@ public class CashManager : MonoBehaviour
         CashNum = 0;
     }
 
+    private void OnEnable()
+    {
+        //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == 16) //포인트 증가
+        {
+            object[] receiveObjects = (object[])photonEvent.CustomData;
+            int receiveString1 = (int)receiveObjects[0];
+            decoShopmanager.point += receiveString1;
+        }
+
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
     int temp = 0;
     // Coroutine을 통해 POST 요청을 수행
     private IEnumerator PostAddPoints(int points)
@@ -107,7 +132,18 @@ public class CashManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             //yield return StartCoroutine(info.GetEvents());
-            decoShopmanager.point += points;
+            //decoShopmanager.point += points;
+
+            object[] sendContent = new object[] { points };
+
+            RaiseEventOptions eventOptions = new RaiseEventOptions();
+            eventOptions.Receivers = ReceiverGroup.All;
+
+            PhotonNetwork.RaiseEvent(16, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+            EventSystem.current.SetSelectedGameObject(null);
+
+
             isOkayCash.SetActive(false);
             CashBackground2.SetActive(false);
             Debug.Log("포인트가 성공적으로 추가되었습니다: " + request.downloadHandler.text);

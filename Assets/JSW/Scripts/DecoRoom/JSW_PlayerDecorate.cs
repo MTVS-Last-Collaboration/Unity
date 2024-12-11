@@ -122,6 +122,8 @@ public class JSW_PlayerDecorate : MonoBehaviourPun
             // 백엔드 연결되면 고치자
             if (!photonView.IsMine)
             {
+                GameObject smoke = Instantiate(SmokeEffect, funitureOb.transform.position, funitureOb.transform.rotation);
+                Destroy(smoke, 2f);
                 Destroy(funitureOb);
             }
             else

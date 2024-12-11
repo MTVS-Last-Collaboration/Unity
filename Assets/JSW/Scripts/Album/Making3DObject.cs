@@ -234,6 +234,12 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
                 print("사진 잘 올라가지 않은2");
                 Debug.LogError("Error: " + request.error);
                 print(request.downloadHandler.text);
+                RaiseEventOptions eventOptions = new RaiseEventOptions();
+                eventOptions.Receivers = ReceiverGroup.All;
+
+                PhotonNetwork.RaiseEvent(14, null, eventOptions, SendOptions.SendUnreliable);
+
+                EventSystem.current.SetSelectedGameObject(null);
             }
             else
             {
@@ -241,9 +247,10 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
                 Debug.Log("Response: " + request.downloadHandler.text);
                 Photo3DFirst wrapper = JsonUtility.FromJson<Photo3DFirst>(request.downloadHandler.text);
                 //StartCoroutine(LoadOBJWithTexture(wrapper.textureUrl, wrapper.materialUrl));
+                exhibitionId = wrapper.exhibitionId;
+                exhibitionPicId = wrapper.photo.photoId;
 
-
-                object[] sendContent = new object[] { wrapper.textureUrl, wrapper.materialUrl};
+                object[] sendContent = new object[] { wrapper.textureUrl, wrapper.materialUrl , exhibitionId};
 
                 RaiseEventOptions eventOptions = new RaiseEventOptions();
                 eventOptions.Receivers = ReceiverGroup.All;
@@ -253,8 +260,7 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
                 EventSystem.current.SetSelectedGameObject(null);
 
 
-                exhibitionId = wrapper.exhibitionId;
-                exhibitionPicId = wrapper.photo.photoId;
+                
 
             }
         }
@@ -274,6 +280,8 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
             object[] receiveObjects = (object[])photonEvent.CustomData;
             string receiveString1 = receiveObjects[0].ToString();
             string receiveString2 = receiveObjects[1].ToString();
+            int exbiId = (int)receiveObjects[2];
+            exhibitionId = exbiId;
             StartCoroutine(LoadOBJWithTexture(receiveString1, receiveString2));
         }
         if (photonEvent.Code == 13) // 생성 시작
@@ -283,6 +291,13 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
         if (photonEvent.Code == 14) // 생성 실패 1
         {
             loadingImage.SetActive(false);
+        }
+        if (photonEvent.Code == 15) //가구 생성
+        {
+            if (exhibitionPos.transform.childCount != 0)
+            {
+                Destroy(exhibitionPos.transform.GetChild(0).gameObject);
+            }
         }
     }
 
@@ -386,11 +401,22 @@ public class Making3DObject : MonoBehaviour, IOnEventCallback
     {
         if (exhibitionPos.transform.childCount != 0)
         {
-            Destroy(exhibitionPos.transform.GetChild(0).gameObject);
+            //Destroy(exhibitionPos.transform.GetChild(0).gameObject);
+            //StartCoroutine(apiUrlDeleteEvent_CO(exhibitionId));
+
+            object[] sendContent = new object[] {};
+
+            RaiseEventOptions eventOptions = new RaiseEventOptions();
+            eventOptions.Receivers = ReceiverGroup.All;
+
+            PhotonNetwork.RaiseEvent(15, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+            EventSystem.current.SetSelectedGameObject(null);
             StartCoroutine(apiUrlDeleteEvent_CO(exhibitionId));
         }
 
     }
+
 
     IEnumerator apiUrlDeleteEvent_CO(int Id)
     {
