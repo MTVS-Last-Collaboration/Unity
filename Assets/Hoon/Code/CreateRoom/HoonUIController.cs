@@ -268,7 +268,7 @@ public class HoonUIController : MonoBehaviour
 
     public void MoveLoginScene()
     {
-        SceneManager.LoadScene("HoonLobbySceneFinal");
+        SceneManager.LoadScene("HoonLoginScene");
     }
 
 }// 클래스끝 
