@@ -60,12 +60,10 @@ public class JSW_InitRoom : MonoBehaviourPun
                     {
                         InitSetFuniture(layout.furnitureLayoutId, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, layout.width, layout.height);
                     }
+                    DMM.floorNum = roomStatus.data.floor.floorNumber - 1;
+                    DMM.wallNum = roomStatus.data.wallpaper.wallpaperNumber - 1;
+                    WallAndFloorNum(DMM.floorNum, DMM.wallNum);
                 }
-
-                DMM.floorNum = roomStatus.data.floor.floorNumber-1;
-                DMM.wallNum = roomStatus.data.wallpaper.wallpaperNumber-1;
-                print("처음인데 잘 나왔어요!!!!!!!");
-
             }
             else
             {
@@ -76,6 +74,17 @@ public class JSW_InitRoom : MonoBehaviourPun
                 print("안나왓어요!!!!!!!!!!");
             }
         }
+    }
+
+    public void WallAndFloorNum(int floor, int wall)
+    {
+        photonView.RPC("WallAndFloorNum_RPC", RpcTarget.AllBuffered, floor, wall);
+    }
+    [PunRPC]
+    public void WallAndFloorNum_RPC(int floor, int wall)
+    {
+        DMM.floorNum = floor;
+        DMM.wallNum = wall;
     }
 
     [System.Serializable]

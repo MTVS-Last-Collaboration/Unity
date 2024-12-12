@@ -172,10 +172,10 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
                     {
                         InitSetFuniture(0, layout.furnitureId, layout.furnitureName, layout.positionX, layout.positionY, layout.rotation, 0, 0);
                     }
+                    DMM.floorNum = (otherRoomStatus.style.floorName[otherRoomStatus.style.floorName.Length - 1] - '0') - 1;
+                    DMM.wallNum = (otherRoomStatus.style.wallpaperName[otherRoomStatus.style.wallpaperName.Length - 1] - '0') - 1;
+                    WallAndFloorNum(DMM.floorNum, DMM.wallNum);
                 }
-
-                DMM.floorNum = (otherRoomStatus.style.floorName[otherRoomStatus.style.floorName.Length - 1] - '0') - 1;
-                DMM.wallNum = (otherRoomStatus.style.wallpaperName[otherRoomStatus.style.wallpaperName.Length-1]-'0') - 1;
             }
             else
             {
@@ -184,6 +184,17 @@ public class JSW_InitOtherRoom : MonoBehaviourPun
                 print("JSW_InitRoom인데 처음 가구들 설치할 때 호출하는 것임 잘 안나옴");
             }
         }
+    }
+
+    public void WallAndFloorNum(int floor, int wall)
+    {
+        photonView.RPC("WallAndFloorNum_RPC", RpcTarget.AllBuffered, floor, wall);
+    }
+    [PunRPC]
+    public void WallAndFloorNum_RPC(int floor, int wall)
+    {
+        DMM.floorNum = floor;
+        DMM.wallNum = wall;
     }
 
     [System.Serializable]
