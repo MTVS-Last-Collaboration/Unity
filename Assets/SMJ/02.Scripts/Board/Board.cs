@@ -36,7 +36,7 @@ public class Board : MonoBehaviour
         DateTime time = new DateTime(2024, 11, 15);
         topicManager = GetComponent<TopicManager>();
         //DateTime time = DateTime.Today;
-
+        topicManager._date = time.ToString("yyyy-MM-dd");
         InitTopic(time);
         StartCoroutine(DailyWeeklyLikesCheck());
         print("ÅäÅ« : " + PlayerPrefs.GetString("token"));
