@@ -12,6 +12,7 @@ public class JSW_ClickAlbum : MonoBehaviour
     private bool isPlayerInRange = false;
     public Vector3 RawScale;
     public GameObject book;
+    public GameObject MongUI;
 
     private void Start()
     {
@@ -22,7 +23,7 @@ public class JSW_ClickAlbum : MonoBehaviour
     private void OnMouseDown()
     {
         //추후 클릭 성공 시 플레이어 움직임 막기
-        if (isPlayerInRange && cameraControllTest.cameraPos != "Album")
+        if (isPlayerInRange && cameraControllTest.cameraPos != "Album"  && !MongUI.activeSelf)
         {
             albumManager.GetRoomStatus();
             cameraControllTest.CameraToAlbum();
