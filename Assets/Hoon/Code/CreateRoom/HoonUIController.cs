@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 //using UnityEngine.UIElements;
 
 public class HoonUIController : MonoBehaviour
@@ -263,6 +264,11 @@ public class HoonUIController : MonoBehaviour
         string text_DaysDifference = daysDifference.ToString();
         print(daysDifference);
         Text_AnnivarsaryDate.text = $"{"<"}<color={"#FF5733"}>D{"+"}{text_DaysDifference}</color>{">"}";
+    }
+
+    public void MoveLoginScene()
+    {
+        SceneManager.LoadScene("HoonLobbySceneFinal");
     }
 
 }// 클래스끝 

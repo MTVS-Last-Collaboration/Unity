@@ -144,7 +144,7 @@ public class LoginUI : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandle
         }
         if(obj.name == "LoginBG")
         {
-
+            obj.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
         }
 
     }
