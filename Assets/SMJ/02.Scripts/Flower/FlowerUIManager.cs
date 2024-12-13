@@ -389,10 +389,10 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
     {
         if (dateChanger.UseFeature() == false && isListenComplete == true)
         {
-            listenCompleteText.text = "연인의 말\n한마디 듣기\n" + restTime;
+            //listenCompleteText.text = "연인의 말\n한마디 듣기\n" + restTime;
             if (buttons != null && buttons.Length > 2 && buttons[2] != null)
             {
-                buttons[2].GetComponent<Button>().interactable = false;
+                //buttons[2].GetComponent<Button>().interactable = false;
             }
         }
         else if (dateChanger.UseFeature() == true && isRecordComplete == false)
@@ -1399,6 +1399,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
     private IEnumerator CheckAudioCompletion()
     {
+        yield return new WaitForSeconds(0.1f);
         while (audioSource.isPlaying)
         {
             yield return null;
