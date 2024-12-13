@@ -37,6 +37,27 @@ public class JSW_DecoShopItem : MonoBehaviour
             transform.GetChild(2).GetComponent<TMP_Text>().text = price.ToString()+"P";
         }
     }
+
+    void OnEnable()
+    {
+        initRoom = GameObject.Find("DecorateRoomManager").GetComponent<JSW_InitRoom>();
+        print(initRoom.initShopId[shopid]);
+        if (initRoom.initShopId[shopid])
+        {
+            isPurchase = true;
+            transform.GetChild(2).GetComponent<TMP_Text>().text = "소유중";
+
+            decoMineObject.transform.gameObject.SetActive(true);
+            decoMineObject.isMineText.text = "소유중";
+            decoMineObject.isPurchased = true;
+
+        }
+        else
+        {
+            isPurchase = false;
+            transform.GetChild(2).GetComponent<TMP_Text>().text = price.ToString() + "P";
+        }
+    }
     public void OnClickPurchase()
     {
         

@@ -19,6 +19,7 @@ public class CashManager : MonoBehaviour, IOnEventCallback
     public GameObject moneyPanel1;
     public GameObject moneyPanel2;
     public GameObject moneyPanel3;
+    public GameObject moneyPanel4;
 
     public DecoShopManager decoShopmanager;
     public int CashNum = 0;
@@ -57,6 +58,7 @@ public class CashManager : MonoBehaviour, IOnEventCallback
         moneyPanel1.transform.GetChild(1).gameObject.SetActive(true);
         moneyPanel2.transform.GetChild(1).gameObject.SetActive(false);
         moneyPanel3.transform.GetChild(1).gameObject.SetActive(false);
+        moneyPanel4.transform.GetChild(1).gameObject.SetActive(false);
         CashNum = num;
     }
 
@@ -65,6 +67,7 @@ public class CashManager : MonoBehaviour, IOnEventCallback
         moneyPanel1.transform.GetChild(1).gameObject.SetActive(false);
         moneyPanel2.transform.GetChild(1).gameObject.SetActive(true);
         moneyPanel3.transform.GetChild(1).gameObject.SetActive(false);
+        moneyPanel4.transform.GetChild(1).gameObject.SetActive(false);
         CashNum = num;
     }
     public void OnClickCashPanel3(int num)
@@ -72,6 +75,16 @@ public class CashManager : MonoBehaviour, IOnEventCallback
         moneyPanel1.transform.GetChild(1).gameObject.SetActive(false);
         moneyPanel2.transform.GetChild(1).gameObject.SetActive(false);
         moneyPanel3.transform.GetChild(1).gameObject.SetActive(true);
+        moneyPanel4.transform.GetChild(1).gameObject.SetActive(false);
+        CashNum = num;
+    }
+
+    public void OnClickCashPanel4(int num)
+    {
+        moneyPanel1.transform.GetChild(1).gameObject.SetActive(false);
+        moneyPanel2.transform.GetChild(1).gameObject.SetActive(false);
+        moneyPanel3.transform.GetChild(1).gameObject.SetActive(false);
+        moneyPanel4.transform.GetChild(1).gameObject.SetActive(true);
         CashNum = num;
     }
 

@@ -1,10 +1,14 @@
+using ExitGames.Client.Photon;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using Photon.Pun;
+using UnityEngine.EventSystems;
 
-public class DecoShopManager : MonoBehaviour
+public class DecoShopManager : MonoBehaviour, IOnEventCallback
 {
     public int point;
     public int nowPrice;
@@ -42,13 +46,23 @@ public class DecoShopManager : MonoBehaviour
             JDMO.transform.gameObject.SetActive(true);
             DecoUIPurchase.SetActive(false);
             DecoUIOkay.SetActive(true);
-            point = point - nowPrice;
+            //point = point - nowPrice;
             nowOwner.text = "소유중";
             JDMO.isMineText.text = "소유중";
             JDMO.isPurchased = true;
             JDSI.isPurchase = true;
             BuyId(shopId);
             JSW_SoundManager.Get().PlayEftSoundClick3();
+
+            object[] sendContent = new object[] { nowPrice };
+
+            RaiseEventOptions eventOptions = new RaiseEventOptions();
+            eventOptions.Receivers = ReceiverGroup.All;
+
+            PhotonNetwork.RaiseEvent(20, sendContent, eventOptions, SendOptions.SendUnreliable);
+
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
         else
         {
@@ -58,6 +72,27 @@ public class DecoShopManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        //PhotonNetwork.NetworkingClient.AddCallbackTarget(this);
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == 20) //포인트 감소
+        {
+            object[] receiveObjects = (object[])photonEvent.CustomData;
+            int receiveString1 = (int)receiveObjects[0];
+            point -= receiveString1;
+        }
+
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
 
     public void OnClickPurchaseNo()
     {
@@ -125,4 +160,6 @@ public class DecoShopManager : MonoBehaviour
             Debug.LogError("구매 실패: " + request.error);
         }
     }
+
+
 }
