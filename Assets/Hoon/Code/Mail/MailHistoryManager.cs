@@ -95,7 +95,7 @@ public class MailHistoryManager : MonoBehaviour
 
         //기존미션조회하기
         ViewMissionHistroyComplete();
-
+ 
 
     }
 

@@ -78,6 +78,7 @@ public class LoginTest : MonoBehaviour
     public class MyInfoResponse
     {
         public string nickname;
+        public string partnerNickName;
         public string gender;
         //public string anniversaryDate;
         public List<int> anniversaryDate; // JSON 배열을 List<int>로 받기
@@ -121,8 +122,7 @@ public class LoginTest : MonoBehaviour
         print("커플코드" + jsonString);
         print("내토큰보기" + myToken);
 
-       
-
+      
         StartCoroutine(PostCreateCoupleCode(jsonString));
         //print("내가보낸 커플코드 " + jsonString);
 
@@ -184,6 +184,7 @@ public class LoginTest : MonoBehaviour
 
             //여기에서 UI Img_CoupleMenu3 꺼야합니다.
             coupleMenu3.SetActive(false);
+            CheckUserInfo();
 
 
         }
@@ -318,7 +319,7 @@ public class LoginTest : MonoBehaviour
         else
         {
             string responseText = request.downloadHandler.text;
-            //print("서버 응답: " + responseText); // 내가 받은 정보
+            print("유저정보 서버응답: " + responseText); // 내가 받은 정보
 
             //responseText 응답결과
             /*{
@@ -332,6 +333,9 @@ public class LoginTest : MonoBehaviour
             MyInfoResponse myInfo = JsonUtility.FromJson<MyInfoResponse>(responseText);
             LoginInfoManager.instance.nickName = myInfo.nickname;
             print("내닉네임" + LoginInfoManager.instance.nickName);
+            //LoginInfoManager.instance.partnerNickName = myInfo.partnerNickName;
+            //LoginInfoManager.instance.partnerNickName = myInfo.nickname;
+
             LoginInfoManager.instance.avataChoice = myInfo.gender;
             print("내아바타" + LoginInfoManager.instance.avataChoice);
             DateTime anniversary = new DateTime(myInfo.anniversaryDate[0], myInfo.anniversaryDate[1], myInfo.anniversaryDate[2]);
@@ -340,6 +344,8 @@ public class LoginTest : MonoBehaviour
             print("내기념일 " + LoginInfoManager.instance.coupleDay);
             LoginInfoManager.instance.coupleCode = myInfo.coupleCode;
             print("내커플코드" + LoginInfoManager.instance.coupleCode);
+
+            LoginInfoManager.instance.isLogin = true;
 
 
             //print("날짜 파싱 " + anniversary);
@@ -368,9 +374,9 @@ public class LoginTest : MonoBehaviour
 
             //UI 닫음.
             //CloseLoginUI();
-            StartCoroutine(ChangeDownPositionLoginUI(loginImage));
             print("로그인UI닫기");
-
+            StartCoroutine(ChangeDownPositionLoginUI(loginImage));
+            
         }
 
     }
