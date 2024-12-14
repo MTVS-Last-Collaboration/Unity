@@ -192,7 +192,7 @@ public class JSW_PetManager : MonoBehaviour
         mongLevel_text.text = "레벨 " + mongLevel.ToString();
         if (1 <= mongLevel && mongLevel <= 5)
         {
-            nickName_text.text = "갓 태이난 " + MongName;
+            nickName_text.text = "갓 태어난 " + MongName;
             Mong.transform.GetChild(0).gameObject.SetActive(true);
 
         }
