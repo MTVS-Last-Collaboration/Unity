@@ -159,6 +159,7 @@ public class CashManager : MonoBehaviour, IOnEventCallback
 
             isOkayCash.SetActive(false);
             CashBackground2.SetActive(false);
+            CashBackground1.SetActive(true);
             Debug.Log("포인트가 성공적으로 추가되었습니다: " + request.downloadHandler.text);
         }
         else
