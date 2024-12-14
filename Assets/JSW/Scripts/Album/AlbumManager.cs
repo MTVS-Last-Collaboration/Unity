@@ -291,6 +291,7 @@ public class AlbumManager : MonoBehaviourPun
             AlbumStatus0 wrapper = JsonUtility.FromJson<AlbumStatus0>(request.downloadHandler.text);
             Albumlist[0].id = wrapper.data.id;
             Debug.Log("Response: " + request.downloadHandler.text);
+            AlbumUploading.SetActive(false);
         }
     }
 

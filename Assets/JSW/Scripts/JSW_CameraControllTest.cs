@@ -161,16 +161,14 @@ public class JSW_CameraControllTest : MonoBehaviour
 
         //ResetObstacles();
 
-        print("Dddd");
-
         // 현재 감지된 장애물 투명 처리
         foreach (var hit in hits)
         {
             GameObject obstacle = hit.collider.gameObject;
-            print("Dddd1");
+
             if (!currentObstacles.Contains(obstacle)) // 이미 처리되지 않은 장애물만 추가
             {
-                print("Dddd3");
+
                 SetTransparent(obstacle);
                 currentObstacles.Add(obstacle);
             }
