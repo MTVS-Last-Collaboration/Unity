@@ -10,9 +10,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
+using Photon.Realtime;
 //using UnityEngine.UIElements;
 
-public class HoonUIController : MonoBehaviour
+public class HoonUIController : MonoBehaviourPunCallbacks
 {
     public bool isMyMarkObject = false;
     public bool isGetMarkObject = false;
@@ -268,7 +270,32 @@ public class HoonUIController : MonoBehaviour
 
     public void MoveLoginScene()
     {
-        SceneManager.LoadScene("HoonLoginScene");
+        // Photon 방을 떠남
+        print("방떠나자~");
+        LoginInfoManager.instance.isLogin = false;
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
+        //SceneManager.LoadScene("HoonLoginScene");
     }
+    // Photon 방을 떠난 후 콜백
+   /* public override void OnLeftRoom()
+    {
+        // Photon 서버와의 연결을 종료
+        print("연결끊자~");
+        PhotonNetwork.Disconnect();
+    }*/
+    // Photon 서버와 연결이 끊어진 후 콜백
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        if(LoginInfoManager.instance.isLogin == false)
+        {
+            // 원하는 씬 로드
+            print("로그인으로 이동");
+            SceneManager.LoadScene("HoonLoginScene");
+        }
+        
+    }
+
+
 
 }// 클래스끝 

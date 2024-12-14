@@ -1,11 +1,11 @@
 //포톤추가
 using Photon.Pun;
+using Photon.Realtime;
 //MethodInfo 추가
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Realtime;
 using UnityEditor;
 using TMPro;
 

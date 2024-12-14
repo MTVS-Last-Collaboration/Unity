@@ -19,7 +19,8 @@ public class LoginInfoManager : MonoBehaviour
     public string coupleCode;
     public string coupleDay;
     public string myToken;
-
+    public bool isLogin = false;
+    
     private void Awake()
     {
         if (instance == null)
