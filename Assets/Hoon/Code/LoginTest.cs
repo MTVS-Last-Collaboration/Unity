@@ -184,7 +184,9 @@ public class LoginTest : MonoBehaviour
 
             //여기에서 UI Img_CoupleMenu3 꺼야합니다.
             coupleMenu3.SetActive(false);
-            CheckUserInfo();
+
+            //CheckUserInfo();
+            CheckLoginUserInfo(); //로그인정보를 다시 확인
 
 
         }
