@@ -42,7 +42,7 @@ public class JSW_DecoShopItem : MonoBehaviour
     {
         initRoom = GameObject.Find("DecorateRoomManager").GetComponent<JSW_InitRoom>();
         print(initRoom.initShopId[shopid]);
-        if (initRoom.initShopId[shopid])
+        if (initRoom.initShopId[shopid] || transform.GetChild(2).GetComponent<TMP_Text>().text == "소유중"|| decoMineObject.isMineText.text == "소유중")
         {
             isPurchase = true;
             transform.GetChild(2).GetComponent<TMP_Text>().text = "소유중";
