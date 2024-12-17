@@ -306,13 +306,14 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
         if (request.result == UnityWebRequest.Result.Success) //성공이니?
         {
             
-
             print("요청성공");
             string responseText = request.downloadHandler.text;
             Debug.Log("서버 응답: " + responseText);
             Debug.Log("Response: " + request.downloadHandler.text);
             Debug.Log("Response Code: " + request.responseCode);
             Debug.Log("Response Body: " + request.downloadHandler.text);
+            TodayMissionGetServer();
+            
         }
         else //응 아니야~
         {
@@ -2400,13 +2401,13 @@ public class MailManager : MonoBehaviourPunCallbacks, IOnEventCallback
             {
                 // ���ڰ� ���� ���� �÷��̾��� ��
                 userNumber = "user1";  // ���ڴ� �׻� user1
-                print("FindPlayer ���� ���� ����, ������ȣ: user1");
+                print("FindPlayer: user1");
             }
             else if (PhotonNetwork.LocalPlayer.ActorNumber == player2.GetComponent<PhotonView>().Owner.ActorNumber)
             {
                 // ���ڰ� ���� ���� �÷��̾��� ��
                 userNumber = "user2";  // ���ڴ� �׻� user2
-                print("FindPlayer ���� ���� ����, ������ȣ: user2");
+                print("FindPlayer: user2");
             }
 
         }
