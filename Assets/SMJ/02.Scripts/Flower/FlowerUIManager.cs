@@ -620,27 +620,27 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
         UpdateUIText();
     }
 
-    [PunRPC]
-    private void RPC_NotifyRecordComplete(byte[] voiceData)
-    {
-        if (!click.checkID.IsMine(flower))
-        {
-            if (voiceData != null && voiceData.Length > 0)
-            {
-                recorder.SetRecordedData(voiceData);
-                flower.voiceClip = recorder.GetAudioClip();
-            }
+    //[PunRPC]
+    //private void RPC_NotifyRecordComplete(byte[] voiceData)
+    //{
+    //    if (!click.checkID.IsMine(flower))
+    //    {
+    //        if (voiceData != null && voiceData.Length > 0)
+    //        {
+    //            recorder.SetRecordedData(voiceData);
+    //            flower.voiceClip = recorder.GetAudioClip();
+    //        }
 
-            if (flower.curState == Flower.States.BLOSSOM)
-            {
-                SwapButtonUI(2);  // 듣기 버튼
-            }
+    //        if (flower.curState == Flower.States.BLOSSOM)
+    //        {
+    //            SwapButtonUI(2);  // 듣기 버튼
+    //        }
 
-            isRecordComplete = true;
-            UpdateUIText();
-            UpdateAlertEmoji();
-        }
-    }
+    //        isRecordComplete = true;
+    //        UpdateUIText();
+    //        UpdateAlertEmoji();
+    //    }
+    //}
 
 
     [PunRPC]
@@ -1092,7 +1092,7 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                     {
                         SwapButtonUI(2);
                     }
-                    isRecordComplete = true;
+                    //isRecordComplete = true;
                     UpdateUIText();
                     UpdateAlertEmoji();
                 }
@@ -1185,14 +1185,15 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
         SwapButtonUI(4);  // 재생 중 UI
 
-        // 제출 전이라면 로컬 녹음 재생
-        if (!isRecordComplete)
-        {
-            recorder.PlayRecording();
-            StartCoroutine(CheckAudioCompletion());
-        }
-        // 제출된 상태라면 서버에서 받아와서 재생
-        else
+        //// 제출 전이라면 로컬 녹음 재생
+        //if (!isRecordComplete)
+        //{
+        //    recorder.PlayRecording();
+        //    StartCoroutine(CheckAudioCompletion());
+        //}
+        //// 제출된 상태라면 서버에서 받아와서 재생
+        //else
+        if(isRecordComplete)
         {
             StartCoroutine(GetAndPlayVoiceMessage());
         }
@@ -1376,12 +1377,20 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    Debug.LogError($"Failed to get voice URL. Response code: {response}");
-                    if (response.Contains("403"))
+                    if (response.Contains("404"))
+                    {
+                        isRecordComplete = false;
+                        SwapButtonUI(1);
+                    }
+                    else if (response.Contains("403"))
                     {
                         Debug.LogError("Authentication failed - please check token validity");
                     }
-                    buttons[4].SetActive(false);
+                    else
+                    {
+                        buttons[4].SetActive(false);
+                        Debug.LogError($"Failed to get voice URL. Response code: {response}");
+                    }
                 }
             });
 
