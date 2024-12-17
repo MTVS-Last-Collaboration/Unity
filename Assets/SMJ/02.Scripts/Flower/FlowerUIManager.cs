@@ -1185,15 +1185,14 @@ public class FlowerUIManager : MonoBehaviourPunCallbacks
 
         SwapButtonUI(4);  // 재생 중 UI
 
-        //// 제출 전이라면 로컬 녹음 재생
-        //if (!isRecordComplete)
-        //{
-        //    recorder.PlayRecording();
-        //    StartCoroutine(CheckAudioCompletion());
-        //}
-        //// 제출된 상태라면 서버에서 받아와서 재생
-        //else
-        if(isRecordComplete)
+        // 제출 전이라면 로컬 녹음 재생
+        if (!isRecordComplete)
+        {
+            recorder.PlayRecording();
+            StartCoroutine(CheckAudioCompletion());
+        }
+        // 제출된 상태라면 서버에서 받아와서 재생
+        else
         {
             StartCoroutine(GetAndPlayVoiceMessage());
         }
